@@ -24,12 +24,14 @@
         &::-webkit-scrollbar
             display: none
 
-    input
+    input,select
         border: 1px solid black
         &:focus, &:active
             outline: 0
 
-            
+    .form-select, input
+        &:focus
+            box-shadow: none !important
     .w-5
         width: 5% !important
     .w-15

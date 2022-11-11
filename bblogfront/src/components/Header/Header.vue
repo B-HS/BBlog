@@ -3,7 +3,7 @@
         <ul class="list-group list-group-horizontal-md h-auto w-100 bg-black rounded-0 justify-content-between px-3">
             <router-link to="/"><li class="border border-0 list-group-item bg-black rounded-0 text-white d-flex align-items-center">Hyunseok</li></router-link>
             <div class="icon-section d-flex">
-                <div class="icon-section-admin d-flex" v-if="store.userToken">
+                <div class="icon-section-admin d-flex" v-if="!store.userToken">
                     <router-link to="setting"><li class="border border-0 list-group-item bg-black rounded-0 text-white bi bi-gear"></li></router-link>
                     <router-link to="write"><li class="border border-0 list-group-item bg-black rounded-0 text-white bi bi-pencil"></li></router-link>
                 </div>
