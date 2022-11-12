@@ -6,7 +6,7 @@
                     <th colspan="1">게시글번호</th>
                     <th colspan="15">제목</th>
                     <th colspan="5">날짜</th>
-                    <th colspan="5">관리</th>
+                    <th colspan="2">관리</th>
                 </tr>
             </thead>
             <tbody>
@@ -14,7 +14,7 @@
                     <td colspan="1">{{i}}</td>
                     <td colspan="15">가나다라마바사아자차카타파하</td>
                     <td colspan="5">2022-02-02</td>
-                    <td colspan="5" class="d-flex gap-2 justify-content-center">
+                    <td colspan="2" class="d-flex gap-2 justify-content-center">
                         <button class="btn btn-warning">수정</button>
                         <button class="btn btn-danger">삭제</button>
                     </td>

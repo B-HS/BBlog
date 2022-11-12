@@ -1,5 +1,5 @@
 <template>
-    <div class="adminhome border d-flex flex-column align-items-center py-5 gap-3">
+    <div class="adminhome d-flex flex-column align-items-center py-5 gap-3">
         <div class="visitorgraph border border-1 p-3">
             <div class="visitorgraph-graph">
                 <Bar></Bar>

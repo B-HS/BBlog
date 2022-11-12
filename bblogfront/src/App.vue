@@ -1,6 +1,6 @@
 <template>
     <div class="layout h-100">
-        <header class="absolute-top">
+        <header class="sticky-top">
             <Header></Header>
         </header>
         <transition>

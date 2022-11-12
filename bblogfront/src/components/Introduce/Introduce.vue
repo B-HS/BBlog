@@ -17,9 +17,9 @@
                             <span class="text-start"> <i class="bi bi-file-text"></i> Pages</span>
                             <div class="icon-section">
                                 <div class="icon-section-common d-flex flex-column text-start">
-                                    <li class="border border-0 list-group-item rounded-0 bi-github">&nbsp;깃허브</li>
-                                    <li class="border border-0 list-group-item rounded-0 bi bi-bootstrap">&nbsp;티스토리 블로그</li>
-                                    <li class="border border-0 list-group-item rounded-0 bi bi-file-text">&nbsp;포트폴리오</li>
+                                    <a href="https://github.com/B-HS"><li class="border border-0 list-group-item rounded-0 bi-github">&nbsp;깃허브</li></a>
+                                    <a href="https://hbyun.tistory.com/"><li class="border border-0 list-group-item rounded-0 bi bi-bootstrap">&nbsp;티스토리 블로그</li></a>
+                                    <a href="https://portfolio.hyns.co.kr/projects"><li class="border border-0 list-group-item rounded-0 bi bi-file-text">&nbsp;포트폴리오</li></a>
                                 </div>
                             </div>
                         </ul>
@@ -41,9 +41,7 @@
                                     <span><i class="bi bi-calendar"></i> Last update</span>
                                     <div class="icon-section">
                                         <div class="icon-section-common d-flex flex-column text-start">
-                                            <a href="mailto:gumyoincirno@gmail.com">
                                                 <li class="border border-0 list-group-item rounded-0 bi bi-lightbulb">&nbsp;2022-12-10</li>
-                                            </a>
                                         </div>
                                     </div>
                                 </ul>
