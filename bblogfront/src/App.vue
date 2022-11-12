@@ -1,6 +1,6 @@
 <template>
     <div class="layout h-100">
-        <header class="sticky-top">
+        <header class="absolute-top">
             <Header></Header>
         </header>
         <transition>
@@ -46,6 +46,8 @@
         width: 15% !important
     .w-10
         width: 10% !important
+    .w-33
+        width: 33% !important
     .w-90
         width: 90% !important
     .w-95
