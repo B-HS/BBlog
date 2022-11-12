@@ -23,6 +23,11 @@ const router = createRouter({
       path: '/write',
       name: 'write',
       component: () => import('@/views/Write/Write.vue')
+    },
+    {
+      path: '/setting',
+      name: 'admin',
+      component: () => import('@/views/Admin/Admin.vue')
     }
   ]
 })

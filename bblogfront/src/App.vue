@@ -14,12 +14,20 @@
 </script>
 
 <style lang="sass">
+    .btn,
+    input,
+    textarea,
+    select,
+    button,
+    a
+        background-color: inherit
+        border-radius: 0 !important
     a
         text-decoration: none !important
         color: inherit !important
     body
         height: 100vh
-        min-width: 1024px
+        min-width: 1280px
         
         &::-webkit-scrollbar
             display: none
@@ -29,7 +37,7 @@
         &:focus, &:active
             outline: 0
 
-    .form-select, input
+    .form-select, input,a,.page-item
         &:focus
             box-shadow: none !important
     .w-5

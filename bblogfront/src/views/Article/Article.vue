@@ -47,7 +47,14 @@
     </div>
 </template>
 <script setup lang="ts">
-    import Reply from './Reply/Reply.vue'
+    import { onMounted } from "vue";
+    import Reply from "./Reply/Reply.vue";
+    
+    onMounted(()=>{
+        window.scrollTo(0,0);
+    })
+
+    
 </script>
 <style lang="sass" scoped>
     @import "Article.sass"
