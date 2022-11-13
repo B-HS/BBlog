@@ -2,9 +2,11 @@ package dev.hyns.bblogback.Entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,19 +18,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Visitor {
+public class ArticleImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long vid;
+    private Long imgid;
 
-    @Column(nullable = false)
-    private String ipAdress;
+    @Column
+    private String fileName;
 
-    @Column(nullable = false)
-    private String prevLink;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column
+    private int idx;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "article", referencedColumnName = "aid")
     private Article article;
-
-
 }
