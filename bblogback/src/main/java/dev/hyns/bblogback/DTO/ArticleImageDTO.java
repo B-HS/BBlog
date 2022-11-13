@@ -13,4 +13,5 @@ public class ArticleImageDTO {
     private Long imgid;
     private String fileName;
     private int idx;
+    private Long articleid;
 }

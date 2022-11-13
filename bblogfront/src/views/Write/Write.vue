@@ -37,15 +37,18 @@
                     <div class="tagwarning" v-html="hashStates.warning"></div>
                 </li>
                 <li class="list-group-item border border-0 p-0">
-                    <select class="form-select form-select-sm" v-model="articleState.category" aria-label=".form-select-sm example">
+                    <select class="form-select form-select-sm" v-model="articleState.category" aria-label=".form-select-sm">
                         <option value="0">카테고리</option>
                         <option value="1" v-for="i in 5" :key="i">더미{{ i }}</option>
                     </select>
                 </li>
                 <li class="list-group-item border border-0 p-0 d-flex gap-1">
-                    <input class="form-check-input" type="checkbox" value="" id="open" />
-                    <label class="form-check-label" for="firstCheckbox">비공개</label>
+                    <select class="form-select form-select-sm" v-model="articleState.hide" aria-label=".form-select-sm">
+                        <option value="0">공개</option>
+                        <option value="1">비공개</option>
+                    </select>
                 </li>
+
                 <li class="list-group-item border border-0 p-0">
                     <span class="border border-1 p-2 px-3 submit" @click="write">등록</span>
                 </li>
@@ -59,6 +62,8 @@
     import StarterKit from "@tiptap/starter-kit";
     import { Highlight } from "@tiptap/extension-highlight";
     import { reactive } from "vue";
+    import axios from "axios";
+import router from "@/router";
 
     const editor = useEditor({
         content: "",
@@ -76,10 +81,11 @@
         tag: "",
     });
 
-    let articleState = reactive<{ title: string; tags?: string[]; category: number }>({
+    let articleState = reactive<{ title: string; tags?: string[]; category: number; hide: number }>({
         title: "",
         tags: [],
         category: 0,
+        hide: 0,
     });
 
     const makingTag = () => {
@@ -149,20 +155,25 @@
         editor.value?.chain().focus().toggleHighlight().run();
     };
 
-    const write =()=>{
-        if(articleState.category===0){
+    const write = () => {
+        if (articleState.category === 0) {
             hashStates.warning = "카테고리를 선택하세요";
-            return
+            return;
         }
-        const articlebody:{title: string, context: string, tags?:string[], category:number} = {
+        if (editor.value?.getText().trim().length === 0) {
+            hashStates.warning = "본문을 입력하세요";
+            return;
+        }
+        const articlebody: { title: string; context: string | undefined; tags?: string[]; category: number; hide: boolean; menuid:number } = {
             title: articleState.title,
-            context: "",
-            tags:JSON.parse(JSON.stringify(articleState.tags)),
-            category:articleState.category,
-        }
-        console.log(articlebody);
-        
-    }
+            context: editor.value?.getHTML(),
+            tags: JSON.parse(JSON.stringify(articleState.tags)),
+            category: articleState.category,
+            hide: articleState.hide===0?false:true,
+            menuid: articleState.category
+        };
+        axios.post("/article/admin/write", articlebody).then(res=>router.push(`./read?id=${res.data}`))
+    };
 </script>
 <style lang="sass">
     @import "Write.sass"

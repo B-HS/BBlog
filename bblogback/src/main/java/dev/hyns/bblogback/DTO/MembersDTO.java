@@ -1,5 +1,7 @@
 package dev.hyns.bblogback.DTO;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,4 +18,5 @@ public class MembersDTO {
     private String nickname;
     private String password;
     private String userimg;
+    private LocalDateTime regdate;
 }

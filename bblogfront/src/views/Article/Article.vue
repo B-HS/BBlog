@@ -1,21 +1,21 @@
 <template>
     <div class="p-3 pt-5 articlesection d-flex flex-column align-items-center justify-content-center gap-3 w-100">
         <div class="articlesection_article w-100 boxsing">
-            <h6 class="category">더미카테고리</h6>
+            <h6 class="category">{{articleInfo.category}}</h6>
             <div></div>
-            <h1 class="title">더미 타이틀</h1>
+            <h1 class="title">{{articleInfo.title}}</h1>
             <div class="etc d-flex justify-content-between">
-                <span class="date">2022.09.09</span>
-                <span class="count"> 조회수 : 9999</span>
+                <span class="date">{{dateFormatter(articleInfo.date)}}</span>
+                <span class="count"> 조회수 : {{articleInfo.count}}</span>
             </div>
             <hr />
-            <span> Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit accusamus magnam suscipit error dolores, temporibus, doloribus repudiandae dignissimos sunt cupiditate nemo totam eligendi! Illo saepe excepturi ea sed, libero porro. Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit accusamus magnam suscipit error dolores, temporibus, doloribus repudiandae dignissimos sunt cupiditate nemo totam eligendi! Illo saepe excepturi ea sed, libero porro. Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit accusamus magnam suscipit error dolores, temporibus, doloribus repudiandae dignissimos sunt cupiditate nemo totam eligendi! Illo saepe excepturi ea sed, libero porro. Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit accusamus magnam suscipit error dolores, temporibus, doloribus repudiandae dignissimos sunt cupiditate nemo totam eligendi! Illo saepe excepturi ea sed, libero porro. Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit accusamus magnam suscipit error dolores, temporibus, doloribus repudiandae dignissimos sunt cupiditate nemo totam eligendi! Illo saepe excepturi ea sed, libero porro. Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit accusamus magnam suscipit error dolores, temporibus, doloribus repudiandae dignissimos sunt cupiditate nemo totam eligendi! Illo saepe excepturi ea sed, libero porro. Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit accusamus magnam suscipit error dolores, temporibus, doloribus repudiandae dignissimos sunt cupiditate nemo totam eligendi! Illo saepe excepturi ea sed, libero porro. Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit accusamus magnam suscipit error dolores, temporibus, doloribus repudiandae dignissimos sunt cupiditate nemo totam eligendi! Illo saepe excepturi ea sed, libero porro. Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit accusamus magnam suscipit error dolores, temporibus, doloribus repudiandae dignissimos sunt cupiditate nemo totam eligendi! Illo saepe excepturi ea sed, libero porro. </span>
+            <span v-html="articleInfo.description"></span>
         </div>
 
         <div class="articlesection_function boxsing w-100 d-flex align-items-center px-3">
             <i class="bi bi-tag"></i>
             <ul class="list-group list-group-horizontal">
-                <li class="list-group-item border border-0" v-for="i in 5" :key="i">더미</li>
+                <li class="list-group-item border border-0" v-for="i in articleInfo.tag" :key="i"># {{i}}</li>
             </ul>
         </div>
 
@@ -42,19 +42,44 @@
         </div>
 
         <div class="articlesection_replylist boxsing p-3 w-100">
-            <Reply></Reply>
+            <Reply :reply="articleInfo.reply"></Reply>
         </div>
     </div>
 </template>
 <script setup lang="ts">
-    import { onMounted } from "vue";
+    import axios from "axios";
+    import { onMounted, reactive } from "vue";
     import Reply from "./Reply/Reply.vue";
-    
-    onMounted(()=>{
-        window.scrollTo(0,0);
-    })
+    const id = new URLSearchParams(window.location.search).get("id");
+    const articleInfo = reactive<{ category: string | number; title: string; count: number; description: string; tag?: string[]; reply?: Object | undefined, date:Date }>({
+        category: "",
+        title: "",
+        count: 0,
+        description: "",
+        tag: [],
+        reply: undefined,
+        date: new Date()
+    });
 
-    
+    const dateFormatter = (date:Date) : string=>{
+        const dateAry : string[] = date.toISOString().split("-")
+
+        return `${dateAry[0]}년 ${dateAry[1]}월 ${dateAry[2].split("T")[0]}일 ${dateAry[2].split("T")[1].split(":")[0]}:${dateAry[2].split("T")[1].split(":")[1]}`
+    }
+
+    axios.get(`/article/${id}`).then(res=>{
+        articleInfo.category = res.data.menuid
+        articleInfo.title = res.data.title
+        articleInfo.count = res.data.visitor
+        articleInfo.description = res.data.context
+        articleInfo.tag = res.data.hashtag
+        articleInfo.reply = res.data.reply
+        articleInfo.date = new Date(res.data.regdate)
+    });
+
+    onMounted(() => {
+        window.scrollTo(0, 0);
+    });
 </script>
 <style lang="sass" scoped>
     @import "Article.sass"

@@ -1,6 +1,7 @@
 package dev.hyns.bblogback.DTO;
 
-import dev.hyns.bblogback.Entity.Article;
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,5 +14,6 @@ import lombok.NoArgsConstructor;
 public class HashtagDTO {
     private Long hid;
     private String tagname;
-    private Article article;
+    private Long articleid;
+    private LocalDateTime regdate;
 }

@@ -1,11 +1,8 @@
 package dev.hyns.bblogback.DTO;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-import dev.hyns.bblogback.Entity.ArticleImage;
-import dev.hyns.bblogback.Entity.Menu;
-import dev.hyns.bblogback.Entity.Reply;
-import dev.hyns.bblogback.Entity.Visitor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,10 +15,13 @@ import lombok.NoArgsConstructor;
 public class ArticleDTO {
     private Long aid;
     private String title;
-    private byte[] context;
+    private String context;
     private boolean hide;
-    private Menu menu;
-    private List<Visitor> visitor;
-    private List<Reply> reply;
-    private List<ArticleImage> image;
+    private Long menuid;
+    private int visitor;
+    private List<ReplyDTO> reply;
+    private List<String> image;
+    private List<String> hashtag;
+    private LocalDateTime regdate;
+
 }

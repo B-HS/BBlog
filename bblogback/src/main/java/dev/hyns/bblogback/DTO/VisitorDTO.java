@@ -1,6 +1,7 @@
 package dev.hyns.bblogback.DTO;
 
-import dev.hyns.bblogback.Entity.Article;
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +15,6 @@ public class VisitorDTO {
     private Long vid;
     private String ipAdress;
     private String prevLink;
-    private Article article;
+    private Long articleid;
+    private LocalDateTime regdate;
 }
