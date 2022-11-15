@@ -1,15 +1,23 @@
 package dev.hyns.bblogback.Service.ArticleService;
 
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartRequest;
+
 import dev.hyns.bblogback.DTO.ArticleDTO;
 import dev.hyns.bblogback.DTO.ReplyDTO;
 import dev.hyns.bblogback.Entity.Article;
 import dev.hyns.bblogback.Entity.Menu;
 import dev.hyns.bblogback.Entity.Reply;
+import dev.hyns.bblogback.Service.MembersService.MembersService;
 
-public interface ArticleService {
-    Long write(ArticleDTO dto);
 
+public interface ArticleService extends MembersService{
+    Long write(ArticleDTO dto); 
     ArticleDTO read(Long aid);
+
+    String ImgUpload(MultipartRequest file);
+    List<Object> ImgRead(String filename);
 
     default Article ArticleDTOtoEntity(ArticleDTO dto) {
         return Article.builder()
@@ -42,6 +50,7 @@ public interface ArticleService {
                 .replySort(entity.getReplySort())
                 .articleid(entity.getArticle().getAid())
                 .regdate(entity.getRegDate())
+                .member(EntityToReplyMemberInfo(entity.getMid()))
                 .build();
     }
     

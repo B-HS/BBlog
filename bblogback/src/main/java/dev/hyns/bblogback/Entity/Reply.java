@@ -33,6 +33,9 @@ public class Reply extends DateEntity{
     @ManyToOne
     private Article article;
 
+    @ManyToOne
+    private Members mid;
+
 
     
 }

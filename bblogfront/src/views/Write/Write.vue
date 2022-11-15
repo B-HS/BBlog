@@ -13,6 +13,7 @@
                 <button class="bi bi-justify-right" @click="alignment('right')"></button>
                 <button class="bi bi-type-bold" @click="bold"></button>
                 <button class="bi bi-type-strikethrough" @click="strike"></button>
+                <label class="bi bi-image" for="imgup"><input id="imgup" type="file" class="filebox" ref="imgBox" @change="imgUpload" /></label>
                 <button class="bi bi-brightness-high" @click="highlight"></button>
                 <button class="bi bi-code" @click="code"></button>
                 <button class="bi bi-list-task" @click="bullet"></button>
@@ -60,10 +61,13 @@
     import { useEditor, EditorContent } from "@tiptap/vue-3";
     import TextAlign from "@tiptap/extension-text-align";
     import StarterKit from "@tiptap/starter-kit";
+    import Image from "@tiptap/extension-image";
     import { Highlight } from "@tiptap/extension-highlight";
-    import { reactive } from "vue";
+    import { reactive, ref } from "vue";
     import axios from "axios";
-import router from "@/router";
+    import router from "@/router";
+
+    const imgBox = ref<HTMLInputElement>();
 
     const editor = useEditor({
         content: "",
@@ -72,20 +76,39 @@ import router from "@/router";
             TextAlign.configure({
                 types: ["heading", "paragraph"],
             }),
+            Image.configure({
+                inline: true,
+            }),
             Highlight.configure({ multicolor: true }),
         ],
     });
+
+    const imgUpload = () => {
+        let formData = new FormData();
+        if (imgBox.value?.files) {
+            formData.append("uploadimg", imgBox.value.files[0]);
+        }
+        axios.post("/article/admin/images/upload", formData).then((res) => {
+            editor.value
+                ?.chain()
+                .focus()
+                .setImage({ src: `./blogapi/article/images/${res.data}` })
+                .run();
+            articleState.image.push(JSON.parse(JSON.stringify(res.data)))
+        });
+    };
 
     const hashStates = reactive<{ warning?: string; tag?: string }>({
         warning: "",
         tag: "",
     });
 
-    let articleState = reactive<{ title: string; tags?: string[]; category: number; hide: number }>({
+    let articleState = reactive<{ title: string; tags?: string[]; category: number; hide: number; image: string[] }>({
         title: "",
         tags: [],
         category: 0,
         hide: 0,
+        image: [],
     });
 
     const makingTag = () => {
@@ -100,7 +123,6 @@ import router from "@/router";
             return;
         }
         articleState.tags?.push(hashStates.tag?.trim().replace(/ /, "") as string);
-        console.log(articleState.tags);
         hashStates.warning = "";
         hashStates.tag = "";
     };
@@ -164,15 +186,18 @@ import router from "@/router";
             hashStates.warning = "본문을 입력하세요";
             return;
         }
-        const articlebody: { title: string; context: string | undefined; tags?: string[]; category: number; hide: boolean; menuid:number } = {
+        const articlebody: { title: string; context: string | undefined; tags?: string[]; category: number; hide: boolean; menuid: number; image:string[] } = {
             title: articleState.title,
             context: editor.value?.getHTML(),
-            tags: JSON.parse(JSON.stringify(articleState.tags)),
+            tags: articleState.tags,
             category: articleState.category,
-            hide: articleState.hide===0?false:true,
-            menuid: articleState.category
+            hide: articleState.hide === 0 ? false : true,
+            menuid: articleState.category,
+            image: articleState.image
         };
-        axios.post("/article/admin/write", articlebody).then(res=>router.push(`./read?id=${res.data}`))
+        console.log(articlebody);
+        
+        axios.post("/article/admin/write", articlebody).then((res) => router.push(`./read?id=${res.data}`));
     };
 </script>
 <style lang="sass">

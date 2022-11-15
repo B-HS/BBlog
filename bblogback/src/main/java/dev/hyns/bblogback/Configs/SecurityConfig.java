@@ -18,6 +18,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager)
             throws Exception {
         http.csrf().disable();
+        http.httpBasic().disable();
 
         return http.build();
     }

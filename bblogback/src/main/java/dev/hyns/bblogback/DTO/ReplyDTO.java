@@ -2,6 +2,7 @@ package dev.hyns.bblogback.DTO;
 
 import java.time.LocalDateTime;
 
+import dev.hyns.bblogback.VO.MemberInfoForReply;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,5 +18,6 @@ public class ReplyDTO {
     private Long replyGroup;
     private Long replySort;
     private Long articleid;
+    private MemberInfoForReply member;
     private LocalDateTime regdate;
 }
