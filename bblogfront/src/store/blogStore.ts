@@ -19,6 +19,12 @@ export const useBlogStore = defineStore("blogInfo", () => {
     const getTopRecentFiveArticle = computed(()=> state.topRecentFiveArticle)
     const getCounter = computed(()=> state.counter)
 
+    const articleRequest = (requestedPage:Number, totalPageSize:number)=>{
+        console.log(requestedPage, totalPageSize);
+        
+        return axios.post("/article/recent", {requestedPage:requestedPage, totalPageSize:totalPageSize})
+    }
+    
 
-    return { getMenuList, getTopRecentFiveArticle, getCounter, setMenuList, setTopRecentFiveArticle, setCounter }
+    return { getMenuList, getTopRecentFiveArticle, getCounter, setMenuList, setTopRecentFiveArticle, setCounter, articleRequest}
 })

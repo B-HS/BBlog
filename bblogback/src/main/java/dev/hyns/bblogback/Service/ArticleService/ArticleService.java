@@ -1,7 +1,9 @@
 package dev.hyns.bblogback.Service.ArticleService;
 
+import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartRequest;
 
 import dev.hyns.bblogback.DTO.ArticleDTO;
@@ -15,6 +17,7 @@ import dev.hyns.bblogback.Service.MembersService.MembersService;
 public interface ArticleService extends MembersService{
     Long write(ArticleDTO dto); 
     ArticleDTO read(Long aid);
+    HashMap<String, Object> recentArticleList(Pageable pageable);
 
     String ImgUpload(MultipartRequest file);
     List<Object> ImgRead(String filename);

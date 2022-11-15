@@ -20,19 +20,10 @@
     </div>
 </template>
 <script setup lang="ts">
-import { onMounted } from 'vue';
-
     const props = defineProps({
         reply: { type: Object, required: false },
         dateFormatter: {type : Function, required: true}
     });
-
-    onMounted(() => {
-        console.log(props.reply);
-        
-        
-        
-    })
 </script>
 <style lang="sass">
 

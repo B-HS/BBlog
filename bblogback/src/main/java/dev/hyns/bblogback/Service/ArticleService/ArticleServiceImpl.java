@@ -4,11 +4,14 @@ import java.io.File;
 import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartRequest;
@@ -20,17 +23,31 @@ import dev.hyns.bblogback.Entity.Hashtag;
 import dev.hyns.bblogback.Repository.ArticleImageRepository;
 import dev.hyns.bblogback.Repository.ArticleRepository;
 import dev.hyns.bblogback.Repository.HashtagRepository;
+import dev.hyns.bblogback.Repository.ArticleRepository.getArticleCard;
+import dev.hyns.bblogback.VO.ArticleCardInfo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-
+import lombok.extern.log4j.Log4j2;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository arepo;
     private final ArticleImageRepository airepo;
     private final HashtagRepository hrepo;
     private final String DIRADRESS = "/Users/hyunseokbyun/Documents/Imagefiles/";
+
+    @Override
+    public HashMap<String, Object> recentArticleList(Pageable pageable) {
+        HashMap<String, Object> result = new HashMap<>();
+        Page<getArticleCard> paging = arepo.RecentArticleList(pageable);
+        // 인터페이스 그냥 넣고싶은데 연습용으로 VO하나 만들어서 넣어봄
+        result.put("dtoList", paging.stream().map(v -> new ArticleCardInfo(v)).toList());
+        result.put("currentPage", paging.getNumber());
+        result.put("totalPage", paging.getTotalPages());
+        return result;
+    }
 
     @Override
     public List<Object> ImgRead(String filename) {
@@ -41,6 +58,7 @@ public class ArticleServiceImpl implements ArticleService {
                 result.add(FileCopyUtils.copyToByteArray(file));
                 result.add(Files.probeContentType(file.toPath()));
             }
+            result.forEach(v -> log.info(v));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,11 +89,14 @@ public class ArticleServiceImpl implements ArticleService {
         Optional<List<String>> hashtags = Optional.ofNullable(dto.getHashtag());
         Long articleid = arepo.save(ArticleDTOtoEntity(dto)).getAid();
 
-        imgs.ifPresent((images) -> {
-            images.forEach((img) -> {
-                airepo.save(
-                        ArticleImage.builder().article(Article.builder().aid(articleid).build()).fileName(img).build());
-            });
+        imgs.ifPresentOrElse((images) -> {
+            for (int i = 0; i < images.size(); i++) {
+                airepo.save(ArticleImage.builder().article(Article.builder().aid(articleid).build())
+                        .fileName(images.get(i)).idx(i).build());
+            }
+        }, () -> {
+            airepo.save(ArticleImage.builder().article(Article.builder().aid(articleid).build()).fileName("basic.png")
+                    .idx(0).build());
         });
 
         hashtags.ifPresent((hashs) -> {

@@ -1,10 +1,10 @@
 <template>
-    <div class="layout h-100">
+    <div class="layout h-100 d-flex justify-content-center flex-column">
         <header class="sticky-top">
-            <Header></Header>
+            <Header w-100></Header>
         </header>
         <transition>
-            <router-view class="w-100 h-100"></router-view>
+            <router-view class="w-100 h-100 routersection"></router-view>
         </transition>
     </div>
 </template>
@@ -36,6 +36,9 @@
         border: 1px solid black
         &:focus, &:active
             outline: 0
+
+    .routersection
+        max-width: 1920px
 
     .form-select, input,a,.page-item
         &:focus

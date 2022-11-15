@@ -5,7 +5,7 @@
             <div></div>
             <h1 class="title">{{ articleInfo.title }}</h1>
             <div class="etc d-flex justify-content-between">
-                <span class="date">{{ dateFormatter(articleInfo.date) }}</span>
+                <span class="date">{{ dateFormatter(articleInfo.date as Date) }}</span>
                 <span class="count"> 조회수 : {{ articleInfo.count }}</span>
             </div>
             <hr />
@@ -42,7 +42,7 @@
         </div>
 
         <div class="articlesection_replylist boxsing p-3 w-100">
-            <Reply :reply="JSON.parse(JSON.stringify(articleInfo.reply))[0]" :dateFormatter="dateFormatter"></Reply>
+            <Reply v-for="i in articleInfo.reply" :reply="i" :dateFormatter="dateFormatter"></Reply>
         </div>
     </div>
 </template>
@@ -72,8 +72,9 @@
         articleInfo.count = res.data.visitor;
         articleInfo.description = res.data.context;
         articleInfo.tag = res.data.hashtag;
-        articleInfo.reply = res.data.reply;
+        articleInfo.reply = res.data.reply
         articleInfo.date = new Date(res.data.regdate);
+        
     });
 
     onMounted(() => {

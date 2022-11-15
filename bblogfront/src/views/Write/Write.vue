@@ -186,17 +186,17 @@
             hashStates.warning = "본문을 입력하세요";
             return;
         }
-        const articlebody: { title: string; context: string | undefined; tags?: string[]; category: number; hide: boolean; menuid: number; image:string[] } = {
+        const articlebody: { title: string; context: string | undefined; tags?: string[]; category: number; hide: boolean; menuid: number; image?:string[] } = {
             title: articleState.title,
             context: editor.value?.getHTML(),
             tags: articleState.tags,
             category: articleState.category,
             hide: articleState.hide === 0 ? false : true,
-            menuid: articleState.category,
-            image: articleState.image
+            menuid: articleState.category
         };
-        console.log(articlebody);
-        
+        if(articleState.image.length>0){
+            articlebody.image=articleState.image
+        }   
         axios.post("/article/admin/write", articlebody).then((res) => router.push(`./read?id=${res.data}`));
     };
 </script>

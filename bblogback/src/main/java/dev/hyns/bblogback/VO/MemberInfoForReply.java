@@ -14,4 +14,5 @@ public class MemberInfoForReply {
     private String email;
     private String nickname;
     private String userimg;
+    //그냥 멤버에 생성자 하나 만들면 끝이지만 하나하나 적기가 너무 귀찮음, 롬복 사랑해요
 }
