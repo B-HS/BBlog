@@ -9,22 +9,29 @@ export const useBlogStore = defineStore("blogInfo", () => {
         counter: []
     })
 
-
-    const setMenuList = () => { }
+    const setMenuList = (menuList: Object) => {
+        state.menu = menuList;
+    }
     const setTopRecentFiveArticle = () => { }
     const setCounter = () => { }
 
 
-    const getMenuList = computed(()=> state.menu)
-    const getTopRecentFiveArticle = computed(()=> state.topRecentFiveArticle)
-    const getCounter = computed(()=> state.counter)
+    const getMenuList = computed(() => state.menu)
+    const getTopRecentFiveArticle = computed(() => state.topRecentFiveArticle)
+    const getCounter = computed(() => state.counter)
 
-    const articleRequest = (requestedPage:Number, totalPageSize:number)=>{
-        console.log(requestedPage, totalPageSize);
-        
-        return axios.post("/article/recent", {requestedPage:requestedPage, totalPageSize:totalPageSize})
+    const articleRequest = (requestedPage: Number, totalPageSize: number) => {
+        return axios.post("/article/recent", { requestedPage: requestedPage, totalPageSize: totalPageSize })
     }
-    
 
-    return { getMenuList, getTopRecentFiveArticle, getCounter, setMenuList, setTopRecentFiveArticle, setCounter, articleRequest}
+    const articleRequestByCategory = (requestedPage: Number, totalPageSize: number, id: String | null) => {
+        return axios.post(`/category/${id}`, { requestedPage: requestedPage, totalPageSize: totalPageSize })
+    }
+
+    const menuListRequest = () => {
+        return axios.get("/menulist")
+    }
+
+
+    return { getMenuList, getTopRecentFiveArticle, getCounter, setMenuList, setTopRecentFiveArticle, setCounter, articleRequest, menuListRequest, articleRequestByCategory }
 })

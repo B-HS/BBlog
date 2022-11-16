@@ -28,6 +28,11 @@ const router = createRouter({
       path: '/setting',
       name: 'admin',
       component: () => import('@/views/Admin/Admin.vue')
+    },
+    {
+      path: '/category',
+      name: 'category',
+      component: () => import('@/views/MenuPage/MenuPage.vue')
     }
   ]
 })

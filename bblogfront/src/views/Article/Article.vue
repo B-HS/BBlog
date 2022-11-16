@@ -1,7 +1,7 @@
 <template>
     <div class="p-3 pt-5 articlesection d-flex flex-column align-items-center justify-content-center gap-3 w-100">
         <div class="articlesection_article w-100 boxsing">
-            <h6 class="category">{{ articleInfo.category }}</h6>
+            <h6 class="category">{{ JSON.parse(JSON.stringify(store.getMenuList))[articleInfo.category].menuName }}</h6>
             <div></div>
             <h1 class="title">{{ articleInfo.title }}</h1>
             <div class="etc d-flex justify-content-between">
@@ -47,6 +47,7 @@
     </div>
 </template>
 <script setup lang="ts">
+    import { useBlogStore } from "@/store/blogStore";
     import axios from "axios";
     import { onMounted, reactive } from "vue";
     import Reply from "./Reply/Reply.vue";
@@ -60,6 +61,8 @@
         reply: undefined,
         date: new Date(),
     });
+
+    const store = useBlogStore()
 
     const dateFormatter = (date: Date): string => {
         const dateAry: string[] = date.toISOString().split("-");
