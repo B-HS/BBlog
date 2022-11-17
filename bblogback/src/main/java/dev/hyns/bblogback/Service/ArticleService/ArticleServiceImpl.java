@@ -12,17 +12,22 @@ import java.util.UUID;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartRequest;
 
 import dev.hyns.bblogback.DTO.ArticleDTO;
+import dev.hyns.bblogback.DTO.ReplyDTO;
 import dev.hyns.bblogback.Entity.Article;
 import dev.hyns.bblogback.Entity.ArticleImage;
 import dev.hyns.bblogback.Entity.Hashtag;
+import dev.hyns.bblogback.Entity.Members;
+import dev.hyns.bblogback.Entity.Reply;
 import dev.hyns.bblogback.Repository.ArticleImageRepository;
 import dev.hyns.bblogback.Repository.ArticleRepository;
 import dev.hyns.bblogback.Repository.HashtagRepository;
+import dev.hyns.bblogback.Repository.ReplyRepository;
 import dev.hyns.bblogback.Repository.ArticleRepository.getArticleCard;
 import dev.hyns.bblogback.VO.ArticleCardInfo;
 import jakarta.transaction.Transactional;
@@ -37,6 +42,43 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleImageRepository airepo;
     private final HashtagRepository hrepo;
     private final String DIRADRESS = "/Users/hyunseokbyun/Documents/Imagefiles/";
+    private final ReplyRepository rrepo;
+    private final PasswordEncoder pEncoder;
+
+    @Override
+    public boolean deleteReply(Long rid) {
+        rrepo.deleteById(rid);
+        return true;
+    }
+
+    @Override
+    public boolean addReply(ReplyDTO dto) {
+        if (dto.isLogged()) {
+            rrepo.save(Reply.builder()
+                    .mid(Members.builder().mid(dto.getMember().getMid()).build())
+                    .article(Article.builder().aid(dto.getArticleid()).build())
+                    .logged(dto.isLogged())
+                    .hide(dto.isHide())
+                    .context(dto.getContext())
+                    .replyGroup(dto.getReplyGroup())
+                    .replySort(dto.getReplySort())
+                    .build());
+            return true;
+        } else if (!dto.isLogged()) {
+            rrepo.save(Reply.builder()
+                    .article(Article.builder().aid(dto.getArticleid()).build())
+                    .guestName(dto.getMember().getNickname())
+                    .replypwd(pEncoder.encode(dto.getReplypwd()))
+                    .hide(dto.isHide())
+                    .logged(dto.isLogged())
+                    .context(dto.getContext())
+                    .replyGroup(dto.getReplyGroup())
+                    .replySort(dto.getReplySort())
+                    .build());
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public HashMap<String, Object> recentArticleList(Pageable pageable) {
@@ -110,11 +152,23 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ArticleDTO read(Long aid) {
-        ArticleDTO dto = ArticleEntitytoDTO(
-                arepo.findByIdEager(aid).orElseThrow(() -> new NoSuchElementException("Article is not found")));
+        ArticleDTO dto = ArticleEntitytoDTO(arepo.findByIdEager(aid).orElseThrow(() -> new NoSuchElementException("Article is not found")));
+        List<ReplyDTO> filteredReply =  new ArrayList<>();
+        List<ReplyDTO> replies = dto.getReply();
+        for (int i = 0; i < replies.size(); i++) {
+            Long num = (long)i;
+            replies.stream().filter(v->v.getReplyGroup()==num).toList().forEach(v->filteredReply.add(v));
+        }
+        dto.setReply(filteredReply);
         if (dto.isHide() == true) {
             return null;
         }
         return dto;
+    }
+
+    @Override
+    public boolean updateReply(ReplyDTO dto) {
+        
+        return false;
     }
 }

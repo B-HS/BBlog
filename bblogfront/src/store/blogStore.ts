@@ -1,9 +1,11 @@
 import { defineStore } from "pinia"
 import { computed, reactive } from "vue"
+import { useUserStore } from "./userStore"
 import axios from 'axios'
 
 
 export const useBlogStore = defineStore("blogInfo", () => {
+    const user = useUserStore()
     const state = reactive<{ menu: menuList[], topRecentFiveArticle: Object, counter: number[] }>({
         menu: [],
         topRecentFiveArticle: new Object,
@@ -31,15 +33,36 @@ export const useBlogStore = defineStore("blogInfo", () => {
 
 
     const menuListRequest = async () => {
-        await axios.get("/menulist").then(res => {
+        axios.get("/menulist").then(res => {
             const result: menuList[] = res.data.map((ele: menuList) => {
                 return ele
             })
             setMenuList(JSON.parse(JSON.stringify(result)) as menuList[])
         })
-        return state.menu
+    }
+
+    const replyAddRequest = (aid: number, userName: string, isLogged: boolean, pwd: string, context: string, group: number, sort: number) => {
+        let replyInfo = {
+            articleid: aid,
+            replypwd: "",
+            context: context,
+            member: { mid: -1, nickname: "" },
+            replyGroup: group,
+            replySort: sort,
+            logged: false
+        }
+        if (isLogged) {
+            replyInfo.member.mid = user.getUserNum as number
+            replyInfo.logged = true
+        } else {
+            replyInfo.member.nickname = userName
+            replyInfo.replypwd = pwd
+        }
+
+
+        return axios.post("/article/reply", replyInfo)
     }
 
 
-    return { getMenuList, getTopRecentFiveArticle, getCounter, setMenuList, setTopRecentFiveArticle, setCounter, articleRequest, menuListRequest, articleRequestByCategory }
+    return { getMenuList, getTopRecentFiveArticle, getCounter, setMenuList, setTopRecentFiveArticle, setCounter, articleRequest, menuListRequest, articleRequestByCategory, replyAddRequest }
 })

@@ -18,6 +18,9 @@ public class ReplyDTO {
     private Long replyGroup;
     private Long replySort;
     private Long articleid;
+    private boolean logged;
+    private boolean hide;
+    private String replypwd;
     private MemberInfoForReply member;
     private LocalDateTime regdate;
 }

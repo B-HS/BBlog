@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartRequest;
 
 import dev.hyns.bblogback.DTO.ArticleDTO;
+import dev.hyns.bblogback.DTO.ReplyDTO;
 import dev.hyns.bblogback.Service.ArticleService.ArticleService;
 import dev.hyns.bblogback.VO.ArticleCardInfo;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,18 @@ public class ArticleController {
         Pageable pageabe = PageRequest.of(cardInfo.getRequestedPage(), cardInfo.getTotalPageSize(),Sort.by(Sort.Direction.DESC, "aid"));
         return new ResponseEntity<HashMap<String,Object>>(aser.recentArticleList(pageabe), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/reply",  method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> addReply(@RequestBody ReplyDTO dto){
+        return new ResponseEntity<Boolean>(aser.addReply(dto), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/reply",  method = RequestMethod.DELETE, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> deleteReply(@RequestBody ReplyDTO dto){
+        return new ResponseEntity<Boolean>(aser.deleteReply(dto.getRid()), HttpStatus.OK);
+    }
+
+
     
 
     @RequestMapping(value = "/admin/images/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

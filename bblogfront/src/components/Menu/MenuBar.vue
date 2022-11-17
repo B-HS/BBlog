@@ -6,8 +6,8 @@
         <div class="offcanvas-body p-0 pt-3 m-0 d-flex flex-column">
             <span class="px-4">Menu</span>
             <ul class="list-group p-0 m-0">
-                <li class="list-group-item bg-transparent text-white rounded-0 text-start ps-5" v-for="menu in MenubarInfo.menuList" @click='redirector("article", menu.lid as number)'>
-                    <a :href="`/category?id=${menu.lid}`">{{ "ㄴ " + menu.menuName }}</a>
+                <li class="list-group-item bg-transparent text-white rounded-0 text-start ps-5" v-for="menu in store.getMenuList" @click='redirector("menu", menu.lid as number)' data-bs-dismiss="offcanvas">
+                    <span>{{ "ㄴ " + menu.menuName }}</span>
                 </li>
             </ul>
             <hr />
@@ -44,20 +44,16 @@
         });
     };
 
-    const getMenuList = () => {
-        store.menuListRequest().then(res=>res.forEach((element:menuList) => {
-            MenubarInfo.menuList.push(element)
-        }))
-    };
+    store.menuListRequest()
 
     const redirector =(which:string, number:number)=>{
         switch (which) {
             case "article":
-                router.push(`/read?id=${number}`)
+                router.push(`/read?id=${number}`).then(()=>{router.go(0)})
                 break
 
             case "menu":
-                router.push(`/category?id=${number}`)
+                router.push(`/category?id=${number}`).then(()=>{router.go(0)})
                 break;
         }
         
@@ -65,7 +61,7 @@
 
     onMounted(() => {
         getRecentArticleList();
-        getMenuList();
+        
     });
 </script>
 <style lang="sass" scoped>

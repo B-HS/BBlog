@@ -27,7 +27,7 @@
         title: props.dto.title,
         description: props.dto.context,
         date: props.dto.regdate,
-        commentNum: props.dto.replycount,
+        commentNum: props.dto.replyCount,
     });
 
     const descriptionFixer = (desc: string) => {
@@ -43,6 +43,9 @@
         tag.innerHTML = html;
         return tag.textContent;
     };
+
+    console.log(props.dto);
+    
 </script>
 <style lang="sass">
     @import "ArticleCard.sass"

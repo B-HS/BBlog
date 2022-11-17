@@ -17,11 +17,10 @@
     import { onMounted, reactive } from "vue";
     const store = useBlogStore();
     const id: number | string | null = new URLSearchParams(window.location.search).get("id");
-    const menuState = reactive<{ id?: number; dtoList: Object[]; totalPage: number; currentPage: number; menuName: menuList | undefined }>({
+    const menuState = reactive<{ id?: number; dtoList: Object[]; totalPage: number; currentPage: number}>({
         dtoList: [],
         totalPage: 1,
         currentPage: 0,
-        menuName: undefined,
     });
 
     const setArticleInfo = (res: AxiosResponse) => {

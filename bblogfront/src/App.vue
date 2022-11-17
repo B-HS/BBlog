@@ -3,14 +3,19 @@
         <header class="sticky-top">
             <Header w-100></Header>
         </header>
-        <transition>
-            <router-view class="w-100 h-100 routersection"></router-view>
-        </transition>
+
+        <router-view class="w-100 h-100 routersection" v-slot="{ Component }">
+            <transition mode="out-in">
+                <component :is="Component"></component> 
+            </transition>
+        </router-view>
     </div>
 </template>
 
 <script setup lang="ts">
+    import { useRoute } from "vue-router";
     import Header from "./components/Header/Header.vue";
+    const route = useRoute();
 </script>
 
 <style lang="sass">
@@ -28,7 +33,6 @@
     body
         height: 100vh
         min-width: 1280px
-        
         &::-webkit-scrollbar
             display: none
 
@@ -54,7 +58,7 @@
     .w-90
         width: 90% !important
     .w-95
-        width: 95% !important             
+        width: 95% !important
     .h-15
         height: 15% !important
     .h-10
@@ -67,7 +71,7 @@
     .menubar
         min-width: 200px
     .v-enter-active, .v-leave-active
-        transition: 0.5s ease-in-out all
+        transition: 0.2s ease-in-out
     .v-enter-from, .v-leave-to
         opacity: 0
     ul

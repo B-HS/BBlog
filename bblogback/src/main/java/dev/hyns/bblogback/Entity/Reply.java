@@ -30,6 +30,18 @@ public class Reply extends DateEntity{
     @Column(nullable = false)
     private Long replySort;
 
+    @Column(nullable = false)
+    private boolean logged;
+
+    @Column
+    private String guestName;
+
+    @Column
+    private String replypwd;
+
+    @Column
+    private boolean hide;
+
     @ManyToOne
     private Article article;
 
