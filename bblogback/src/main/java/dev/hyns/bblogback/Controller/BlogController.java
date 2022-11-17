@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class BlogController {
 
     @RequestMapping(value = "/category/{menu}", method= RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<HashMap<String, Object>> articlesSortedByMenu(@RequestBody ArticleCardInfo cardInfo, @ModelAttribute("menu") Long menu){
-        Pageable pageabe = PageRequest.of(cardInfo.getRequestedPage(), cardInfo.getTotalPageSize());
+        Pageable pageabe = PageRequest.of(cardInfo.getRequestedPage(), cardInfo.getTotalPageSize(),Sort.by(Sort.Direction.DESC, "aid"));
         return new ResponseEntity<HashMap<String,Object>>(bser.getArticleListByMenuId(pageabe, menu), HttpStatus.OK);
     }
 }

@@ -6,15 +6,15 @@
         <div class="offcanvas-body p-0 pt-3 m-0 d-flex flex-column">
             <span class="px-4">Menu</span>
             <ul class="list-group p-0 m-0">
-                <li class="list-group-item bg-transparent text-white rounded-0 text-start ps-5" v-for="menu in MenubarInfo.menuList">
-                    <a :href="`/category?id=${JSON.parse(JSON.stringify(menu)).lid}`">{{ "ㄴ " + JSON.parse(JSON.stringify(menu)).menuName }}</a>
+                <li class="list-group-item bg-transparent text-white rounded-0 text-start ps-5" v-for="menu in MenubarInfo.menuList" @click='redirector("article", menu.lid as number)'>
+                    <a :href="`/category?id=${menu.lid}`">{{ "ㄴ " + menu.menuName }}</a>
                 </li>
             </ul>
             <hr />
             <span class="px-4">Recent Articles</span>
             <ul class="list-group p-0 m-0">
-                <li class="list-group-item bg-transparent text-white rounded-0 text-start ps-5" v-for="(dto, index) in MenubarInfo.recentArticle" :key="index">
-                    <a :href="`/read?id=${JSON.parse(JSON.stringify(dto)).aid}`">{{ index + 1 + ". " + JSON.parse(JSON.stringify(dto)).title }}</a>
+                <li class="list-group-item bg-transparent text-white rounded-0 text-start ps-5" v-for="(dto, index) in MenubarInfo.recentArticle" :key="index" @click='redirector("article", (dto as any).aid)'>
+                    <span>{{ index + 1 + ". " + (dto as any).title }}</span>
                 </li>
             </ul>
             <hr />
@@ -25,10 +25,13 @@
     </div>
 </template>
 <script setup lang="ts">
+    import { useRouter } from 'vue-router';
+
     import { useBlogStore } from "@/store/blogStore";
     import { onMounted, reactive } from "vue";
 
-    const MenubarInfo = reactive<{ menuList: String[]; recentArticle: Object[]; visitorInfo: Object }>({
+    const router = useRouter()
+    const MenubarInfo = reactive<{ menuList: menuList[]; recentArticle: Object[]; visitorInfo: Object }>({
         recentArticle: [],
         menuList: [],
         visitorInfo: {},
@@ -42,11 +45,23 @@
     };
 
     const getMenuList = () => {
-        store.menuListRequest().then((res) => {
-            MenubarInfo.menuList = res.data;
-            store.setMenuList(MenubarInfo.menuList)
-        });
+        store.menuListRequest().then(res=>res.forEach((element:menuList) => {
+            MenubarInfo.menuList.push(element)
+        }))
     };
+
+    const redirector =(which:string, number:number)=>{
+        switch (which) {
+            case "article":
+                router.push(`/read?id=${number}`)
+                break
+
+            case "menu":
+                router.push(`/category?id=${number}`)
+                break;
+        }
+        
+    }
 
     onMounted(() => {
         getRecentArticleList();

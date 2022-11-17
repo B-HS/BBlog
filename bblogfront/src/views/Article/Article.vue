@@ -1,7 +1,7 @@
 <template>
     <div class="p-3 pt-5 articlesection d-flex flex-column align-items-center justify-content-center gap-3 w-100">
         <div class="articlesection_article w-100 boxsing">
-            <h6 class="category">{{ JSON.parse(JSON.stringify(store.getMenuList))[articleInfo.category].menuName }}</h6>
+            <h6 class="category">{{ store.getMenuList.length>0?store.getMenuList[articleInfo.category].menuName:"on Loading"}}</h6>
             <div></div>
             <h1 class="title">{{ articleInfo.title }}</h1>
             <div class="etc d-flex justify-content-between">
@@ -52,8 +52,8 @@
     import { onMounted, reactive } from "vue";
     import Reply from "./Reply/Reply.vue";
     const id = new URLSearchParams(window.location.search).get("id");
-    const articleInfo = reactive<{ category: string | number; title: string; count: number; description: string; tag?: string[]; reply?: Object | undefined; date: Date }>({
-        category: "",
+    const articleInfo = reactive<{ category: number; title: string; count: number; description: string; tag?: string[]; reply?: Object | undefined; date: Date }>({
+        category: 0,
         title: "",
         count: 0,
         description: "",
@@ -70,14 +70,13 @@
     };
 
     axios.get(`/article/${id}`).then((res) => {
-        articleInfo.category = res.data.menuid;
+        articleInfo.category = res.data.menuid-1;
         articleInfo.title = res.data.title;
         articleInfo.count = res.data.visitor;
         articleInfo.description = res.data.context;
         articleInfo.tag = res.data.hashtag;
         articleInfo.reply = res.data.reply
         articleInfo.date = new Date(res.data.regdate);
-        
     });
 
     onMounted(() => {

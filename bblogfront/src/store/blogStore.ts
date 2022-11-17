@@ -2,21 +2,22 @@ import { defineStore } from "pinia"
 import { computed, reactive } from "vue"
 import axios from 'axios'
 
+
 export const useBlogStore = defineStore("blogInfo", () => {
-    const state = reactive<{ menu: Object, topRecentFiveArticle: Object, counter: number[] }>({
-        menu: new Object,
+    const state = reactive<{ menu: menuList[], topRecentFiveArticle: Object, counter: number[] }>({
+        menu: [],
         topRecentFiveArticle: new Object,
         counter: []
     })
 
-    const setMenuList = (menuList: Object) => {
+    const setMenuList = (menuList: menuList[]) => {
         state.menu = menuList;
     }
     const setTopRecentFiveArticle = () => { }
     const setCounter = () => { }
 
 
-    const getMenuList = computed(() => state.menu)
+    const getMenuList = computed<menuList[]>(() => state.menu)
     const getTopRecentFiveArticle = computed(() => state.topRecentFiveArticle)
     const getCounter = computed(() => state.counter)
 
@@ -28,8 +29,15 @@ export const useBlogStore = defineStore("blogInfo", () => {
         return axios.post(`/category/${id}`, { requestedPage: requestedPage, totalPageSize: totalPageSize })
     }
 
-    const menuListRequest = () => {
-        return axios.get("/menulist")
+
+    const menuListRequest = async () => {
+        await axios.get("/menulist").then(res => {
+            const result: menuList[] = res.data.map((ele: menuList) => {
+                return ele
+            })
+            setMenuList(JSON.parse(JSON.stringify(result)) as menuList[])
+        })
+        return state.menu
     }
 
 

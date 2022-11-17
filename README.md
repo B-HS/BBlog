@@ -7,6 +7,8 @@
 - Mysql
 - Redis
 
+### ⚠ 현재까지 깨달은 문제점
+- TS의 오사용 11.17 https://hbyun.tistory.com/163
 ### 연습대상
 - Vue3는 슬슬 수면위로 올라오는 vite + pinia연습용 + i18n 재밌어보임 + SSR 맛보기
 - Spring boot 3는 크게 바뀐 점은 없겠지만 테스트용
@@ -16,4 +18,6 @@
 
 ### 기간 
 - 예상기간 ~ 12월 중순
+
+
 

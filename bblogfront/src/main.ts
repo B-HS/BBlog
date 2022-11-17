@@ -8,6 +8,6 @@ import axios from 'axios'
 const app = createApp(App)
 const pinia = createPinia()
 axios.defaults.baseURL = 'http://127.0.0.1:8080/blogapi';
-app.use(router)
 app.use(pinia)
+app.use(router)
 app.mount('#app')
