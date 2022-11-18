@@ -46,9 +46,17 @@ public class ArticleServiceImpl implements ArticleService {
     private final PasswordEncoder pEncoder;
 
     @Override
-    public boolean deleteReply(Long rid) {
-        rrepo.deleteById(rid);
-        return true;
+    public boolean deleteReply(ReplyDTO dto) {
+        if (dto.isLogged()) {
+            rrepo.deleteById(dto.getRid());
+            return true;
+        }else{
+            if(pEncoder.matches(dto.getReplypwd(), rrepo.findById(dto.getRid()).get().getReplypwd())){
+                rrepo.deleteById(dto.getRid());
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

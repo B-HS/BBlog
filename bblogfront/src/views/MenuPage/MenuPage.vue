@@ -32,7 +32,7 @@
     };
     const scrollHandler = () => {
         if (window.scrollY + window.innerHeight >= document.body.scrollHeight && menuState.currentPage < menuState.totalPage) {
-            store.articleRequestByCategory(menuState.currentPage, 15, id).then((res) => setArticleInfo(res));
+            store.articleRequestByCategory(menuState.currentPage+1, 15, id).then((res) => setArticleInfo(res));
         }
     };
     window.addEventListener("scroll", scrollHandler);

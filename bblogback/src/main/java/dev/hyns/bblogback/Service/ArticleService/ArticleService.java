@@ -21,7 +21,7 @@ public interface ArticleService extends MembersService {
     HashMap<String, Object> recentArticleList(Pageable pageable);
 
     boolean addReply(ReplyDTO dto);
-    boolean deleteReply(Long rid);
+    boolean deleteReply(ReplyDTO dto);
     boolean updateReply(ReplyDTO dto);
     String ImgUpload(MultipartRequest file);
 

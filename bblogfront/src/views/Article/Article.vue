@@ -24,11 +24,11 @@
                 <div class="reply-info d-flex flex-column gap-2">
                     <div class="input-group flex-nowrap">
                         <span class="input-group-text border border-0 rounded-0 justify-content-center" id="addon-wrapping">사용자명</span>
-                        <input type="text" class="form-control border border-0 rounded-0" aria-label="Username" aria-describedby="addon-wrapping" v-model="inputStatus.name"/>
+                        <input type="text" class="form-control border border-0 rounded-0" aria-label="Username" aria-describedby="addon-wrapping" v-model="inputStatus.name" />
                     </div>
                     <div class="input-group flex-nowrap">
-                        <span class="input-group-text border border-0 rounded-0 justify-content-center" id="addon-wrapping" >비밀번호</span>
-                        <input type="text" class="form-control border border-0 rounded-0" aria-label="Username" aria-describedby="addon-wrapping" v-model="inputStatus.pwd"/>
+                        <span class="input-group-text border border-0 rounded-0 justify-content-center" id="addon-wrapping">비밀번호</span>
+                        <input type="password" class="form-control border border-0 rounded-0" aria-label="Username" aria-describedby="addon-wrapping" v-model="inputStatus.pwd" />
                     </div>
                 </div>
                 <div class="reply-input d-flex gap-2">
@@ -43,7 +43,7 @@
 
         <div class="articlesection_replylist boxsing p-3 w-100 d-flex flex-column gap-3">
             <span v-if="!articleInfo.reply">등록된 댓글이 없습니다.</span>
-            <Reply v-for="i in articleInfo.reply" :reply="i" :dateFormatter="dateFormatter" :reloader="getArticleInfo" ></Reply>
+            <Reply v-for="i in articleInfo.reply" :reply="i" :dateFormatter="dateFormatter" :reloader="getArticleInfo"></Reply>
         </div>
     </div>
 </template>
@@ -53,7 +53,7 @@
     import axios from "axios";
     import { onMounted, reactive } from "vue";
     import Reply from "./Reply/Reply.vue";
-    const id = new URLSearchParams(window.location.search).get("id") as unknown as number
+    const id = new URLSearchParams(window.location.search).get("id") as unknown as number;
     const articleInfo = reactive<{ category: number; title: string; count: number; description: string; tag?: string[]; reply?: Object | null; date: Date }>({
         category: 0,
         title: "",
@@ -63,14 +63,14 @@
         date: new Date(),
     });
 
-    const inputStatus = reactive<{name: string, pwd:string, context:string}>({
+    const inputStatus = reactive<{ name: string; pwd: string; context: string }>({
         name: "",
         pwd: "",
         context: "",
     });
 
     const store = useBlogStore();
-    const userStore = useUserStore()
+    const userStore = useUserStore();
 
     const dateFormatter = (date: Date): string => {
         const dateAry: string[] = date.toISOString().split("-");
@@ -92,11 +92,13 @@
     };
 
     const submitReply = async () => {
-        await store.replyAddRequest(id, inputStatus.name, userStore.getUserId ? true : false, inputStatus.pwd, inputStatus.context, articleInfo.reply?(articleInfo.reply as Array<Object>).length:0, 0)
-        getArticleInfo()
+        await store.replyAddRequest(id, inputStatus.name, userStore.getUserId ? true : false, inputStatus.pwd, inputStatus.context, articleInfo.reply ? (articleInfo.reply as Array<Object>).length : 0, 0);
+        inputStatus.name = "";
+        inputStatus.pwd = "";
+        getArticleInfo();
     };
     onMounted(() => {
-        getArticleInfo()
+        getArticleInfo();
         window.scrollTo(0, 0);
     });
 </script>

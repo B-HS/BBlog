@@ -78,4 +78,7 @@
         position: relative
     li
         cursor: pointer
+
+    .cursorp
+        cursor: pointer
 </style>

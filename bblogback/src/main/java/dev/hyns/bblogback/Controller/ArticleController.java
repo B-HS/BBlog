@@ -55,9 +55,9 @@ public class ArticleController {
         return new ResponseEntity<Boolean>(aser.addReply(dto), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/reply",  method = RequestMethod.DELETE, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/reply/delete",  method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> deleteReply(@RequestBody ReplyDTO dto){
-        return new ResponseEntity<Boolean>(aser.deleteReply(dto.getRid()), HttpStatus.OK);
+        return new ResponseEntity<Boolean>(aser.deleteReply(dto), HttpStatus.OK);
     }
 
 

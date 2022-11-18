@@ -63,6 +63,20 @@ export const useBlogStore = defineStore("blogInfo", () => {
         return axios.post("/article/reply", replyInfo)
     }
 
+    const replyRemoveRequest = (rid: number, passwd: string, islogged: boolean, member:{mid:number}) => {
+        if (islogged) {
+            if (passwd == "삭제") {
+                return axios.post("article/reply/delete", { rid: rid, logged:true, member }).then(res => res.data)
+                //  member usernum은 나중에 백엔드에서 토큰검사도 같이 
+            }
+        } else {
+            console.log(rid + "asdf" + passwd + "asdfasdf" + islogged);
+            return axios.post("article/reply/delete", { rid: rid, replypwd: passwd, logged:false }).then(res => res.data)
+            
+        }
 
-    return { getMenuList, getTopRecentFiveArticle, getCounter, setMenuList, setTopRecentFiveArticle, setCounter, articleRequest, menuListRequest, articleRequestByCategory, replyAddRequest }
+    }
+
+
+    return { getMenuList, getTopRecentFiveArticle, getCounter, setMenuList, setTopRecentFiveArticle, setCounter, articleRequest, menuListRequest, articleRequestByCategory, replyAddRequest, replyRemoveRequest }
 })
