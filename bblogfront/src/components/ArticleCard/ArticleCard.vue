@@ -44,7 +44,7 @@
         return tag.textContent;
     };
 
-    console.log(props.dto);
+    
     
 </script>
 <style lang="sass">

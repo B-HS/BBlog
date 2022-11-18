@@ -19,7 +19,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long>{
     @Query(value=
     "SELECT att.aid as aid, att.title as title, att.context as context, att.regDate as regdate, count(rp.rid) as replyCount, ai.fileName as imgFileName " +
     "FROM Article att left join Reply rp on rp.article=att.aid left join ArticleImage ai on att.aid = ai.article "+
-    "WHERE att.hide=0 and ai.idx=0 group by att.aid, rp.rid, ai.imgid "
+    "WHERE att.hide=0 and ai.idx=0 group by att.aid, rp.article, ai.imgid "
     )
     Page<getArticleCard> RecentArticleList(Pageable pageable);
     

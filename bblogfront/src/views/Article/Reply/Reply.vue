@@ -54,7 +54,6 @@
         reloader: { type: Function, required: true },
     });
 
-    console.log(props.reply);
 
     const imgDisable = () => {
         replyImg.value?.parentElement?.classList.toggle("displaynone");
