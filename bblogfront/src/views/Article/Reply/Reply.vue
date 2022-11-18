@@ -48,7 +48,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">닫기</button>
-                        <button type="button" class="btn btn-danger" @click="replyDelete(props.reply?.rid, inputStatus.deletePwd)">삭제</button>
+                        <button type="button" class="btn btn-danger" @click.prevent="replyDelete(props.reply?.rid, inputStatus.deletePwd)" data-bs-dismiss="modal">삭제</button>
                     </div>
                 </div>
             </div>
@@ -92,6 +92,7 @@
 
     const replyDelete = async (rid: number, passwd: string) => {
         await store.replyRemoveRequest(rid, passwd, userStore.getUserId ? true : false, {mid:(userStore.getUserNum as number)})?.then(res=>{console.log(res);})
+        props.reloader();
     };
 </script>
 <style lang="sass">
