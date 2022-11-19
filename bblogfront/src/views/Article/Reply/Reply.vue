@@ -12,7 +12,7 @@
             <div class="reply-desc_function d-flex gap-2">
                 <span v-if="props.reply?.replySort == 0" class="reply-desc_function_rereply" data-bs-toggle="collapse" :href="`#replytoreply${props.reply?.rid}`" role="button" aria-expanded="false" :aria-controls="`#replytoreply${props.reply?.rid}`" @click="imgDisable">{{ replyBtnText }}</span>
                 <span v-if="props.reply?.replySort == 0">|</span>
-                <span class="reply-desc_function_rereply">수정</span>
+                <span class="reply-desc_function_rereply cursorp" data-bs-toggle="modal" :data-bs-target="`#modify${props.reply?.rid}`">수정</span>
                 <span>|</span>
                 <span class="reply-desc_function_rereply cursorp" data-bs-toggle="modal" :data-bs-target="`#deleteModal${props.reply?.rid}`">삭제</span>
             </div>
@@ -39,16 +39,41 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body d-flex flex-column gap-3">
-                        <span v-if="userStore.getUserId"> 삭제를 입력해주세요</span>
-                        <span v-if="!userStore.getUserId"> 비밀번호를 입력해주세요</span>
+                        <span> {{ userStore.getUserId ? "삭제를 입력해주세요" : "비밀번호를 입력해주세요" }}</span>
                         <div class="input-group">
-                            <span class="input-group-text rounded-0">비밀번호</span>
+                            <span class="input-group-text rounded-0">{{ "비밀번호" }}</span>
                             <input type="password" aria-label="비밀번호" class="form-control rounded-0" v-model="inputStatus.deletePwd" />
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">닫기</button>
                         <button type="button" class="btn btn-danger" @click.prevent="replyDelete(props.reply?.rid, inputStatus.deletePwd)" data-bs-dismiss="modal">삭제</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" :id="`modify${props.reply?.rid}`" tabindex="-1" aria-labelledby="modifyLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content border-0 rounded-0">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modifyLabel">댓글 수정</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-flex flex-column gap-3">
+                        <div class="input-group">
+                            <span class="input-group-text rounded-0">댓글 내용</span>
+                            <input class="form-control rounded-0" v-model="inputStatus.modifyContext" />
+                        </div>
+                        <span> {{ userStore.getUserId ? "수정을 입력해주세요" : "비밀번호를 입력해주세요" }}</span>
+                        <div class="input-group">
+                            <span class="input-group-text rounded-0">{{ userStore.getUserId ? "수정" : "비밀번호" }}</span>
+                            <input type="password" aria-label="비밀번호" class="form-control rounded-0" v-model="inputStatus.deletePwd" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn btn-warning" @click.prevent="replyModify(props.reply?.rid, inputStatus.modifyContext, inputStatus.deletePwd)" data-bs-dismiss="modal">수정</button>
                     </div>
                 </div>
             </div>
@@ -65,11 +90,12 @@
     const submitBtn = ref<HTMLElement>();
     const store = useBlogStore();
     const userStore = useUserStore();
-    const inputStatus = reactive<{ name: string; pwd: string; context: string; deletePwd: string }>({
+    const inputStatus = reactive<{ name: string; pwd: string; context: string; deletePwd: string; modifyContext: string }>({
         name: "",
         pwd: "",
         context: "",
         deletePwd: "",
+        modifyContext: "",
     });
     const props = defineProps({
         reply: { type: Object, required: false },
@@ -82,20 +108,24 @@
         replyBtnText.value == "답글" ? (replyBtnText.value = "답글취소") : (replyBtnText.value = "답글");
     };
 
-    // (aid: number, userName: string, isLogged: boolean, pwd: string, context: string, group: number, sort: number) => {
     const submitReply = async () => {
-        await store.replyAddRequest(id, inputStatus.name, userStore.getUserId ? true : false, inputStatus.pwd, inputStatus.context, props.reply?.replyGroup, 1);
-        await props.reloader();
-        submitBtn.value?.parentElement?.classList.toggle("show");
-        imgDisable();
+        store
+            .replyAddRequest(id, inputStatus.name, userStore.getUserId ? true : false, inputStatus.pwd, inputStatus.context, props.reply?.replyGroup, 1)
+            .then(() => props.reloader())
+            .then(() => {
+                submitBtn.value?.parentElement?.classList.toggle("show");
+                imgDisable();
+            });
     };
 
-    const replyDelete = async (rid: number, passwd: string) => {
-        await store.replyRemoveRequest(rid, passwd, userStore.getUserId ? true : false, {mid:(userStore.getUserNum as number)})
-        props.reloader();
+    const replyDelete = (rid: number, passwd: string) => {
+        store.replyRemoveRequest(rid, passwd, userStore.getUserId ? true : false, { mid: userStore.getUserNum as number })?.then(() => props.reloader());
     };
+
+    const replyModify = (rid: number, context:string, passwd: string)=>{
+        store.replyModifyRequest(rid, passwd, userStore.getUserId ? true : false, { mid: userStore.getUserNum as number }, context, props.reply?.replyGroup, props.reply?.replySort, id)?.then(() => props.reloader());
+    }
 </script>
 <style lang="sass">
-
     @import 'Reply.sass'
 </style>

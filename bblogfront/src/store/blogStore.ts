@@ -69,11 +69,26 @@ export const useBlogStore = defineStore("blogInfo", () => {
     const replyRemoveRequest = (rid: number, passwd: string, islogged: boolean, member: { mid: number }) => {
         if (islogged) {
             if (passwd == "삭제") {
-                return axios.post("article/reply/delete", { rid: rid, logged: true, member }).then(res => res.data)
+                return axios.post("/article/reply/delete", { rid: rid, logged: true, member }).then(res => res.data)
                 //  member usernum은 나중에 백엔드에서 토큰검사도 같이 
             }
         } else {
             return axios.post("article/reply/delete", { rid: rid, replypwd: passwd, logged: false }).then(res => res.data)
+        }
+
+    }
+
+
+    const replyModifyRequest = (rid: number, passwd: string, islogged: boolean, member: { mid: number }, context:string, group:number, sort:number, articleid:number) => {
+        if (islogged) {
+            if (passwd == "수정") {
+                return axios.patch("/article/reply", { rid: rid, logged: true, member, context,replyGroup:group, replySort:sort }).then(res => res.data)
+                //  member usernum은 나중에 백엔드에서 토큰검사도 같이 
+            }
+        } else {
+            console.log({ rid: rid, replypwd: passwd, logged: false, context, replyGroup:group, replySort:sort});
+            return axios.patch("/article/reply", { rid: rid, replypwd: passwd, logged: false, context, replyGroup:group, replySort:sort, articleid:articleid}).then(res => res.data)
+            
         }
 
     }
@@ -83,5 +98,5 @@ export const useBlogStore = defineStore("blogInfo", () => {
             setVisitCounter(res.data.today, res.data.total)
         })
     }
-    return { getMenuList, getTopRecentFiveArticle, getVisitCounter, setMenuList, setTopRecentFiveArticle, setVisitCounter, articleRequest, menuListRequest, articleRequestByCategory, replyAddRequest, replyRemoveRequest, VisitCounterRequest }
+    return { getMenuList, getTopRecentFiveArticle, getVisitCounter, setMenuList, setTopRecentFiveArticle, setVisitCounter, articleRequest, menuListRequest, articleRequestByCategory, replyAddRequest, replyRemoveRequest, VisitCounterRequest, replyModifyRequest }
 })

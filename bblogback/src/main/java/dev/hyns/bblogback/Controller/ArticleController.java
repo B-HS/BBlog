@@ -9,7 +9,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +22,6 @@ import dev.hyns.bblogback.Service.ArticleService.ArticleService;
 import dev.hyns.bblogback.VO.ArticleCardInfo;
 import lombok.RequiredArgsConstructor;
 
-
-@Controller
 @RestController
 @RequestMapping(value = "/article")
 @RequiredArgsConstructor
@@ -58,6 +55,11 @@ public class ArticleController {
     @RequestMapping(value = "/reply/delete",  method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> deleteReply(@RequestBody ReplyDTO dto){
         return new ResponseEntity<Boolean>(aser.deleteReply(dto), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/reply",  method = RequestMethod.PATCH, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> updateReply(@RequestBody ReplyDTO dto){
+        return new ResponseEntity<Boolean>(aser.updateReply(dto), HttpStatus.OK);
     }
 
 

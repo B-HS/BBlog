@@ -87,6 +87,8 @@
             articleInfo.date = new Date(new Date(res.data.regdate).getTime() + 1000 * 60 * 60 * ((new Date().getTimezoneOffset() / 60) * -1));
             if (res.data.reply.length > 0) {
                 articleInfo.reply = res.data.reply;
+            } else {
+                articleInfo.reply = null
             }
         });
     };
@@ -95,6 +97,7 @@
         await store.replyAddRequest(id, inputStatus.name, userStore.getUserId ? true : false, inputStatus.pwd, inputStatus.context, articleInfo.reply ? (articleInfo.reply as Array<Object>).length : 0, 0);
         inputStatus.name = "";
         inputStatus.pwd = "";
+        inputStatus.context = "";
         getArticleInfo();
     };
     onMounted(() => {

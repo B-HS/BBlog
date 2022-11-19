@@ -1,7 +1,7 @@
 <template>
-    <div class="layout h-100 d-flex justify-content-center flex-column">
-        <header class="sticky-top">
-            <Header w-100></Header>
+    <div class="layout h-100 d-flex flex-column align-items-center">
+        <header class="sticky-top w-100">
+            <Header></Header>
         </header>
 
         <router-view class="w-100 h-100 routersection" v-slot="{ Component }">

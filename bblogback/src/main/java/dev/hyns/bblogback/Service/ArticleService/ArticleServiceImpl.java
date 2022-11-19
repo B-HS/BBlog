@@ -174,8 +174,17 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional
     public boolean updateReply(ReplyDTO dto) {
-
+        if (dto.isLogged()) {
+            rrepo.updateReply(dto.getRid(), dto.getContext());
+            return true;
+        } else if (!dto.isLogged()) {
+            if (pEncoder.matches(dto.getReplypwd(), rrepo.findById(dto.getRid()).get().getReplypwd())) {
+                rrepo.updateReply(dto.getRid(), dto.getContext());
+                return true;
+            }
+        }
         return false;
     }
 }
