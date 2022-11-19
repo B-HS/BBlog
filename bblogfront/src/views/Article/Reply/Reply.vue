@@ -91,7 +91,7 @@
     };
 
     const replyDelete = async (rid: number, passwd: string) => {
-        await store.replyRemoveRequest(rid, passwd, userStore.getUserId ? true : false, {mid:(userStore.getUserNum as number)})?.then(res=>{console.log(res);})
+        await store.replyRemoveRequest(rid, passwd, userStore.getUserId ? true : false, {mid:(userStore.getUserNum as number)})
         props.reloader();
     };
 </script>

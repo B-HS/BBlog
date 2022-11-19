@@ -1,27 +1,30 @@
 import { defineStore } from "pinia"
-import { computed, reactive } from "vue"
+import { computed, reactive, ref } from "vue"
 import { useUserStore } from "./userStore"
 import axios from 'axios'
 
 
 export const useBlogStore = defineStore("blogInfo", () => {
     const user = useUserStore()
-    const state = reactive<{ menu: menuList[], topRecentFiveArticle: Object, counter: number[] }>({
+    const state = reactive<{ menu: menuList[], topRecentFiveArticle: Object, visitCount: visitState }>({
         menu: [],
         topRecentFiveArticle: new Object,
-        counter: []
+        visitCount: {today:0, total:0}
     })
 
     const setMenuList = (menuList: menuList[]) => {
         state.menu = menuList;
     }
     const setTopRecentFiveArticle = () => { }
-    const setCounter = () => { }
+    const setVisitCounter = (today: number, total: number) => { 
+        state.visitCount.today = today
+        state.visitCount.total = total
+    }
 
 
     const getMenuList = computed<menuList[]>(() => state.menu)
     const getTopRecentFiveArticle = computed(() => state.topRecentFiveArticle)
-    const getCounter = computed(() => state.counter)
+    const getVisitCounter = computed<visitState>(() => state.visitCount)
 
     const articleRequest = (requestedPage: Number, totalPageSize: number) => {
         return axios.post("/article/recent", { requestedPage: requestedPage, totalPageSize: totalPageSize })
@@ -63,20 +66,22 @@ export const useBlogStore = defineStore("blogInfo", () => {
         return axios.post("/article/reply", replyInfo)
     }
 
-    const replyRemoveRequest = (rid: number, passwd: string, islogged: boolean, member:{mid:number}) => {
+    const replyRemoveRequest = (rid: number, passwd: string, islogged: boolean, member: { mid: number }) => {
         if (islogged) {
             if (passwd == "삭제") {
-                return axios.post("article/reply/delete", { rid: rid, logged:true, member }).then(res => res.data)
+                return axios.post("article/reply/delete", { rid: rid, logged: true, member }).then(res => res.data)
                 //  member usernum은 나중에 백엔드에서 토큰검사도 같이 
             }
         } else {
-            console.log(rid + "asdf" + passwd + "asdfasdf" + islogged);
-            return axios.post("article/reply/delete", { rid: rid, replypwd: passwd, logged:false }).then(res => res.data)
-            
+            return axios.post("article/reply/delete", { rid: rid, replypwd: passwd, logged: false }).then(res => res.data)
         }
 
     }
 
-
-    return { getMenuList, getTopRecentFiveArticle, getCounter, setMenuList, setTopRecentFiveArticle, setCounter, articleRequest, menuListRequest, articleRequestByCategory, replyAddRequest, replyRemoveRequest }
+    const VisitCounterRequest = async ()=>{
+        return axios.post("/visitor/count").then(res=>{
+            setVisitCounter(res.data.today, res.data.total)
+        })
+    }
+    return { getMenuList, getTopRecentFiveArticle, getVisitCounter, setMenuList, setTopRecentFiveArticle, setVisitCounter, articleRequest, menuListRequest, articleRequestByCategory, replyAddRequest, replyRemoveRequest, VisitCounterRequest }
 })

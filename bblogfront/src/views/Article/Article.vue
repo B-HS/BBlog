@@ -84,7 +84,7 @@
             articleInfo.count = res.data.visitor;
             articleInfo.description = res.data.context;
             articleInfo.tag = res.data.hashtag;
-            articleInfo.date = new Date(res.data.regdate);
+            articleInfo.date = new Date(new Date(res.data.regdate).getTime() + 1000 * 60 * 60 * ((new Date().getTimezoneOffset() / 60) * -1));
             if (res.data.reply.length > 0) {
                 articleInfo.reply = res.data.reply;
             }

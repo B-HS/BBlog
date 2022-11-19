@@ -16,5 +16,6 @@ public class VisitorDTO {
     private String ipAdress;
     private String prevLink;
     private Long articleid;
+    private boolean init;
     private LocalDateTime regdate;
 }

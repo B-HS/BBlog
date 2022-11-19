@@ -32,11 +32,9 @@ import dev.hyns.bblogback.Repository.ArticleRepository.getArticleCard;
 import dev.hyns.bblogback.VO.ArticleCardInfo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 
 @Service
 @RequiredArgsConstructor
-@Log4j2
 public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository arepo;
     private final ArticleImageRepository airepo;
@@ -50,8 +48,8 @@ public class ArticleServiceImpl implements ArticleService {
         if (dto.isLogged()) {
             rrepo.deleteById(dto.getRid());
             return true;
-        }else{
-            if(pEncoder.matches(dto.getReplypwd(), rrepo.findById(dto.getRid()).get().getReplypwd())){
+        } else {
+            if (pEncoder.matches(dto.getReplypwd(), rrepo.findById(dto.getRid()).get().getReplypwd())) {
                 rrepo.deleteById(dto.getRid());
                 return true;
             }
@@ -108,7 +106,7 @@ public class ArticleServiceImpl implements ArticleService {
                 result.add(FileCopyUtils.copyToByteArray(file));
                 result.add(Files.probeContentType(file.toPath()));
             }
-            result.forEach(v -> log.info(v));
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -160,12 +158,13 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ArticleDTO read(Long aid) {
-        ArticleDTO dto = ArticleEntitytoDTO(arepo.findByIdEager(aid).orElseThrow(() -> new NoSuchElementException("Article is not found")));
-        List<ReplyDTO> filteredReply =  new ArrayList<>();
+        ArticleDTO dto = ArticleEntitytoDTO(
+                arepo.findByIdEager(aid).orElseThrow(() -> new NoSuchElementException("Article is not found")));
+        List<ReplyDTO> filteredReply = new ArrayList<>();
         List<ReplyDTO> replies = dto.getReply();
         for (int i = 0; i < replies.size(); i++) {
-            Long num = (long)i;
-            replies.stream().filter(v->v.getReplyGroup()==num).toList().forEach(v->filteredReply.add(v));
+            Long num = (long) i;
+            replies.stream().filter(v -> v.getReplyGroup() == num).toList().forEach(v -> filteredReply.add(v));
         }
         dto.setReply(filteredReply);
         if (dto.isHide() == true) {
@@ -176,7 +175,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public boolean updateReply(ReplyDTO dto) {
-        
+
         return false;
     }
 }

@@ -1,6 +1,5 @@
 package dev.hyns.bblogback.Entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,14 +20,10 @@ public class Visitor extends DateEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long vid;
 
-    @Column(nullable = false)
-    private String ipAdress;
-
-    @Column(nullable = false)
     private String prevLink;
+
+    private boolean init;
 
     @ManyToOne
     private Article article;
-
-
 }

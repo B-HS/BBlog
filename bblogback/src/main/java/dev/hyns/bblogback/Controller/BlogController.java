@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.hyns.bblogback.DTO.MenuDTO;
+import dev.hyns.bblogback.DTO.VisitorDTO;
 import dev.hyns.bblogback.Service.BlogService.BlogService;
 import dev.hyns.bblogback.VO.ArticleCardInfo;
+import dev.hyns.bblogback.VO.TodayAndTotal;
 import lombok.RequiredArgsConstructor;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -34,5 +37,16 @@ public class BlogController {
     public ResponseEntity<HashMap<String, Object>> articlesSortedByMenu(@RequestBody ArticleCardInfo cardInfo, @ModelAttribute("menu") Long menu){
         Pageable pageabe = PageRequest.of(cardInfo.getRequestedPage(), cardInfo.getTotalPageSize(),Sort.by(Sort.Direction.DESC, "aid"));
         return new ResponseEntity<HashMap<String,Object>>(bser.getArticleListByMenuId(pageabe, menu), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/visitor/count", method= RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<TodayAndTotal> getVisitorInformation(){
+        return new ResponseEntity<>(bser.getToday(),HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/visitor", method= RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getVisitorInformation(@RequestBody VisitorDTO visitor){
+        bser.VisitorCheck(visitor);
+        return new ResponseEntity<>("null",HttpStatus.OK);
     }
 }

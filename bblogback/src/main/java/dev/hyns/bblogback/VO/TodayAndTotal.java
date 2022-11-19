@@ -9,10 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MemberInfoForReply {
-    private Long mid;
-    private String email;
-    private String nickname;
-    private String userimg;
-    private String replypwd;
+public class TodayAndTotal {
+    private int today;
+    private int total;
+
 }
