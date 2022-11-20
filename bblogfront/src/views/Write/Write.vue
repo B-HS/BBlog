@@ -62,6 +62,7 @@
     import TextAlign from "@tiptap/extension-text-align";
     import StarterKit from "@tiptap/starter-kit";
     import Image from "@tiptap/extension-image";
+    import Link from "@tiptap/extension-link";
     import { Highlight } from "@tiptap/extension-highlight";
     import { reactive, ref } from "vue";
     import axios from "axios";
@@ -80,6 +81,12 @@
                 inline: true,
             }),
             Highlight.configure({ multicolor: true }),
+            Link.configure({
+                autolink: true,
+                openOnClick: true,
+                linkOnPaste: true,
+
+            }),
         ],
     });
 
@@ -94,7 +101,7 @@
                 .focus()
                 .setImage({ src: `./blogapi/article/images/${res.data}` })
                 .run();
-            articleState.image.push(JSON.parse(JSON.stringify(res.data)))
+            articleState.image.push(JSON.parse(JSON.stringify(res.data)));
         });
     };
 
@@ -186,17 +193,17 @@
             hashStates.warning = "본문을 입력하세요";
             return;
         }
-        const articlebody: { title: string; context: string | undefined; tags?: string[]; category: number; hide: boolean; menuid: number; image?:string[] } = {
+        const articlebody: { title: string; context: string | undefined; tags?: string[]; category: number; hide: boolean; menuid: number; image?: string[] } = {
             title: articleState.title,
             context: editor.value?.getHTML(),
             tags: articleState.tags,
             category: articleState.category,
             hide: articleState.hide === 0 ? false : true,
-            menuid: articleState.category
+            menuid: articleState.category,
         };
-        if(articleState.image.length>0){
-            articlebody.image=articleState.image
-        }   
+        if (articleState.image.length > 0) {
+            articlebody.image = articleState.image;
+        }
         axios.post("/article/admin/write", articlebody).then((res) => router.push(`./read?id=${res.data}`));
     };
 </script>

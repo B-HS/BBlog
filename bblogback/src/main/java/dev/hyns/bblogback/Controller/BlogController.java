@@ -16,12 +16,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.hyns.bblogback.DTO.MenuDTO;
+import dev.hyns.bblogback.DTO.StacksDTO;
 import dev.hyns.bblogback.DTO.VisitorDTO;
 import dev.hyns.bblogback.Service.BlogService.BlogService;
 import dev.hyns.bblogback.VO.ArticleCardInfo;
+import dev.hyns.bblogback.VO.StackInfoVO;
 import dev.hyns.bblogback.VO.TodayAndTotal;
 import lombok.RequiredArgsConstructor;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -48,5 +49,17 @@ public class BlogController {
     public ResponseEntity<String> getVisitorInformation(@RequestBody VisitorDTO visitor){
         bser.VisitorCheck(visitor);
         return new ResponseEntity<>("null",HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/stack", method= RequestMethod.GET, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<StacksDTO>> getStackInformation(){
+        
+        return new ResponseEntity<>(bser.getStackList(),HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/stack", method= RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> ModifyingStackInformation(@RequestBody StackInfoVO stack){
+        
+        return new ResponseEntity<>(bser.StackSave(stack),HttpStatus.OK);
     }
 }

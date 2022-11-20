@@ -20,34 +20,32 @@
     import Introduce from "@/components/Introduce/Introduce.vue";
     import { useBlogStore } from "@/store/blogStore";
     import type { AxiosResponse } from "axios";
-    import { onMounted, reactive } from "vue";
+    import { reactive } from "vue";
     const store = useBlogStore();
     const articleState = reactive<{ id?: number; dtoList: Object[]; totalPage: number; currentPage: number }>({
         dtoList: [],
         totalPage: 1,
         currentPage: 0,
     });
-    
-    const setArticleInfo = (res : AxiosResponse)=>{
+
+    const setArticleInfo = (res: AxiosResponse) => {
         res.data.dtoList.forEach((element: object) => {
             articleState.dtoList?.push(JSON.parse(JSON.stringify(element)));
         });
         articleState.totalPage = res.data.totalPage;
         articleState.currentPage = res.data.currentPage;
-        
-    }
-    
-    const scrollHandler = ()=>{
-        if(window.scrollY + window.innerHeight >= document.body.scrollHeight&&articleState.currentPage<articleState.totalPage){
-            store.articleRequest(articleState.currentPage+1, 15).then((res) => setArticleInfo(res))
+    };
+
+    const scrollHandler = () => {
+        if (window.scrollY + window.innerHeight >= document.body.scrollHeight && articleState.currentPage < articleState.totalPage) {
+            store.articleRequest(articleState.currentPage + 1, 15).then((res) => setArticleInfo(res));
         }
-    }
-    
-    window.addEventListener('scroll', scrollHandler)
-    
-    onMounted(() => {
-        store.articleRequest(articleState.currentPage, 15).then((res) => setArticleInfo(res))
-    });
+    };
+
+    window.addEventListener("scroll", scrollHandler);
+    store
+        .articleRequest(articleState.currentPage, 15)
+        .then((res) => {setArticleInfo(res)})
 </script>
 <style scoped lang="sass">
     .mainpage

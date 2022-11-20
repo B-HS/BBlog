@@ -11,6 +11,7 @@
   "dependencies": {
     "@tiptap/extension-highlight": "^2.0.0-beta.202",
     "@tiptap/extension-image": "^2.0.0-beta.202",
+    "@tiptap/extension-link": "^2.0.0-beta.202",
     "@tiptap/extension-text-align": "^2.0.0-beta.202",
     "@tiptap/extension-text-style": "^2.0.0-beta.202",
     "@tiptap/starter-kit": "^2.0.0-beta.202",
@@ -22,6 +23,8 @@
     "pinia": "^2.0.23",
     "sass": "^1.56.1",
     "sass-loader": "^13.1.0",
+    "sortablejs": "^1.15.0",
+    "sortablejs-vue3": "^1.2.3",
     "vue": "^3.2.41",
     "vue-chartjs": "^4.1.2",
     "vue-meta": "^3.0.0-alpha.10",
@@ -29,6 +32,7 @@
   },
   "devDependencies": {
     "@types/bootstrap": "^5.2.5",
+    "@types/sortablejs": "^1.15.0",
     "@vitejs/plugin-vue": "^3.1.2",
     "@vitejs/plugin-vue-jsx": "^2.0.1",
     "@vue/tsconfig": "^0.1.3",

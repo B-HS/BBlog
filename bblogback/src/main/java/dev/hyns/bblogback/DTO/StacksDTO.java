@@ -13,4 +13,5 @@ public class StacksDTO {
     private Long sid;
     private String title;
     private String context;
+    private int idx;
 }

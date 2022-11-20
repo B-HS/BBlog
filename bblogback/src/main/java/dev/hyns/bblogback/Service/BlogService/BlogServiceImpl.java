@@ -10,23 +10,55 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import dev.hyns.bblogback.DTO.MenuDTO;
+import dev.hyns.bblogback.DTO.StacksDTO;
 import dev.hyns.bblogback.DTO.VisitorDTO;
 import dev.hyns.bblogback.Entity.Article;
+import dev.hyns.bblogback.Entity.Stacks;
 import dev.hyns.bblogback.Entity.Visitor;
 import dev.hyns.bblogback.Repository.MenuRepository;
+import dev.hyns.bblogback.Repository.StacksRepository;
 import dev.hyns.bblogback.Repository.VisitorRepository;
 import dev.hyns.bblogback.Repository.ArticleRepository.getArticleCard;
 import dev.hyns.bblogback.VO.ArticleCardInfo;
+import dev.hyns.bblogback.VO.StackInfoVO;
 import dev.hyns.bblogback.VO.TodayAndTotal;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 
 @Service
 @RequiredArgsConstructor
-@Log4j2
 public class BlogServiceImpl implements BlogService {
     private final MenuRepository mrepo;
+    private final StacksRepository srepo;
     private final VisitorRepository vrepo;
+
+
+    @Override
+    public boolean StackSave(StackInfoVO vo) {
+        for (int i = 0; i < vo.getDtoList().size(); i++) {
+            StacksDTO dto =  vo.getDtoList().get(i);
+            if (vo.getDeleteList().contains(dto.getSid())) {
+                srepo.deleteById(dto.getSid());
+            }else{
+                dto.setIdx(i);
+                srepo.save(Stacks.builder().sid(dto.getSid()).idx(i).title(dto.getTitle()).context(dto.getContext().getBytes()).build());
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public List<StacksDTO> getStackList() {
+        List<StacksDTO> dtos = srepo.findAllByOrderByIdxAsc().stream().map(v->{
+            return StacksDTO
+            .builder()
+            .sid(v.getSid())
+            .idx(v.getIdx())
+            .title(v.getTitle())
+            .context(v.updateContextToString(v.getContext()))
+            .build();
+            }).toList();
+        return dtos;
+    }
 
     @Override
     public TodayAndTotal getToday() {
@@ -39,7 +71,6 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public void VisitorCheck(VisitorDTO dto) {
-        log.info(dto);
         if (dto.isInit()) {
             Visitor entity = Visitor.builder()
                     .init(dto.isInit())

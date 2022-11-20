@@ -15,7 +15,7 @@
                     <a href="https://hbyun.tistory.com/" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-custom-class="custom-tooltip" data-bs-title="티스토리">
                         <li class="border border-0 list-group-item bg-black rounded-0 text-white bi bi-bootstrap"></li>
                     </a>
-                    <a href="https://portfolio.hyns.co.kr/" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-custom-class="custom-tooltip" data-bs-title="포트폴리오 사이트">
+                    <a href="https://portfolio.hyns.co.kr/projects" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-custom-class="custom-tooltip" data-bs-title="포트폴리오 사이트">
                         <li class="border border-0 list-group-item bg-black rounded-0 text-white bi bi-file-text"></li>
                     </a>
                     <router-link to="login" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-custom-class="custom-tooltip" data-bs-title="로그인">

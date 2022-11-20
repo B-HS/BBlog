@@ -1,5 +1,7 @@
 package dev.hyns.bblogback.Entity;
 
+import java.nio.charset.Charset;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,4 +29,12 @@ public class Stacks {
     @Lob
     @Column(nullable = false)
     private byte[] context;
+
+    @Column(nullable = false)
+    private int idx;
+
+    public String updateContextToString(byte[] context) {
+        String result = new String(context, Charset.forName("utf8"));
+        return result;
+    }
 }

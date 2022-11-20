@@ -6,10 +6,11 @@ import axios from 'axios'
 
 export const useBlogStore = defineStore("blogInfo", () => {
     const user = useUserStore()
-    const state = reactive<{ menu: menuList[], topRecentFiveArticle: Object, visitCount: visitState }>({
+    const state = reactive<{ menu: menuList[], topRecentFiveArticle: Object, visitCount: visitState, latestModifyDate:string }>({
         menu: [],
         topRecentFiveArticle: new Object,
-        visitCount: {today:0, total:0}
+        visitCount: {today:0, total:0},
+        latestModifyDate: ""
     })
 
     const setMenuList = (menuList: menuList[]) => {
@@ -20,11 +21,15 @@ export const useBlogStore = defineStore("blogInfo", () => {
         state.visitCount.today = today
         state.visitCount.total = total
     }
+    const setLatestModifyDate = (date:string) =>{
+        state.latestModifyDate = date
+    }
 
 
     const getMenuList = computed<menuList[]>(() => state.menu)
     const getTopRecentFiveArticle = computed(() => state.topRecentFiveArticle)
     const getVisitCounter = computed<visitState>(() => state.visitCount)
+    const getLatestModifyDate = computed(()=>state.latestModifyDate)
 
     const articleRequest = (requestedPage: Number, totalPageSize: number) => {
         return axios.post("/article/recent", { requestedPage: requestedPage, totalPageSize: totalPageSize })
@@ -86,7 +91,6 @@ export const useBlogStore = defineStore("blogInfo", () => {
                 //  member usernum은 나중에 백엔드에서 토큰검사도 같이 
             }
         } else {
-            console.log({ rid: rid, replypwd: passwd, logged: false, context, replyGroup:group, replySort:sort});
             return axios.patch("/article/reply", { rid: rid, replypwd: passwd, logged: false, context, replyGroup:group, replySort:sort, articleid:articleid}).then(res => res.data)
             
         }
@@ -98,5 +102,13 @@ export const useBlogStore = defineStore("blogInfo", () => {
             setVisitCounter(res.data.today, res.data.total)
         })
     }
-    return { getMenuList, getTopRecentFiveArticle, getVisitCounter, setMenuList, setTopRecentFiveArticle, setVisitCounter, articleRequest, menuListRequest, articleRequestByCategory, replyAddRequest, replyRemoveRequest, VisitCounterRequest, replyModifyRequest }
+
+    const StackInfoRequest = () =>{
+        return axios.get("/stack")
+    }
+
+    const stackInfoModifyingRequest = (dtos:stackset[], deleteList:number[]) =>{
+        return axios.post("/stack", {dtoList:dtos, deleteList:deleteList})
+    }
+    return { getMenuList, getTopRecentFiveArticle, getVisitCounter, getLatestModifyDate, setMenuList, setTopRecentFiveArticle, setVisitCounter, articleRequest, menuListRequest, articleRequestByCategory, replyAddRequest, replyRemoveRequest, VisitCounterRequest, replyModifyRequest, setLatestModifyDate, StackInfoRequest, stackInfoModifyingRequest }
 })
