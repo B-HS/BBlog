@@ -57,7 +57,7 @@ public class BlogController {
         return new ResponseEntity<>(bser.getStackList(),HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/stack", method= RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/admin/stack", method= RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> ModifyingStackInformation(@RequestBody StackInfoVO stack){
         
         return new ResponseEntity<>(bser.StackSave(stack),HttpStatus.OK);

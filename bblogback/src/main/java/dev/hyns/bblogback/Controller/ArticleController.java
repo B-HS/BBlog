@@ -71,7 +71,7 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "/admin/write", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> read(@RequestBody ArticleDTO dto) {
+    public ResponseEntity<Long> write(@RequestBody ArticleDTO dto) {
         return new ResponseEntity<>(aser.write(dto), HttpStatus.OK);
     }
 

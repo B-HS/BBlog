@@ -108,7 +108,7 @@ export const useBlogStore = defineStore("blogInfo", () => {
     }
 
     const stackInfoModifyingRequest = (dtos:stackset[], deleteList:number[]) =>{
-        return axios.post("/stack", {dtoList:dtos, deleteList:deleteList})
+        return axios.post("/admin/stack", {dtoList:dtos, deleteList:deleteList})
     }
     return { getMenuList, getTopRecentFiveArticle, getVisitCounter, getLatestModifyDate, setMenuList, setTopRecentFiveArticle, setVisitCounter, articleRequest, menuListRequest, articleRequestByCategory, replyAddRequest, replyRemoveRequest, VisitCounterRequest, replyModifyRequest, setLatestModifyDate, StackInfoRequest, stackInfoModifyingRequest }
 })
