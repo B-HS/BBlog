@@ -1,9 +1,12 @@
 package dev.hyns.bblogback.Entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +20,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Members extends DateEntity{
@@ -37,13 +39,25 @@ public class Members extends DateEntity{
     @Column(nullable = false)
     private String password;
 
-    @Builder.Default
     @OneToMany(mappedBy = "mid", fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Reply> image = new ArrayList<>();
+    private List<Reply> reply = new ArrayList<>();
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Column
+    private Set<Roles> roles = new HashSet<>();
 
     @Column
     private String userimg;
 
+    @Builder
+    public Members(Long mid, Boolean oauth, String email, String nickname, String password, String userimg){
+        this.email = email;
+        this.password = password;
+        this.oauth = oauth;
+        this.mid = mid;
+        this.nickname = nickname;
+        this.userimg = userimg;
+    }
 
 
 }

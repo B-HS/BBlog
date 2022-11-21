@@ -1,35 +1,36 @@
 import { defineStore } from "pinia"
-import { computed, ref } from "vue"
+import { computed, reactive } from "vue"
 import axios from 'axios'
 
-export const useUserStore = defineStore("userInfo", ()=>{
-    const userToken = ref<string>()
-    const userId = ref<string>()
-    const userNum = ref<number>()
+export const useUserStore = defineStore("userInfo", () => {
+    const userState = reactive<userInfo>({
+        token: undefined, id: undefined, num: undefined, username: undefined
+    })
 
 
-    const setUserInfo = (token: string, id: string, num: number)=>{
-        userToken.value = token
-        userId.value = id
-        userNum.value = num
+    const setUserInfo = (token: string, id: string, num: number, username: string) => {
+        userState.token = token
+        userState.id = id
+        userState.num = num
+        userState.username = username
     }
-    
-    const logout = ()=>{
-        userToken.value = undefined
-        userId.value = undefined
-        userNum.value = undefined
+    const getUserInfo = () => {
+        return userState
     }
-    const login = (id:string, pw:string)=>{
-        axios.post("apiAdress", {id:id, pw:pw}).then((res)=>{
-            userToken.value = res.data.userToken
-            userId.value = res.data.id
-            userNum.value = res.data.num
+
+    const logout = () => {
+        userState.token = undefined, 
+        userState.id = undefined, 
+        userState.num = undefined, 
+        userState.username = undefined
+    }
+    const login = async (id: string, pw: string) => {
+        return axios.post("/login", { email: id, password: pw }).then((res) => {
+            setUserInfo(res.data.token, res.data.email, res.data.memberId, res.data.nickname)
+            return res.status
         })
     }
 
-    const getUserId = computed(()=> userId.value)
-    const getUserNum = computed(()=> userNum.value)
-    
 
-    return { userToken, setUserInfo, getUserId, getUserNum}
+    return { setUserInfo, login, logout, getUserInfo }
 })

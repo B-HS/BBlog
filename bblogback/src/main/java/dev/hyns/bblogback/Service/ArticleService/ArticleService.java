@@ -9,11 +9,11 @@ import org.springframework.web.multipart.MultipartRequest;
 import dev.hyns.bblogback.DTO.ArticleDTO;
 import dev.hyns.bblogback.DTO.ReplyDTO;
 import dev.hyns.bblogback.Entity.Article;
+import dev.hyns.bblogback.Entity.Members;
 import dev.hyns.bblogback.Entity.Menu;
-import dev.hyns.bblogback.Service.MembersService.MembersService;
 import dev.hyns.bblogback.VO.MemberInfoForReply;
 
-public interface ArticleService extends MembersService {
+public interface ArticleService {
     Long write(ArticleDTO dto);
 
     ArticleDTO read(Long aid);
@@ -21,8 +21,11 @@ public interface ArticleService extends MembersService {
     HashMap<String, Object> recentArticleList(Pageable pageable);
 
     boolean addReply(ReplyDTO dto);
+
     boolean deleteReply(ReplyDTO dto);
+
     boolean updateReply(ReplyDTO dto);
+
     String ImgUpload(MultipartRequest file);
 
     List<Object> ImgRead(String filename);
@@ -56,7 +59,8 @@ public interface ArticleService extends MembersService {
                     if (tmp.isLogged()) {
                         tmp.setMember(EntityToReplyMemberInfo(ele.getMid()));
                     } else {
-                        tmp.setMember(MemberInfoForReply.builder().nickname(ele.getGuestName()).userimg("basic.png").build());
+                        tmp.setMember(
+                                MemberInfoForReply.builder().nickname(ele.getGuestName()).userimg("basic.png").build());
                     }
                     return tmp;
                 }).toList())
@@ -64,6 +68,16 @@ public interface ArticleService extends MembersService {
                 .visitor(entity.getVisitor().size())
                 .regdate(entity.getRegDate())
                 .build();
+    }
+
+    default MemberInfoForReply EntityToReplyMemberInfo(Members entity) {
+        MemberInfoForReply replyMember = MemberInfoForReply.builder()
+                .email(entity.getEmail())
+                .mid(entity.getMid())
+                .nickname(entity.getNickname())
+                .userimg(entity.getUserimg())
+                .build();
+        return replyMember;
     }
 
 }
