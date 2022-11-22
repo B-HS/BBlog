@@ -1,5 +1,21 @@
-{"properties": [{
-  "name": "security.key",
-  "type": "java.lang.String",
-  "description": "key for jwt"
-}]}
+{"properties": [
+  {
+    "name": "dev.hyns.secretkey",
+    "type": "java.lang.String",
+    "description": "jwt secretkey"
+  },
+  {
+    "name": "dev.hyns.rediskey",
+    "type": "java.lang.String",
+    "description": "redis secretkey"
+  },
+  {
+    "name": "dev.hyns.redishost",
+    "description": "redis host"
+  },
+  {
+    "name": "dev.hyns.redisport",
+    "type": "java.lang.Long",
+    "description": "redis port"
+  }
+]}

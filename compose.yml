@@ -1,0 +1,12 @@
+version: '3'
+services:
+  redis:
+    image: redis:latest
+    command: redis-server --port 12621
+    container_name: redis_service
+    hostname: redis_service
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    ports:
+      - 12621:12621

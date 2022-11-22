@@ -48,9 +48,9 @@
     </div>
 </template>
 <script setup lang="ts">
+    import axios from "@/store/axios";
     import { useBlogStore } from "@/store/blogStore";
     import { useUserStore } from "@/store/userStore";
-    import axios from "axios";
     import { onMounted, reactive } from "vue";
     import Reply from "./Reply/Reply.vue";
     const id = new URLSearchParams(window.location.search).get("id") as unknown as number;

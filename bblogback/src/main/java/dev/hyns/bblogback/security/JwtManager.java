@@ -5,7 +5,8 @@ import java.util.Date;
 
 import javax.crypto.SecretKey;
 
-import dev.hyns.bblogback.env;
+import org.springframework.beans.factory.annotation.Value;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -17,31 +18,44 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class JwtManager {
-    private String secretKey = env.SECRETKEY;
+    @Value("${dev.hyns.secretkey}")
+    private String secretKey;
     private final long DAY = 259200000 / 3;
-    private byte[] bytedKey = secretKey.getBytes(StandardCharsets.UTF_8);
-    public String tokenGenerator(Long mid, String email) {
-        
-        SecretKey key = Keys.hmacShaKeyFor(bytedKey);
+
+    public String AccessTokenGenerator(Long mid, String email) {
+        SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         Date today = new Date();
         String jwt = Jwts.builder()
                 .setIssuer("hyns.dev")
                 .setIssuedAt(today)
-                .setExpiration(new Date(today.getTime() + DAY))
+                .setExpiration(new Date(today.getTime() + DAY/24/6))
                 .claim("email", email)
                 .claim("userNumber", mid)
-                .setSubject("bblog Login token")
+                .setSubject("bblog token")
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+        return "Bearer "+jwt;
+    }
 
-        log.info("Token generated for ", email);
-
+    public String RefreshTokenGenerator(Long mid, String email) {
+        SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        Date today = new Date();
+        String jwt = Jwts.builder()
+                .setIssuer("hyns.dev")
+                .setIssuedAt(today)
+                .setExpiration(new Date(today.getTime() + DAY*7))
+                .claim("email", email)
+                .claim("userNumber", mid)
+                .setSubject("bblog token")
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+        
         return "Bearer "+jwt;
     }
 
     public Boolean tokenValidator(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(bytedKey).build().parseClaimsJws(token.split("Bearer ")[1]);
+            Jwts.parserBuilder().setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8)).build().parseClaimsJws(token.split("Bearer ")[1]);
             return true;
 
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
@@ -57,9 +71,9 @@ public class JwtManager {
         return false;
     }
 
-    private Claims parseClaims(String token) {
+    public Claims parseClaims(String token) {
         try {
-            return Jwts.parserBuilder().setSigningKey(bytedKey).build().parseClaimsJws(token).getBody();
+            return Jwts.parserBuilder().setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8)).build().parseClaimsJws(token).getBody();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }

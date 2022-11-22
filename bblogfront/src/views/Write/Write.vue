@@ -65,7 +65,7 @@
     import Link from "@tiptap/extension-link";
     import { Highlight } from "@tiptap/extension-highlight";
     import { reactive, ref } from "vue";
-    import axios from "axios";
+    import axios from "@/store/axios";
     import router from "@/router";
 
     const imgBox = ref<HTMLInputElement>();

@@ -47,6 +47,8 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => {  
+
+
   if(to.path==='/category' || from.path==='/category'||window.location.host==document.referrer.split("/")[2]){
     isVisitorChecked.value=true
   }

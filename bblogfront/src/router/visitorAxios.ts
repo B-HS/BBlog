@@ -1,4 +1,5 @@
-import axios from "axios"
+import axios from "@/store/axios"
+
 export const visitorAxios = () => {
     const requestInitVisitor = (prevURI: string) => {
         return axios.post("/visitor", { prevLink: prevURI, init: true })

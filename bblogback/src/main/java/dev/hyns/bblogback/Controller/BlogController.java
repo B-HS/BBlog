@@ -59,14 +59,14 @@ public class BlogController {
     public ResponseEntity<List<StacksDTO>> getStackInformation(){
         return new ResponseEntity<>(bser.getStackList(),HttpStatus.OK);
     }
-
-    @RequestMapping(value = "/admin/stack", method= RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> ModifyingStackInformation(@RequestBody StackInfoVO stack){
-        return new ResponseEntity<>(bser.StackSave(stack),HttpStatus.OK);
-    }
-
+    
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> memberRegister(@RequestBody MembersDTO dto){
         return new ResponseEntity<>(mser.register(dto), HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/admin/stack", method= RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> ModifyingStackInformation(@RequestBody StackInfoVO stack){
+        return new ResponseEntity<>(bser.StackSave(stack),HttpStatus.OK);
     }
 }

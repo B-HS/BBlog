@@ -15,7 +15,6 @@
 <script setup lang="ts">
     import { useRoute } from "vue-router";
     import Header from "./components/Header/Header.vue";
-    const route = useRoute();
 </script>
 
 <style lang="sass">

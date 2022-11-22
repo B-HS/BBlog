@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -15,8 +16,11 @@ import org.springframework.util.StreamUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dev.hyns.bblogback.Redis.RedisUtil;
+
 import dev.hyns.bblogback.security.JwtManager;
 import dev.hyns.bblogback.security.User.BlogCustomUser;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,9 +30,16 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class BlogFilterForLogin extends AbstractAuthenticationProcessingFilter {
     private JwtManager manager;
+    
+    @Autowired
+    private RedisUtil rUtil;
+
+
+    
     public BlogFilterForLogin(JwtManager manager) {
         super(new AntPathRequestMatcher("/login"));
         this.manager = manager;
+        
     }
 
     @Override
@@ -49,16 +60,19 @@ public class BlogFilterForLogin extends AbstractAuthenticationProcessingFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
             Authentication authResult) throws IOException, ServletException {
-                String token = manager.tokenGenerator(((BlogCustomUser) authResult.getPrincipal()).getMid(), ((BlogCustomUser) authResult.getPrincipal()).getEmail());
+                String email = ((BlogCustomUser) authResult.getPrincipal()).getEmail();
+                Long userNum = ((BlogCustomUser) authResult.getPrincipal()).getMid();
+                String token = manager.AccessTokenGenerator(userNum, email);
+                String rToken = manager.RefreshTokenGenerator(userNum, email);
                 ObjectMapper mapper = new ObjectMapper();
                 HashMap<String, Object> returnInfo = new HashMap<>();
                 returnInfo.put("token", token);
-                returnInfo.put("email", ((BlogCustomUser) authResult.getPrincipal()).getEmail());
-                returnInfo.put("memberId", ((BlogCustomUser) authResult.getPrincipal()).getMid());
+                returnInfo.put("rToken", rToken);
+                returnInfo.put("email", email);
+                returnInfo.put("memberId", userNum);
                 returnInfo.put("nickname", ((BlogCustomUser) authResult.getPrincipal()).getNickname());
-                // mapper.convertValue(returnInfo, BlogCustomUser.class)
+                rUtil.setRefreshToken(rToken, userNum);
                 response.setContentType("application/json;charset=utf-8");
-                
                 response.getOutputStream().write(mapper.writeValueAsString(returnInfo).getBytes());
     }
 }
