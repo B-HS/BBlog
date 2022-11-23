@@ -30,6 +30,7 @@ import lombok.extern.log4j.Log4j2;
 public class ArticleController {
     private final ArticleService aser;
 
+    
     @RequestMapping(value = "/{aid}", method = RequestMethod.GET, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ArticleDTO> read(@ModelAttribute("aid") Long aid) {
         return new ResponseEntity<>(aser.read(aid), HttpStatus.OK);

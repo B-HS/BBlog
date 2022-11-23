@@ -46,6 +46,7 @@ public class BlogFilterForUser extends OncePerRequestFilter {
             } else {
                 response.sendRedirect("/login");
             }
+            return;
         }
         filterChain.doFilter(request, response);
     }

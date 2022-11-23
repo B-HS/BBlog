@@ -42,7 +42,7 @@
                     <div class="modal-body d-flex flex-column gap-3">
                         <span> {{ userStore.getUserId ? "삭제를 입력해주세요" : "비밀번호를 입력해주세요" }}</span>
                         <div class="input-group">
-                            <span class="input-group-text rounded-0">{{ "비밀번호" }}</span>
+                            <span class="input-group-text rounded-0">{{ userStore.getUserId ? "삭제" : "비밀번호" }}</span>
                             <input type="password" aria-label="비밀번호" class="form-control rounded-0" v-model="inputStatus.deletePwd" />
                         </div>
                     </div>
