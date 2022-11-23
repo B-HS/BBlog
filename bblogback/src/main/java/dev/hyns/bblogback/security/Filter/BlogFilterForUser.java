@@ -1,6 +1,8 @@
 package dev.hyns.bblogback.security.Filter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.AntPathMatcher;
@@ -23,13 +25,23 @@ public class BlogFilterForUser extends OncePerRequestFilter {
     }
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        
         AntPathMatcher antPathMatcher = new AntPathMatcher();
+        
+        List<String> pathList = Arrays.asList(new String[] { "**/mypage/**/**", "/article/member/reply", "/article/member/reply/delete", "/member/reply/modify" });
+        Boolean pathCheck = pathList.stream().anyMatch(v -> {
+            if (antPathMatcher.match(request.getContextPath() + v, request.getRequestURI())
+                    || antPathMatcher.match(v, request.getRequestURI())) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+
         String token = request.getHeader("Authorization");
-        if (antPathMatcher.match(request.getContextPath() + "/mypage/**/*", request.getRequestURI())) {
-            if (token.length() != 0 && manager.tokenValidator(token)) {
-                if(rUtil.adminChecker(token)){
-                    response.sendRedirect("/setting");
-                }
+        if (pathCheck) {
+            if (token.length() != 0 && manager.tokenValidator(token)&& rUtil.isLogged(token)) {
                 filterChain.doFilter(request, response);
             } else {
                 response.sendRedirect("/login");

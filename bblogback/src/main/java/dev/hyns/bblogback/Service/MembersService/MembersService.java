@@ -25,6 +25,7 @@ public interface MembersService {
         .mid(dto.getMid())
         .nickname(dto.getNickname())
         .userimg("basic.png")
+        .logged(false)
         .build();
         return entity;
     }

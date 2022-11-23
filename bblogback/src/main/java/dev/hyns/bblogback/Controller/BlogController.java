@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +27,8 @@ import dev.hyns.bblogback.VO.ArticleCardInfo;
 import dev.hyns.bblogback.VO.StackInfoVO;
 import dev.hyns.bblogback.VO.TodayAndTotal;
 import lombok.RequiredArgsConstructor;
-
+import lombok.extern.log4j.Log4j2;
+@Log4j2
 @RestController
 @RequiredArgsConstructor
 public class BlogController {
@@ -66,7 +68,10 @@ public class BlogController {
     }
     
     @RequestMapping(value = "/admin/stack", method= RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> ModifyingStackInformation(@RequestBody StackInfoVO stack){
+    public ResponseEntity<Boolean> ModifyingStackInformation(@RequestBody StackInfoVO stack,@RequestHeader("Authorization") String token){
+        log.info("----------------------------------------------------");
+        log.info(token);
+        log.info("----------------------------------------------------");
         return new ResponseEntity<>(bser.StackSave(stack),HttpStatus.OK);
     }
 }

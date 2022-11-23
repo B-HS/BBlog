@@ -12,6 +12,6 @@ interface visitState {
 }
 
 interface userInfo {
-    token: string|undefined, id: string|undefined, num: number|undefined, username:string|undefined
+    token: string|undefined, id: string|undefined, num: number|undefined, username:string|undefined, admin:boolean
 }
 

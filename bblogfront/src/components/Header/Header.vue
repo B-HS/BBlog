@@ -3,7 +3,7 @@
         <ul class="list-group list-group-horizontal-md h-auto w-100 bg-black rounded-0 justify-content-between px-3">
             <router-link to="/"><li class="border border-0 list-group-item bg-black rounded-0 text-white d-flex align-items-center">Hyunseok</li></router-link>
             <div class="icon-section d-flex">
-                <div class="icon-section-admin d-flex" v-if="store.getUserId">
+                <div class="icon-section-admin d-flex" v-if="store.getIsAdmin">
                     <router-link to="setting"><li class="border border-0 list-group-item bg-black rounded-0 text-white bi bi-gear"></li></router-link>
                     <router-link to="write"><li class="border border-0 list-group-item bg-black rounded-0 text-white bi bi-pencil"></li></router-link>
                 </div>
@@ -18,9 +18,10 @@
                     <a href="https://portfolio.hyns.co.kr/projects" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-custom-class="custom-tooltip" data-bs-title="포트폴리오 사이트">
                         <li class="border border-0 list-group-item bg-black rounded-0 text-white bi bi-file-text"></li>
                     </a>
-                    <router-link to="login" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-custom-class="custom-tooltip" data-bs-title="로그인">
+                    <router-link to="login" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-custom-class="custom-tooltip" v-if="!store.getUserId" data-bs-title="로그인">
                         <li class="border border-0 list-group-item bg-black rounded-0 text-white bi bi-box-arrow-in-right"></li>
                     </router-link>
+                    <li class="border border-0 list-group-item bg-black rounded-0 text-white bi bi-person-square" v-else></li>
                 </div>
             </div>
         </ul>

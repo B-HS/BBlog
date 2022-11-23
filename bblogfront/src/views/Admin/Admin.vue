@@ -21,7 +21,14 @@
     import AdminHomeVue from "@/components/Admin/AdminHome/AdminHome.vue";
     import AdminReply from "@/components/Admin/AdminReply/AdminReply.vue";
     import AdminUser from "@/components/Admin/AdminUser/AdminUser.vue";
+    import router from "@/router";
+    import { useUserStore } from "@/store/userStore";
     import { ref } from "vue";
+
+    const store = useUserStore()
+    if(!store.getIsAdmin){
+        router.push("/")
+    }
 
     let menu = ref<number>(0);
 

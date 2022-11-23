@@ -24,9 +24,10 @@
                 <div class="reply-info d-flex flex-column gap-2">
                     <div class="input-group flex-nowrap">
                         <span class="input-group-text border border-0 rounded-0 justify-content-center" id="addon-wrapping">사용자명</span>
-                        <input type="text" class="form-control border border-0 rounded-0" aria-label="Username" aria-describedby="addon-wrapping" v-model="inputStatus.name" />
+                        <input v-if="!userStore.getUserId" type="text" class="form-control border border-0 rounded-0" aria-label="Username" aria-describedby="addon-wrapping" v-model="inputStatus.name" />
+                        <span v-else class="form-control border border-0 rounded-0">{{userStore.getUserInfo.username}}</span>
                     </div>
-                    <div class="input-group flex-nowrap">
+                    <div class="input-group flex-nowrap" v-if="!userStore.getUserId">
                         <span class="input-group-text border border-0 rounded-0 justify-content-center" id="addon-wrapping">비밀번호</span>
                         <input type="password" class="form-control border border-0 rounded-0" aria-label="Username" aria-describedby="addon-wrapping" v-model="inputStatus.pwd" />
                     </div>

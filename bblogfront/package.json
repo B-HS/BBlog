@@ -20,6 +20,8 @@
     "bootstrap": "^5.2.2",
     "bootstrap-icons": "^1.9.1",
     "chart.js": "^3.9.1",
+    "js-cookie": "^3.0.1",
+    "jwt-decode": "^3.1.2",
     "pinia": "^2.0.23",
     "sass": "^1.56.1",
     "sass-loader": "^13.1.0",
@@ -32,6 +34,8 @@
   },
   "devDependencies": {
     "@types/bootstrap": "^5.2.5",
+    "@types/js-cookie": "^3.0.2",
+    "@types/jsonwebtoken": "^8.5.9",
     "@types/sortablejs": "^1.15.0",
     "@vitejs/plugin-vue": "^3.1.2",
     "@vitejs/plugin-vue-jsx": "^2.0.1",

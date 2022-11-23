@@ -6,10 +6,10 @@ import { useUserStore } from "./userStore"
 
 export const useBlogStore = defineStore("blogInfo", () => {
     const user = useUserStore()
-    const state = reactive<{ menu: menuList[], topRecentFiveArticle: Object, visitCount: visitState, latestModifyDate:string }>({
+    const state = reactive<{ menu: menuList[], topRecentFiveArticle: Object, visitCount: visitState, latestModifyDate: string }>({
         menu: [],
         topRecentFiveArticle: new Object,
-        visitCount: {today:0, total:0},
+        visitCount: { today: 0, total: 0 },
         latestModifyDate: ""
     })
 
@@ -17,11 +17,11 @@ export const useBlogStore = defineStore("blogInfo", () => {
         state.menu = menuList;
     }
     const setTopRecentFiveArticle = () => { }
-    const setVisitCounter = (today: number, total: number) => { 
+    const setVisitCounter = (today: number, total: number) => {
         state.visitCount.today = today
         state.visitCount.total = total
     }
-    const setLatestModifyDate = (date:string) =>{
+    const setLatestModifyDate = (date: string) => {
         state.latestModifyDate = date
     }
 
@@ -29,7 +29,7 @@ export const useBlogStore = defineStore("blogInfo", () => {
     const getMenuList = computed<menuList[]>(() => state.menu)
     const getTopRecentFiveArticle = computed(() => state.topRecentFiveArticle)
     const getVisitCounter = computed<visitState>(() => state.visitCount)
-    const getLatestModifyDate = computed(()=>state.latestModifyDate)
+    const getLatestModifyDate = computed(() => state.latestModifyDate)
 
     const articleRequest = (requestedPage: Number, totalPageSize: number) => {
         return axios.post("/article/recent", { requestedPage: requestedPage, totalPageSize: totalPageSize })
@@ -50,6 +50,7 @@ export const useBlogStore = defineStore("blogInfo", () => {
     }
 
     const replyAddRequest = (aid: number, userName: string, isLogged: boolean, pwd: string, context: string, group: number, sort: number) => {
+        let uri:string;
         let replyInfo = {
             articleid: aid,
             replypwd: "",
@@ -62,20 +63,19 @@ export const useBlogStore = defineStore("blogInfo", () => {
         if (isLogged) {
             replyInfo.member.mid = user.getUserNum as number
             replyInfo.logged = true
+            return axios.post("/article/member/reply", replyInfo, {headers:{Authorization:user.getUserInfo.token}})
         } else {
             replyInfo.member.nickname = userName
             replyInfo.replypwd = pwd
+            return axios.post("/article/reply", replyInfo)
         }
-
-
-        return axios.post("/article/reply", replyInfo)
+        
     }
 
     const replyRemoveRequest = (rid: number, passwd: string, islogged: boolean, member: { mid: number }) => {
         if (islogged) {
-            if (passwd == "삭제") {
-                return axios.post("/article/reply/delete", { rid: rid, logged: true, member }).then(res => res.data)
-                //  member usernum은 나중에 백엔드에서 토큰검사도 같이 
+            if (passwd == "tkrwp"|| passwd == "ㅅㅏㄱㅈㅔ") {
+                return axios.post("/article/member/reply/delete", { rid: rid, logged: true, member }, {headers:{Authorization:user.getUserInfo.token}}).then(res => res.data)
             }
         } else {
             return axios.post("article/reply/delete", { rid: rid, replypwd: passwd, logged: false }).then(res => res.data)
@@ -84,31 +84,36 @@ export const useBlogStore = defineStore("blogInfo", () => {
     }
 
 
-    const replyModifyRequest = (rid: number, passwd: string, islogged: boolean, member: { mid: number }, context:string, group:number, sort:number, articleid:number) => {
+    const replyModifyRequest = (rid: number, passwd: string, islogged: boolean, member: { mid: number }, context: string, group: number, sort: number, articleid: number) => {
         if (islogged) {
-            if (passwd == "수정") {
-                return axios.patch("/article/reply", { rid: rid, logged: true, member, context,replyGroup:group, replySort:sort }).then(res => res.data)
-                //  member usernum은 나중에 백엔드에서 토큰검사도 같이 
+            if (passwd == "tnwjd"||passwd=="ㅅㅜㅈㅓㅇ") {
+                return axios.post("/article/member/reply/modify", { rid: rid, logged: true, member, context, replyGroup: group, replySort: sort }, {headers:{Authorization:user.getUserInfo.token}}).then(res => res.data)
             }
         } else {
-            return axios.patch("/article/reply", { rid: rid, replypwd: passwd, logged: false, context, replyGroup:group, replySort:sort, articleid:articleid}).then(res => res.data)
-            
+            return axios.patch("/article/reply/modify", { rid: rid, replypwd: passwd, logged: false, context, replyGroup: group, replySort: sort, articleid: articleid }).then(res => res.data)
+
         }
 
     }
 
-    const VisitCounterRequest = async ()=>{
-        return axios.post("/visitor/count").then(res=>{
+    const VisitCounterRequest = async () => {
+        return axios.post("/visitor/count").then(res => {
             setVisitCounter(res.data.today, res.data.total)
         })
     }
 
-    const StackInfoRequest = () =>{
+    const StackInfoRequest = () => {
         return axios.get("/stack")
     }
 
-    const stackInfoModifyingRequest = (dtos:stackset[], deleteList:number[]) =>{
-        return axios.post("/admin/stack", {dtoList:dtos, deleteList:deleteList})
+
+
+    const stackInfoModifyingRequest = async(dtos: stackset[], deleteList: number[]) => {      
+        const headers = {
+            "Authorization": user.getRtkn
+        } 
+        const body = { dtoList: dtos, deleteList: deleteList }
+        return axios.post("/admin/stack", body, { headers })
     }
     return { getMenuList, getTopRecentFiveArticle, getVisitCounter, getLatestModifyDate, setMenuList, setTopRecentFiveArticle, setVisitCounter, articleRequest, menuListRequest, articleRequestByCategory, replyAddRequest, replyRemoveRequest, VisitCounterRequest, replyModifyRequest, setLatestModifyDate, StackInfoRequest, stackInfoModifyingRequest }
 })

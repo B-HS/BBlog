@@ -73,7 +73,7 @@ public class JwtManager {
 
     public Claims parseClaims(String token) {
         try {
-            return Jwts.parserBuilder().setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8)).build().parseClaimsJws(token).getBody();
+            return Jwts.parserBuilder().setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8)).build().parseClaimsJws(token.split("Bearer ")[1]).getBody();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }

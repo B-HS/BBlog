@@ -25,17 +25,13 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.log4j.Log4j2;
 
-@Log4j2
 public class BlogFilterForLogin extends AbstractAuthenticationProcessingFilter {
     private JwtManager manager;
     
     @Autowired
     private RedisUtil rUtil;
 
-
-    
     public BlogFilterForLogin(JwtManager manager) {
         super(new AntPathRequestMatcher("/login"));
         this.manager = manager;
@@ -45,12 +41,9 @@ public class BlogFilterForLogin extends AbstractAuthenticationProcessingFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException, IOException, ServletException {
-        log.info("AbstractAuthenticationProcessingFilter called");
-        log.info("authentication called");
         JSONObject obj = new JSONObject();
         try {
             obj = (JSONObject) new JSONParser().parse(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8));
-            log.info(obj);
         } catch (Exception e) {
             e.printStackTrace();
         }

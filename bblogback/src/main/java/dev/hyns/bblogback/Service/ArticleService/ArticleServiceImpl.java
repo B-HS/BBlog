@@ -22,11 +22,11 @@ import dev.hyns.bblogback.DTO.ReplyDTO;
 import dev.hyns.bblogback.Entity.Article;
 import dev.hyns.bblogback.Entity.ArticleImage;
 import dev.hyns.bblogback.Entity.Hashtag;
-import dev.hyns.bblogback.Entity.Members;
 import dev.hyns.bblogback.Entity.Reply;
 import dev.hyns.bblogback.Repository.ArticleImageRepository;
 import dev.hyns.bblogback.Repository.ArticleRepository;
 import dev.hyns.bblogback.Repository.HashtagRepository;
+import dev.hyns.bblogback.Repository.MembersRepository;
 import dev.hyns.bblogback.Repository.ReplyRepository;
 import dev.hyns.bblogback.Repository.ArticleRepository.getArticleCard;
 import dev.hyns.bblogback.VO.ArticleCardInfo;
@@ -39,29 +39,56 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository arepo;
     private final ArticleImageRepository airepo;
     private final HashtagRepository hrepo;
+    private final MembersRepository mrepo;
     private final String DIRADRESS = "/Users/hyunseokbyun/Documents/Imagefiles/";
     private final ReplyRepository rrepo;
     private final PasswordEncoder pEncoder;
+
+    // Reply ------------------------------------------------------------------------------
+    // 하나로 놔뒀다가 필터 적용하기 애매해서 그냥 다 나눠버림
+    @Override
+    @Transactional
+    public boolean updateReply(ReplyDTO dto) {
+        if (dto.isLogged()) {
+            rrepo.updateReply(dto.getRid(), dto.getContext());
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public boolean updateReplyForGuest(ReplyDTO dto) {
+        if (pEncoder.matches(dto.getReplypwd(), rrepo.findById(dto.getRid()).get().getReplypwd())&& !dto.isLogged()) {
+            rrepo.updateReply(dto.getRid(), dto.getContext());
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public boolean deleteReply(ReplyDTO dto) {
         if (dto.isLogged()) {
             rrepo.deleteById(dto.getRid());
             return true;
-        } else {
-            if (pEncoder.matches(dto.getReplypwd(), rrepo.findById(dto.getRid()).get().getReplypwd())) {
-                rrepo.deleteById(dto.getRid());
-                return true;
-            }
+        }
+        return false;
+    }
+    @Override
+    public boolean deleteReplyForGuest(ReplyDTO dto) {
+        if (pEncoder.matches(dto.getReplypwd(), rrepo.findById(dto.getRid()).get().getReplypwd()) && !dto.isLogged()) {
+            rrepo.deleteById(dto.getRid());
+            return true;
         }
         return false;
     }
 
     @Override
+    @Transactional
     public boolean addReply(ReplyDTO dto) {
         if (dto.isLogged()) {
             rrepo.save(Reply.builder()
-                    .mid(Members.builder().mid(dto.getMember().getMid()).build())
+                    .mid(mrepo.findById(dto.getMember().getMid()).orElseThrow(()->new NoSuchElementException("멤버가 없네..")))
                     .article(Article.builder().aid(dto.getArticleid()).build())
                     .logged(dto.isLogged())
                     .hide(dto.isHide())
@@ -70,7 +97,13 @@ public class ArticleServiceImpl implements ArticleService {
                     .replySort(dto.getReplySort())
                     .build());
             return true;
-        } else if (!dto.isLogged()) {
+        } 
+        return false;
+    }
+
+    @Override
+    public boolean addReplyForGeust(ReplyDTO dto) {
+        if (!dto.isLogged()) {
             rrepo.save(Reply.builder()
                     .article(Article.builder().aid(dto.getArticleid()).build())
                     .guestName(dto.getMember().getNickname())
@@ -86,6 +119,13 @@ public class ArticleServiceImpl implements ArticleService {
         return false;
     }
 
+    // Reply ------------------------------------------------------------------------------
+
+
+
+
+
+    //Article Read-------------------------------------------------------------------------
     @Override
     public HashMap<String, Object> recentArticleList(Pageable pageable) {
         HashMap<String, Object> result = new HashMap<>();
@@ -96,6 +136,60 @@ public class ArticleServiceImpl implements ArticleService {
         result.put("totalPage", paging.getTotalPages());
         return result;
     }
+
+    @Override
+    public ArticleDTO read(Long aid) {
+        ArticleDTO dto = ArticleEntitytoDTO(
+                arepo.findByIdEager(aid).orElseThrow(() -> new NoSuchElementException("Article is not found")));
+        List<ReplyDTO> filteredReply = new ArrayList<>();
+        List<ReplyDTO> replies = dto.getReply();
+        for (int i = 0; i < replies.size(); i++) {
+            Long num = (long) i;
+            replies.stream().filter(v -> v.getReplyGroup() == num).toList().forEach(v -> filteredReply.add(v));
+        }
+        dto.setReply(filteredReply);
+        if (dto.isHide() == true) {
+            return null;
+        }
+        return dto;
+    }
+
+    //Article Read-------------------------------------------------------------------------
+
+
+
+
+
+
+    //Article Write and Image -------------------------------------------------------------------------
+
+    @Transactional
+    @Override
+    public Long write(ArticleDTO dto) {
+        Optional<List<String>> imgs = Optional.ofNullable(dto.getImage());
+        Optional<List<String>> hashtags = Optional.ofNullable(dto.getHashtag());
+        Long articleid = arepo.save(ArticleDTOtoEntity(dto)).getAid();
+
+        imgs.ifPresentOrElse((images) -> {
+            for (int i = 0; i < images.size(); i++) {
+                airepo.save(ArticleImage.builder().article(Article.builder().aid(articleid).build())
+                        .fileName(images.get(i)).idx(i).build());
+            }
+        }, () -> {
+            airepo.save(ArticleImage.builder().article(Article.builder().aid(articleid).build()).fileName("basic.png")
+                    .idx(0).build());
+        });
+
+        hashtags.ifPresent((hashs) -> {
+            hashs.forEach((hash) -> {
+                hrepo.save(Hashtag.builder().article(Article.builder().aid(articleid).build()).tagname(hash).build());
+            });
+        });
+
+        return articleid;
+    }
+
+
 
     @Override
     public List<Object> ImgRead(String filename) {
@@ -130,61 +224,6 @@ public class ArticleServiceImpl implements ArticleService {
         return result.get(0);
     }
 
-    @Transactional
-    @Override
-    public Long write(ArticleDTO dto) {
-        Optional<List<String>> imgs = Optional.ofNullable(dto.getImage());
-        Optional<List<String>> hashtags = Optional.ofNullable(dto.getHashtag());
-        Long articleid = arepo.save(ArticleDTOtoEntity(dto)).getAid();
 
-        imgs.ifPresentOrElse((images) -> {
-            for (int i = 0; i < images.size(); i++) {
-                airepo.save(ArticleImage.builder().article(Article.builder().aid(articleid).build())
-                        .fileName(images.get(i)).idx(i).build());
-            }
-        }, () -> {
-            airepo.save(ArticleImage.builder().article(Article.builder().aid(articleid).build()).fileName("basic.png")
-                    .idx(0).build());
-        });
-
-        hashtags.ifPresent((hashs) -> {
-            hashs.forEach((hash) -> {
-                hrepo.save(Hashtag.builder().article(Article.builder().aid(articleid).build()).tagname(hash).build());
-            });
-        });
-
-        return articleid;
-    }
-
-    @Override
-    public ArticleDTO read(Long aid) {
-        ArticleDTO dto = ArticleEntitytoDTO(
-                arepo.findByIdEager(aid).orElseThrow(() -> new NoSuchElementException("Article is not found")));
-        List<ReplyDTO> filteredReply = new ArrayList<>();
-        List<ReplyDTO> replies = dto.getReply();
-        for (int i = 0; i < replies.size(); i++) {
-            Long num = (long) i;
-            replies.stream().filter(v -> v.getReplyGroup() == num).toList().forEach(v -> filteredReply.add(v));
-        }
-        dto.setReply(filteredReply);
-        if (dto.isHide() == true) {
-            return null;
-        }
-        return dto;
-    }
-
-    @Override
-    @Transactional
-    public boolean updateReply(ReplyDTO dto) {
-        if (dto.isLogged()) {
-            rrepo.updateReply(dto.getRid(), dto.getContext());
-            return true;
-        } else if (!dto.isLogged()) {
-            if (pEncoder.matches(dto.getReplypwd(), rrepo.findById(dto.getRid()).get().getReplypwd())) {
-                rrepo.updateReply(dto.getRid(), dto.getContext());
-                return true;
-            }
-        }
-        return false;
-    }
+    //Article Write and Image -------------------------------------------------------------------------
 }

@@ -20,11 +20,13 @@ public interface ArticleService {
 
     HashMap<String, Object> recentArticleList(Pageable pageable);
 
-    boolean addReply(ReplyDTO dto);
-
+    
     boolean deleteReply(ReplyDTO dto);
-
+    boolean deleteReplyForGuest(ReplyDTO dto);
+    boolean addReply(ReplyDTO dto);
+    boolean addReplyForGeust(ReplyDTO dto);
     boolean updateReply(ReplyDTO dto);
+    boolean updateReplyForGuest(ReplyDTO dto);
 
     String ImgUpload(MultipartRequest file);
 

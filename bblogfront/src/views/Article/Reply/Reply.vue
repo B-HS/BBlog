@@ -19,9 +19,10 @@
             <div class="collapse mt-3 px-2" :id="`replytoreply${props.reply?.rid}`">
                 <div class="userinfo w-50 d-flex gap-3 py-2">
                     <div class="input-group flex-nowrap">
-                        <input type="text" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="addon-wrapping" v-model="inputStatus.name" />
+                        <input v-if="!userStore.getUserId" type="text" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="addon-wrapping" v-model="inputStatus.name" />
+                        <span v-else class="form-control border-0 px-0">{{"닉네임: " +userStore.getUserInfo.username}}</span>
                     </div>
-                    <div class="input-group flex-nowrap">
+                    <div class="input-group flex-nowrap" v-if="!userStore.getUserId">
                         <input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping" v-model="inputStatus.pwd" />
                     </div>
                 </div>
@@ -123,7 +124,8 @@
     };
 
     const replyModify = (rid: number, context:string, passwd: string)=>{
-        store.replyModifyRequest(rid, passwd, userStore.getUserId ? true : false, { mid: userStore.getUserNum as number }, context, props.reply?.replyGroup, props.reply?.replySort, id)?.then(() => props.reloader());
+        store.replyModifyRequest(rid, passwd, userStore.getUserId ? true : false, { mid: userStore.getUserNum as number }, context, props.reply?.replyGroup, props.reply?.replySort, id)?.then((res) => {
+            props.reloader()});
     }
 </script>
 <style lang="sass">

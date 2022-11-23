@@ -21,10 +21,12 @@ import dev.hyns.bblogback.DTO.ReplyDTO;
 import dev.hyns.bblogback.Service.ArticleService.ArticleService;
 import dev.hyns.bblogback.VO.ArticleCardInfo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @RestController
 @RequestMapping(value = "/article")
 @RequiredArgsConstructor
+@Log4j2
 public class ArticleController {
     private final ArticleService aser;
 
@@ -49,21 +51,33 @@ public class ArticleController {
 
     @RequestMapping(value = "/reply",  method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> addReply(@RequestBody ReplyDTO dto){
-        return new ResponseEntity<Boolean>(aser.addReply(dto), HttpStatus.OK);
+        return new ResponseEntity<Boolean>(aser.addReplyForGeust(dto), HttpStatus.OK);
     }
-
-    @RequestMapping(value = "/reply/delete",  method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> deleteReply(@RequestBody ReplyDTO dto){
-        return new ResponseEntity<Boolean>(aser.deleteReply(dto), HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/reply",  method = RequestMethod.PATCH, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> updateReply(@RequestBody ReplyDTO dto){
+        return new ResponseEntity<Boolean>(aser.updateReplyForGuest(dto), HttpStatus.OK);
+    }
+    @RequestMapping(value = "/reply/delete",  method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> deleteReply(@RequestBody ReplyDTO dto){
+        return new ResponseEntity<Boolean>(aser.deleteReplyForGuest(dto), HttpStatus.OK);
+    }
+
+
+    // For member, admin
+    @RequestMapping(value = "/member/reply",  method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> addReplyForMember(@RequestBody ReplyDTO dto){
+        log.info(dto);
+        return new ResponseEntity<Boolean>(aser.addReply(dto), HttpStatus.OK);
+    }
+    @RequestMapping(value = "/member/reply/modify",  method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> updateReplyForMember(@RequestBody ReplyDTO dto){
         return new ResponseEntity<Boolean>(aser.updateReply(dto), HttpStatus.OK);
     }
 
-
-    
+    @RequestMapping(value = "/member/reply/delete",  method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> deleteReplyForMember(@RequestBody ReplyDTO dto){
+        return new ResponseEntity<Boolean>(aser.deleteReply(dto), HttpStatus.OK);
+    }
 
     @RequestMapping(value = "/admin/images/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> imageUpload(MultipartRequest request) throws Exception {

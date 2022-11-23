@@ -3,7 +3,6 @@
         <header class="sticky-top w-100">
             <Header></Header>
         </header>
-
         <router-view class="w-100 h-100 routersection" v-slot="{ Component }">
             <transition mode="out-in">
                 <component :is="Component"></component> 
@@ -13,7 +12,6 @@
 </template>
 
 <script setup lang="ts">
-    import { useRoute } from "vue-router";
     import Header from "./components/Header/Header.vue";
 </script>
 

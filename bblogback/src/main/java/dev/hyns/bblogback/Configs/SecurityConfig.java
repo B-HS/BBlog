@@ -29,9 +29,10 @@ public class SecurityConfig {
         http.formLogin().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(blogFilterForAdmin(), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(blogFilterForAdmin(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(blogFilterForUser(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(blogAbstractAuthenticationProcessingFilter(authenticationManager),
                 UsernamePasswordAuthenticationFilter.class);
+        http.logout().disable();
         return http.build();
     }
 

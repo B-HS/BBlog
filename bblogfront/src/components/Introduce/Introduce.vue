@@ -52,7 +52,7 @@
             <div class="stack-header mb-2"><i class="bi bi-stack"></i> Main Stack</div>
             <div class="editstack position-absolute d-flex gap-3">
                 <i class="bi bi-plus-square" v-if="!sortboxDisabled" data-bs-toggle="modal" data-bs-target="#addStack"> 스택 추가</i>
-                <i class="bi bi-pencil" @click.prevent="enableSortboxOption">{{ ` ${sortboxDisabled ? "" : "수정 취소"}` }}</i>
+                <i class="bi bi-pencil" v-if="userStore.getIsAdmin" @click.prevent="enableSortboxOption">{{ ` ${sortboxDisabled ? "" : "수정 취소"}` }}</i>
                 <i class="bi bi-check-square" v-if="!sortboxDisabled" @click="saveCurrentStackStatus"> 현재상태 저장하기</i>
             </div>
 
@@ -123,8 +123,10 @@
     import Link from "@tiptap/extension-link";
     import StarterKit from "@tiptap/starter-kit";
     import MainStack from "./StackComponenet/MainStack.vue";
+    import { useUserStore } from "@/store/userStore";
 
     const store = useBlogStore();
+    const userStore = useUserStore()
     const sortboxDisabled = ref<boolean>(true);
     const latestModifyDate = ref<string>("");
     const latestsid = ref<number>(3);

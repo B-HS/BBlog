@@ -51,7 +51,7 @@
                 </li>
 
                 <li class="list-group-item border border-0 p-0">
-                    <span class="border border-1 p-2 px-3 submit" @click="write">등록</span>
+                    <span class="border border-1 p-2 px-3 submit" @click.prevent="write">등록</span>
                 </li>
             </ul>
         </div>
@@ -67,9 +67,10 @@
     import { reactive, ref } from "vue";
     import axios from "@/store/axios";
     import router from "@/router";
+    import { useUserStore } from "@/store/userStore";
 
+    
     const imgBox = ref<HTMLInputElement>();
-
     const editor = useEditor({
         content: "",
         extensions: [
@@ -85,11 +86,10 @@
                 autolink: true,
                 openOnClick: true,
                 linkOnPaste: true,
-
             }),
         ],
     });
-
+    
     const imgUpload = () => {
         let formData = new FormData();
         if (imgBox.value?.files) {
@@ -97,10 +97,10 @@
         }
         axios.post("/article/admin/images/upload", formData).then((res) => {
             editor.value
-                ?.chain()
-                .focus()
-                .setImage({ src: `./blogapi/article/images/${res.data}` })
-                .run();
+            ?.chain()
+            .focus()
+            .setImage({ src: `./blogapi/article/images/${res.data}` })
+            .run();
             articleState.image.push(JSON.parse(JSON.stringify(res.data)));
         });
     };
@@ -109,7 +109,7 @@
         warning: "",
         tag: "",
     });
-
+    
     let articleState = reactive<{ title: string; tags?: string[]; category: number; hide: number; image: string[] }>({
         title: "",
         tags: [],
@@ -117,7 +117,6 @@
         hide: 0,
         image: [],
     });
-
     const makingTag = () => {
         if (hashStates.tag?.trim().replace(/ /, "").length == 0) {
             hashStates.warning = "공백은 태그로 사용이 불가능합니다";
@@ -183,8 +182,13 @@
     const highlight = () => {
         editor.value?.chain().focus().toggleHighlight().run();
     };
-
+    if(!useUserStore().getIsAdmin){
+        router.push("/")
+    }
     const write = () => {
+        const headers = {
+            Authorization: useUserStore().getHeaders
+        };
         if (articleState.category === 0) {
             hashStates.warning = "카테고리를 선택하세요";
             return;
@@ -204,7 +208,7 @@
         if (articleState.image.length > 0) {
             articlebody.image = articleState.image;
         }
-        axios.post("/article/admin/write", articlebody).then((res) => router.push(`./read?id=${res.data}`));
+        axios.post("/article/admin/write", articlebody, { headers }).then((res) => router.push(`./read?id=${res.data}`));
     };
 </script>
 <style lang="sass">

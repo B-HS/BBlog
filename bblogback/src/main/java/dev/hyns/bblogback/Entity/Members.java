@@ -27,7 +27,7 @@ public class Members extends DateEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mid;
 
-    @Column(nullable = false)
+    @Column
     private boolean oauth;
 
     @Column(nullable = false)
@@ -42,21 +42,25 @@ public class Members extends DateEntity{
     @OneToMany(mappedBy = "mid", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Reply> reply = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     @Column
     private Set<Roles> roles = new HashSet<>();
 
     @Column
     private String userimg;
 
+    @Column
+    private boolean logged;
+
     @Builder
-    public Members(Long mid, Boolean oauth, String email, String nickname, String password, String userimg){
+    public Members(Long mid, Boolean oauth, String email, String nickname, String password, String userimg, boolean logged){
         this.email = email;
         this.password = password;
         this.oauth = oauth;
         this.mid = mid;
         this.nickname = nickname;
         this.userimg = userimg;
+        this.logged = logged;
     }
 
 
