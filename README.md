@@ -16,6 +16,7 @@
 - 본체 프론트 초안 https://hbyun.tistory.com/161
 - 본체 백엔드 1 https://hbyun.tistory.com/165
 - 본체 백엔드 2 https://hbyun.tistory.com/167
+- 본체 백엔드 3 https://hbyun.tistory.com/168
 
 ### ⚒ 연습대상
 - Vue3는 슬슬 수면위로 올라오는 vite + pinia연습용 + i18n 재밌어보임 + SSR 맛보기
