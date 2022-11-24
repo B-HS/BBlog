@@ -25,7 +25,7 @@
                     <div class="input-group flex-nowrap">
                         <span class="input-group-text border border-0 rounded-0 justify-content-center" id="addon-wrapping">사용자명</span>
                         <input v-if="!userStore.getUserId" type="text" class="form-control border border-0 rounded-0" aria-label="Username" aria-describedby="addon-wrapping" v-model="inputStatus.name" />
-                        <span v-else class="form-control border border-0 rounded-0">{{userStore.getUserInfo.username}}</span>
+                        <span v-else class="form-control border border-0 rounded-0">{{ userStore.getUserInfo.username }}</span>
                     </div>
                     <div class="input-group flex-nowrap" v-if="!userStore.getUserId">
                         <span class="input-group-text border border-0 rounded-0 justify-content-center" id="addon-wrapping">비밀번호</span>
@@ -89,17 +89,22 @@
             if (res.data.reply.length > 0) {
                 articleInfo.reply = res.data.reply;
             } else {
-                articleInfo.reply = null
+                articleInfo.reply = null;
             }
         });
     };
 
     const submitReply = async () => {
-        await store.replyAddRequest(id, inputStatus.name, userStore.getUserId ? true : false, inputStatus.pwd, inputStatus.context, articleInfo.reply ? (articleInfo.reply as Array<Object>).length : 0, 0);
-        inputStatus.name = "";
-        inputStatus.pwd = "";
-        inputStatus.context = "";
-        getArticleInfo();
+        await store.replyAddRequest(id, inputStatus.name, userStore.getUserId ? true : false, inputStatus.pwd, inputStatus.context, articleInfo.reply ? (articleInfo.reply as Array<Object>).length : 0, 0).then((res) => {
+            if (res.status == 200) {
+                inputStatus.name = "";
+                inputStatus.pwd = "";
+                inputStatus.context = "";
+                getArticleInfo();
+            }else{
+                
+            }
+        });
     };
     onMounted(() => {
         getArticleInfo();

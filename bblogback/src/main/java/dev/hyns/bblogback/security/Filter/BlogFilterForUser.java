@@ -44,7 +44,7 @@ public class BlogFilterForUser extends OncePerRequestFilter {
             if (token.length() != 0 && manager.tokenValidator(token)&& rUtil.isLogged(token)) {
                 filterChain.doFilter(request, response);
             } else {
-                response.sendRedirect("/login");
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
             return;
         }

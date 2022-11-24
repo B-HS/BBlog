@@ -49,7 +49,6 @@ public class JwtManager {
                 .setSubject("bblog token")
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
-        
         return "Bearer "+jwt;
     }
 
@@ -57,18 +56,19 @@ public class JwtManager {
         try {
             Jwts.parserBuilder().setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8)).build().parseClaimsJws(token.split("Bearer ")[1]);
             return true;
-
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("잘못된 토큰", e);
+            return false;
         } catch (ExpiredJwtException e) {
             log.info("유효기간이 지난 토큰", e);
+            return false;
         } catch (UnsupportedJwtException e) {
             log.info("지원되지 않는 토큰", e);
+            return false;
         } catch (IllegalArgumentException e) {
             log.info("claims가 비어있음", e);
+            return false;
         }
-        log.info(parseClaims(token));
-        return false;
     }
 
     public Claims parseClaims(String token) {
