@@ -38,9 +38,9 @@ export const useUserStore = defineStore("userInfo", () => {
     const logout = () => {
         axios.post("/logout", {}, { headers: { Authorization: rtkn.value } })
         userState.token = undefined,
-            userState.id = undefined,
-            userState.num = undefined,
-            userState.username = undefined
+        userState.id = undefined,
+        userState.num = undefined,
+        userState.username = undefined
         userState.admin = false
         rtkn.value = undefined
         PiCookie().rmCookie("a")
@@ -96,6 +96,12 @@ export const useUserStore = defineStore("userInfo", () => {
                         setUserInfo(res.data.atoken, userState.id!, userState.num!, userState.username!, res.data.rtoken)
                         return true
                     } else {
+                        userState.token = undefined,
+                        userState.id = undefined,
+                        userState.num = undefined,
+                        userState.username = undefined
+                        userState.admin = false
+                        rtkn.value = undefined
                         return false
                     }
                 })
@@ -107,7 +113,6 @@ export const useUserStore = defineStore("userInfo", () => {
     const tokenValidate = (token:string)=>{
         if(token){
             tokenDateValidateAndReissue(token).then(res=>{
-                console.log(res);
                 if(!res){router.push("/login")}
             })
         }

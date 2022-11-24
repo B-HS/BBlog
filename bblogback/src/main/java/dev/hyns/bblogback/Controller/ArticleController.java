@@ -21,12 +21,10 @@ import dev.hyns.bblogback.DTO.ReplyDTO;
 import dev.hyns.bblogback.Service.ArticleService.ArticleService;
 import dev.hyns.bblogback.VO.ArticleCardInfo;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 
 @RestController
 @RequestMapping(value = "/article")
 @RequiredArgsConstructor
-@Log4j2
 public class ArticleController {
     private final ArticleService aser;
 
@@ -67,7 +65,6 @@ public class ArticleController {
     // For member, admin
     @RequestMapping(value = "/member/reply",  method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> addReplyForMember(@RequestBody ReplyDTO dto){
-        log.info(dto);
         return new ResponseEntity<Boolean>(aser.addReply(dto), HttpStatus.OK);
     }
     @RequestMapping(value = "/member/reply/modify",  method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
