@@ -1,7 +1,7 @@
 <template>
     <div class="reply p-2 d-flex gap-3 align-items-center position-relative" :style="`margin-left:${30 * props.reply?.replySort}px`">
         <div class="reply-img w-5">
-            <img :src="`./blogapi/article/images/${props.reply?.member.userimg}`" class="img-fluid rounded-circle" alt="" ref="replyImg" />
+            <img :src="props.reply?.member.userimg.split('/').length<2?`./blogapi/article/images/${props.reply?.member.userimg}`:`${props.reply?.member.userimg}`" class="img-fluid rounded-circle" alt="" ref="replyImg" />
         </div>
         <div class="reply-desc w-95 d-flex flex-column">
             <div class="reply-desc_namesection d-flex gap-1 align-items-baseline">

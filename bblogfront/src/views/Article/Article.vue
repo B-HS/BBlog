@@ -108,7 +108,7 @@
     };
     onMounted(() => {
         getArticleInfo();
-        window.scrollTo(0, 0);
+        window.scrollTo(0, 0);        
     });
 </script>
 <style lang="sass" scoped>

@@ -57,7 +57,7 @@ router.beforeEach((to, from, next) => {
 	if (userStore.getUserInfo.token && userStore.getRtkn) {
 		PiCookie("127.0.0.1", 1, false, 'strict').setCookie("a", userStore.getUserInfo.token)
 		PiCookie("127.0.0.1", 1, false, 'strict').setCookie("r", userStore.getRtkn)
-		PiCookie("127.0.0.1", 1, false, 'strict').setCookie("user", JSON.stringify(userStore.getUserInfoWithoutTkn))
+		PiCookie("127.0.0.1", 1, false, 'strict').setCookie("user", JSON.stringify(userStore.getUserInfoWithoutTkn))		
 	}
 	
 	if (PiCookie().getCookie("a") && PiCookie().getCookie("r")&&PiCookie().getCookie("user")) {
