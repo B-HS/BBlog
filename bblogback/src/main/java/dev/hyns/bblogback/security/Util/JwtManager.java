@@ -1,4 +1,4 @@
-package dev.hyns.bblogback.security;
+package dev.hyns.bblogback.security.Util;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;

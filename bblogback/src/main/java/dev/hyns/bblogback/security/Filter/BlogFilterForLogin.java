@@ -17,10 +17,8 @@ import org.springframework.util.StreamUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dev.hyns.bblogback.Redis.RedisUtil;
-
-import dev.hyns.bblogback.security.JwtManager;
 import dev.hyns.bblogback.security.User.BlogCustomUser;
-
+import dev.hyns.bblogback.security.Util.JwtManager;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -67,6 +65,7 @@ public class BlogFilterForLogin extends AbstractAuthenticationProcessingFilter {
                 rUtil.setRefreshToken(rToken, userNum);
                 response.setContentType("application/json;charset=utf-8");
                 response.getOutputStream().write(mapper.writeValueAsString(returnInfo).getBytes());
+                //구축 거의 다 끝나갈때 암호화 모듈 하나 만들어서 암호화로 내보내기
     }
 }
 

@@ -13,7 +13,7 @@
             </div>
             <hr class="w-75">
             <div class="socialarea d-flex justify-content-center w-75 gap-5">
-                <i class="bi bi-google py-3"></i>
+                <i class="bi bi-google py-3 cursorp" @click="googleLogin"></i>
                 <i class="bi bi-github py-3"></i>
             </div>
         </div>
@@ -23,6 +23,7 @@
     import { useUserStore } from '@/store/userStore';
     import { reactive } from 'vue';
     import { useRouter } from 'vue-router';
+    import axios from '@/store/axios';
     const router = useRouter()
     const store = useUserStore()
     const loginState = reactive<{id:string, pw:string}>({
@@ -35,6 +36,9 @@
             res==200?router.push("/"):console.log("로그인에 실패하였습니다");
             
         })
+    }
+    const googleLogin = ()=>{
+        window.location.href = axios.getUri()+"/oauth2/google"
     }
 </script>
 <style lang="sass" scoped>

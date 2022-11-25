@@ -11,7 +11,7 @@ import dev.hyns.bblogback.Entity.Members;
 import dev.hyns.bblogback.Entity.Roles;
 import dev.hyns.bblogback.Repository.MembersRepository;
 import dev.hyns.bblogback.VO.TokenInfo;
-import dev.hyns.bblogback.security.JwtManager;
+import dev.hyns.bblogback.security.Util.JwtManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 

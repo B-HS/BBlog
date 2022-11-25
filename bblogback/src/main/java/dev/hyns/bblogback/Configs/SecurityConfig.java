@@ -10,29 +10,34 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import dev.hyns.bblogback.security.JwtManager;
 import dev.hyns.bblogback.security.Filter.BlogFilterForUser;
+import dev.hyns.bblogback.security.Handler.BlogOauthSuccessHandler;
+import dev.hyns.bblogback.security.Service.BlogOauthService;
+import dev.hyns.bblogback.security.Util.JwtManager;
+import lombok.RequiredArgsConstructor;
+import dev.hyns.bblogback.Repository.MembersRepository;
 import dev.hyns.bblogback.security.Filter.BlogFilterForAdmin;
 import dev.hyns.bblogback.security.Filter.BlogFilterForLogin;
-import lombok.RequiredArgsConstructor;
 
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
-
 public class SecurityConfig {
+    private final BlogOauthService boser;
+    private final MembersRepository mrepo;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager)
             throws Exception {
         http.csrf().disable();
         http.httpBasic().disable();
         http.formLogin().disable();
+        http.logout().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(blogFilterForLogin(authenticationManager),UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(blogFilterForAdmin(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(blogFilterForUser(), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(blogAbstractAuthenticationProcessingFilter(authenticationManager),
-                UsernamePasswordAuthenticationFilter.class);
-        http.logout().disable();
+        http.oauth2Login().authorizationEndpoint().baseUri("/oauth2").and().userInfoEndpoint().userService(boser).and().successHandler(blogOauthSuccessHandler());
         return http.build();
     }
 
@@ -47,7 +52,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public BlogFilterForLogin blogAbstractAuthenticationProcessingFilter(AuthenticationManager authenticationManager) {
+    public BlogFilterForLogin blogFilterForLogin(AuthenticationManager authenticationManager) {
         BlogFilterForLogin restLogin = new BlogFilterForLogin(jwtManager());
         restLogin.setAuthenticationManager(authenticationManager);
         return restLogin;
@@ -59,11 +64,14 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    @Bean
+    public BlogOauthSuccessHandler blogOauthSuccessHandler(){
+        return new BlogOauthSuccessHandler(jwtManager(), mrepo);
+    }
 
     @Bean
     public JwtManager jwtManager() {
         return new JwtManager();
     }
-
 
 }

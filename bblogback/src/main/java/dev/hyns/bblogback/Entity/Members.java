@@ -63,5 +63,19 @@ public class Members extends DateEntity{
         this.logged = logged;
     }
 
+    @Builder
+    public Members(Long mid, Boolean oauth, String email, String nickname, String password, String userimg, boolean logged, Roles roles){
+        Set<Roles> roleList = new HashSet<>();
+        roleList.add(roles);
+        this.email = email;
+        this.password = password;
+        this.oauth = oauth;
+        this.mid = mid;
+        this.nickname = nickname;
+        this.userimg = userimg;
+        this.logged = logged;
+        this.roles = roleList;
+    }
+
 
 }
