@@ -21,7 +21,7 @@
                     <router-link to="login" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-custom-class="custom-tooltip" v-if="!store.getUserId" data-bs-title="로그인">
                         <li class="border border-0 list-group-item bg-black rounded-0 text-white bi bi-box-arrow-in-right"></li>
                     </router-link>
-                    <li class="border border-0 list-group-item bg-black rounded-0 text-white bi bi-person-square" v-else></li>
+                    <li type="button" data-bs-toggle="collapse" data-bs-target="#userInfo" aria-expanded="false" aria-controls="userInfo" class="border border-0 list-group-item bg-black rounded-0 text-white bi bi-person-square" v-else></li>
                 </div>
             </div>
         </ul>
@@ -29,6 +29,24 @@
             <div class="scrollstat-bar" ref="statbar"></div>
         </section>
         <MenuBar></MenuBar>
+        <div class="position-absolute end-0 m-3">
+            <div class="collapse" id="userInfo">
+                <div class="usercardinfo position-relative d-flex flex-column w-100 justify-content-between">
+                    <div class="usercardinfo-header position-relative w-100 d-flex gap-2 align-items-center">
+                        <img src="@/assets/favicon.ico" alt="" srcset="" />
+                        <span class="usercardinfo-header-username">Hyunseok</span>
+                        <div class="replycounter"><span>댓글 수: 33</span></div>
+                    </div>
+                    <!-- <div class="usercardinfo-body">body</div> -->
+                    <ul class="list-group list-group-flush usercardinfo-body">
+                        <li class="list-group-item">계정설정</li>
+                        <li class="list-group-item">댓글목록</li>
+                        <li class="list-group-item"><router-link to="/logout">로그아웃</router-link></li>
+                    </ul>
+                    <div class="triangle"></div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script setup lang="ts">

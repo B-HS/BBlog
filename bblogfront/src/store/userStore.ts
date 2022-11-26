@@ -98,6 +98,9 @@ export const useUserStore = defineStore("userInfo", () => {
                 .then(res => {
                     if (res.data.atoken) {
                         setUserInfo(res.data.atoken, userState.id!, userState.num!, userState.username!, res.data.rtoken)
+                        PiCookie("127.0.0.1", 1, false, 'strict').setCookie("a", getUserInfo.value.token!)
+                        PiCookie("127.0.0.1", 1, false, 'strict').setCookie("r", getRtkn.value!)
+                        PiCookie("127.0.0.1", 1, false, 'strict').setCookie("user", JSON.stringify(getUserInfoWithoutTkn.value))	
                         return true
                     } else {
                         userState.token = undefined,
@@ -117,7 +120,9 @@ export const useUserStore = defineStore("userInfo", () => {
     const tokenValidate = (token:string)=>{
         if(token){
             tokenDateValidateAndReissue(token).then(res=>{
-                if(!res){router.push("/login")}
+                console.log(res);
+                
+                if(res==false){router.push("/login")}
             })
         }
     }
