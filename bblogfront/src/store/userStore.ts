@@ -120,8 +120,6 @@ export const useUserStore = defineStore("userInfo", () => {
     const tokenValidate = (token:string)=>{
         if(token){
             tokenDateValidateAndReissue(token).then(res=>{
-                console.log(res);
-                
                 if(res==false){router.push("/login")}
             })
         }
