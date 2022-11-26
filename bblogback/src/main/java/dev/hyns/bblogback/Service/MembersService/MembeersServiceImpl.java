@@ -22,4 +22,9 @@ public class MembeersServiceImpl implements MembersService{
         }
         return false;
     }
+
+    @Override
+    public Boolean emaildupcheck(String email) {
+        return mrepo.existsByEmail(email);
+    }
 }

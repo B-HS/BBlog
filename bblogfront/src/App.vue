@@ -52,6 +52,8 @@
         width: 10% !important
     .w-33
         width: 33% !important
+    .w-60
+        width: 60% !important
     .w-90
         width: 90% !important
     .w-95

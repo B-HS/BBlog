@@ -57,6 +57,10 @@ export const useUserStore = defineStore("userInfo", () => {
         })
     }
 
+    const join = (nickname:string, email:string, password:string)=>{
+        return axios.post("/register", {nickname: nickname, email:email, password:password})
+    }
+
     const setTkn = (a: string, t: string) => {
         userState.token = a
         rtkn.value = t
@@ -117,5 +121,9 @@ export const useUserStore = defineStore("userInfo", () => {
             })
         }
     }
-    return { setUserInfo, setTkn, login, logout, tokenDateValidateAndReissue, getUserInfo, getUserNum, getUserId, getHeaders, getIsAdmin, getRtkn, getUserInfoWithoutTkn }
+
+    const emailDupeCheck = (email:string)=>{
+        return axios.post("/emaildupcheck", {email:email})
+    }
+    return { setUserInfo, setTkn, login, logout, join, tokenDateValidateAndReissue, emailDupeCheck, getUserInfo, getUserNum, getUserId, getHeaders, getIsAdmin, getRtkn, getUserInfoWithoutTkn }
 })

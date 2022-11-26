@@ -8,13 +8,12 @@
                 <button class="loginbtn btn border border-1 rounded-0 p-2" @click.prevent="login"> Login</button>
             </div>
             <div class="btnarea d-flex justify-content-between w-75">
-                <button class="btn px-0 py-3 text-nowrap">회원가입</button>
-                <button class="btn px-0 py-3 text-nowrap">계정 찾기</button>
+                <button class="btn px-0 py-3 text-nowrap border-0"><router-link to="/join">회원가입</router-link></button>
+                <button class="btn px-0 py-3 text-nowrap border-0">계정 찾기</button>
             </div>
-            <hr class="w-75">
+            <hr class="w-75 m-0">
             <div class="socialarea d-flex justify-content-center w-75 gap-5">
                 <i class="bi bi-google py-3 cursorp" @click="googleLogin"></i>
-                <i class="bi bi-github py-3"></i>
             </div>
         </div>
     </div>
@@ -34,7 +33,6 @@
     const login = ()=>{
         store.login(loginState.id, loginState.pw).then((res)=>{
             res==200?router.push("/"):console.log("로그인에 실패하였습니다");
-            
         })
     }
     const googleLogin = ()=>{

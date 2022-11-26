@@ -2,9 +2,11 @@ package dev.hyns.bblogback.Service.MembersService;
 
 import dev.hyns.bblogback.DTO.MembersDTO;
 import dev.hyns.bblogback.Entity.Members;
+import dev.hyns.bblogback.Entity.Roles;
 
 public interface MembersService {
     Boolean register(MembersDTO dto);
+    Boolean emaildupcheck(String email);
 
     default MembersDTO MemberEntityToDTO(Members entity){
         MembersDTO dto = MembersDTO.builder()
@@ -26,6 +28,7 @@ public interface MembersService {
         .nickname(dto.getNickname())
         .userimg("basic.png")
         .logged(false)
+        .roles(Roles.ROLE_USER)
         .build();
         return entity;
     }

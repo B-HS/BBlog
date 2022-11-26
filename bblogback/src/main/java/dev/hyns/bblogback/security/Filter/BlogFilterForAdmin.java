@@ -9,7 +9,6 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import dev.hyns.bblogback.Redis.RedisUtil;
-import jakarta.persistence.NoResultException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,8 +24,13 @@ public class BlogFilterForAdmin extends OncePerRequestFilter {
             throws ServletException, IOException {
         AntPathMatcher antPathMatcher = new AntPathMatcher();
         String token = request.getHeader("Authorization");
-
-        List<String> pathList = Arrays.asList(new String[] { "/setting/**", "/admin/images/upload", "/admin/write", "/admin/stack", "/admin" });
+        List<String> pathList = Arrays.asList(new String[] { 
+            "/setting/**", 
+            "/admin/images/upload", 
+            "/admin/write", 
+            "/admin/stack", 
+            "/admin" 
+        });
         Boolean pathCheck = pathList.stream().anyMatch(v -> {
             if (antPathMatcher.match(request.getContextPath() + v, request.getRequestURI())
                     || antPathMatcher.match(v, request.getRequestURI())) {
@@ -38,7 +42,7 @@ public class BlogFilterForAdmin extends OncePerRequestFilter {
         if (pathCheck) {
             log.info(token);
             if (token == null || !rUtil.adminChecker(token)) {
-                throw new NoResultException();
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }
         }
         filterChain.doFilter(request, response);

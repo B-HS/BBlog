@@ -27,8 +27,6 @@ import dev.hyns.bblogback.VO.ArticleCardInfo;
 import dev.hyns.bblogback.VO.StackInfoVO;
 import dev.hyns.bblogback.VO.TodayAndTotal;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-@Log4j2
 @RestController
 @RequiredArgsConstructor
 public class BlogController {
@@ -69,9 +67,11 @@ public class BlogController {
     
     @RequestMapping(value = "/admin/stack", method= RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> ModifyingStackInformation(@RequestBody StackInfoVO stack,@RequestHeader("Authorization") String token){
-        log.info("----------------------------------------------------");
-        log.info(token);
-        log.info("----------------------------------------------------");
         return new ResponseEntity<>(bser.StackSave(stack),HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/emaildupcheck", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> emaildupcheck(@RequestBody MembersDTO dto){
+        return new ResponseEntity<>(mser.emaildupcheck(dto.getEmail()), HttpStatus.OK);
     }
 }

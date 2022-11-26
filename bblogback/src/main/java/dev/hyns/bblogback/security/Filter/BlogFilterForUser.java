@@ -28,7 +28,12 @@ public class BlogFilterForUser extends OncePerRequestFilter {
         
         AntPathMatcher antPathMatcher = new AntPathMatcher();
         ////구축 거의 다 끝나갈때 암호화 모듈 하나 만들어서 암호화된 문자열 해석해서 비교하기
-        List<String> pathList = Arrays.asList(new String[] { "**/mypage/**/**", "/article/member/reply", "/article/member/reply/delete", "/member/reply/modify" });
+        List<String> pathList = Arrays.asList(new String[] { 
+            "/mypage", 
+            "/article/member/reply", 
+            "/article/member/reply/delete", 
+            "/member/reply/modify" 
+        });
         Boolean pathCheck = pathList.stream().anyMatch(v -> {
             if (antPathMatcher.match(request.getContextPath() + v, request.getRequestURI())
                     || antPathMatcher.match(v, request.getRequestURI())) {
