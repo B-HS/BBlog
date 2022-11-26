@@ -7,8 +7,8 @@
                     <router-link to="setting"><li class="border border-0 list-group-item bg-black rounded-0 text-white bi bi-gear"></li></router-link>
                     <router-link to="write"><li class="border border-0 list-group-item bg-black rounded-0 text-white bi bi-pencil"></li></router-link>
                 </div>
-                <div class="icon-section-common d-flex" >
-                    <li class="border border-0 list-group-item bg-black rounded-0 text-white bi bi-list text-nowrap" data-bs-toggle="offcanvas" data-bs-target="#menubar" aria-controls="menubar"> Menu</li>
+                <div class="icon-section-common d-flex">
+                    <li class="border border-0 list-group-item bg-black rounded-0 text-white bi bi-list text-nowrap" data-bs-toggle="offcanvas" data-bs-target="#menubar" aria-controls="menubar">Menu</li>
                     <a href="https://github.com/B-HS" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-custom-class="custom-tooltip" data-bs-title="깃허브">
                         <li class="border border-0 list-group-item bg-black rounded-0 text-white bi-github"></li>
                     </a>
@@ -40,11 +40,7 @@
     new Tooltip(document.body, {
         selector: "[data-bs-toggle='tooltip']",
     });
-
-    const store = useUserStore()
-
-    
-
+    const store = useUserStore();
     onMounted(() => {
         window.onscroll = () => scrollbar();
         const scrollbar = () => {
