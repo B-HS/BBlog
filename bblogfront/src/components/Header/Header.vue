@@ -38,14 +38,16 @@
                         <div class="replycounter"><span>댓글 수: 33</span></div>
                     </div>
                     <ul class="list-group list-group-flush usercardinfo-body">
-                        <li class="list-group-item">계정설정</li>
-                        <li class="list-group-item">댓글목록</li>
-                        <router-link to="/logout"><li class="list-group-item">로그아웃</li></router-link>
+                        <a href="" data-bs-toggle="collapse" data-bs-target="#userInfo"><li class="list-group-item" data-bs-toggle="modal" data-bs-target="#settingModal">계정설정</li></a>
+                        <a href="" data-bs-toggle="collapse" data-bs-target="#userInfo"><li class="list-group-item" data-bs-toggle="modal" data-bs-target="#replyListModal">댓글목록</li></a>
+                        <router-link to="/logout"><li class="list-group-item" data-bs-toggle="collapse" data-bs-target="#userInfo">로그아웃</li></router-link>
                     </ul>
                     <div class="triangle"></div>
                 </div>
             </div>
         </div>
+        <ReplyListModal></ReplyListModal>
+        <SettingModal></SettingModal>
     </div>
 </template>
 <script setup lang="ts">
@@ -53,6 +55,8 @@
     import { onMounted, ref } from "vue";
     import MenuBar from "../Menu/MenuBar.vue";
     import { useUserStore } from "@/store/userStore";
+    import ReplyListModal from "../Modal/ReplyListModal.vue";
+    import SettingModal from "../Modal/SettingModal.vue";
     const statbar = ref();
     new Tooltip(document.body, {
         selector: "[data-bs-toggle='tooltip']",

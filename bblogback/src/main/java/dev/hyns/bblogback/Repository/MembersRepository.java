@@ -17,4 +17,8 @@ public interface MembersRepository extends JpaRepository<Members, Long>{
     @Modifying
     @Query("UPDATE Members mb set mb.logged=:logged where mb.mid =:mid")
 	void loggedMember(Long mid, boolean logged);
+
+    @Modifying
+    @Query("UPDATE Members mb set mb.nickname=:nickname where mb.mid =:mid")
+	void updateNicname(Long mid, String nickname);
 }

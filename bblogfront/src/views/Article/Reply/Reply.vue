@@ -11,10 +11,10 @@
             <span class="reply-desc_desc">{{ props.reply?.context }}</span>
             <div class="reply-desc_function d-flex gap-2">
                 <span v-if="props.reply?.replySort == 0" class="reply-desc_function_rereply" data-bs-toggle="collapse" :href="`#replytoreply${props.reply?.rid}`" role="button" aria-expanded="false" :aria-controls="`#replytoreply${props.reply?.rid}`" @click="imgDisable">{{ replyBtnText }}</span>
-                <span v-if="props.reply?.replySort == 0">|</span>
-                <span class="reply-desc_function_rereply cursorp" data-bs-toggle="modal" :data-bs-target="`#modify${props.reply?.rid}`">수정</span>
-                <span>|</span>
-                <span class="reply-desc_function_rereply cursorp" data-bs-toggle="modal" :data-bs-target="`#deleteModal${props.reply?.rid}`">삭제</span>
+                <span v-if="props.reply!.member.email==userStore.getUserInfoWithoutTkn.id || !props.reply!.logged">|</span>
+                <span v-if="props.reply!.member.email==userStore.getUserInfoWithoutTkn.id || !props.reply!.logged" class="reply-desc_function_rereply cursorp" data-bs-toggle="modal" :data-bs-target="`#modify${props.reply?.rid}`">수정</span>
+                <span v-if="props.reply!.member.email==userStore.getUserInfoWithoutTkn.id || !props.reply!.logged">|</span>
+                <span v-if="props.reply!.member.email==userStore.getUserInfoWithoutTkn.id || !props.reply!.logged" class="reply-desc_function_rereply cursorp" data-bs-toggle="modal" :data-bs-target="`#deleteModal${props.reply?.rid}`">삭제</span>
             </div>
             <div class="collapse mt-3 px-2" :id="`replytoreply${props.reply?.rid}`">
                 <div class="userinfo w-50 d-flex gap-3 py-2">

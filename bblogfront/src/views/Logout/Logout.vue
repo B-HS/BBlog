@@ -9,7 +9,7 @@ import { useRouter } from 'vue-router';
 useUserStore().logout()
 const router = useRouter()
 setTimeout(() => {
-    router.push("/")
+    router.push("/").then(()=>{router.go(0)})
 }, 1000);
 
 </script>

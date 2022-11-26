@@ -115,5 +115,29 @@ export const useBlogStore = defineStore("blogInfo", () => {
         const body = { dtoList: dtos, deleteList: deleteList }
         return axios.post("/admin/stack", body, { headers })
     }
-    return { getMenuList, getTopRecentFiveArticle, getVisitCounter, getLatestModifyDate, setMenuList, setTopRecentFiveArticle, setVisitCounter, articleRequest, menuListRequest, articleRequestByCategory, replyAddRequest, replyRemoveRequest, VisitCounterRequest, replyModifyRequest, setLatestModifyDate, StackInfoRequest, stackInfoModifyingRequest }
+
+    const nicknameChangeRequest = async(changedNickname:string, pw:string)=>{
+        return axios.post("member/nickname", {changedNickname:changedNickname, mid:user.getUserInfo.num, pw:pw})
+        .then(res=>{
+            if(res.status==200){
+                user.tokenDateValidateAndReissue(user.getUserInfo.token!, true)
+            }
+            return true;
+        })
+    }
+
+    const declarationRequest = (pw:string, repw:string)=>{
+        if(pw!==repw){
+            return 
+        }else{
+            return axios.post("member/declaration", {mid:user.getUserInfo.num, pw:pw, repw:repw})
+        }
+        
+    }
+
+    const oauthRestInformationRequest = ()=>{
+        axios.post("/member/restoauthinfo")
+    }
+
+    return { getMenuList, getTopRecentFiveArticle, getVisitCounter, getLatestModifyDate, nicknameChangeRequest, declarationRequest, setMenuList, setTopRecentFiveArticle, setVisitCounter, articleRequest, menuListRequest, articleRequestByCategory, replyAddRequest, replyRemoveRequest, VisitCounterRequest, replyModifyRequest, setLatestModifyDate, StackInfoRequest, stackInfoModifyingRequest }
 })

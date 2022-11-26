@@ -16,6 +16,7 @@
 </script>
 
 <style lang="sass">
+    .modal-content,
     .btn,
     input,
     textarea,

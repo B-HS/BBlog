@@ -92,7 +92,7 @@ export const useUserStore = defineStore("userInfo", () => {
         }
     });
 
-    const tokenDateValidateAndReissue = async (token: string) => {
+    const tokenDateValidateAndReissue = async (token: string, force?:boolean) => {
         if (!token) {
             return false
         }
@@ -100,13 +100,15 @@ export const useUserStore = defineStore("userInfo", () => {
         const { exp } = jwtDecode<JwtPayload>(token)
         const now = new Date().getTime() / 1000
         exp && exp - now >= 180 ? needRefresh = false : needRefresh = true
-
+        if(force){
+            needRefresh = true
+        }
         if (needRefresh) {
             return axios
                 .post("/token/refreshing", {}, { headers: { "mixedAuth": getUserInfo.value.token + "hsxhzmsdlqslek" + getRtkn.value } })
                 .then(res => {
                     if (res.data.atoken) {
-                        setUserInfo(res.data.atoken, userState.id!, userState.num!, userState.username!, res.data.rtoken)
+                        setUserInfo(res.data.atoken, userState.id!, userState.num!, res.data.nickname, res.data.rtoken)
                         PiCookie("127.0.0.1", 1, false, 'strict').setCookie("a", getUserInfo.value.token!)
                         PiCookie("127.0.0.1", 1, false, 'strict').setCookie("r", getRtkn.value!)
                         PiCookie("127.0.0.1", 1, false, 'strict').setCookie("user", JSON.stringify(getUserInfoWithoutTkn.value))	

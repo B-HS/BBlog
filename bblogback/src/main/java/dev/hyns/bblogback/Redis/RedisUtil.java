@@ -50,6 +50,7 @@ public class RedisUtil {
             removeRefreshToken(rToken);
             setRefreshToken(rtkn, targetMember.get().getMid());
             return TokenInfo.builder()
+                    .nickname(targetMember.get().getNickname())
                     .aToken(atkn)
                     .rToken(rtkn)
                     .build();

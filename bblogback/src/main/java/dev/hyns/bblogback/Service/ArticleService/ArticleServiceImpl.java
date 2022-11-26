@@ -22,6 +22,7 @@ import dev.hyns.bblogback.DTO.ReplyDTO;
 import dev.hyns.bblogback.Entity.Article;
 import dev.hyns.bblogback.Entity.ArticleImage;
 import dev.hyns.bblogback.Entity.Hashtag;
+import dev.hyns.bblogback.Entity.Members;
 import dev.hyns.bblogback.Entity.Reply;
 import dev.hyns.bblogback.Repository.ArticleImageRepository;
 import dev.hyns.bblogback.Repository.ArticleRepository;
@@ -49,7 +50,8 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional
     public boolean updateReply(ReplyDTO dto) {
-        if (dto.isLogged()) {
+        Members replyOwner = rrepo.findById(dto.getRid()).orElse(null).getMid();
+        if (dto.isLogged()&&dto.getMember().getMid() == replyOwner.getMid() && replyOwner.isLogged()==true) {
             rrepo.updateReply(dto.getRid(), dto.getContext());
             return true;
         }
@@ -68,7 +70,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public boolean deleteReply(ReplyDTO dto) {
-        if (dto.isLogged()) {
+        Members replyOwner = rrepo.findById(dto.getRid()).orElse(null).getMid();
+        if (dto.isLogged()&&dto.getMember().getMid() == replyOwner.getMid() && replyOwner.isLogged()==true) {
             rrepo.deleteById(dto.getRid());
             return true;
         }
@@ -86,7 +89,8 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional
     public boolean addReply(ReplyDTO dto) {
-        if (dto.isLogged()) {
+        Members replyOwner = rrepo.findById(dto.getRid()).orElse(null).getMid();
+        if (dto.isLogged()&& replyOwner.isLogged()==true) {
             rrepo.save(Reply.builder()
                     .mid(mrepo.findById(dto.getMember().getMid()).orElseThrow(()->new NoSuchElementException("멤버가 없네..")))
                     .article(Article.builder().aid(dto.getArticleid()).build())

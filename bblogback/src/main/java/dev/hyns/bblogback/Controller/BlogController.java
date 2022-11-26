@@ -24,9 +24,13 @@ import dev.hyns.bblogback.DTO.VisitorDTO;
 import dev.hyns.bblogback.Service.BlogService.BlogService;
 import dev.hyns.bblogback.Service.MembersService.MembersService;
 import dev.hyns.bblogback.VO.ArticleCardInfo;
+import dev.hyns.bblogback.VO.SettingInfoVO;
 import dev.hyns.bblogback.VO.StackInfoVO;
 import dev.hyns.bblogback.VO.TodayAndTotal;
 import lombok.RequiredArgsConstructor;
+
+import lombok.extern.log4j.Log4j2;
+@Log4j2
 @RestController
 @RequiredArgsConstructor
 public class BlogController {
@@ -66,12 +70,28 @@ public class BlogController {
     }
     
     @RequestMapping(value = "/admin/stack", method= RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> ModifyingStackInformation(@RequestBody StackInfoVO stack,@RequestHeader("Authorization") String token){
+    public ResponseEntity<Boolean> ModifyingStackInformation(@RequestBody StackInfoVO stack, @RequestHeader("Authorization") String token){
         return new ResponseEntity<>(bser.StackSave(stack),HttpStatus.OK);
     }
 
     @RequestMapping(value = "/emaildupcheck", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> emaildupcheck(@RequestBody MembersDTO dto){
         return new ResponseEntity<>(mser.emaildupcheck(dto.getEmail()), HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/member/nickname", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> nicknameChange(@RequestBody SettingInfoVO vo){        
+        return new ResponseEntity<>(mser.nicknameChange(vo), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/member/declaration", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> declaration(@RequestBody SettingInfoVO vo){
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/member/restoauthinfo", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> restOauthInfoDefining(@RequestBody SettingInfoVO vo){
+        log.info(vo);
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

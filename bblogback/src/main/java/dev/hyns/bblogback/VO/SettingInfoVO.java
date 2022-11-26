@@ -6,11 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class TokenInfo {
-    private String nickname;
-    private String aToken;
-    private String rToken;
+public class SettingInfoVO {
+    private Long mid;
+    private String pw;
+    private String repw;
+    private String changedNickname;
 }

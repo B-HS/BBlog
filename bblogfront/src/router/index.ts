@@ -52,6 +52,11 @@ const router = createRouter({
 			path: '/join',
 			name: 'Join',
 			component: () => import('@/views/Register/Join.vue')
+		},
+		{
+			path: '/initoauth',
+			name: 'oauthInit',
+			component: ()=> import('@/views/Register/OAuth2Joinpage/OAuth2.vue')
 		}
 	]
 })
