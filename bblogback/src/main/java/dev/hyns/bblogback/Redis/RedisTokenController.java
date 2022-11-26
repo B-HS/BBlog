@@ -28,7 +28,6 @@ public class RedisTokenController {
             util.removeRefreshToken(token);
             result = true;
         } catch (Exception e) {
-            e.printStackTrace();
             result = false;
         }
         return new ResponseEntity<>(result, HttpStatus.OK);

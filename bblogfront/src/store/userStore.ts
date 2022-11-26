@@ -48,12 +48,21 @@ export const useUserStore = defineStore("userInfo", () => {
         PiCookie().rmCookie("user")
     }
     const login = async (id: string, pw: string) => {
-        return axios.post("/login", { email: id, password: pw }).then(async (res) => {
-            setUserInfo(res.data.token, res.data.email, res.data.memberId, res.data.nickname, res.data.rToken)
-            axios.post("/admin", {}, { headers: { Authorization: res.data.rToken } }).then(res => {
-                setAdmin(res.data); return res.status
-            })
-            return res.status
+        return axios
+        .post("/login", { email: id, password: pw })
+        .then((res) => {
+            if(res.status==200){
+                setUserInfo(res.data.token, res.data.email, res.data.memberId, res.data.nickname, res.data.rToken)
+                axios.post("/admin", {}, { headers: { Authorization: res.data.rToken } }).then(res => {
+                    setAdmin(res.data);
+                })
+                return true
+            }else{
+                return false
+            }
+        }).catch(e=>{
+            e
+            
         })
     }
 

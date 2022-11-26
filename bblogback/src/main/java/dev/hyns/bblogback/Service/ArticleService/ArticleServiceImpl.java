@@ -202,7 +202,7 @@ public class ArticleServiceImpl implements ArticleService {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            
         }
         return result;
     }
@@ -217,7 +217,7 @@ public class ArticleServiceImpl implements ArticleService {
                 img.transferTo(new File(DIRADRESS + fileName));
                 result.add(fileName);
             } catch (Exception e) {
-                e.printStackTrace();
+                
             }
         });
 

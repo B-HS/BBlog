@@ -37,11 +37,10 @@
                         <span class="usercardinfo-header-username">Hyunseok</span>
                         <div class="replycounter"><span>댓글 수: 33</span></div>
                     </div>
-                    <!-- <div class="usercardinfo-body">body</div> -->
                     <ul class="list-group list-group-flush usercardinfo-body">
                         <li class="list-group-item">계정설정</li>
                         <li class="list-group-item">댓글목록</li>
-                        <li class="list-group-item"><router-link to="/logout">로그아웃</router-link></li>
+                        <router-link to="/logout"><li class="list-group-item">로그아웃</li></router-link>
                     </ul>
                     <div class="triangle"></div>
                 </div>

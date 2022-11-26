@@ -23,7 +23,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class BlogFilterForLogin extends AbstractAuthenticationProcessingFilter {
     private JwtManager manager;
     
@@ -43,7 +45,7 @@ public class BlogFilterForLogin extends AbstractAuthenticationProcessingFilter {
         try {
             obj = (JSONObject) new JSONParser().parse(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8));
         } catch (Exception e) {
-            e.printStackTrace();
+            log.info(e);
         }
         return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(obj.get("email").toString(), obj.get("password").toString()));
     }
