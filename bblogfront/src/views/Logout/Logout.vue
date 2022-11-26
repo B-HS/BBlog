@@ -1,5 +1,5 @@
 <template>
-    <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+    <div class="logout w-100 h-100 d-flex justify-content-center align-items-center">
         <h1>로그아웃 되었습니다</h1>
     </div>
 </template>
@@ -14,5 +14,6 @@ setTimeout(() => {
 
 </script>
 <style scoped lang="sass">
-    
+    .logout
+        height: 100vh !important
 </style>

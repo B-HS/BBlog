@@ -102,6 +102,7 @@
         reply: { type: Object, required: false },
         dateFormatter: { type: Function, required: true },
         reloader: { type: Function, required: true },
+        popupper: { type : Function, required: true }
     });
 
     const imgDisable = () => {
@@ -117,15 +118,18 @@
                 submitBtn.value?.parentElement?.classList.toggle("show");
                 imgDisable();
             });
+        props.popupper("댓글이 추가되었습니다")
     };
 
-    const replyDelete = (rid: number, passwd: string) => {
-        store.replyRemoveRequest(rid, passwd, userStore.getUserId ? true : false, { mid: userStore.getUserNum as number })?.then(() => props.reloader());
+    const replyDelete = async(rid: number, passwd: string) => {
+        await store.replyRemoveRequest(rid, passwd, userStore.getUserId ? true : false, { mid: userStore.getUserNum as number })?.then(() => props.reloader());
+        props.popupper("댓글이 삭제되었습니다")
     };
 
-    const replyModify = (rid: number, context:string, passwd: string)=>{
-        store.replyModifyRequest(rid, passwd, userStore.getUserId ? true : false, { mid: userStore.getUserNum as number }, context, props.reply?.replyGroup, props.reply?.replySort, id)?.then((res) => {
+    const replyModify = async(rid: number, context:string, passwd: string)=>{
+        await store.replyModifyRequest(rid, passwd, userStore.getUserId ? true : false, { mid: userStore.getUserNum as number }, context, props.reply?.replyGroup, props.reply?.replySort, id)?.then((res) => {
             props.reloader()});
+        props.popupper("댓글이 수정되었습니다")
     }
 </script>
 <style lang="sass">

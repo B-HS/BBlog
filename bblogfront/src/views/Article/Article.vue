@@ -44,7 +44,17 @@
 
         <div class="articlesection_replylist boxsing p-3 w-100 d-flex flex-column gap-3">
             <span v-if="!articleInfo.reply">등록된 댓글이 없습니다.</span>
-            <Reply v-for="i in articleInfo.reply" :reply="i" :dateFormatter="dateFormatter" :reloader="getArticleInfo"></Reply>
+            <Reply v-for="i in articleInfo.reply" :reply="i" :dateFormatter="dateFormatter" :reloader="getArticleInfo" :popupper="setToastTextAndExcute"></Reply>
+        </div>
+
+        <div class="toast-container position-fixed top-0 start-50 translate-middle-x mt-5 p-3">
+            <div id="toast" ref="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+                <div class="toast-header d-flex justify-content-between">
+                    <img src="@/assets/favicon.ico" class="img-fluid me-2 w-5" alt="Icon" />
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">{{ toastText }}</div>
+            </div>
         </div>
     </div>
 </template>
@@ -52,8 +62,15 @@
     import axios from "@/store/axios";
     import { useBlogStore } from "@/store/blogStore";
     import { useUserStore } from "@/store/userStore";
-    import { onMounted, reactive } from "vue";
+    import { onMounted, reactive, ref } from "vue";
+    import { Toast } from "bootstrap";
     import Reply from "./Reply/Reply.vue";
+    const toast = ref<HTMLElement>();
+    const toastText = ref<string>("");
+    const setToastTextAndExcute = (text: string) => {
+        toastText.value = text;
+        new Toast(toast.value!).show();
+    };
     const id = new URLSearchParams(window.location.search).get("id") as unknown as number;
     const articleInfo = reactive<{ category: number; title: string; count: number; description: string; tag?: string[]; reply?: Object | null; date: Date }>({
         category: 0,
@@ -100,15 +117,15 @@
                 inputStatus.name = "";
                 inputStatus.pwd = "";
                 inputStatus.context = "";
+                setToastTextAndExcute("댓글이 추가되었습니다")
                 getArticleInfo();
-            }else{
-                
+            } else {
             }
         });
     };
     onMounted(() => {
         getArticleInfo();
-        window.scrollTo(0, 0);        
+        window.scrollTo(0, 0);
     });
 </script>
 <style lang="sass" scoped>
