@@ -24,6 +24,7 @@ import dev.hyns.bblogback.DTO.VisitorDTO;
 import dev.hyns.bblogback.Service.BlogService.BlogService;
 import dev.hyns.bblogback.Service.MembersService.MembersService;
 import dev.hyns.bblogback.VO.ArticleCardInfo;
+import dev.hyns.bblogback.VO.DropboxInfoVO;
 import dev.hyns.bblogback.VO.SettingInfoVO;
 import dev.hyns.bblogback.VO.StackInfoVO;
 import dev.hyns.bblogback.VO.TodayAndTotal;
@@ -86,12 +87,26 @@ public class BlogController {
 
     @RequestMapping(value = "/member/declaration", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> declaration(@RequestBody SettingInfoVO vo){
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        log.info(vo);
+        return new ResponseEntity<>(mser.declaration(vo), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/member/restoauthinfo", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> restOauthInfoDefining(@RequestBody SettingInfoVO vo){
-        log.info(vo);
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(mser.restOauthInfoDefining(vo), HttpStatus.OK);
     }
+
+    @RequestMapping(value="/member/isoauth", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> requestMethodName(@RequestBody SettingInfoVO vo) {
+        return new ResponseEntity<>(mser.oauthinitcheck(vo), HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/member/dropdown", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DropboxInfoVO> requestDropdownInfo(@RequestBody DropboxInfoVO vo) {
+        log.info(vo);
+        return new ResponseEntity<>(mser.dropboxInfo(vo.getMid()), HttpStatus.OK);
+    }
+
+    
+    
 }

@@ -32,7 +32,13 @@ public class BlogFilterForUser extends OncePerRequestFilter {
             "/mypage", 
             "/article/member/reply", 
             "/article/member/reply/delete", 
-            "/member/reply/modify" 
+            "/article/member/reply/modify", 
+            "/member/reply/modify",
+            "/member/nickname",
+            "/member/declaration",
+            "/member/restoauthinfo",
+            "/member/dropdown"
+
         });
         Boolean pathCheck = pathList.stream().anyMatch(v -> {
             if (antPathMatcher.match(request.getContextPath() + v, request.getRequestURI())

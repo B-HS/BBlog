@@ -56,7 +56,7 @@ const router = createRouter({
 		{
 			path: '/initoauth',
 			name: 'oauthInit',
-			component: ()=> import('@/views/Register/OAuth2Joinpage/OAuth2.vue')
+			component: ()=> import('@/views/Register/OAuth2Joinpage/OAuth2.vue'),
 		}
 	]
 })
@@ -73,6 +73,14 @@ router.beforeEach((to, from, next) => {
 	if (PiCookie().getCookie("a") && PiCookie().getCookie("r")&&PiCookie().getCookie("user")) {
 		const info = JSON.parse(PiCookie().getCookie('user') as string)
 		userStore.setUserInfo(PiCookie().getCookie("a") as string,info.id, info.num, info.username ,PiCookie().getCookie("r") as string)
+	}
+
+	if (to.path ==='/initoauth'){
+		userStore.isOauth().then(res=>{
+			if(res.data!=true){
+				router.push("/logout")
+			}
+		})
 	}
 
 	if (to.path ==='/logout'){

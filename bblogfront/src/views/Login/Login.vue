@@ -48,8 +48,12 @@
 
     const login = () => {
         store.login(loginState.id, loginState.pw).then((res) => {
-            res == true ? router.push("/") : setToastTextAndExcute("로그인에 실패하였습니다")
-        })
+            if (res == true) {
+                router.push("/").then(()=>store.getDropboxInfo().then(res=>{console.log(res)}))
+            } else {
+                setToastTextAndExcute("로그인에 실패하였습니다");
+            }
+        });
     };
     const googleLogin = () => {
         window.location.href = axios.getUri() + "/oauth2/google";

@@ -49,8 +49,11 @@ public class BlogOauthSuccessHandler extends SimpleUrlAuthenticationSuccessHandl
         response.addHeader("Set-Cookie", cookie1.toString());
         response.addHeader("Set-Cookie", cookie2.toString());
         response.addCookie(user);
-
-        if(memberInfo.getNickname()=="THISUSERNICKNAMEISNOTDEFINED"){
+        if(memberInfo.getNickname().equals("THISUSERNICKNAMEISNOTDEFINED")){
+            Cookie noneinituser = new Cookie("user", "{%22id%22:%22"+memberInfo.getEmail()+"%22%2C%22num%22:"+mid.toString()+"%2C%22username%22:%22"+"PleaseInitYourInformation" +"%22}");
+            noneinituser.setDomain("127.0.0.1");
+            noneinituser.setPath("/");
+            response.addCookie(noneinituser);
             response.sendRedirect("http://127.0.0.1:8080/initoauth");
         }else{
             response.sendRedirect("http://127.0.0.1:8080/");

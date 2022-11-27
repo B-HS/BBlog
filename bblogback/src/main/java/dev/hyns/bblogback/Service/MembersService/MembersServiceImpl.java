@@ -6,7 +6,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import dev.hyns.bblogback.DTO.MembersDTO;
+import dev.hyns.bblogback.Entity.Members;
 import dev.hyns.bblogback.Repository.MembersRepository;
+import dev.hyns.bblogback.VO.DropboxInfoVO;
 import dev.hyns.bblogback.VO.SettingInfoVO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -44,8 +46,39 @@ public class MembersServiceImpl implements MembersService{
     }
 
     @Override
+    @Transactional
+    public Boolean restOauthInfoDefining(SettingInfoVO vo) {
+        Members targetMember = mrepo.findById(vo.getMid()).orElse(null);
+        if(targetMember.getNickname().equals("THISUSERNICKNAMEISNOTDEFINED")&&pEncoder.matches("THISPASSWORDISINITPASSWORD",targetMember.getPassword())){
+            mrepo.updateNicnameAndPasswd(vo.getMid(), vo.getChangedNickname(), pEncoder.encode(vo.getPw()));
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional
     public Boolean declaration(SettingInfoVO vo) {
-        
-        return null;
+        Members targetMember = mrepo.findById(vo.getMid()).orElse(null);
+        if(pEncoder.matches(vo.getPw(), targetMember.getPassword()) && pEncoder.matches(vo.getRepw(), targetMember.getPassword())){
+            mrepo.delete(targetMember);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean oauthinitcheck(SettingInfoVO vo) {
+        Members targetMember = mrepo.findById(vo.getMid()).orElse(null);
+        if(targetMember.getNickname().equals("THISUSERNICKNAMEISNOTDEFINED")&&pEncoder.matches("THISPASSWORDISINITPASSWORD",targetMember.getPassword())){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public DropboxInfoVO dropboxInfo(Long mid) {
+        DropboxInfoVO result = new DropboxInfoVO(mrepo.dropboxInfo(mid));
+        return result;
     }
 }

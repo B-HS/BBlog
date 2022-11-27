@@ -21,4 +21,22 @@ public interface MembersRepository extends JpaRepository<Members, Long>{
     @Modifying
     @Query("UPDATE Members mb set mb.nickname=:nickname where mb.mid =:mid")
 	void updateNicname(Long mid, String nickname);
+
+    @Modifying
+    @Query("UPDATE Members mb set mb.nickname=:nickname, mb.password=:password where mb.mid =:mid")
+	void updateNicnameAndPasswd(Long mid, String nickname, String password);
+
+    @Query(
+    "SELECT mb.mid as mid, mb.nickname as nickname, mb.userimg as picture, count(rp.rid) as replyCount "+
+    "FROM Members mb left join Reply rp on mb.mid=rp.mid "+
+    "WHERE mb.mid=:mid"
+    )
+    getDropboxInfo dropboxInfo(Long mid);
+
+    public interface getDropboxInfo{
+        Long getMid();
+        String getNickname();
+        String getPicture();
+        Integer getReplyCount();
+    }
 }

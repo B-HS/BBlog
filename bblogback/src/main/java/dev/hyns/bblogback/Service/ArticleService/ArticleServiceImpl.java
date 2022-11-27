@@ -48,6 +48,14 @@ public class ArticleServiceImpl implements ArticleService {
     // Reply ------------------------------------------------------------------------------
     // 하나로 놔뒀다가 필터 적용하기 애매해서 그냥 다 나눠버림
     @Override
+    public List<ReplyDTO> replyListByMid(Long mid) {
+        return rrepo.findFirst20ByMidMidOrderByRidDesc(mid).stream().map(v->{
+            return ReplyDTO.builder().articleid(v.getArticle().getAid()).rid(v.getRid()).context(v.getContext()).regdate(v.getRegDate()).build();
+        }).toList();
+    }
+
+
+    @Override
     @Transactional
     public boolean updateReply(ReplyDTO dto) {
         Members replyOwner = rrepo.findById(dto.getRid()).orElse(null).getMid();
@@ -89,8 +97,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional
     public boolean addReply(ReplyDTO dto) {
-        Members replyOwner = rrepo.findById(dto.getRid()).orElse(null).getMid();
-        if (dto.isLogged()&& replyOwner.isLogged()==true) {
+        if (dto.isLogged()) {
             rrepo.save(Reply.builder()
                     .mid(mrepo.findById(dto.getMember().getMid()).orElseThrow(()->new NoSuchElementException("멤버가 없네..")))
                     .article(Article.builder().aid(dto.getArticleid()).build())

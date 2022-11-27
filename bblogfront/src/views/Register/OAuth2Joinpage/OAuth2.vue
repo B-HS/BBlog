@@ -1,8 +1,9 @@
 <template>
     <div class="join d-flex justify-content-center p-5 align-items-center">
-        <div class="joinbody w-33 h-50 border p-3 d-flex flex-column gap-3 justify-content-between">
+        <div class="joinbody w-33 h-50 border p-3 d-flex flex-column justify-content-between">
             <div class="joinbody-header my-2 px-2">
                 <h3>추가정보 입력</h3>
+                <h6 class="m-0">입력된 정보는 닉네임변경, 회원탈퇴 등에 사용됩니다</h6>
             </div>
             <div class="join-body-body d-flex flex-column gap-2">
                 <div class="form-floating mb-3 w-100">
@@ -28,16 +29,18 @@
                     <img src="@/assets/favicon.ico" class="img-fluid me-2 w-5" alt="Icon" />
                     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
-                <div class="toast-body"><p>{{ toastText }}</p></div>
+                <div class="toast-body">
+                    <p>{{ toastText }}</p>
+                </div>
             </div>
         </div>
     </div>
 </template>
 <script setup lang="ts">
-    import { useUserStore } from "@/store/userStore";
     import { useRouter } from "vue-router";
     import { reactive, ref, type Ref } from "vue";
     import { Toast } from "bootstrap";
+    import { useBlogStore } from "@/store/blogStore";
     const pwcheck = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,16}$/;
     const nicknamecheck = /^[a-zA-Zㄱ-힣][a-zA-Zㄱ-힣 ]*$/;
     const toast = ref<HTMLElement>();
@@ -45,13 +48,13 @@
         new Toast(toast.value!).show();
     };
 
-    const oauthInfo = reactive<{ [keytype: string]: string; changedNickname: string; pw: string; repw: string }>({
+    const oauthInfo = reactive<{changedNickname: string; pw: string; repw: string }>({
         changedNickname: "",
         pw: "",
         repw: "",
     });
     const router = useRouter();
-    const userStore = useUserStore();
+    const blogStore = useBlogStore();
     const toastText = ref<string>(" ");
     const setToastTextAndExcute = (text: string) => {
         toastText.value = text;
@@ -59,13 +62,25 @@
     };
 
     const oauthregi = () => {
-        formValidator();
+        if (formValidator()) {
+            blogStore.oauthRestInformationRequest(oauthInfo.changedNickname, oauthInfo.pw).then(res=>{
+                if(res==true){
+                    router.push("/")
+                }else{
+                    setToastTextAndExcute("잘못된 접근입니다")
+                    setTimeout(() => {
+                        router.push("/logout")    
+                    }, 1500);
+                    
+                }
+            });
+        }
     };
 
     const formValidator = () => {
         if (!nicknamecheck.test(oauthInfo.changedNickname)) {
             setToastTextAndExcute("닉네임을 확인해주세요");
-            setToastTextAndExcute("닉네임은 한글 혹은 영문만 가능합니다")
+            setToastTextAndExcute("닉네임은 한글 혹은 영문만 가능합니다");
             return false;
         }
         if (!pwcheck.test(oauthInfo.pw) || !pwcheck.test(oauthInfo.repw)) {
@@ -73,10 +88,10 @@
             return false;
         }
         if (oauthInfo.pw !== oauthInfo.repw) {
-            setToastTextAndExcute("두 비밀번호가 서로 다릅니다")
-
+            setToastTextAndExcute("두 비밀번호가 서로 다릅니다");
+            return false;
         }
-        return true
+        return true;
     };
 </script>
 <style lang="sass">

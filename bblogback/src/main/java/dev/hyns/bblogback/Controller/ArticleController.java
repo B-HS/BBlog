@@ -1,6 +1,8 @@
 package dev.hyns.bblogback.Controller;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +23,8 @@ import dev.hyns.bblogback.DTO.ReplyDTO;
 import dev.hyns.bblogback.Service.ArticleService.ArticleService;
 import dev.hyns.bblogback.VO.ArticleCardInfo;
 import lombok.RequiredArgsConstructor;
-
+import lombok.extern.log4j.Log4j2;
+@Log4j2
 @RestController
 @RequestMapping(value = "/article")
 @RequiredArgsConstructor
@@ -65,6 +68,7 @@ public class ArticleController {
     // For member, admin
     @RequestMapping(value = "/member/reply",  method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> addReplyForMember(@RequestBody ReplyDTO dto){
+        log.info(dto);
         return new ResponseEntity<Boolean>(aser.addReply(dto), HttpStatus.OK);
     }
     @RequestMapping(value = "/member/reply/modify",  method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -85,6 +89,13 @@ public class ArticleController {
     @RequestMapping(value = "/admin/write", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> write(@RequestBody ArticleDTO dto) {
         return new ResponseEntity<>(aser.write(dto), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/replylist", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ReplyDTO>> replyList(@RequestBody Map<String, Long> mid) {
+        log.info(mid);
+        log.info(mid.get("mid"));
+        return new ResponseEntity<>(aser.replyListByMid(mid.get("mid")), HttpStatus.OK);
     }
 
 }

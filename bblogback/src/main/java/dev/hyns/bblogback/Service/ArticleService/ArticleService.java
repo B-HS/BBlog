@@ -32,6 +32,8 @@ public interface ArticleService {
 
     List<Object> ImgRead(String filename);
 
+    List<ReplyDTO> replyListByMid(Long mid);
+
     default Article ArticleDTOtoEntity(ArticleDTO dto) {
         return Article.builder()
                 .title(dto.getTitle())

@@ -1,6 +1,5 @@
 package dev.hyns.bblogback.security.Service;
 
-import java.util.UUID;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,7 +30,7 @@ public class BlogOauthService extends DefaultOAuth2UserService {
                 () -> member = mrepo.save(Members.builder()
                         .email(userinfo.getAttribute("email"))
                         .nickname("THISUSERNICKNAMEISNOTDEFINED")
-                        .password(pEncoder.encode(UUID.randomUUID().toString()))
+                        .password(pEncoder.encode("THISPASSWORDISINITPASSWORD"))
                         .userimg(userinfo.getAttribute("picture"))
                         .oauth(true)
                         .roles(Roles.ROLE_USER)

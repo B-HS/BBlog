@@ -59,6 +59,8 @@
     import { useBlogStore } from "@/store/blogStore";
     import { useUserStore } from "@/store/userStore";
     import { reactive } from "vue";
+    import { useRouter } from "vue-router";
+    const router = useRouter()
     const userStroe = useUserStore();
     const blogStore = useBlogStore();
     const settingInfo = reactive<{ which: string; changedNickname: string; changedpasswd: string; changedrepasswd: string; status: string }>({
@@ -82,7 +84,9 @@
 
     const declaration = () => {
         blogStore.declarationRequest(settingInfo.changedpasswd, settingInfo.changedrepasswd)?.then((res) => {
-            console.log(res);
+            if(res==true){
+                router.go(0);
+            }
         });
     };
     const settingFromReset = () => {
