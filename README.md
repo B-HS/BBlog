@@ -18,7 +18,7 @@
 - 본체 백엔드 2 https://hbyun.tistory.com/167
 - 본체 백엔드 3 https://hbyun.tistory.com/168
 - [[Spring] @Autowired vs @RequiredArgsConstructor 뭘 쓸까 feat .IOC, DI, Autowiring](https://hbyun.tistory.com/169)
-
+- [Spring boot + JWT + OAuth2 + Redis로 Restful 로그인 1~完](https://hbyun.tistory.com/170)
 ### ⚒ 연습대상
 - Vue3는 슬슬 수면위로 올라오는 vite + pinia연습용 + i18n 재밌어보임 + SSR 맛보기
 - Spring boot 3는 크게 바뀐 점은 없겠지만 테스트용
