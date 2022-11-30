@@ -29,17 +29,11 @@
 - [Spring boot + JWT + OAuth2 + Redis로 Restful 로그인 1~完](https://hbyun.tistory.com/170)
 - [백앤드 작업 마무리 feat. v1 끝](https://hbyun.tistory.com/175)
 ### ⚒ 연습대상
-- Vue3는 슬슬 수면위로 올라오는 vite + pinia연습용 ~~+ i18n 재밌어보임 + SSR 맛보기~~ > 나중에 시간나면
+- Vue3는 슬슬 수면위로 올라오는 vite + pinia연습용
 - Spring boot 3는 크게 바뀐 점은 없겠지만 테스트용
-- 
 - Redis는 리프래시, 액세스 토큰 나눠서 구현을 위해 사용예정 (제일 마지막에 만들어볼 예정)
 - 전체적으로 Typescript를 사용하여 익숙해지기 위한 연습
 
 ### 📅 기간
 -  본체 완성 - 11월 28일
 -  나머지 완성 일정 - 23.1월 중순부터 시작
-
-
-
-
-
