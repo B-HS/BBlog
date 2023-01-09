@@ -1,0 +1,8 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+*:focus, *:active, *:hover, *:focus-within, *:focus-visible, *:target{
+    outline: none !important;
+    box-shadow: none !important;
+}

@@ -1,3 +1,29 @@
+# BBlog v2
+- v2 준비
+- 다른 팀프로젝트 끝나는대로 v2시작 (예상 v2시작 - 23년 1월 중~말)
+- 프론트 vue -> React
+- 백엔드 spring boot 코드개선
+
+### v2 작업 예정 사항
+- React + spring boot + kafka로 간이 채팅방구현
+- 프론트페이지 리액트로 다시 작성
+- i18n작업 + vite ssr
+- Admin페이지 추가
+
+### 🚂 개인 블로그 토이 프로젝트
+- React
+- Spring boot 3
+- Mysql
+- Redis
+- Kafka
+- ~~Vue 3~~
+
+
+### 📅 기간
+-  1월 ~ 기간 미정
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
 # BBlog v1
 - 현재 v1끝 (본체 마무리)
 - 다른 팀프로젝트 끝나는대로 v2시작 (예상 v2시작 - 23년 1월)
