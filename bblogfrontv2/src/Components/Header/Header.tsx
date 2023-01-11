@@ -1,42 +1,72 @@
-import { Input, Tooltip } from "@chakra-ui/react";
-import { useCallback, useEffect, useState } from "react";
-import { BiMenu } from "react-icons/bi";
-import { BsBootstrap, BsBoxArrowRight, BsFillFileTextFill, BsGithub, BsSearch } from "react-icons/bs";
-import Menubar from "./Menubar";
+import { Tooltip } from "@chakra-ui/react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { BsBoxArrowRight, BsGithub } from "react-icons/bs";
+import { TbLetterT } from "react-icons/tb";
+import { Link } from "react-router-dom";
 
 export const Header = () => {
     const [scrollWith, setScrollWith] = useState<number>(0);
-    const [isOpen, setIsOpen] = useState<Boolean>(false);
     const [windowWidth, setWindowWidth] = useState<number>(0);
-    const openMenu = () => setIsOpen(!isOpen);
+    const [currentLocation, setCurrentLocation] = useState<string>("");
+    const verticalscroll = useRef<HTMLDivElement>(null);
 
     const scrollbar = useCallback(() => {
         let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
         let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         setScrollWith((winScroll / height) * 100);
-        console.log(scrollWith);
     }, [scrollWith]);
     const calcWith = useCallback(() => {
         return setWindowWidth(window.innerWidth);
     }, [windowWidth]);
+    const fillColorMenu = useCallback(() => {
+        return setCurrentLocation(window.location.href.split("/")[3]);
+    }, [currentLocation]);
+
+    const resetStatus = (name: string) => {
+        window.scrollTo(0, 0);
+        setScrollWith(0);
+        setCurrentLocation(name);
+    };
+
     useEffect(() => calcWith, []);
+    useEffect(() => fillColorMenu, []);
 
     window.onscroll = () => scrollbar();
     window.onresize = () => calcWith();
+    window.addEventListener("popstate", () => {
+        setCurrentLocation(window.location.href.split("/")[3]);
+    });
+
     return (
         <>
-            <div className="w-screen h-12 bg-black px-7 text-white flex items-center justify-between sticky top-0 text-lg flex-wrap min-w-[425px]">
-                <div className="flex main items-center w-1/3 gap-2">
-                    <BiMenu onClick={openMenu} />
-                    <span>Hyunseok</span>
+            <div className="header h-12 mx-[0.07rem] bg-white bg-opacity-50 text-black flex items-baseline justify-between sticky top-0 gap-2 text-lg z-50 transition ease-in-out duration-200 hover:bg-opacity-100 pt-2 px-3 border-b">
+                <div className="main flex items-baseline gap-2">
+                    <Link to="/">
+                        <span className="text-2xl" onClick={() => resetStatus("")}>
+                            Hyunseok
+                        </span>
+                    </Link>
+                    <section className="menu whitespace-nowrap">
+                        <Link to="/">
+                            <span className={`text-sm ${currentLocation == "" ? "text-violet-500" : ""}`} onClick={() => resetStatus("")}>
+                                소개
+                            </span>
+                        </Link>
+                        <span className="text-sm"> | </span>
+                        <Link to="/blog">
+                            <span className={`text-sm ${currentLocation == "blog" ? "text-violet-500" : ""}`} onClick={() => resetStatus("blog")}>
+                                블로그
+                            </span>
+                        </Link>
+                        <span className="text-sm"> | </span>
+                        <Link to="/portfolio">
+                            <span className={`text-sm ${currentLocation == "portfolio" ? "text-violet-500" : ""}`} onClick={() => resetStatus("portfolio")}>
+                                포트폴리오
+                            </span>
+                        </Link>
+                    </section>
                 </div>
-                {windowWidth >= 425 && (
-                    <div className="search_section flex items-center w-1/3 gap-3 justify-center">
-                        <BsSearch />
-                        <Input padding={"0.25rem"} variant={"unstyled"} overflow={"hidden"} />
-                    </div>
-                )}
-                <div className="navigator flex items-center w-1/3 justify-end gap-7">
+                <div className="navigator flex gap-3">
                     <a href="https://github.com/B-HS">
                         <Tooltip label="깃허브" aria-label="gibhub" hasArrow arrowSize={10}>
                             <span>
@@ -47,18 +77,11 @@ export const Header = () => {
                     <a href="https://hbyun.tistory.com/">
                         <Tooltip label="티스토리" aria-label="tistory" hasArrow arrowSize={10}>
                             <span>
-                                <BsBootstrap />
+                                <TbLetterT />
                             </span>
                         </Tooltip>
                     </a>
-                    <a href="https://portfolio.hyns.co.kr/">
-                        <Tooltip label="포트폴리오" aria-label="portfolio" hasArrow arrowSize={10}>
-                            <span>
-                                <BsFillFileTextFill />
-                            </span>
-                        </Tooltip>
-                    </a>
-                    <a href="./login">
+                    <a href="/login">
                         <Tooltip label="로그인" aria-label="login" hasArrow arrowSize={10}>
                             <span>
                                 <BsBoxArrowRight />
@@ -67,8 +90,7 @@ export const Header = () => {
                     </a>
                 </div>
             </div>
-            <div className="bg-white z-50 h-1 fixed top-1" style={{ width: `${scrollWith}%` }}></div>
-            {Menubar(isOpen, openMenu)}
+            <div ref={verticalscroll} className={`bg-black z-50 h-1 sticky top-12 overflow-hidden w-[${scrollWith}%]`} style={{ width: `${scrollWith}%` }}></div>
         </>
     );
 };
