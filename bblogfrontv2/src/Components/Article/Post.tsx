@@ -1,4 +1,4 @@
-import { Flex, Stack, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { BiCalendar, BiMenu } from "react-icons/bi";
 
 const Post = () => {

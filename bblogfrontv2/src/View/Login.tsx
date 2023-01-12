@@ -20,7 +20,7 @@ const Login = () => {
                         <InputLeftElement>
                             <BiLockAlt />
                         </InputLeftElement>
-                        <Input pr="4.5rem" type={show ? "text" : "password"} placeholder="비밀번호" borderRadius={0}  mb="1rem"/>
+                        <Input pr="4.5rem" type={show ? "text" : "password"} placeholder="비밀번호" borderRadius={0} mb="1rem" />
                         <InputRightElement width="4.5rem">
                             <Button h="1.75rem" size="sm" borderRadius={0} backgroundColor={"transparent"} color={"gray.300"} onClick={handleClick}>
                                 {show ? "Hide" : "Show"}
@@ -30,7 +30,7 @@ const Login = () => {
                     <Flex justify={"space-between"}>
                         <Flex gap={4}>
                             <img src="https://www.google.com/favicon.ico" alt="google" />
-                            <img src="https://github.githubassets.com/favicons/favicon.svg" alt="github" width="34%"/>
+                            <img src="https://github.githubassets.com/favicons/favicon.svg" alt="github" width="34%" />
                         </Flex>
                         <Button borderRadius={0} borderWidth={1} size={"sm"}>
                             로그인

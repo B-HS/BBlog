@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Tag from "./Tag";
 
 const PortfolioCard = () => {
-    const tmpTag = ["1234", "32415"]
+    const tmpTag = ["1234", "32415"];
     return (
         <>
             <Card className="card" borderRadius={0}>
@@ -17,7 +17,9 @@ const PortfolioCard = () => {
                                 2023.01.01
                             </Text>
                         </section>
-                        <Link to={`/pf/${Math.random()*10000}`}><Heading size="md">ProjectName</Heading></Link>
+                        <Link to={`/pf/${Math.random() * 10000}`}>
+                            <Heading size="md">ProjectName</Heading>
+                        </Link>
                         <Text>250자 내로 작성해서 출력</Text>
                     </Stack>
                     <section className="stack">

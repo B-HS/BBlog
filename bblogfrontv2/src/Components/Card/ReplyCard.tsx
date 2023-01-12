@@ -23,4 +23,4 @@ const ReplyCard = () => {
         </>
     );
 };
-export default ReplyCard
+export default ReplyCard;

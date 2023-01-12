@@ -9,7 +9,7 @@ const ArticleCard = () => {
         <>
             <Card className="card" direction={{ base: "column", sm: "row" }} variant="outline" borderRadius="0">
                 <Link to={`/read/${Math.random() * 10000}`}>
-                    <Image objectFit="cover" height={"100%"} maxH={"300px"}  maxW={{ base: "100%", sm: "250px" }} src="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60" alt="Caffe Latte" />
+                    <Image objectFit="cover" height={"100%"} maxH={"300px"} maxW={{ base: "100%", sm: "250px" }} src="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60" alt="Caffe Latte" />
                 </Link>
                 <Stack>
                     <CardBody>

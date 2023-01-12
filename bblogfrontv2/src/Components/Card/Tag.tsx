@@ -7,8 +7,8 @@ const Tag = (props: { tagName: string[] }) => {
             <div className="flex gap-1 items-center flex-wrap text-xl">
                 <BiPurchaseTag className="-scale-x-100" />
                 <Flex gap={3}>
-                    {props.tagName.map((v) => {
-                        return <Badge>{v}</Badge>;
+                    {props.tagName.map((v, i) => {
+                        return <Badge key={i}>{v}</Badge>;
                     })}
                 </Flex>
             </div>

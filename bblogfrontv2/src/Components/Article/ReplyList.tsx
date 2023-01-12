@@ -6,7 +6,7 @@ const ReplyList = () => {
         <>
             <Flex flexDirection={"column"} gap={1}>
                 {Array.from({ length: 10 }).map((v, i) => {
-                    return <ReplyCard key={i}/>;
+                    return <ReplyCard key={i} />;
                 })}
             </Flex>
         </>

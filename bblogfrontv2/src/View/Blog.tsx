@@ -1,7 +1,6 @@
 import { Input, InputGroup, InputLeftElement, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { useState } from "react";
 import { BsSearch } from "react-icons/bs";
-import { Link } from "react-router-dom";
 import ArticleCard from "../Components/Card/ArticleCard";
 
 const Blog = () => {

@@ -12,8 +12,8 @@ const ReplyInput = () => {
                             <Input placeholder="비밀번호" size="sm" borderRadius={0} />
                         </Flex>
                         <Textarea placeholder="Here is a sample placeholder" borderRadius={0} />
-                        <Flex justifyContent={"flex-end"}  className="text-sm text-gray-500 " gap={3}>
-                            <Checkbox  defaultChecked>비밀 댓글</Checkbox>
+                        <Flex justifyContent={"flex-end"} className="text-sm text-gray-500 " gap={3}>
+                            <Checkbox defaultChecked>비밀 댓글</Checkbox>
                             <Button size={"sm"} borderRadius={0}>
                                 {"댓글 등록"}
                             </Button>
