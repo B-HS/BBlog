@@ -1,7 +1,18 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
-// https://vitejs.dev/config/
+const TARGET = "http://127.0.0.1:10500";
+
 export default defineConfig({
-  plugins: [react()],
-})
+    plugins: [react()],
+    server: {
+        host: true,
+        proxy: {
+            "/blogapi": {
+                target: TARGET,
+                changeOrigin: true,
+                secure: false,
+            },
+        },
+    },
+});

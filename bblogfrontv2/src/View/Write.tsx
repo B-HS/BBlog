@@ -8,7 +8,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { KeyboardEvent, useRef, useState } from "react";
 import { BiAlignLeft, BiAlignMiddle, BiAlignRight, BiBold, BiBrushAlt, BiCodeAlt, BiHeading, BiImage, BiListOl, BiListUl, BiPurchaseTag, BiRedo, BiStrikethrough, BiUnderline, BiUndo } from "react-icons/bi";
-import useInput from "../Components/Hook/useInput";
+import useInput from "../Hook/useInput";
 import "../Components/Write/Editor.sass";
 const Write = () => {
     const OptionsText = ["소개", "Frontend", "Backend", "etc.", "포트폴리오"];
