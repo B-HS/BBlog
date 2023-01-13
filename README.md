@@ -3,6 +3,8 @@
 - 다른 팀프로젝트 끝나는대로 v2시작 (예상 v2시작 - 23년 1월 중~말)
 - 프론트 vue -> React
 - 백엔드 spring boot 코드개선
+- Vue, Springboot, React 초기의 예전 파일들 레포지토리<br>
+ㄴ https://github.com/B-HS/bblog_old
 
 ### v2 작업 예정 사항
 - React + spring boot + kafka로 간이 채팅방구현
@@ -22,6 +24,8 @@
 
 ### 📅 기간
 -  1월 ~ 기간 미정
+
+
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
