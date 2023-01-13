@@ -1,0 +1,27 @@
+{"properties": [
+  {
+    "name": "dev.hyns.filepath",
+    "type": "java.lang.String",
+    "description": "filePath"
+  },
+  {
+    "name": "dev.hyns.secretkey",
+    "type": "java.lang.String",
+    "description": "private key"
+  },
+  {
+    "name": "dev.hyns.rediskey",
+    "type": "java.lang.String",
+    "description": "rediskey"
+  },
+  {
+    "name": "dev.hyns.redishost",
+    "type": "java.lang.String",
+    "description": "redishost"
+  },
+  {
+    "name": "dev.hyns.redisport",
+    "type": "java.lang.String",
+    "description": "resdisport"
+  }
+]}
