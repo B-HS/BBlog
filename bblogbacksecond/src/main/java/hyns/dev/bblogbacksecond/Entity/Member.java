@@ -29,7 +29,7 @@ public class Member {
 
     @Column(unique = true)
     private String email;
-    
+
     @Column
     private String password;
     
@@ -41,10 +41,6 @@ public class Member {
 
     @Enumerated(EnumType.STRING)
     private Role roles;
-
-    @Builder.Default
-    @OneToMany(mappedBy = "member", orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<Article> article = new LinkedHashSet<>();
     
     @Builder.Default
     @OneToMany(mappedBy = "member", orphanRemoval = true, fetch = FetchType.LAZY)

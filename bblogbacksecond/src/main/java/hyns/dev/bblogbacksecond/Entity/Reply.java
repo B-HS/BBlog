@@ -1,5 +1,6 @@
 package hyns.dev.bblogbacksecond.Entity;
 
+import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -30,6 +31,12 @@ public class Reply {
     @Lob
     private byte[] context;
 
+    @Column
+    private String guestName;
+
+    @Column
+    private String guestPassword;
+
     @Column(updatable = false)
     @CreatedDate
     private LocalDateTime replyCreatedDate;
@@ -42,5 +49,9 @@ public class Reply {
     
     @ManyToOne
     private Article article;
+
+    public String updateContextToString(byte[] byteString){
+        return new String(byteString, Charset.forName("utf8"));
+    }
 
 }

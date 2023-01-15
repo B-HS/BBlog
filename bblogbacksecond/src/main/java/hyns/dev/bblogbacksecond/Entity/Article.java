@@ -1,5 +1,6 @@
 package hyns.dev.bblogbacksecond.Entity;
 
+import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -15,7 +16,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import lombok.AllArgsConstructor;
@@ -47,9 +47,6 @@ public class Article {
     @Enumerated(EnumType.STRING)
     private Menu menu;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
-
     @Builder.Default
     @OneToMany(mappedBy = "article", orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy("rid asc")
@@ -68,6 +65,10 @@ public class Article {
 
     public enum Menu {
         INTRO, FRONTEND, BACKEND, ETC, PORTFOLIO
+    }
+
+    public String updateContextToString(byte[] byteString){
+        return new String(byteString, Charset.forName("utf8"));
     }
     
 }
