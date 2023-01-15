@@ -1,37 +1,48 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { reply } from "../../Typings/type";
-import type { RootState } from "../store";
+import { reply, replyListAxios } from "../../Typings/type";
+import { replyGuestWrite, replyListReuqest } from "../Async/replyAsync";
 
 const initialState: reply = {
     reply: [],
     Loading: false,
     Done: false,
     Error: null,
-    setStatus: function (stat: string, action?: PayloadAction) {
-        switch (stat) {
-            case "pending":
-                this.Loading = true;
-                this.Done = false;
-                this.Error = null;
-            case "fulfilled":
-                this.Loading = false;
-                this.Done = true;
-            case "rejected":
-                this.Loading = false;
-                this.Error = action?.payload;
-            default:
-                break;
-        }
-    },
 };
 
 export const replySlice = createSlice({
-    name: "article",
+    name: "reply",
     initialState,
     reducers: {},
-    extraReducers(builder) {},
+    extraReducers(builder) {
+        builder.addCase(replyGuestWrite.pending, (state) => {
+            state.Loading = true;
+            state.Done = false;
+            state.Error = null;
+        });
+        builder.addCase(replyGuestWrite.fulfilled, (state) => {
+            state.Loading = false;
+            state.Done = true;
+        });
+        builder.addCase(replyGuestWrite.rejected, (state, action) => {
+            state.Loading = false;
+            state.Error = action.payload;
+        });
+
+        builder.addCase(replyListReuqest.pending, (state) => {
+            state.Loading = true;
+            state.Done = false;
+            state.Error = null;
+        });
+        builder.addCase(replyListReuqest.fulfilled, (state, action:PayloadAction<replyListAxios>) => {
+            state.Loading = false;
+            state.Done = true;
+            state.reply = [...action.payload.replies]
+        });
+        builder.addCase(replyListReuqest.rejected, (state, action) => {
+            state.Loading = false;
+            state.Error = action.payload;
+        });
+    },
 });
 
-export const {} = replySlice.actions;
-export const selectAllReply = (state: RootState) => state.reply;
 export default replySlice.reducer;

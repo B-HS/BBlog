@@ -1,14 +1,11 @@
 package hyns.dev.bblogbacksecond.Entity;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,18 +16,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Hashtag {
-
+public class ArticleImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long hid;
+    private Long iid;
 
     @Column
-    private String tagName;
-    
+    private String name;
 
-    @OneToMany(mappedBy = "hashtag", orphanRemoval = true)
-    @Builder.Default
-    private Set<ArticleHashtag> ahid = new LinkedHashSet<>();
-
+    @ManyToOne
+    private Article article;
 }

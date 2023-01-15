@@ -1,45 +1,72 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { article } from "../../Typings/type";
-import { articleAsync } from "../Async/articleAsync";
-import type { RootState } from "../store";
+import { article, articleInfo, articleListAxios } from "../../Typings/type";
+import { reqeustArticleDetail, requestArticleList, write } from "../Async/articleAsync";
 
 const initialState: article = {
     article: [],
+    articleDetail: null,
+    tabIndex: 0,
+    page: 0,
+    size: 5,
     Loading: false,
     Done: false,
     Error: null,
-    setStatus: function (stat: string, action?: PayloadAction) {
-        switch (stat) {
-            case "pending":
-                this.Loading = true;
-                this.Done = false;
-                this.Error = null;
-            case "fulfilled":
-                this.Loading = false;
-                this.Done = true;
-            case "rejected":
-                this.Loading = false;
-                this.Error = action?.payload;
-            default:
-                break;
-        }
-    },
 };
 
 export const articleSlice = createSlice({
     name: "article",
     initialState,
-    reducers: {},
+    reducers: {
+        setTabIndex: (state, action: PayloadAction<number>) => {
+            state.tabIndex = action.payload;
+        },
+    },
     extraReducers(builder) {
-        builder.addCase(articleAsync.requestArticleList.pending, (state) => state.setStatus("pending")),
-        builder.addCase(articleAsync.requestArticleList.fulfilled, (state, action) => {
-            state.setStatus("fulfilled");
-            state.article = [...state.article, ...action.payload];
+        builder.addCase(requestArticleList.pending, (state) => {
+            state.Loading = true;
+            state.Done = false;
+            state.Error = null;
         }),
-        builder.addCase(articleAsync.requestArticleList.rejected, (state, action) => state.setStatus("rejected", action));
+            builder.addCase(requestArticleList.fulfilled, (state, action: PayloadAction<articleListAxios>) => {
+                state.Loading = false;
+                state.Done = true;
+                state.article = [...action.payload.articles];
+            }),
+            builder.addCase(requestArticleList.rejected, (state, action) => {
+                state.Loading = false;
+                state.Error = action.payload;
+            });
+
+        builder.addCase(write.pending, (state) => {
+            state.Loading = true;
+            state.Done = false;
+            state.Error = null;
+        });
+        builder.addCase(write.fulfilled, (state) => {
+            state.Loading = false;
+            state.Done = true;
+        });
+        builder.addCase(write.rejected, (state, action) => {
+            state.Loading = false;
+            state.Error = action.payload;
+        });
+
+        builder.addCase(reqeustArticleDetail.pending, (state) => {
+            state.Loading = true;
+            state.Done = false;
+            state.Error = null;
+        });
+        builder.addCase(reqeustArticleDetail.fulfilled, (state, action: PayloadAction<articleInfo>) => {
+            state.Loading = false;
+            state.Done = true;
+            state.articleDetail = JSON.parse(JSON.stringify(action.payload));
+        });
+        builder.addCase(reqeustArticleDetail.rejected, (state, action) => {
+            state.Loading = false;
+            state.Error = action.payload;
+        });
     },
 });
 
-export const {} = articleSlice.actions;
-export const selectAllArticle = (state: RootState) => state.article;
+export const { setTabIndex } = articleSlice.actions;
 export default articleSlice.reducer;

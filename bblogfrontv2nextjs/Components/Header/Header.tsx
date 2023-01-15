@@ -1,13 +1,11 @@
-import React from "react";
 import { Tooltip } from "@chakra-ui/react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { BsBoxArrowRight, BsGithub } from "react-icons/bs";
 import { TbLetterT } from "react-icons/tb";
-import Link from "next/link";
 
 export const Header = () => {
     const [scrollWith, setScrollWith] = useState<number>(0);
-    const [windowWidth, setWindowWidth] = useState<number>(0);
     const [currentLocation, setCurrentLocation] = useState<string>("");
     const verticalscroll = useRef<HTMLDivElement>(null);
 
@@ -16,9 +14,6 @@ export const Header = () => {
         let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         setScrollWith((winScroll / height) * 100);
     }, [scrollWith]);
-    const calcWith = useCallback(() => {
-        return setWindowWidth(window.innerWidth);
-    }, [windowWidth]);
     const fillColorMenu = useCallback(() => {
         return setCurrentLocation(window.location.href.split("/")[3]);
     }, [currentLocation]);
@@ -29,15 +24,9 @@ export const Header = () => {
         setCurrentLocation(name);
     };
 
-    useEffect(() => calcWith, []);
     useEffect(() => fillColorMenu, []);
-    useEffect(() => {
-        window.onscroll = () => scrollbar();
-        window.onresize = () => calcWith();
-        window.addEventListener("popstate", () => {
-            setCurrentLocation(window.location.href.split("/")[3]);
-        });
-    }, []);
+    useEffect(() => setCurrentLocation(window.location.href.split("/")[3]), []);
+    useEffect(() => (window.onscroll = () => scrollbar()), []);
 
     return (
         <>
@@ -69,27 +58,27 @@ export const Header = () => {
                     </section>
                 </div>
                 <div className="navigator flex gap-3">
-                    <a href="https://github.com/B-HS">
+                    <a href="https://github.com/B-HS" aria-label={"github/b-hs"}>
                         <Tooltip label="깃허브" aria-label="gibhub" hasArrow arrowSize={10}>
                             <span>
                                 <BsGithub />
                             </span>
                         </Tooltip>
                     </a>
-                    <a href="https://hbyun.tistory.com/">
+                    <a href="https://hbyun.tistory.com/" aria-label={"tistoryblog/hbyun"}>
                         <Tooltip label="티스토리" aria-label="tistory" hasArrow arrowSize={10}>
                             <span>
                                 <TbLetterT />
                             </span>
                         </Tooltip>
                     </a>
-                    <a href="/login">
+                    <Link href="/login">
                         <Tooltip label="로그인" aria-label="login" hasArrow arrowSize={10}>
                             <span>
                                 <BsBoxArrowRight />
                             </span>
                         </Tooltip>
-                    </a>
+                    </Link>
                 </div>
             </div>
             <div ref={verticalscroll} className={`bg-black z-50 h-1 sticky top-12 overflow-hidden w-[${scrollWith}%]`} style={{ width: `${scrollWith}%` }}></div>

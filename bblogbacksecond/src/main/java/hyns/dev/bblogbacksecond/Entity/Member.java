@@ -39,6 +39,9 @@ public class Member {
     @Column
     private Boolean logged;
 
+    @Column
+    private String image;
+
     @Enumerated(EnumType.STRING)
     private Role roles;
     

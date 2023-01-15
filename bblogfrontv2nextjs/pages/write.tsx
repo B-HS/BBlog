@@ -1,4 +1,3 @@
-import React from "react";
 import { Badge, Button, Flex, Menu, MenuButton, MenuItem, MenuList, Select, Stack, useToast, UseToastOptions } from "@chakra-ui/react";
 import { Highlight } from "@tiptap/extension-highlight";
 import Image from "@tiptap/extension-image";
@@ -7,12 +6,17 @@ import Placeholder from "@tiptap/extension-placeholder";
 import TextAlign from "@tiptap/extension-text-align";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { KeyboardEvent, useRef, useState } from "react";
+import { useRouter } from "next/router";
+import React, { KeyboardEvent, useRef, useState } from "react";
 import { BiAlignLeft, BiAlignMiddle, BiAlignRight, BiBold, BiBrushAlt, BiCodeAlt, BiHeading, BiImage, BiListOl, BiListUl, BiPurchaseTag, BiRedo, BiStrikethrough, BiUnderline, BiUndo } from "react-icons/bi";
 import useInput from "../Hook/useInput";
+import { write } from "../Store/Async/articleAsync";
+import { useAppDispatch } from "../Store/store";
+import { articleInfo } from "../Typings/type";
 const Write = () => {
-    const OptionsText = ["소개", "Frontend", "Backend", "etc.", "포트폴리오"];
-
+    const dispatch = useAppDispatch();
+    const router = useRouter();
+    const OptionsText = ["INTRO", "FRONTEND", "BACKEND", "ETC", "PORTFOLIO"];
     const imgBox = useRef<HTMLInputElement>(null);
     const [hash, hashOnChange, setHash] = useInput();
     const [options, optionsOnChange] = useInput();
@@ -149,7 +153,6 @@ const Write = () => {
 
     const deleteHashTag = (val: string) => {
         setTagList([...taglist].filter((v) => v != val));
-        console.log(taglist);
     };
 
     const writeArticle = () => {
@@ -170,14 +173,17 @@ const Write = () => {
             return;
         }
 
-        const articleData = {
+        const articleData: articleInfo = {
             menu: OptionsText[options as unknown as number],
             title: title,
             context: editor.getHTML(),
-            tags: taglist,
+            hashtag: taglist,
             hide: hide == "0" ? false : true,
         };
-        console.log(articleData);
+
+        dispatch(write(articleData)).then((res) => {
+            router.push(`./blog/${res.payload}`);
+        });
     };
 
     return (
