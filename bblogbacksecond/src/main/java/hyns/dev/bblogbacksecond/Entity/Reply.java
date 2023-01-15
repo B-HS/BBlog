@@ -2,10 +2,14 @@ package hyns.dev.bblogbacksecond.Entity;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.CreatedDate;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,8 +25,16 @@ public class Reply {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long rid;
-    private String context;
+
+    @Column
+    @Lob
+    private byte[] context;
+
+    @Column(updatable = false)
+    @CreatedDate
     private LocalDateTime replyCreatedDate;
+    
+    @ManyToOne
     private Article aritlce;
 
     @ManyToOne

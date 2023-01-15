@@ -1,11 +1,12 @@
 package hyns.dev.bblogbacksecond.Entity;
 
-import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,13 +26,20 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mid;
-    private String email;
-    private String password;
-    private String nickname;
-    private Boolean logged;
-    private LocalDateTime joindate;
 
-    @ElementCollection(fetch= FetchType.LAZY)
+    @Column(unique = true)
+    private String email;
+    
+    @Column
+    private String password;
+    
+    @Column
+    private String nickname;
+
+    @Column
+    private Boolean logged;
+
+    @Enumerated(EnumType.STRING)
     private Role roles;
 
     @Builder.Default

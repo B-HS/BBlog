@@ -8,6 +8,6 @@ import hyns.dev.bblogbacksecond.Entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
     @Modifying
-    @Query("UPDATE Member mb set mb.logged=:logged where mb.memberId =:memberId")
+    @Query("UPDATE Member mb set mb.logged=:logged where mb.mid =:memberId")
     void loggedMember(Long memberId, boolean logged);
 }
