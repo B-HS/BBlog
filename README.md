@@ -1,25 +1,24 @@
 # BBlog v2
-- v2 준비
-- 다른 팀프로젝트 끝나는대로 v2시작 (예상 v2시작 - 23년 1월 중~말)
-- 프론트 vue -> React
+### 작업 목표
+- 프론트 vue + vite -> React + nextjs
 - 백엔드 spring boot 코드개선
 - Vue, Springboot, React 초기의 예전 파일들 레포지토리<br>
 ㄴ https://github.com/B-HS/old_bblog
 
+### 작업 끝
+- Vue > React 및 디자인 수정
+- Nextjs 적용
+- 인증 / 인가(Spring Security + JWT + OAuth2)
+- 게시글CRD / 댓글CRUD / 페이징
 ### v2 작업 예정 사항
-- React + spring boot + kafka로 간이 채팅방구현
-- 프론트페이지 리액트로 다시 작성 ✓
-- i18n작업 + vite ssr
-- Admin페이지 추가
-- Next.js 이용해서 SSR 적용
+- 게시글<br>
+ㄴ 수정, 태그+내용 검색, 방문자 집계, SSR, 대댓글
+- 관리자페이지
+- 채팅방(본체 끝내고 시작)
 
 ### 🚂 개인 블로그 토이 프로젝트
-- React
-- Spring boot 3
-- Mysql
-- Redis
-- Kafka
-- ~~Vue 3~~
+- React(Typescript + Redux Toolki + Nextjs)
+- Spring boot 3(MySQL + Redis + Kafka)
 
 
 ### 📅 기간
