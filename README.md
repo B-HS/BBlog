@@ -17,7 +17,7 @@
 - 채팅방(본체 끝내고 시작)
 
 ### 🚂 개인 블로그 토이 프로젝트
-- React(Typescript + Redux Toolki + Nextjs)
+- React(Typescript + Redux Toolkit + Nextjs)
 - Spring boot 3(MySQL + Redis + Kafka)
 
 
