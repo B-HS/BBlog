@@ -46,12 +46,6 @@ const Blog = () => {
         if (info.current.page > info.current.total) {
             return;
         }
-        console.log("-----------------------------------");
-        console.log(info.current.page);
-        console.log(info.current.size);
-        console.log(info.current.total);
-        console.log("-----------------------------------");
-
         if (info.current.page == 0) {
             dispatch(requestArticleList(menu));
             info.current.page += 1;

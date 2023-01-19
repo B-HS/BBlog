@@ -219,9 +219,6 @@ const Write = () => {
             refresh: getCookie("refresh"),
         };
         if (articleData.menu == "PORTFOLIO") {
-            console.log(articleData.start);
-            console.log(articleData.end);
-
             if (articleData.start?.getTime()) {
                 toast(toastOptions("시작날짜를 선택해주세요") as UseToastOptions);
                 return;
@@ -332,7 +329,6 @@ const Write = () => {
                                             onClick={() => {
                                                 const filtered = uploadedImg.filter((val) => val != v);
                                                 setUploadedImg((v) => [...filtered]);
-                                                console.log(uploadedImg);
                                             }}
                                         >
                                             X {i}{" "}
