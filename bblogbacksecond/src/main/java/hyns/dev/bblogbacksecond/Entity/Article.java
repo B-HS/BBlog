@@ -70,6 +70,17 @@ public class Article {
     @OrderBy("iid asc")
     private Set<ArticleImage> imgs = new LinkedHashSet<>();
 
+    @Column
+    private LocalDateTime start;
+
+    @Column
+    private LocalDateTime end;
+
+    @Column
+    private String github;
+    
+    @Column
+    private String published;
 
     public enum Menu {
         INTRO, FRONTEND, BACKEND, ETC, PORTFOLIO

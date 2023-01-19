@@ -55,4 +55,8 @@ public class Reply {
     
     @ManyToOne
     private Article article;
+
+    public void updateReplyContextForModifyingContext(String context){
+        this.context = context;
+    }
 }

@@ -2,6 +2,7 @@ import { CircularProgress, Flex } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import PortfolioCard from "../../Components/Card/PortfolioCard";
 import { requestArticleList } from "../../Store/Async/articleAsync";
+import { clearArticles } from "../../Store/Slice/articleSlice";
 import { useAppDispatch, useAppSelector } from "../../Store/store";
 import { listRequest } from "../../Typings/type";
 
@@ -15,6 +16,9 @@ const Portfolio = () => {
 
     useEffect(() => {
         menu({ menu: "PORTFOLIO", page: 0, size: 5 });
+        return ()=>{
+            dispatch(clearArticles())
+        }
     }, []);
     return (
         <section className="portfolio_list grid grid-cols-fluid justify-items-center gap-6 p-2 mt-3">

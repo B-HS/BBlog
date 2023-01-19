@@ -1,5 +1,7 @@
 package hyns.dev.bblogbacksecond.Repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,4 +12,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Modifying
     @Query("UPDATE Member mb set mb.logged=:logged where mb.mid =:memberId")
     void loggedMember(Long memberId, boolean logged);
+
+    Optional<Member> findByEmail(String email);
+
+    Boolean existsByEmail(String email);
 }

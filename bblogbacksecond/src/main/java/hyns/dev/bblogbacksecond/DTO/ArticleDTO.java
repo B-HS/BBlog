@@ -26,4 +26,8 @@ public class ArticleDTO {
     private Boolean hide;
     private List<String> imgs;
     private List<String> hashtag;
+    private LocalDateTime start;
+    private LocalDateTime end;
+    private String github;
+    private String published;
 }

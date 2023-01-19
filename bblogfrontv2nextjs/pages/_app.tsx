@@ -1,6 +1,7 @@
 import { ChakraProvider, Container } from "@chakra-ui/react";
-import type { AppProps } from "next/app";
+import type { AppContext, AppProps } from "next/app";
 import React from "react";
+import App from 'next/app'
 import { Provider } from "react-redux";
 import { Header } from "../Components/Header/Header";
 import wrapper from "../Store/store";

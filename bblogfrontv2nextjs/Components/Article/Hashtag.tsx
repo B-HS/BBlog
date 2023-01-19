@@ -8,7 +8,7 @@ export interface tagProp {
 const Hashtag = ({ tags }: tagProp) => {
     return (
         <Flex borderWidth={1} padding="1rem 1rem" flexDirection={"column"} gap={2}>
-            <Tag tagName={tags} />
+            <Tag tagName={tags?tags:[]} />
         </Flex>
     );
 };

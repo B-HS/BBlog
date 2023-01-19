@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { listRequest, replyInfo } from "../../Typings/type";
 import axiosJSON from "./axiosConfig/axiosJSON";
-import axiosUSER from "./axiosConfig/axiosUSER";
 
 export const replyGuestWrite = createAsyncThunk("reply/write/guest", async (info: replyInfo) => {
     const { data } = await axiosJSON.post(`/blogapi/reply/write/guest`, info);
@@ -9,7 +8,7 @@ export const replyGuestWrite = createAsyncThunk("reply/write/guest", async (info
 });
 
 export const replyUserWrite = createAsyncThunk("reply/write/user", async (info: replyInfo) => {
-    const { data } = await axiosUSER.post(`/blogapi/reply/write/user`, info);
+    const { data } = await axiosJSON.post(`/blogapi/reply/write/user`, info, { headers: { "access": info.access, "refresh": info.refresh } });
     return data;
 });
 
@@ -17,3 +16,29 @@ export const replyListReuqest = createAsyncThunk("reply/list", async (info: list
     const { data } = await axiosJSON.get(`/blogapi/reply/${info.aid}/${info.page}/${info.size}`);
     return data;
 });
+
+export const replyListReuqestMore = createAsyncThunk("reply/list/more", async (info: listRequest) => {
+    const { data } = await axiosJSON.get(`/blogapi/reply/${info.aid}/${info.page}/${info.size}`);
+    return data;
+});
+
+export const replyGuestDelete = createAsyncThunk("reply/delete/guest", async (info: replyInfo) => {
+    const { data } = await axiosJSON.post(`/blogapi/reply/delete/guest`, info);
+    return data;
+});
+
+export const replyUserDelete = createAsyncThunk("reply/delete/user", async (info: replyInfo) => {
+    const { data } = await axiosJSON.post(`/blogapi/reply/delete/user`, info, { headers: { "access": info.access, "refresh": info.refresh } });
+    return data;
+});
+
+export const replyGuestModify = createAsyncThunk("reply/modify/guest", async (info: replyInfo) => {
+    const { data } = await axiosJSON.post(`/blogapi/reply/modify/guest`, info);
+    return data;
+});
+
+export const replyUserModify = createAsyncThunk("reply/modify/user", async (info: replyInfo) => {
+    const { data } = await axiosJSON.post(`/blogapi/reply/modify/user`, info, { headers: { "access": info.access, "refresh": info.refresh } });
+    return data;
+});
+

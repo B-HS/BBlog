@@ -15,6 +15,7 @@ import hyns.dev.bblogbacksecond.DTO.MemberDTO;
 import hyns.dev.bblogbacksecond.DTO.ReplyDTO;
 import hyns.dev.bblogbacksecond.Entity.Reply;
 import hyns.dev.bblogbacksecond.Repository.ReplyRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -22,18 +23,24 @@ import lombok.RequiredArgsConstructor;
 public class ReplyServiceImpl implements ReplyService {
     private final ReplyRepository rrepo;
     private final PasswordEncoder encoder;
+
     @Override
     public HashMap<String, Object> list(Long aid, Integer page, Integer size) {
         HashMap<String, Object> result = new HashMap<>();
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Direction.DESC,"replyGroup", "replySort"));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Direction.ASC, "replyGroup", "replySort"));
         Page<Reply> entities = rrepo.findDistinctAllByArticleAid(pageable, aid);
         result.put("replies", entities.getContent().stream().map(v -> {
             ReplyDTO tmp = toDTO(v);
-            Optional.ofNullable(v.getMember()).ifPresentOrElse(user->{
-                tmp.setMember(MemberDTO.builder().nickname(user.getEmail()).mid(user.getMid()).img(user.getImage()).build());
-            },()->{
+            if (tmp.getHide()) {
+                tmp.setContext("비밀 댓글입니다");
+            }
+            Optional.ofNullable(v.getMember()).ifPresentOrElse(user -> {
+                tmp.setMember(
+                        MemberDTO.builder().nickname(user.getNickname()).mid(user.getMid()).img(user.getImage()).build());
+            }, () -> {
                 tmp.setGuestName(v.getGuestName());
             });
+
             return tmp;
         }).toList());
         result.put("total", entities.getTotalPages());
@@ -41,26 +48,53 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public Long wrtie(ReplyDTO dto) {
-        if(dto.getGuestName().length()>0){
+    public Long wrtie(ReplyDTO dto, Boolean isUser) {
+        Long latestMid = rrepo.findFirstByArticleAidOrderByRidDesc(dto.getAid()).orElse(Reply.builder().rid(1L).build())
+                .getRid();
+        dto.setReplyGroup(latestMid);
+        if (!isUser) {
             dto.setGuestPassword(encoder.encode(dto.getGuestPassword()));
             return rrepo.save(toEntityGuest(dto)).getRid();
         }
-        return null;
+        return rrepo.save(toEntity(dto)).getRid();
     }
 
     @Override
-    public ReplyDTO read(Long num) {
-        return null;
+    public Long modify(ReplyDTO dto, Boolean isUser) {
+        if (isUser) {
+            rrepo.findByRidAndMemberMid(dto.getRid(), dto.getMember().getMid()).ifPresentOrElse(v -> {
+                v.updateReplyContextForModifyingContext(dto.getContext());
+                rrepo.save(v);
+            }, () -> dto.setRid(-1L));
+        } else {
+            rrepo.findById(dto.getRid()).ifPresentOrElse(v -> {
+                if (encoder.matches(dto.getGuestPassword(), v.getGuestPassword())) {
+                    v.updateReplyContextForModifyingContext(dto.getContext());
+                    rrepo.save(v);
+                } else {
+                    dto.setRid(-1L);
+                }
+
+            }, () -> dto.setRid(-1L));
+        }
+        return dto.getRid();
     }
 
     @Override
-    public Long modify(ReplyDTO dto) {
-        return null;
-    }
-
-    @Override
-    public Boolean delete(Long num) {
-        return null;
+    @Transactional
+    public Long delete(ReplyDTO dto, Boolean isUser) {
+        if (isUser) {
+            rrepo.findByRidAndMemberMid(dto.getRid(), dto.getMember().getMid()).ifPresentOrElse(v -> rrepo.delete(v),
+                    () -> dto.setRid(-1L));
+        } else {
+            rrepo.findById(dto.getRid()).ifPresentOrElse(v -> {
+                if (encoder.matches(dto.getGuestPassword(), v.getGuestPassword())) {
+                    rrepo.delete(v);
+                } else {
+                    dto.setRid(-1L);
+                }
+            }, () -> dto.setRid(-1L));
+        }
+        return dto.getRid();
     }
 }

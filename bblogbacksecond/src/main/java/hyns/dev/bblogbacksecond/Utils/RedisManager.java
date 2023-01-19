@@ -41,7 +41,7 @@ public class RedisManager {
                 .findById(Long.parseLong(manager.tokenParser(accessToken).get("userNumber").toString()));
         Long accessTokenMemberId = targetMember.orElse(Member.builder().mid(0L).build()).getMid();
         Long refreshTokenMemberId = Long
-                .parseLong(Optional.ofNullable(redisTemplate.opsForValue().get(refreshToken)).orElse("-1"));
+                .parseLong(Optional.ofNullable(redisTemplate.opsForValue().get(refreshToken.split("Bearer ")[1])).orElse("-1"));
         if (refreshTokenMemberId == accessTokenMemberId & manager.tokenValidator(refreshToken)
                 & isLogged(accessToken)) {
             return true;
@@ -59,5 +59,17 @@ public class RedisManager {
     public Boolean isLogged(String aToken) {
         return mrepo.findById(Long.parseLong(manager.tokenParser(aToken).get("userNumber").toString()))
                 .orElse(Member.builder().mid(0L).logged(false).build()).getLogged();
+    }
+
+    public void generateEmailAuthorizationCode(String email, String authNum) {
+        redisTemplate.opsForValue().set(email, authNum, Duration.ofDays(1));
+    }
+
+    public Boolean checkEmailAuthCode(String email, String authnum) {
+        if (redisTemplate.opsForValue().get(email).toString().equals(authnum)) {
+            redisTemplate.delete(email);
+            return true;
+        }
+        return false;
     }
 }

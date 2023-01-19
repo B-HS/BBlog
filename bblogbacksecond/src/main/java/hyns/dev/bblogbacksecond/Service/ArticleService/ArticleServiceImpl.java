@@ -1,5 +1,6 @@
 package hyns.dev.bblogbacksecond.Service.ArticleService;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,7 @@ import hyns.dev.bblogbacksecond.Repository.ArticleHashtagRepository;
 import hyns.dev.bblogbacksecond.Repository.ArticleRepository;
 import hyns.dev.bblogbacksecond.Repository.HashtagRepository;
 import hyns.dev.bblogbacksecond.Repository.ImageRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -31,6 +33,7 @@ public class ArticleServiceImpl implements ArticleService {
     private final HashtagRepository hrepo;
 
     @Override
+    @Transactional
     public HashMap<String, Object> list(Menu menu, Integer page, Integer size) {
         HashMap<String, Object> result = new HashMap<>();
         Page<Article> entities = arepo.findDistinctAllByMenu(PageRequest.of(page, size, Direction.DESC, "aid"), menu);
@@ -59,6 +62,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional
     public ArticleDTO read(Long num) {
         return toDTO(arepo.findByAid(num));
     }
@@ -95,5 +99,11 @@ public class ArticleServiceImpl implements ArticleService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public ArticleDTO intro() {
+        Article result = arepo.findFirstByMenuOrderByAidDesc(Menu.INTRO).orElse(Article.builder().context("소개글이 없습니다").articleCreatedDate(LocalDateTime.now()).build());
+        return ArticleDTO.builder().context(result.getContext()).articleCreatedDate(result.getArticleCreatedDate()).build();
     }
 }

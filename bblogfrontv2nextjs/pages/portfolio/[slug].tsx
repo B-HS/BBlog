@@ -14,7 +14,6 @@ const ReadPortfolio = () => {
     useEffect(() => {
         if (!router.isReady) return;
         dispatch(reqeustArticleDetail(slug));
-        console.log(slug);
     }, [router.isReady]);
 
     return (

@@ -1,53 +1,65 @@
-import React from "react";
-import { Button, ButtonGroup, Card, CardBody, CardFooter, Divider, Heading, Image, Stack, Text } from "@chakra-ui/react";
-import Link from "next/link";
-import { BiCalendar } from "react-icons/bi";
-import Tag from "./Tag";
+import { Button, ButtonGroup, Card, CardBody, CardFooter, Divider, Flex, Heading, Image, Stack, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
+import relativeTime from "dayjs/plugin/relativeTime";
+import Link from "next/link";
+import React from "react";
+import { BsTools } from "react-icons/bs";
 import { articleProps } from "../../Typings/type";
+import Tag from "./Tag";
 
 const PortfolioCard = ({ info }: articleProps) => {
     dayjs.extend(relativeTime);
     dayjs.locale("ko");
-    const tmpTag = ["1234", "32415"];
     return (
         <Card className="card" borderRadius={0}>
             <CardBody>
                 <Link href={`/portfolio/${info.aid}`}>
                     <Image src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" alt="Green double couch with wooden legs" borderRadius="0" />
                 </Link>
-                <Stack mt="6" spacing="3">
-                    <section className="date flex items-center text-gray-500">
-                        <BiCalendar />
-                        <Text fontSize="small" color="gray.500">
-                            2023.01.01
-                        </Text>
+                <Stack mt="6" mb={2} spacing="3">
+                    <section className="date flex items-center gap-1 text-gray-500">
+                        <BsTools className="translate-y-[1.5px]" />
+                        {info.start && (
+                            <Flex alignItems={"center"}>
+                                <Text fontSize={"sm"} color="gray.500" transform={"auto"} translateY={"1px"}>
+                                    {dayjs(info.start).locale("ko").format("YYYY년 MM월 DD일")}
+                                </Text>
+                                <span> ~ </span>
+                                <Text fontSize={"sm"} color="gray.500" transform={"auto"} translateY={"1px"}>
+                                    {dayjs(info.end).locale("ko").format("YYYY년 MM월 DD일")}
+                                </Text>
+                            </Flex>
+                        )}
                     </section>
                     <Link href={`/portfolio/${info.aid}`}>
-                        <Heading size="md">ProjectName</Heading>
-                    </Link>
-                    <Link href={`/blog/${info.aid}`}>
-                        <Text>250자 내로 작성해서 출력</Text>
+                        <Heading size="md">{info.title}</Heading>
                     </Link>
                 </Stack>
                 <section className="stack">
-                    <Tag tagName={tmpTag} />
+                    <Tag tagName={info.hashtag} />
                 </section>
             </CardBody>
             <Divider />
             <CardFooter>
-                <ButtonGroup spacing="2">
-                    <Button variant="solid" colorScheme="blackAlpha" borderRadius={0}>
-                        깃허브로 이동
-                    </Button>
-                    <Button variant="solid" colorScheme="telegram" borderRadius={0}>
-                        배포 사이트로 이동
-                    </Button>
+                <ButtonGroup spacing="2" flexWrap={"wrap"}>
+                    {info.github && (
+                        <a href={info.github}>
+                            <Button variant="solid" colorScheme="blackAlpha" borderRadius={0}>
+                                깃허브
+                            </Button>
+                        </a>
+                    )}
+                    {info.published && (
+                        <a href={info.published}>
+                            <Button variant="solid" colorScheme="telegram" borderRadius={0}>
+                                배포 사이트
+                            </Button>
+                        </a>
+                    )}
                     <Link href={`/blog/${info.aid}`}>
                         <Button variant="solid" colorScheme="telegram" borderRadius={0}>
-                            프로젝트 설명 보기
+                            자세히
                         </Button>
                     </Link>
                 </ButtonGroup>

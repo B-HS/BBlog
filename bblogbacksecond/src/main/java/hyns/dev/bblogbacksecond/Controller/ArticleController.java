@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +24,12 @@ import lombok.RequiredArgsConstructor;
 public class ArticleController {
     private final ArticleService aser;
 
-    @GetMapping(value = "{menu}/{page}/{size}")
+    @GetMapping("intro")
+    public ResponseEntity<ArticleDTO> getIntropage() {
+        return new ResponseEntity<>(aser.intro(), HttpStatus.OK);
+    }
+
+    @GetMapping("{menu}/{page}/{size}")
     public ResponseEntity<HashMap<String, Object>> getArticleList(
             @PathVariable("menu") Menu menu,
             @PathVariable(value= "page") Integer page,
@@ -31,22 +37,23 @@ public class ArticleController {
         return new ResponseEntity<>(aser.list(menu, page, size), HttpStatus.OK);
     }
 
-    @GetMapping(value = "{num}")
+    @GetMapping("{num}")
     public ResponseEntity<ArticleDTO> getArticleDetail(@PathVariable("num") Long aid) {
         return new ResponseEntity<>(aser.read(aid), HttpStatus.OK);
     }
 
-    @PostMapping(value = "write")
+    @PostMapping("write")
     public ResponseEntity<Long> writeArticle(@RequestBody ArticleDTO dto){
         return new ResponseEntity<>(aser.wrtie(dto), HttpStatus.OK);
     }
 
-    @PostMapping(value = "modify")
+    @PostMapping("modify")
     public ResponseEntity<Long> modifyArticle(@RequestBody ArticleDTO dto){
         return new ResponseEntity<>(aser.modify(dto), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "{num}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @DeleteMapping("{num}")
     public ResponseEntity<Boolean> deleteArticle(@PathVariable("num") Long aid){
         return new ResponseEntity<>(aser.delete(aid), HttpStatus.OK);
     }

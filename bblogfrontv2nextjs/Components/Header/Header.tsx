@@ -1,10 +1,26 @@
 import { Tooltip } from "@chakra-ui/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { BiLogOut } from "react-icons/bi";
 import { BsBoxArrowRight, BsGithub } from "react-icons/bs";
 import { TbLetterT } from "react-icons/tb";
+import { getCookie, setCookie, removeCookie } from "typescript-cookie";
+import { logout, tokenRefresher } from "../../Store/Async/memberAsync";
+import { setUserInfo } from "../../Store/Slice/memberSlice";
+import { useAppDispatch, useAppSelector } from "../../Store/store";
+import { tokenInfo } from "../../Typings/type";
+
+export const decodeJwt = (tkn: string) => {
+    const base64Payload = tkn.split(".")[1];
+    const payloadBuffer = Buffer.from(base64Payload, "base64");
+    return JSON.parse(payloadBuffer.toString()) as tokenInfo;
+};
 
 export const Header = () => {
+    const dispatch = useAppDispatch();
+    const { member } = useAppSelector((state) => state.member);
+    const router = useRouter();
     const [scrollWith, setScrollWith] = useState<number>(0);
     const [currentLocation, setCurrentLocation] = useState<string>("");
     const verticalscroll = useRef<HTMLDivElement>(null);
@@ -24,9 +40,57 @@ export const Header = () => {
         setCurrentLocation(name);
     };
 
-    useEffect(() => fillColorMenu, []);
-    useEffect(() => setCurrentLocation(window.location.href.split("/")[3]), []);
+
     useEffect(() => (window.onscroll = () => scrollbar()), []);
+    useEffect(() => setCurrentLocation(window.location.href.split("/")[3]), [router]);
+    useEffect(() => {
+        if (!getCookie("refresh") && !getCookie("access")) {
+            dispatch(setUserInfo(null));
+            return;
+        }
+        const atkn: tokenInfo = decodeJwt(getCookie("access"));
+        const rtkn: tokenInfo = decodeJwt(getCookie("refresh"));
+        const now = new Date();
+        const msNow = Number.parseInt((now.getTime() / 1000).toFixed(0));
+
+        if (atkn.exp - msNow < 300 || rtkn.exp - msNow < 300) {          
+            dispatch(tokenRefresher({ access: getCookie("access"), refresh: getCookie("refresh") })).then((res) => {
+                if (!res.payload) {
+                    removeCookie("refresh");
+                    removeCookie("access");
+                    return;
+                }
+                                
+                setCookie("access", "Bearer " + res.payload.access, { path: "/" });
+                setCookie("refresh", "Bearer " + res.payload.refresh, { path: "/" });
+            });
+        }
+
+        if (rtkn.userNumber !== atkn.userNumber) {
+            removeCookie("refresh");
+            removeCookie("access");
+        }
+
+        dispatch(
+            setUserInfo({
+                mid: atkn.userNumber,
+                nickname: atkn.nickname,
+                email: atkn.email,
+            })
+        );
+    }, [router]);
+
+    const memberLogout = () => {
+        
+        removeCookie("access");
+        dispatch(logout({ refresh: getCookie("refresh") })).then((res) => {
+            if (res.payload) {
+                removeCookie("refresh");
+                router.push("/logout");
+            }
+        });
+        
+    };
 
     return (
         <>
@@ -72,13 +136,22 @@ export const Header = () => {
                             </span>
                         </Tooltip>
                     </a>
-                    <Link href="/login">
-                        <Tooltip label="로그인" aria-label="login" hasArrow arrowSize={10}>
-                            <span>
-                                <BsBoxArrowRight />
+                    {!member && (
+                        <Link href="/login">
+                            <Tooltip label="로그인" aria-label="login" hasArrow arrowSize={10}>
+                                <span>
+                                    <BsBoxArrowRight className={` ${currentLocation == "login" ? "text-violet-500" : ""}`} onClick={() => resetStatus("login")} />
+                                </span>
+                            </Tooltip>
+                        </Link>
+                    )}
+                    {member && (
+                        <Tooltip label="로그아웃" aria-label="logout" hasArrow arrowSize={10}>
+                            <span className="cursor-pointer">
+                                <BiLogOut className="text-blue-800" onClick={() => memberLogout()} />
                             </span>
                         </Tooltip>
-                    </Link>
+                    )}
                 </div>
             </div>
             <div ref={verticalscroll} className={`bg-black z-50 h-1 sticky top-12 overflow-hidden w-[${scrollWith}%]`} style={{ width: `${scrollWith}%` }}></div>

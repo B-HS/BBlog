@@ -5,7 +5,6 @@ import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -42,15 +41,15 @@ public class Member {
     @Column
     private String image;
 
-    @Enumerated(EnumType.STRING)
-    private Role roles;
+    @Enumerated
+    private Set<Role> roles;
     
     @Builder.Default
     @OneToMany(mappedBy = "member", orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Reply> replies = new LinkedHashSet<>();
 
     public enum Role{
-        ADMIN, USER
+        ADMIN, USER, OAUTH
     }
 
 }

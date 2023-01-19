@@ -5,7 +5,9 @@ import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,15 +20,17 @@ public class ImgManager {
     @Value("${dev.hyns.filepath}")
     private String DIRADRESS;
 
-    public String ImgUpload(MultipartFile file) {
-        String fileName = UUID.randomUUID().toString() + "."
-                + FilenameUtils.getExtension(file.getOriginalFilename());
-        try {
-            file.transferTo(new File(DIRADRESS + fileName));
-            return fileName;
-        } catch (Exception e) {
-            return "basic.png";
-        }
+    public Set<String> ImgUpload(List<MultipartFile> files) {
+
+        return files.stream().map(file->{
+            String fileName = UUID.randomUUID().toString() + "."+ FilenameUtils.getExtension(file.getOriginalFilename());
+            try {
+                file.transferTo(new File(DIRADRESS + fileName));
+                return fileName;
+            } catch (Exception e) {
+                return "basic.png";
+            }
+        }).collect(Collectors.toSet());
     }
 
     public List<Object> ImgRead(String filename) {

@@ -21,6 +21,5 @@ public class MemberDTO {
     private String img;
     private LocalDateTime joindate;
     private ArticleDTO article;
-    private ReplyDTO reply;
-    
+    private ReplyDTO reply;    
 }

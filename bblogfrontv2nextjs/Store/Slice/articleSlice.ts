@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { article, articleInfo, articleListAxios } from "../../Typings/type";
-import { reqeustArticleDetail, requestArticleList, write } from "../Async/articleAsync";
+import { imgUpload, reqeustArticleDetail, requestArticleList, requestIntro, requestMoreArticleList, write } from "../Async/articleAsync";
 
 const initialState: article = {
     article: [],
@@ -8,9 +8,11 @@ const initialState: article = {
     tabIndex: 0,
     page: 0,
     size: 5,
+    totalArticle: 999,
     Loading: false,
     Done: false,
     Error: null,
+    imgName: [],
 };
 
 export const articleSlice = createSlice({
@@ -20,6 +22,13 @@ export const articleSlice = createSlice({
         setTabIndex: (state, action: PayloadAction<number>) => {
             state.tabIndex = action.payload;
         },
+        clearImgName: (state) => {
+            state.imgName = null;
+        },
+        clearArticles: (state) => {
+            state.article = []
+            state.totalArticle = Math.random()*999
+        },
     },
     extraReducers(builder) {
         builder.addCase(requestArticleList.pending, (state) => {
@@ -27,15 +36,60 @@ export const articleSlice = createSlice({
             state.Done = false;
             state.Error = null;
         }),
-            builder.addCase(requestArticleList.fulfilled, (state, action: PayloadAction<articleListAxios>) => {
-                state.Loading = false;
-                state.Done = true;
-                state.article = [...action.payload.articles];
-            }),
-            builder.addCase(requestArticleList.rejected, (state, action) => {
-                state.Loading = false;
-                state.Error = action.payload;
-            });
+        builder.addCase(requestArticleList.fulfilled, (state, action: PayloadAction<articleListAxios>) => {
+            state.Loading = false;
+            state.Done = true;
+            state.article = [...action.payload.articles];
+        }),
+        builder.addCase(requestArticleList.rejected, (state, action) => {
+            state.Loading = false;
+            state.Error = action.payload;
+        });
+
+        builder.addCase(requestMoreArticleList.pending, (state) => {
+            state.Loading = true;
+            state.Done = false;
+            state.Error = null;
+        }),
+        builder.addCase(requestMoreArticleList.fulfilled, (state, action: PayloadAction<articleListAxios>) => {
+            state.Loading = false;
+            state.Done = true;
+            state.article.push(...action.payload.articles)
+            state.totalArticle = action.payload.total;
+        }),
+        builder.addCase(requestMoreArticleList.rejected, (state, action) => {
+            state.Loading = false;
+            state.Error = action.payload;
+        });
+
+        builder.addCase(imgUpload.pending, (state) => {
+            state.Loading = true;
+            state.Done = false;
+            state.Error = null;
+        }),
+        builder.addCase(imgUpload.fulfilled, (state) => {
+            state.Loading = false;
+            state.Done = true;
+        }),
+        builder.addCase(imgUpload.rejected, (state, action) => {
+            state.Loading = false;
+            state.Error = action.payload;
+        });
+
+        builder.addCase(requestIntro.pending, (state) => {
+            state.Loading = true;
+            state.Done = false;
+            state.Error = null;
+        });
+        builder.addCase(requestIntro.fulfilled, (state, action: PayloadAction<articleInfo>) => {
+            state.Loading = false;
+            state.Done = true;
+            state.articleDetail = action.payload;
+        });
+        builder.addCase(requestIntro.rejected, (state, action) => {
+            state.Loading = false;
+            state.Error = action.payload;
+        });
 
         builder.addCase(write.pending, (state) => {
             state.Loading = true;
@@ -68,5 +122,5 @@ export const articleSlice = createSlice({
     },
 });
 
-export const { setTabIndex } = articleSlice.actions;
+export const { setTabIndex, clearImgName, clearArticles } = articleSlice.actions;
 export default articleSlice.reducer;

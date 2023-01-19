@@ -1,4 +1,4 @@
-import { Badge, Button, Flex, Menu, MenuButton, MenuItem, MenuList, Select, Stack, useToast, UseToastOptions } from "@chakra-ui/react";
+import { Badge, Button, CircularProgress, Flex, Input, Menu, MenuButton, MenuItem, MenuList, Select, Stack, Text, useToast, UseToastOptions } from "@chakra-ui/react";
 import { Highlight } from "@tiptap/extension-highlight";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
@@ -7,13 +7,25 @@ import TextAlign from "@tiptap/extension-text-align";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useRouter } from "next/router";
-import React, { KeyboardEvent, useRef, useState } from "react";
+import React, { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { BiAlignLeft, BiAlignMiddle, BiAlignRight, BiBold, BiBrushAlt, BiCodeAlt, BiHeading, BiImage, BiListOl, BiListUl, BiPurchaseTag, BiRedo, BiStrikethrough, BiUnderline, BiUndo } from "react-icons/bi";
+import { getCookie } from "typescript-cookie";
 import useInput from "../Hook/useInput";
-import { write } from "../Store/Async/articleAsync";
-import { useAppDispatch } from "../Store/store";
+import { imgUpload, write } from "../Store/Async/articleAsync";
+import { adminChecker } from "../Store/Async/memberAsync";
+import { clearImgName } from "../Store/Slice/articleSlice";
+import { useAppDispatch, useAppSelector } from "../Store/store";
 import { articleInfo } from "../Typings/type";
+
 const Write = () => {
+    useEffect(() => {
+        dispatch(adminChecker({ refresh: getCookie("refresh"), access: getCookie("access") })).then((res) => {
+            if (!res.payload) {
+                router.push("/login");
+            }
+        });
+    }, []);
+
     const dispatch = useAppDispatch();
     const router = useRouter();
     const OptionsText = ["INTRO", "FRONTEND", "BACKEND", "ETC", "PORTFOLIO"];
@@ -23,6 +35,12 @@ const Write = () => {
     const [hide, hideOnChange] = useInput();
     const [title, titleOnChange] = useInput();
     const [taglist, setTagList] = useState<string[]>([]);
+    const [start, startOnChange] = useInput();
+    const [end, endOnChange] = useInput();
+    const [github, githubOnChange] = useInput();
+    const [published, publishedOnChange] = useInput();
+    const [uploadedImg, setUploadedImg] = useState<string[]>([]);
+    const { imgName, Loading } = useAppSelector((state) => state.article);
     const toast = useToast();
     const toastOptions = (desc: string) => {
         return {
@@ -33,6 +51,7 @@ const Write = () => {
             isClosable: true,
         };
     };
+
     const editor = useEditor({
         extensions: [
             StarterKit.configure({
@@ -66,10 +85,24 @@ const Write = () => {
     const imageUpload = () => {
         let formData = new FormData();
         if (imgBox.current && imgBox.current.files) {
-            formData.append("uploadimg", imgBox.current.files[0]);
+            for (let i = 0; i < imgBox.current.files.length; i++) {
+                const element = imgBox.current.files[i];
+                formData.append("files", element);
+            }
+            dispatch(imgUpload({data:formData, access:getCookie("access"), refresh:getCookie("refresh")})).then((res) => {
+                if (OptionsText[options as unknown as number] != "PORTFOLIO") {
+                    for (let i = 0; i < res.payload.length; i++) {
+                        const element = res.payload[i];
+                        editor
+                            .chain()
+                            .focus()
+                            .setImage({ src: `./blogapi/image/${element}` })
+                            .run();
+                    }
+                }
+                setUploadedImg((v) => [...v, ...res.payload]);
+            });
         }
-        // 이미지  redux로 업로드하고난 뒤 파일이름 받아서 아래쪽 src에 넣기
-        editor.chain().focus().setImage({ src: `백엔드 만들고 이미지 주소` }).run();
     };
 
     const alignment = (which: string) => {
@@ -179,13 +212,32 @@ const Write = () => {
             context: editor.getHTML(),
             hashtag: taglist,
             hide: hide == "0" ? false : true,
+            imgs: uploadedImg,
+            github: github,
+            published: published,
+            access: getCookie("access"),
+            refresh: getCookie("refresh"),
         };
+        if (articleData.menu == "PORTFOLIO") {
+            console.log(articleData.start);
+            console.log(articleData.end);
+
+            if (articleData.start?.getTime()) {
+                toast(toastOptions("시작날짜를 선택해주세요") as UseToastOptions);
+                return;
+            }
+            if (articleData.end?.getTime()) {
+                toast(toastOptions("종료날짜를 선택해주세요") as UseToastOptions);
+                return;
+            }
+            articleData.start = new Date(start);
+            articleData.end = new Date(end);
+        }
 
         dispatch(write(articleData)).then((res) => {
             router.push(`./blog/${res.payload}`);
         });
     };
-
     return (
         <>
             <Stack padding={1}>
@@ -237,6 +289,7 @@ const Write = () => {
                         ref={imgBox}
                         type="file"
                         hidden={true}
+                        multiple={true}
                         onChange={() => {
                             imageUpload();
                         }}
@@ -261,6 +314,37 @@ const Write = () => {
                         );
                     })}
                 </Flex>
+                <hr />
+                {OptionsText[options as unknown as number] == "PORTFOLIO" && (
+                    <Flex flexDirection={"column"} gap={2}>
+                        <Flex alignItems={"center"} gap={5} width={"50%"}>
+                            <Input size="sm" borderRadius={0} type="date" value={start} onChange={startOnChange} />
+                            <Text>~</Text>
+                            <Input size="sm" borderRadius={0} type="date" value={end} onChange={endOnChange} />
+                        </Flex>
+                        <Flex flexDirection={"column"} alignSelf={"flex-start"}>
+                            <span>사진 총 {uploadedImg ? uploadedImg.length : 0}개 첨부됨</span>
+                            {imgName &&
+                                uploadedImg &&
+                                uploadedImg.map((v, i) => (
+                                    <Flex key={i} gap={3}>
+                                        <span
+                                            onClick={() => {
+                                                const filtered = uploadedImg.filter((val) => val != v);
+                                                setUploadedImg((v) => [...filtered]);
+                                                console.log(uploadedImg);
+                                            }}
+                                        >
+                                            X {i}{" "}
+                                        </span>
+                                        <button key={i}>{v}</button>
+                                    </Flex>
+                                ))}
+                        </Flex>
+                        <Input size="sm" borderRadius={0} type="text" value={github} onChange={githubOnChange} width={"50%"} />
+                        <Input size="sm" borderRadius={0} type="text" value={published} onChange={publishedOnChange} width={"50%"} />
+                    </Flex>
+                )}
                 <Flex gap={2} justifyContent={"flex-end"}>
                     <Select placeholder="공개 설정" padding={0} borderRadius={0} value={hide} onChange={hideOnChange} width={"30%"} maxW={"110px"}>
                         <option value="0">공개</option>
@@ -270,6 +354,11 @@ const Write = () => {
                         등록
                     </Button>
                 </Flex>
+                {Loading && (
+                    <Flex width="w-screen" justifyContent={"center"}>
+                        <CircularProgress isIndeterminate color="purple.300" />
+                    </Flex>
+                )}
             </Stack>
         </>
     );

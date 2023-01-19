@@ -9,14 +9,9 @@ import hyns.dev.bblogbacksecond.Entity.Reply;
 
 public interface ReplyService {
     HashMap<String, Object> list(Long aid, Integer page, Integer size);
-
-    Long wrtie(ReplyDTO dto);
-
-    ReplyDTO read(Long num);
-
-    Long modify(ReplyDTO dto);
-
-    Boolean delete(Long num);
+    Long wrtie(ReplyDTO dto, Boolean isUser);
+    Long modify(ReplyDTO dto, Boolean isUser);
+    Long delete(ReplyDTO dto, Boolean isUser);
 
     default ReplyDTO toDTO(Reply entity) {
         return ReplyDTO.builder()
