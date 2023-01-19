@@ -1,9 +1,10 @@
+- Vue, Springboot, React 초기의 예전 파일들 레포지토리<br>
+ㄴ https://github.com/B-HS/old_bblog
 # BBlog v2
 ### 작업 목표
 - 프론트 vue + vite -> React + nextjs
 - 백엔드 spring boot 코드개선
-- Vue, Springboot, React 초기의 예전 파일들 레포지토리<br>
-ㄴ https://github.com/B-HS/old_bblog
+
 
 ### 작업 끝
 - Vue > React 및 디자인 수정
