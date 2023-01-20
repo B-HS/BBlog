@@ -106,4 +106,14 @@ public class ArticleServiceImpl implements ArticleService {
         Article result = arepo.findFirstByMenuOrderByAidDesc(Menu.INTRO).orElse(Article.builder().context("소개글이 없습니다").articleCreatedDate(LocalDateTime.now()).build());
         return ArticleDTO.builder().context(result.getContext()).articleCreatedDate(result.getArticleCreatedDate()).build();
     }
+
+    @Override
+    @Transactional
+    public HashMap<String, Object> searchedList(String keywords, Integer page, Integer size) {
+        HashMap<String, Object> result = new HashMap<>();
+        Page<Article> entities = arepo.searchList(PageRequest.of(page, size, Direction.DESC, "aid"), keywords);
+        result.put("articles", entities.getContent().stream().map(v -> toDTO(v)).toList());
+        result.put("total", entities.getTotalPages());
+        return result;
+    }
 }

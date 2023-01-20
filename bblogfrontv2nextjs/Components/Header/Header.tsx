@@ -12,6 +12,9 @@ import { useAppDispatch, useAppSelector } from "../../Store/store";
 import { tokenInfo } from "../../Typings/type";
 
 export const decodeJwt = (tkn: string) => {
+    if(!tkn.includes(".")){
+        return
+    }
     const base64Payload = tkn.split(".")[1];
     const payloadBuffer = Buffer.from(base64Payload, "base64");
     return JSON.parse(payloadBuffer.toString()) as tokenInfo;
@@ -30,9 +33,6 @@ export const Header = () => {
         let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         setScrollWith((winScroll / height) * 100);
     }, [scrollWith]);
-    const fillColorMenu = useCallback(() => {
-        return setCurrentLocation(window.location.href.split("/")[3]);
-    }, [currentLocation]);
 
     const resetStatus = (name: string) => {
         window.scrollTo(0, 0);
@@ -47,7 +47,14 @@ export const Header = () => {
         if (!getCookie("refresh") && !getCookie("access")) {
             dispatch(setUserInfo(null));
             return;
+        }        
+        if(!decodeJwt(getCookie("access"))&&!decodeJwt(getCookie("refresh"))){
+            removeCookie("refresh");
+            removeCookie("access");
+            dispatch(setUserInfo(null));
+            return
         }
+
         const atkn: tokenInfo = decodeJwt(getCookie("access"));
         const rtkn: tokenInfo = decodeJwt(getCookie("refresh"));
         const now = new Date();
@@ -81,7 +88,6 @@ export const Header = () => {
     }, [router]);
 
     const memberLogout = () => {
-        
         removeCookie("access");
         dispatch(logout({ refresh: getCookie("refresh") })).then((res) => {
             if (res.payload) {

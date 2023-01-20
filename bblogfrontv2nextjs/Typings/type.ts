@@ -111,6 +111,7 @@ export interface imgUploadAxios extends token{
 export interface listRequest {
     page: number;
     size: number;
+    keyword?: string;
     menu?: "INTRO" | "FRONTEND" | "BACKEND" | "ETC" | "PORTFOLIO";
     aid?: number | string | string[];
     total?:number;

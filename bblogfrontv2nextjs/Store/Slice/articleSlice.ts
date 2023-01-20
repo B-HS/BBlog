@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { article, articleInfo, articleListAxios } from "../../Typings/type";
-import { imgUpload, reqeustArticleDetail, requestArticleList, requestIntro, requestMoreArticleList, write } from "../Async/articleAsync";
+import { imgUpload, reqeustArticleDetail, requestArticleList, requestIntro, requestMoreArticleList, requestMoreSearch, requestSearchList, write } from "../Async/articleAsync";
 
 const initialState: article = {
     article: [],
@@ -40,8 +40,25 @@ export const articleSlice = createSlice({
             state.Loading = false;
             state.Done = true;
             state.article = [...action.payload.articles];
+            state.totalArticle = action.payload.total      
         }),
         builder.addCase(requestArticleList.rejected, (state, action) => {
+            state.Loading = false;
+            state.Error = action.payload;
+        });
+
+        builder.addCase(requestSearchList.pending, (state) => {
+            state.Loading = true;
+            state.Done = false;
+            state.Error = null;
+        }),
+        builder.addCase(requestSearchList.fulfilled, (state, action: PayloadAction<articleListAxios>) => {
+            state.Loading = false;
+            state.Done = true;
+            state.article = [...action.payload.articles];
+            state.totalArticle = action.payload.total 
+        }),
+        builder.addCase(requestSearchList.rejected, (state, action) => {
             state.Loading = false;
             state.Error = action.payload;
         });
@@ -54,10 +71,27 @@ export const articleSlice = createSlice({
         builder.addCase(requestMoreArticleList.fulfilled, (state, action: PayloadAction<articleListAxios>) => {
             state.Loading = false;
             state.Done = true;
-            state.article.push(...action.payload.articles)
-            state.totalArticle = action.payload.total;
+            state.article = [...state.article,...action.payload.articles];
+            state.totalArticle = action.payload.total
         }),
         builder.addCase(requestMoreArticleList.rejected, (state, action) => {
+            state.Loading = false;
+            state.Error = action.payload;
+            
+        });
+
+        builder.addCase(requestMoreSearch.pending, (state) => {
+            state.Loading = true;
+            state.Done = false;
+            state.Error = null;
+        }),
+        builder.addCase(requestMoreSearch.fulfilled, (state, action: PayloadAction<articleListAxios>) => {
+            state.Loading = false;
+            state.Done = true;
+            state.article = [...state.article,...action.payload.articles];
+            state.totalArticle = action.payload.total
+        }),
+        builder.addCase(requestMoreSearch.rejected, (state, action) => {
             state.Loading = false;
             state.Error = action.payload;
         });

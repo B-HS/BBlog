@@ -11,6 +11,7 @@ import hyns.dev.bblogbacksecond.Entity.Article.Menu;
 
 public interface ArticleService {
     HashMap<String, Object> list(Menu menu, Integer page, Integer size);
+    HashMap<String, Object> searchedList(String keywords, Integer page, Integer size);
     Long wrtie(ArticleDTO dto);
     ArticleDTO read(Long num);
     Long modify(ArticleDTO dto);

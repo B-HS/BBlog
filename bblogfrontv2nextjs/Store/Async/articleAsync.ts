@@ -4,12 +4,22 @@ import axiosJSON from "./axiosConfig/axiosJSON";
 import axiosMultiform from "./axiosConfig/axiosMultiform";
 
 export const requestArticleList = createAsyncThunk("article/list", async (request: listRequest) => {
-    const { data } = await axiosJSON.get(`/blogapi/article/${request.menu}/${request.page}/${request.size}`);
+    const { data } = await axiosJSON.get(`/blogapi/article/menu/${request.menu}/${request.page}/${request.size}`);
     return data;
 });
 
 export const requestMoreArticleList = createAsyncThunk("article/list/more", async (request: listRequest) => {
-    const { data } = await axiosJSON.get(`/blogapi/article/${request.menu}/${request.page}/${request.size}`);
+    const { data } = await axiosJSON.get(`/blogapi/article/menu/${request.menu}/${request.page}/${request.size}`);
+    return data;
+});
+
+export const requestSearchList = createAsyncThunk("article/search", async (request: listRequest) => {
+    const { data } = await axiosJSON.get(`/blogapi/article/search/${request.keyword}/${request.page}/${request.size}`);
+    return data;
+});
+
+export const requestMoreSearch = createAsyncThunk("article/serach/more", async (request: listRequest) => {
+    const { data } = await axiosJSON.get(`/blogapi/article/search/${request.keyword}/${request.page}/${request.size}`);
     return data;
 });
 
