@@ -1,5 +1,3 @@
-- Vue, Springboot, React 초기의 예전 파일들 레포지토리<br>
-ㄴ https://github.com/B-HS/old_bblog
 # BBlog v2
 ### 작업 목표
 - 프론트 vue + vite -> React + nextjs
