@@ -13,6 +13,7 @@ const initialState: article = {
     Done: false,
     Error: null,
     imgName: [],
+    searchKeyword: null,
 };
 
 export const articleSlice = createSlice({
@@ -21,6 +22,9 @@ export const articleSlice = createSlice({
     reducers: {
         setTabIndex: (state, action: PayloadAction<number>) => {
             state.tabIndex = action.payload;
+        },
+        setSearchKeyword : (state, action:PayloadAction<string>)=>{
+            state.searchKeyword = action.payload
         },
         clearImgName: (state) => {
             state.imgName = null;
@@ -156,5 +160,5 @@ export const articleSlice = createSlice({
     },
 });
 
-export const { setTabIndex, clearImgName, clearArticles } = articleSlice.actions;
+export const { setTabIndex, clearImgName, clearArticles, setSearchKeyword } = articleSlice.actions;
 export default articleSlice.reducer;

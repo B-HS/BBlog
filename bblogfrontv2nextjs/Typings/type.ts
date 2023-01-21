@@ -12,6 +12,7 @@ export interface article extends statusType {
     size?: number;
     imgName?: string[] | null;
     totalArticle: number;
+    searchKeyword: string;
 }
 
 export interface reply extends statusType {
@@ -77,6 +78,7 @@ export interface articleInfo extends token{
 
 export type articleProps = {
     info: articleInfo;
+    tagSearch?: Function;
 };
 
 export interface articleListAxios {

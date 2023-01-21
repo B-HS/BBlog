@@ -4,17 +4,32 @@ import { BsSearch } from "react-icons/bs";
 import ArticleCard from "../../Components/Card/ArticleCard";
 import useInput from "../../Hook/useInput";
 import { requestArticleList, requestMoreArticleList, requestMoreSearch, requestSearchList } from "../../Store/Async/articleAsync";
-import { clearArticles, setTabIndex } from "../../Store/Slice/articleSlice";
+import { clearArticles, setSearchKeyword, setTabIndex } from "../../Store/Slice/articleSlice";
 import { useAppDispatch, useAppSelector } from "../../Store/store";
 import { articleInfo, listRequest } from "../../Typings/type";
 
 const Blog = () => {
-    const { tabIndex, article, Loading, totalArticle } = useAppSelector((state) => state.article);
+    const { tabIndex, article, Loading, totalArticle, searchKeyword } = useAppSelector((state) => state.article);
     const [searchToggle, setSearchToggle] = useState<Boolean>(false);
-    const [keywordsInput, onChangeKeywordsInput] = useInput();
+    const [searchingSwtich, setSearchingSwtich] = useState<Boolean>(false);
+    const [keywordsInput, onChangeKeywordsInput, setKeywordsInput] = useInput();
     const observeObj = useRef<HTMLDivElement>(null);
     const info = useRef<listRequest>({ page: 0, size: 5, total: 999 });
     const dispatch = useAppDispatch();
+
+    const setToSearchingPage = (keyword: string) => {
+        setSearchToggle(true);
+        setSearchingSwtich(true);
+        setKeywordsInput(keyword);
+        stateClear(3);
+        menu({ keyword: keywordsInput, page: info.current.page, size: info.current.size });
+        dispatch(setSearchKeyword(null));
+    };
+    useEffect(() => {
+        if (searchKeyword) {
+            setToSearchingPage(searchKeyword);
+        }
+    }, [searchKeyword]);
 
     const menuChangeEventor = (tab: number) => {
         switch (tab) {
@@ -45,12 +60,12 @@ const Blog = () => {
     };
 
     const menu = (menu: listRequest) => {
-        if (info.current.page >= info.current.total||totalArticle==0) {
+        if (info.current.page >= info.current.total || totalArticle == 0) {
             return;
         }
         if (tabIndex === 3) {
-            if(keywordsInput.trim().length==0){
-                return
+            if (keywordsInput.trim().length == 0) {
+                return;
             }
             if (info.current.page == 0) {
                 dispatch(requestSearchList(menu));
@@ -63,7 +78,6 @@ const Blog = () => {
             info.current.total = totalArticle;
             return;
         }
-
 
         if (info.current.page == 0) {
             dispatch(requestArticleList(menu));
@@ -84,6 +98,9 @@ const Blog = () => {
         }
         const obr = new IntersectionObserver((ele) => {
             if (ele[0].isIntersecting) {
+                if (!searchingSwtich && tabIndex == 3) {
+                    return;
+                }
                 menuChangeEventor(tabIndex);
             }
         });
@@ -137,8 +154,8 @@ const Blog = () => {
                                 w="100%"
                                 onKeyDown={(e) => {
                                     if (e.key == "Enter") {
-                                        
-                                        stateClear(3)
+                                        setSearchingSwtich(true);
+                                        stateClear(3);
                                         menu({ keyword: keywordsInput, page: info.current.page, size: info.current.size });
                                     }
                                 }}
@@ -146,7 +163,11 @@ const Blog = () => {
                                 type="text"
                                 placeholder="전체 게시판 검색"
                                 value={keywordsInput}
-                                onChange={onChangeKeywordsInput}
+                                onChange={(e) => {
+                                    dispatch(clearArticles());
+                                    setSearchingSwtich(false);
+                                    return onChangeKeywordsInput(e);
+                                }}
                             />
                         </InputGroup>
                     </section>
@@ -154,7 +175,7 @@ const Blog = () => {
             </section>
             <section className="article_area flex flex-col gap-10 p-2">
                 {article.map((v: articleInfo) => (
-                    <ArticleCard key={v.aid} info={v} />
+                    <ArticleCard key={v.aid} info={v} tagSearch={setToSearchingPage} />
                 ))}
                 {!Loading && <div ref={observeObj}></div>}
                 {Loading && (
