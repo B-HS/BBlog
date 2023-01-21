@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import hyns.dev.bblogbacksecond.DTO.MemberDTO;
 import hyns.dev.bblogbacksecond.DTO.Token;
 import hyns.dev.bblogbacksecond.Service.MemberService.MemberService;
+import hyns.dev.bblogbacksecond.Utils.JWTManager;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService mser;
+    private final JWTManager tokeManager;
     @PostMapping("emaildup")
     public ResponseEntity<Boolean> emailDuplicateCheck(@RequestBody MemberDTO dto) {
         return new ResponseEntity<>(mser.emailDuplicateCheck(dto.getEmail()), HttpStatus.OK);
@@ -52,6 +54,11 @@ public class MemberController {
     @PostMapping("admin")
     public ResponseEntity<Boolean> adminCheck(@RequestBody Token tkn){
         return new ResponseEntity<>(mser.adminChecker(tkn.getRefresh()), HttpStatus.OK);
+    }
+
+    @PostMapping("admincookie")
+    public ResponseEntity<Boolean> adminCookiecheck(@RequestBody Token tkn){
+        return new ResponseEntity<Boolean>(tokeManager.tokenValidator(tkn.getAccess()), HttpStatus.OK);
     }
     
 }

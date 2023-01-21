@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { articleInfo, imgUploadAxios, listRequest } from "../../Typings/type";
+import { articleInfo, articleRequestAxios, imgUploadAxios, listRequest } from "../../Typings/type";
 import axiosJSON from "./axiosConfig/axiosJSON";
 import axiosMultiform from "./axiosConfig/axiosMultiform";
 
@@ -29,7 +29,7 @@ export const reqeustArticleDetail = createAsyncThunk("article/read", async (num:
 });
 
 export const write = createAsyncThunk("article/write", async (info: articleInfo) => {
-    const { data } = await axiosJSON.post(`/blogapi/article/write`, info, {headers:{"access": info.access, "refresh": info.refresh}});
+    const { data } = await axiosJSON.post(`/blogapi/article/write`, info, { headers: { access: info.access, refresh: info.refresh } });
     return data;
 });
 
@@ -39,6 +39,21 @@ export const requestIntro = createAsyncThunk("article/intro", async () => {
 });
 
 export const imgUpload = createAsyncThunk("article/uploadImage", async (formData: imgUploadAxios) => {
-    const { data } = await axiosMultiform.post(`/blogapi/image/upload`, formData.data, {headers:{"access": formData.access, "refresh": formData.refresh}});
+    const { data } = await axiosMultiform.post(`/blogapi/image/upload`, formData.data, { headers: { access: formData.access, refresh: formData.refresh } });
+    return data;
+});
+
+export const getTagerArticleInformaiton = createAsyncThunk("article/modify/getinfo", async (info: articleRequestAxios) => {
+    const { data } = await axiosJSON.post("/blogapi/article/modifyinfo", {aid:info.aid}, { headers: { access: info.access, refresh: info.refresh } });
+    return data;
+});
+
+export const modifyRequest = createAsyncThunk("article/modify", async (info: articleInfo) => {
+    const { data } = await axiosJSON.post("/blogapi/article/modify", info, { headers: { access: info.access, refresh: info.refresh } });
+    return data;
+});
+
+export const removeRequest = createAsyncThunk("article/remove", async (info: articleRequestAxios) => {
+    const { data } = await axiosJSON.post(`/blogapi/article/remove/${info.aid}`, info, { headers: { access: info.access, refresh: info.refresh } });
     return data;
 });

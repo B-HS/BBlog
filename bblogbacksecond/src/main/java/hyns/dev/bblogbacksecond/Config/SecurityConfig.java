@@ -43,6 +43,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests().requestMatchers(
                 "/article/write",
                 "/article/modify",
+                "/article/modifyinfo",
                 "/image/upload",
                 "/member/admin").hasAuthority("ADMIN");
         http.authorizeHttpRequests().requestMatchers(
@@ -56,7 +57,7 @@ public class SecurityConfig {
 
         http.oauth2Login().authorizationEndpoint().baseUri("/oauth").and().userInfoEndpoint()
                 .userService(oauthAuthServiceImpl).and().successHandler(loginSuccessHanlder);
-
+        
         return http.build();
     }
 

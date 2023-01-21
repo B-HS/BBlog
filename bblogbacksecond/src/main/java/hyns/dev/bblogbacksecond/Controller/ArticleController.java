@@ -5,7 +5,6 @@ import java.util.HashMap;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +16,6 @@ import hyns.dev.bblogbacksecond.DTO.ArticleDTO;
 import hyns.dev.bblogbacksecond.Entity.Article.Menu;
 import hyns.dev.bblogbacksecond.Service.ArticleService.ArticleService;
 import lombok.RequiredArgsConstructor;
-
 @RestController
 @RequestMapping("article")
 @RequiredArgsConstructor
@@ -61,8 +59,13 @@ public class ArticleController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @DeleteMapping("{num}")
+    @PostMapping("remove/{num}")
     public ResponseEntity<Boolean> deleteArticle(@PathVariable("num") Long aid) {
         return new ResponseEntity<>(aser.delete(aid), HttpStatus.OK);
     }
+
+    @PostMapping("modifyinfo")
+    public ResponseEntity<ArticleDTO> articleInfoByAdmin(@RequestBody ArticleDTO dto) {
+        return new ResponseEntity<>(aser.read(dto.getAid()), HttpStatus.OK);
+    } 
 }

@@ -20,7 +20,7 @@ export interface reply extends statusType {
     totalReply: number;
 }
 
-export interface member extends statusType, token{
+export interface member extends statusType, token {
     member: memberInfo | null;
     duplicated?: boolean;
     authorized?: boolean;
@@ -31,12 +31,12 @@ export interface token {
     access?: string;
     refresh?: string;
 }
-export interface tokenInfo{
-    exp:number;
-    iat:number;
-    userNumber:number
-    nickname:string;
-    email:string;
+export interface tokenInfo {
+    exp: number;
+    iat: number;
+    userNumber: number;
+    nickname: string;
+    email: string;
 }
 
 export interface memberInfo {
@@ -60,8 +60,8 @@ export interface replyInfo extends token {
     replyImg?: string;
 }
 
-export interface articleInfo extends token{
-    aid?: number;
+export interface articleInfo extends token {
+    aid?: number | null;
     menu: string;
     title: string;
     articleCreatedDate?: string;
@@ -72,8 +72,8 @@ export interface articleInfo extends token{
     visitors?: number;
     start?: Date;
     end?: Date;
-    github?:string
-    published?:string
+    github?: string;
+    published?: string;
 }
 
 export type articleProps = {
@@ -105,10 +105,13 @@ export interface memberLoginAxios {
     password: string;
 }
 
-export interface imgUploadAxios extends token{
-    data : FormData
+export interface imgUploadAxios extends token {
+    data: FormData;
 }
 
+export interface articleRequestAxios extends token {
+    aid: number;
+}
 
 export interface listRequest {
     page: number;
@@ -116,5 +119,5 @@ export interface listRequest {
     keyword?: string;
     menu?: "INTRO" | "FRONTEND" | "BACKEND" | "ETC" | "PORTFOLIO";
     aid?: number | string | string[];
-    total?:number;
+    total?: number;
 }

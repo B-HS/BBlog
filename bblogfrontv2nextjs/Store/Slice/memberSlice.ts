@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { member, memberInfo, token } from "../../Typings/type";
-import { adminChecker, emailAuthCodeRequest, emailAuthProvement, emailDuplicateCheck, join, login, logout, tokenRefresher } from "../Async/memberAsync";
+import { adminChecker, adminCookie, emailAuthCodeRequest, emailAuthProvement, emailDuplicateCheck, join, login, logout, tokenRefresher } from "../Async/memberAsync";
 
 const initialState: member = {
     member: null,
@@ -80,6 +80,20 @@ export const memberSlice = createSlice({
             state.Done = true;
         });
         builder.addCase(logout.rejected, (state, action) => {
+            state.Loading = false;
+            state.Error = action.payload;
+        });
+
+        builder.addCase(adminCookie.pending, (state) => {
+            state.Loading = true;
+            state.Done = false;
+            state.Error = null;
+        });
+        builder.addCase(adminCookie.fulfilled, (state) => {
+            state.Loading = false;
+            state.Done = true;
+        });
+        builder.addCase(adminCookie.rejected, (state, action) => {
             state.Loading = false;
             state.Error = action.payload;
         });

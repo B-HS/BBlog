@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -68,26 +69,32 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional
     public Long modify(ArticleDTO dto) {
         Article proto = arepo.findByAid(dto.getAid());
+
         Set<ArticleImage> imgs = proto.getImgs();
         List<String> imgsName = imgs.stream().map(v -> v.getName()).toList();
-        List<ArticleImage> deletedImg = imgs.stream().filter(v -> !dto.getImgs().contains(v.getName())).toList();
-        List<ArticleImage> saveImg = dto.getImgs().stream().filter(v -> imgsName.contains(v))
-                .map(v -> ArticleImage.builder().name(v).article(proto).build()).toList();
+        List<String> deletedImg = imgsName.stream().filter(v -> {
+            return !dto.getImgs().contains(v);
+        }).toList();
+        irepo.deleteAllByNameIn(deletedImg);
+        List<String> savedImg = dto.getImgs().stream().filter(v -> !imgsName.contains(v)).toList();
+        irepo.saveAll(savedImg.stream().map(v -> ArticleImage.builder().name(v).article(proto).build()).toList());
 
-        Set<ArticleHashtag> artihash = proto.getArtiHash();
-        ;
-        List<String> hashtag = artihash.stream().map(v -> v.getHashtag().getTagName()).toList();
-        List<ArticleHashtag> deletedHash = artihash.stream()
-                .filter(v -> !dto.getHashtag().contains(v.getHashtag().getTagName())).toList();
-        List<ArticleHashtag> saveHash = dto.getHashtag().stream().filter(v -> hashtag.contains(v))
-                .map(tags -> toHashEntity(hrepo.save(Hashtag.builder().tagName(tags).build()), proto)).toList();
+        Set<ArticleHashtag> protoartitags = proto.getArtiHash();
+        List<String> listofTags = protoartitags.stream().map(v->v.getHashtag().getTagName()).toList();
+        List<ArticleHashtag> deletedTags = protoartitags.stream().filter(v->!dto.getHashtag().contains(v.getHashtag().getTagName())).toList();
+        ahrepo.deleteAllInBatch(deletedTags);
+        List<String> savedTagnames = dto.getHashtag().stream().filter(v-> !listofTags.contains(v)).toList();
 
-        irepo.deleteAll(deletedImg);
-        irepo.saveAll(saveImg);
-        ahrepo.deleteAll(deletedHash);
-        ahrepo.saveAll(saveHash);
+        Set<Hashtag> savedTags = savedTagnames.stream().map(v->{
+            return hrepo.findByTagName(v).orElseGet(()->hrepo.save(Hashtag.builder().tagName(v).build()));
+        }).collect(Collectors.toSet());
+
+        ahrepo.saveAll(savedTags.stream().map(v->ArticleHashtag.builder().article(proto).hashtag(v).build()).toList());
+
+        
         return arepo.save(toEntity(dto)).getAid();
     }
 
@@ -103,8 +110,10 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ArticleDTO intro() {
-        Article result = arepo.findFirstByMenuOrderByAidDesc(Menu.INTRO).orElse(Article.builder().context("소개글이 없습니다").articleCreatedDate(LocalDateTime.now()).build());
-        return ArticleDTO.builder().context(result.getContext()).articleCreatedDate(result.getArticleCreatedDate()).build();
+        Article result = arepo.findFirstByMenuOrderByAidDesc(Menu.INTRO)
+                .orElse(Article.builder().context("소개글이 없습니다").articleCreatedDate(LocalDateTime.now()).build());
+        return ArticleDTO.builder().context(result.getContext()).articleCreatedDate(result.getArticleCreatedDate())
+                .build();
     }
 
     @Override

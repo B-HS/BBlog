@@ -6,39 +6,33 @@ import Placeholder from "@tiptap/extension-placeholder";
 import TextAlign from "@tiptap/extension-text-align";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import React, { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { BiAlignLeft, BiAlignMiddle, BiAlignRight, BiBold, BiBrushAlt, BiCodeAlt, BiHeading, BiImage, BiListOl, BiListUl, BiPurchaseTag, BiRedo, BiStrikethrough, BiUnderline, BiUndo } from "react-icons/bi";
 import { getCookie } from "typescript-cookie";
 import useInput from "../Hook/useInput";
-import { imgUpload, write } from "../Store/Async/articleAsync";
+import { getTagerArticleInformaiton, imgUpload, modifyRequest, write } from "../Store/Async/articleAsync";
 import { adminChecker } from "../Store/Async/memberAsync";
-import { clearImgName } from "../Store/Slice/articleSlice";
+import { clearArticleDetail } from "../Store/Slice/articleSlice";
 import { useAppDispatch, useAppSelector } from "../Store/store";
 import { articleInfo } from "../Typings/type";
 
 const Write = () => {
-    useEffect(() => {
-        dispatch(adminChecker({ refresh: getCookie("refresh"), access: getCookie("access") })).then((res) => {
-            if (!res.payload) {
-                router.push("/login");
-            }
-        });
-    }, []);
-
     const dispatch = useAppDispatch();
+    const { articleDetail } = useAppSelector((state) => state.article);
     const router = useRouter();
     const OptionsText = ["INTRO", "FRONTEND", "BACKEND", "ETC", "PORTFOLIO"];
     const imgBox = useRef<HTMLInputElement>(null);
     const [hash, hashOnChange, setHash] = useInput();
-    const [options, optionsOnChange] = useInput();
-    const [hide, hideOnChange] = useInput();
-    const [title, titleOnChange] = useInput();
+    const [options, optionsOnChange, setOptions] = useInput();
+    const [hide, hideOnChange, setHide] = useInput();
+    const [title, titleOnChange, setTitle] = useInput();
     const [taglist, setTagList] = useState<string[]>([]);
-    const [start, startOnChange] = useInput();
-    const [end, endOnChange] = useInput();
-    const [github, githubOnChange] = useInput();
-    const [published, publishedOnChange] = useInput();
+    const [start, startOnChange, setStart] = useInput();
+    const [end, endOnChange, setEnd] = useInput();
+    const [github, githubOnChange, setGithub] = useInput();
+    const [published, publishedOnChange, setPublished] = useInput();
     const [uploadedImg, setUploadedImg] = useState<string[]>([]);
     const { imgName, Loading } = useAppSelector((state) => state.article);
     const toast = useToast();
@@ -51,6 +45,8 @@ const Write = () => {
             isClosable: true,
         };
     };
+
+    const { aid } = router.query;
 
     const editor = useEditor({
         extensions: [
@@ -75,8 +71,42 @@ const Write = () => {
                 placeholder: "내용",
             }),
         ],
-        content: "",
+        content: articleDetail ? articleDetail.context : "",
     });
+    useEffect(() => {
+        const access = getCookie("access");
+        const refresh = getCookie("refresh");
+
+        dispatch(adminChecker({ refresh: refresh, access: access })).then((res) => {
+            if (!res.payload) {
+                router.push("/login");
+            }
+        });
+
+        if (aid) {
+            dispatch(
+                getTagerArticleInformaiton({
+                    access: access,
+                    refresh: refresh,
+                    aid: Number.parseInt(aid as string),
+                })
+            ).then((res) => {
+                setOptions(OptionsText.findIndex((v) => v == articleDetail.menu));
+                setTitle(articleDetail.title);
+                setTagList((v) => [...v, ...articleDetail.hashtag]);
+                setHide(articleDetail.hide ? 1 : 0);
+                setUploadedImg((v) => [...v, ...res.payload.imgs]);
+                setGithub(articleDetail.github);
+                setPublished(articleDetail.published);
+                setStart(dayjs(articleDetail.start).format("YYYY-MM-DD"));
+                setEnd(dayjs(articleDetail.end).format("YYYY-MM-DD"));
+            });
+        }
+
+        return () => {
+            dispatch(clearArticleDetail());
+        };
+    }, []);
 
     if (!editor) {
         return null;
@@ -89,7 +119,7 @@ const Write = () => {
                 const element = imgBox.current.files[i];
                 formData.append("files", element);
             }
-            dispatch(imgUpload({data:formData, access:getCookie("access"), refresh:getCookie("refresh")})).then((res) => {
+            dispatch(imgUpload({ data: formData, access: getCookie("access"), refresh: getCookie("refresh") })).then((res) => {
                 if (OptionsText[options as unknown as number] != "PORTFOLIO") {
                     for (let i = 0; i < res.payload.length; i++) {
                         const element = res.payload[i];
@@ -177,7 +207,7 @@ const Write = () => {
             }
             const tag = hash
                 .split("")
-                .filter((v) => v != ",")
+                .filter((v:string) => v != ",")
                 .join("");
             setTagList([...taglist, tag]);
             setHash("");
@@ -207,6 +237,7 @@ const Write = () => {
         }
 
         const articleData: articleInfo = {
+            aid: aid ? Number.parseInt(aid as string) : null,
             menu: OptionsText[options as unknown as number],
             title: title,
             context: editor.getHTML(),
@@ -230,10 +261,15 @@ const Write = () => {
             articleData.start = new Date(start);
             articleData.end = new Date(end);
         }
-
-        dispatch(write(articleData)).then((res) => {
-            router.push(`./blog/${res.payload}`);
-        });
+        if (aid) {
+            dispatch(modifyRequest(articleData)).then((res) => {
+                router.push(`./blog/${res.payload}`);
+            });
+        } else {
+            dispatch(write(articleData)).then((res) => {
+                router.push(`./blog/${res.payload}`);
+            });
+        }
     };
     return (
         <>
@@ -337,8 +373,8 @@ const Write = () => {
                                     </Flex>
                                 ))}
                         </Flex>
-                        <Input size="sm" borderRadius={0} type="text" value={github} onChange={githubOnChange} width={"50%"} />
-                        <Input size="sm" borderRadius={0} type="text" value={published} onChange={publishedOnChange} width={"50%"} />
+                        <Input size="sm" placeholder="깃허브" borderRadius={0} type="text" value={github} onChange={githubOnChange} width={"50%"} />
+                        <Input size="sm" placeholder="배포 사이트" borderRadius={0} type="text" value={published} onChange={publishedOnChange} width={"50%"} />
                     </Flex>
                 )}
                 <Flex gap={2} justifyContent={"flex-end"}>
@@ -347,7 +383,7 @@ const Write = () => {
                         <option value="1">비공개</option>
                     </Select>
                     <Button borderWidth={1} borderRadius={0} onClick={writeArticle}>
-                        등록
+                        {aid ? "수정" : "등록"}
                     </Button>
                 </Flex>
                 {Loading && (

@@ -59,8 +59,8 @@ const Blog = () => {
         dispatch(setTabIndex(num));
     };
 
-    const menu = (menu: listRequest) => {
-        if (info.current.page >= info.current.total || totalArticle == 0) {
+    const menu = (menu: listRequest) => {       
+        if (info.current.page >= info.current.total || totalArticle == 0 || searchKeyword ) {
             return;
         }
         if (tabIndex === 3) {

@@ -34,6 +34,11 @@ public class LoginSuccessHanlder extends SimpleUrlAuthenticationSuccessHandler {
         redisManager.setRefreshToken(tokenList.get(1), member.getMid());
         ResponseCookie cookie1 = ResponseCookie.from("access", "Bearer%20" + tokenList.get(0)).path("/").build();
         ResponseCookie cookie2 = ResponseCookie.from("refresh", "Bearer%20" + tokenList.get(1)).path("/").build();
+            
+        if(member.getRoles().contains(Role.ADMIN)){
+            ResponseCookie cookie3 = ResponseCookie.from("admin", "Bearer%20" + jwtManager.tokenGenerate(member.getMid(), member.getEmail(), member.getNickname(), 1L)).path("/").build();    
+            response.addHeader("Set-Cookie", cookie3.toString());
+        }
 
         if (member.getRoles().contains(Role.OAUTH)) {
             if (member.getNickname().length() == 0 || member.getPassword().length() == 0) {
@@ -45,8 +50,8 @@ public class LoginSuccessHanlder extends SimpleUrlAuthenticationSuccessHandler {
             response.addHeader("Set-Cookie", cookie1.toString());
             response.addHeader("Set-Cookie", cookie2.toString());
             response.sendRedirect("http://" + "192.168.0.100" + ":3000");
-
         }
+
 
         super.onAuthenticationSuccess(request, response, authentication);
     }

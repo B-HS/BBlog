@@ -43,6 +43,7 @@ public interface ArticleService {
                         .visitors(entity.getVisitors().size())
                         .hashtag(entity.getArtiHash().stream().map(v->v.getHashtag().getTagName()).toList())
                         .imgs(entity.getImgs().stream().map(v->v.getName()).toList())
+                        .hide(entity.getHide())
                         .start(entity.getStart())
                         .end(entity.getEnd())
                         .github(entity.getGithub())

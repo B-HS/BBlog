@@ -41,3 +41,8 @@ export const logout = createAsyncThunk("member/logout", async (info: token) => {
     const { data } = await axiosJSON.post(`/blogapi/member/logout`, info);
     return data;
 });
+
+export const adminCookie = createAsyncThunk("member/adminCookieChecker", async (info: token) => {
+    const { data } = await axiosJSON.post(`/blogapi/member/admincookie`, info);
+    return data;
+});

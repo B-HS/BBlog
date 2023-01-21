@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { article, articleInfo, articleListAxios } from "../../Typings/type";
-import { imgUpload, reqeustArticleDetail, requestArticleList, requestIntro, requestMoreArticleList, requestMoreSearch, requestSearchList, write } from "../Async/articleAsync";
+import { getTagerArticleInformaiton, imgUpload, modifyRequest, removeRequest, reqeustArticleDetail, requestArticleList, requestIntro, requestMoreArticleList, requestMoreSearch, requestSearchList, write } from "../Async/articleAsync";
 
 const initialState: article = {
     article: [],
@@ -28,6 +28,9 @@ export const articleSlice = createSlice({
         },
         clearImgName: (state) => {
             state.imgName = null;
+        },
+        clearArticleDetail: (state) => {
+            state.articleDetail = null;
         },
         clearArticles: (state) => {
             state.article = []
@@ -143,6 +146,35 @@ export const articleSlice = createSlice({
             state.Error = action.payload;
         });
 
+        builder.addCase(modifyRequest.pending, (state) => {
+            state.Loading = true;
+            state.Done = false;
+            state.Error = null;
+        });
+        builder.addCase(modifyRequest.fulfilled, (state) => {
+            state.Loading = false;
+            state.Done = true;
+        });
+        builder.addCase(modifyRequest.rejected, (state, action) => {
+            state.Loading = false;
+            state.Error = action.payload;
+        });
+
+        builder.addCase(removeRequest.pending, (state) => {
+            state.Loading = true;
+            state.Done = false;
+            state.Error = null;
+        });
+        builder.addCase(removeRequest.fulfilled, (state) => {
+            state.Loading = false;
+            state.Done = true;
+        });
+        builder.addCase(removeRequest.rejected, (state, action) => {
+            state.Loading = false;
+            state.Error = action.payload;
+        });
+        
+
         builder.addCase(reqeustArticleDetail.pending, (state) => {
             state.Loading = true;
             state.Done = false;
@@ -157,8 +189,23 @@ export const articleSlice = createSlice({
             state.Loading = false;
             state.Error = action.payload;
         });
+
+        builder.addCase(getTagerArticleInformaiton.pending, (state) => {
+            state.Loading = true;
+            state.Done = false;
+            state.Error = null;
+        });
+        builder.addCase(getTagerArticleInformaiton.fulfilled, (state, action: PayloadAction<articleInfo>) => {
+            state.Loading = false;
+            state.Done = true;
+            state.articleDetail = JSON.parse(JSON.stringify(action.payload));
+        });
+        builder.addCase(getTagerArticleInformaiton.rejected, (state, action) => {
+            state.Loading = false;
+            state.Error = action.payload;
+        });
     },
 });
 
-export const { setTabIndex, clearImgName, clearArticles, setSearchKeyword } = articleSlice.actions;
+export const { setTabIndex, clearImgName, clearArticles, setSearchKeyword, clearArticleDetail } = articleSlice.actions;
 export default articleSlice.reducer;

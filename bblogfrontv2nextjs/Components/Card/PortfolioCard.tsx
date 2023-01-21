@@ -5,6 +5,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
 import React from "react";
 import { BsTools } from "react-icons/bs";
+import AXIOS_URL from "../../Store/Async/axiosConfig/URL";
 import { articleProps } from "../../Typings/type";
 import Tag from "./Tag";
 
@@ -15,13 +16,13 @@ const PortfolioCard = ({ info }: articleProps) => {
         <Card className="card" borderRadius={0}>
             <CardBody>
                 <Link href={`/portfolio/${info.aid}`}>
-                    <Image src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" alt="Green double couch with wooden legs" borderRadius="0" />
+                    <Image src={info.imgs[0] ? `${AXIOS_URL}/blogapi/image/${info.imgs[0]}` : "./favicon.ico"} alt={`${info.aid}`} borderRadius="0" minHeight={"400px"} />
                 </Link>
                 <Stack mt="6" mb={2} spacing="3">
                     <section className="date flex items-center gap-1 text-gray-500">
                         <BsTools className="translate-y-[1.5px]" />
                         {info.start && (
-                            <Flex alignItems={"center"}>
+                            <Flex alignItems={"center"} gap={1}>
                                 <Text fontSize={"sm"} color="gray.500" transform={"auto"} translateY={"1px"}>
                                     {dayjs(info.start).locale("ko").format("YYYY년 MM월 DD일")}
                                 </Text>

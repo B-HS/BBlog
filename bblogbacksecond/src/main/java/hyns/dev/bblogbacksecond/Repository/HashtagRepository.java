@@ -9,4 +9,5 @@ import hyns.dev.bblogbacksecond.Entity.Hashtag;
 
 public interface HashtagRepository extends JpaRepository<Hashtag, Long>{
     Optional<List<Hashtag>> findAllByTagNameIn(List<String> tags);
+    Optional<Hashtag> findByTagName(String tags);
 }
