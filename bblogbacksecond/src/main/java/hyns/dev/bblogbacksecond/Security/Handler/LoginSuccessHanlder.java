@@ -37,14 +37,14 @@ public class LoginSuccessHanlder extends SimpleUrlAuthenticationSuccessHandler {
 
         if (member.getRoles().contains(Role.OAUTH)) {
             if (member.getNickname().length() == 0 || member.getPassword().length() == 0) {
-                response.sendRedirect("http://" + "192.168.0.101" + ":3000/initoauth");
+                response.sendRedirect("http://" + "192.168.0.100" + ":3000/initoauth");
             } else {
-                response.sendRedirect("http://" + "192.168.0.101" + ":3000/token/"+"Bearer%20" + tokenList.get(0)+"/"+"Bearer%20" + tokenList.get(1));
+                response.sendRedirect("http://" + "192.168.0.100" + ":3000/token/"+"Bearer%20" + tokenList.get(0)+"/"+"Bearer%20" + tokenList.get(1));
             }
         } else {
             response.addHeader("Set-Cookie", cookie1.toString());
             response.addHeader("Set-Cookie", cookie2.toString());
-            response.sendRedirect("http://" + "192.168.0.101" + ":3000");
+            response.sendRedirect("http://" + "192.168.0.100" + ":3000");
 
         }
 
