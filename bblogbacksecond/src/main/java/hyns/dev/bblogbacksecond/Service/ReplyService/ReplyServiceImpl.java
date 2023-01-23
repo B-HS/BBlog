@@ -6,8 +6,6 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +25,9 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
     public HashMap<String, Object> list(Long aid, Integer page, Integer size) {
         HashMap<String, Object> result = new HashMap<>();
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Direction.ASC, "replyGroup", "replySort"));
-        Page<Reply> entities = rrepo.findDistinctAllByArticleAid(pageable, aid);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Reply> entities = rrepo
+                .findDistinctAllByArticleAidOrderByReplyGroupAscReplySortAscReplyCreatedDateAsc(pageable, aid);
         result.put("replies", entities.getContent().stream().map(v -> {
             ReplyDTO tmp = toDTO(v);
             if (tmp.getHide()) {
@@ -36,7 +35,8 @@ public class ReplyServiceImpl implements ReplyService {
             }
             Optional.ofNullable(v.getMember()).ifPresentOrElse(user -> {
                 tmp.setMember(
-                        MemberDTO.builder().nickname(user.getNickname()).mid(user.getMid()).img(user.getImage()).build());
+                        MemberDTO.builder().nickname(user.getNickname()).mid(user.getMid()).img(user.getImage())
+                                .build());
             }, () -> {
                 tmp.setGuestName(v.getGuestName());
             });
@@ -49,9 +49,13 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public Long wrtie(ReplyDTO dto, Boolean isUser) {
-        Long latestMid = rrepo.findFirstByArticleAidOrderByRidDesc(dto.getAid()).orElse(Reply.builder().rid(1L).build())
-                .getRid();
-        dto.setReplyGroup(latestMid);
+        if (dto.getReplyGroup() == null) {
+            Long latestMid = rrepo.findFirstByArticleAidOrderByRidDesc(dto.getAid())
+                    .orElse(Reply.builder().rid(1L).build())
+                    .getRid();
+            dto.setReplyGroup(latestMid);
+        }
+
         if (!isUser) {
             dto.setGuestPassword(encoder.encode(dto.getGuestPassword()));
             return rrepo.save(toEntityGuest(dto)).getRid();

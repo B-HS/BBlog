@@ -36,8 +36,8 @@ const Read = () => {
             return;
         }
         dispatch(reqeustArticleDetail(slug));
-        if(getCookie("admin")){
-            dispatch(adminCookie({access:getCookie("admin")})).then(res=>setAdditional(res.payload))
+        if (getCookie("admin")) {
+            dispatch(adminCookie({ access: getCookie("admin") })).then((res) => setAdditional(res.payload));
         }
         return () => {
             dispatch(clearReply());
@@ -87,9 +87,11 @@ const Read = () => {
                     )}
                     <Hashtag tags={articleDetail.hashtag}></Hashtag>
                     <ReplyInput></ReplyInput>
-                    {replyState.reply.map((v) => (
-                        <ReplyCard key={v.rid} reply={v}></ReplyCard>
-                    ))}
+                    <Flex flexDirection={"column"} overflow={"hidden"}>
+                        {replyState.reply.map((v) => (
+                            <ReplyCard key={v.rid} reply={v}></ReplyCard>
+                        ))}
+                    </Flex>
                     {replyState.Loading && (
                         <Flex width="w-screen" justifyContent={"center"}>
                             <CircularProgress isIndeterminate color="purple.300" />

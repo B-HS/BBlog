@@ -41,6 +41,12 @@ const ReplyInput = () => {
             toast(toastOptions("내용을 입력해주세요") as UseToastOptions);
             return;
         }
+        
+        if(!/^[a-zA-Z0-9]*$/.test(password) ){    
+            toast(toastOptions("비밀번호는 영어 또는 숫자만 입력 가능합니다") as UseToastOptions);
+            setPassword("")
+            return
+        }
 
         const replyInfo = {
             context: context,
@@ -50,6 +56,7 @@ const ReplyInput = () => {
             hide: hide,
             aid: slug,
         };
+
 
         dispatch(replyGuestWrite(replyInfo)).then((res) => {
             dispatch(replyListReuqest({ aid: slug, size: res.payload, page: 0 })).then((res) => {

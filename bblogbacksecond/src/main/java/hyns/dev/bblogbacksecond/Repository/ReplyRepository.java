@@ -11,7 +11,7 @@ import hyns.dev.bblogbacksecond.Entity.Reply;
 
 public interface ReplyRepository extends JpaRepository<Reply, Long>{
     @EntityGraph(attributePaths = {"member", "article"})
-    Page<Reply>findDistinctAllByArticleAid(Pageable pageable, Long aid);
+    Page<Reply>findDistinctAllByArticleAidOrderByReplyGroupAscReplySortAscReplyCreatedDateAsc(Pageable pageable, Long aid);
 
     @EntityGraph(attributePaths = {"member", "article"})
     Optional<Reply> findFirstByArticleAidOrderByRidDesc(Long aid);

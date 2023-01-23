@@ -122,7 +122,7 @@ const Login = () => {
                     <Input placeholder="닉네임" borderRadius={0} value={nicknameInput} onChange={nicknameInputOnChange} />
                 </InputGroup>
                 <InputGroup size="md">
-                    <Input pr="4.5rem" type={show1 ? "text" : "password"} placeholder="비밀번호" borderRadius={0} value={passwordInput} onChange={passwordInputOnChange} />
+                    <Input pr="4.5rem" type={show1 ? "text" : "password"} placeholder="비밀번호" borderRadius={0} value={passwordInput} onChange={passwordInputOnChange}/>
                     <InputRightElement width="4.5rem">
                         <Button h="1.75rem" size="sm" borderRadius={0} backgroundColor={"transparent"} color={"gray.300"} onClick={() => setShow1(!show1)}>
                             {show1 ? "Hide" : "Show"}
@@ -130,7 +130,7 @@ const Login = () => {
                     </InputRightElement>
                 </InputGroup>
                 <InputGroup size="md">
-                    <Input pr="4.5rem" type={show2 ? "text" : "password"} placeholder="비밀번호 확인" borderRadius={0} mb="1rem" value={passwordConfirmInput} onChange={passwordConfirmInputOnChange} />
+                    <Input pr="4.5rem" type={show2 ? "text" : "password"} placeholder="비밀번호 확인" borderRadius={0} mb="1rem" value={passwordConfirmInput} onChange={passwordConfirmInputOnChange}/>
                     <InputRightElement width="4.5rem">
                         <Button h="1.75rem" size="sm" borderRadius={0} backgroundColor={"transparent"} color={"gray.300"} onClick={() => setShow2(!show2)}>
                             {show2 ? "Hide" : "Show"}
