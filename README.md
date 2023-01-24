@@ -8,10 +8,10 @@
 - Vue > React 및 디자인 수정
 - Nextjs 적용
 - 인증 / 인가(Spring Security + JWT + OAuth2)
-- 게시글CRUD / 댓글CRUD+대댓글 / 페이징 / 검색 
+- 게시글CRUD / 댓글CRUD+대댓글 / 페이징 / 검색 / 게시글 페이지 SSR
 ### v2 작업 예정 사항
 - 게시글<br>
-ㄴ SSR, OG
+ㄴ 메타태그
 - 배포 후 구글 서치
 - 관리자페이지
 - 채팅방(본체 끝내고 시작)
