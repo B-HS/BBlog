@@ -12,6 +12,7 @@
     "@chakra-ui/react": "^2.4.6",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@next/font": "^13.1.5",
     "@redux-devtools/extension": "^3.2.4",
     "@reduxjs/toolkit": "^1.9.1",
     "@tiptap/core": "^2.0.0-beta.209",
