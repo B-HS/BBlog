@@ -1,5 +1,6 @@
 import { Button, CircularProgress, Flex } from "@chakra-ui/react";
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { getCookie } from "typescript-cookie";
@@ -17,11 +18,11 @@ import { listRequest } from "../../Typings/type";
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
     const { slug } = context.query;
-    const {payload} = await store.dispatch(reqeustArticleDetail(slug));
-    return { props: { message: "Message from SSR", payload:payload } };
+    const { payload } = await store.dispatch(reqeustArticleDetail(slug));
+    return { props: { message: "Message from SSR", payload: payload } };
 });
 
-const Read:NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Read: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const router = useRouter();
     const { slug } = router.query;
     const { articleDetail, Loading } = useAppSelector((state) => state.article);
@@ -73,6 +74,18 @@ const Read:NextPage = (props: InferGetServerSidePropsType<typeof getServerSidePr
     };
     return (
         <>
+            <Head>
+                <title>{`HS :: ${articleDetail.title}`}</title>
+                <meta name="description" content={`${articleDetail.context.replace(/<[^>]+>/g, '')}`} />
+                <meta name="keywords" content={`${articleDetail.tag ? articleDetail.tags.join(", ") : "blog"}`} />
+                <meta property="og:type" content="blog" />
+                <meta property="og:url" content="https://hyns.dev" />
+                <meta property="og:title" content={`HS :: ${articleDetail.title}`} />
+                <meta property="og:image" content={articleDetail.imgName ? articleDetail.imgName[0] : "https://portfolio.hyns.co.kr/favicon.ico"} />
+                <meta property="og:description" content={`${articleDetail.context.replace(/<[^>]+>/g, '')}`} />
+                <meta property="og:site_name" content="Hyunseok" />
+                <meta property="og:locale" content="ko_KR" />
+            </Head>
             {Loading && (
                 <Flex width="w-screen" justifyContent={"center"}>
                     <CircularProgress isIndeterminate color="purple.300" />

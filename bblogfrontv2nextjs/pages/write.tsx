@@ -7,6 +7,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import dayjs from "dayjs";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { BiAlignLeft, BiAlignMiddle, BiAlignRight, BiBold, BiBrushAlt, BiCodeAlt, BiHeading, BiImage, BiListOl, BiListUl, BiPurchaseTag, BiRedo, BiStrikethrough, BiUnderline, BiUndo } from "react-icons/bi";
@@ -126,7 +127,7 @@ const Write = () => {
                         editor
                             .chain()
                             .focus()
-                            .setImage({ src: `./blogapi/image/${element}` })
+                            .setImage({ src: `./blogapi/image/${element}`, alt: "bblog img" })
                             .run();
                     }
                 }
@@ -207,7 +208,7 @@ const Write = () => {
             }
             const tag = hash
                 .split("")
-                .filter((v:string) => v != ",")
+                .filter((v: string) => v != ",")
                 .join("");
             setTagList([...taglist, tag]);
             setHash("");
@@ -273,6 +274,18 @@ const Write = () => {
     };
     return (
         <>
+            <Head>
+                <title>HS :: Wrtie</title>
+                <meta name="description" content="Write page" />
+                <meta name="keywords" content="Write" />
+                <meta property="og:type" content="blog" />
+                <meta property="og:url" content="https://hyns.dev" />
+                <meta property="og:title" content="HS :: Intro" />
+                <meta property="og:image" content="https://portfolio.hyns.co.kr/favicon.ico" />
+                <meta property="og:description" content="Blog by Hyunseok byun" />
+                <meta property="og:site_name" content="Hyunseok" />
+                <meta property="og:locale" content="ko_KR" />
+            </Head>
             <Stack padding={1}>
                 <Select placeholder="Select option" padding={0} borderRadius={0} value={options} onChange={optionsOnChange}>
                     {OptionsText.map((v, i) => (

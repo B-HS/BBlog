@@ -24,17 +24,17 @@ const Post = ({ info }: articleProps) => {
                 <h1 className="text-3xl">:: {info.title}</h1>
             </section>
             <section className="date flex items-center text-gray-500 text-sm justify-between">
-                <Flex className="data_string" alignItems={"center"} gap={1} width={"100%"} >
+                <Flex className="data_string" alignItems={"center"} gap={1} width={"100%"}>
                     {!info.start && <BiCalendar className="translate-y-[1px]" />}
-                    {info.start && <BsTools className="translate-y-[1px]" />}
                     {!info.start && (
                         <Text color="gray.500" transform={"auto"} translateY={"1px"}>
                             {dayjs(info.articleCreatedDate).locale("ko").format("YYYY년 MM월 DD일 ddd요일 HH:mm")}
                         </Text>
                     )}
                     {info.start && (
-                        <Flex gap={5} width={"100%"} justifyContent={"space-between"}>
-                            <Flex gap={1}>
+                        <Flex gap={5} width={"100%"} justifyContent={"space-between"} flexWrap={"wrap"}>
+                            <Flex gap={1} alignItems={"center"}>
+                                <BsTools className="translate-y-[1px]" />
                                 <Text color="gray.500" transform={"auto"} translateY={"1px"}>
                                     {dayjs(info.start).locale("ko").format("YYYY년 MM월 DD일")}
                                 </Text>

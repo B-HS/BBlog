@@ -1,6 +1,6 @@
 import { AnyAction, combineReducers, configureStore, Reducer } from "@reduxjs/toolkit";
 import { createWrapper, HYDRATE } from "next-redux-wrapper";
-import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { article, member, reply } from "../Typings/type";
 import articleReducer from "./Slice/articleSlice";
 import memberReducer from "./Slice/memberSlice";
@@ -26,7 +26,6 @@ const rootReducer = (state: State, action: AnyAction) => {
     })(state, action);
 };
 
-
 export const makeStore = () => {
     const store = configureStore({
         reducer: rootReducer as Reducer<State, AnyAction>,
@@ -40,10 +39,10 @@ export type AppStore = ReturnType<typeof makeStore>;
 export type AppDispatch = AppStore["dispatch"];
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
-const wrapper = createWrapper(makeStore, { 
-    debug: process.env.NODE_ENV === "development", 
-    serializeState: (state) => JSON.stringify(state), 
-    deserializeState: (state) => JSON.parse(state) 
+const wrapper = createWrapper(makeStore, {
+    debug: process.env.NODE_ENV === "development",
+    serializeState: (state) => JSON.stringify(state),
+    deserializeState: (state) => JSON.parse(state),
 });
 
 export default wrapper;

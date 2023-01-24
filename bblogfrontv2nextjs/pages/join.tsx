@@ -1,4 +1,5 @@
 import { Button, CircularProgress, Flex, Input, InputGroup, InputRightElement, Stack, useToast, UseToastOptions } from "@chakra-ui/react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import useInput from "../Hook/useInput";
@@ -54,96 +55,110 @@ const Login = () => {
             password: passwordInput,
             nickname: nicknameInput,
         };
-        dispatch(join(joinInfo)).then(res=>{
-            if(res.payload>0){
-                router.push("/login")
+        dispatch(join(joinInfo)).then((res) => {
+            if (res.payload > 0) {
+                router.push("/login");
             }
-        })
+        });
     };
     return (
-        <section className="py-52 flex  flex-col items-center justify-center gap-3">
-            <span className="font-bold text-3xl">회원가입</span>
-            <Stack borderWidth={1} p="2rem">
-                <InputGroup>
-                    <Input placeholder="이메일" borderRadius={0} value={emailInput} onChange={emailInputOnChange} disabled={!duplicated && authMailSent} />
-                    <InputRightElement width="4.5rem">
-                        {!Loading && duplicated && (
-                            <Button
-                                h="1.75rem"
-                                size="xs"
-                                borderRadius={0}
-                                backgroundColor={"transparent"}
-                                color={"gray.300"}
-                                onClick={() => {
-                                    dispatch(emailDuplicateCheck(emailInput));
-                                }}
-                            >
-                                중복 확인
-                            </Button>
-                        )}
-                        {!Loading && !duplicated && (
-                            <Button
-                                h="1.75rem"
-                                size="xs"
-                                borderRadius={0}
-                                backgroundColor={"transparent"}
-                                color={"purple1.300"}
-                                onClick={() => {
-                                    dispatch(emailAuthCodeRequest(emailInput));
-                                }}
-                            >
-                                메일 인증
-                            </Button>
-                        )}
-                        {Loading && <CircularProgress isIndeterminate color="purple.300" />}
-                    </InputRightElement>
-                </InputGroup>
-                {
-                    <InputGroup hidden={duplicated && !authMailSent}>
-                        <Input placeholder="인증번호" borderRadius={0} disabled={authorized} value={authcodeInput} onChange={authcodeInputOnChange} />
+        <>
+            <Head>
+                <title>HS :: Join</title>
+                <meta name="description" content="Join page" />
+                <meta name="keywords" content="Join" />
+                <meta property="og:type" content="blog" />
+                <meta property="og:url" content="https://hyns.dev" />
+                <meta property="og:title" content="HS :: Join" />
+                <meta property="og:image" content="https://portfolio.hyns.co.kr/favicon.ico" />
+                <meta property="og:description" content="Blog by Hyunseok byun" />
+                <meta property="og:site_name" content="Hyunseok" />
+                <meta property="og:locale" content="ko_KR" />
+            </Head>
+            <section className="py-52 flex  flex-col items-center justify-center gap-3">
+                <span className="font-bold text-3xl">회원가입</span>
+                <Stack borderWidth={1} p="2rem">
+                    <InputGroup>
+                        <Input placeholder="이메일" borderRadius={0} value={emailInput} onChange={emailInputOnChange} disabled={!duplicated && authMailSent} />
                         <InputRightElement width="4.5rem">
-                            <Button
-                                h="1.75rem"
-                                size="xs"
-                                borderRadius={0}
-                                backgroundColor={"transparent"}
-                                color={"gray.300"}
-                                disabled={authorized}
-                                onClick={() => {
-                                    dispatch(emailAuthProvement({ email: emailInput, authcode: authcodeInput }));
-                                }}
-                            >
-                                인증 확인
+                            {!Loading && duplicated && (
+                                <Button
+                                    h="1.75rem"
+                                    size="xs"
+                                    borderRadius={0}
+                                    backgroundColor={"transparent"}
+                                    color={"gray.300"}
+                                    onClick={() => {
+                                        dispatch(emailDuplicateCheck(emailInput));
+                                    }}
+                                >
+                                    중복 확인
+                                </Button>
+                            )}
+                            {!Loading && !duplicated && (
+                                <Button
+                                    h="1.75rem"
+                                    size="xs"
+                                    borderRadius={0}
+                                    backgroundColor={"transparent"}
+                                    color={"purple1.300"}
+                                    onClick={() => {
+                                        dispatch(emailAuthCodeRequest(emailInput));
+                                    }}
+                                >
+                                    메일 인증
+                                </Button>
+                            )}
+                            {Loading && <CircularProgress isIndeterminate color="purple.300" />}
+                        </InputRightElement>
+                    </InputGroup>
+                    {
+                        <InputGroup hidden={duplicated && !authMailSent}>
+                            <Input placeholder="인증번호" borderRadius={0} disabled={authorized} value={authcodeInput} onChange={authcodeInputOnChange} />
+                            <InputRightElement width="4.5rem">
+                                <Button
+                                    h="1.75rem"
+                                    size="xs"
+                                    borderRadius={0}
+                                    backgroundColor={"transparent"}
+                                    color={"gray.300"}
+                                    disabled={authorized}
+                                    onClick={() => {
+                                        dispatch(emailAuthProvement({ email: emailInput, authcode: authcodeInput }));
+                                    }}
+                                >
+                                    인증 확인
+                                </Button>
+                            </InputRightElement>
+                        </InputGroup>
+                    }
+                    <InputGroup>
+                        <Input placeholder="닉네임" borderRadius={0} value={nicknameInput} onChange={nicknameInputOnChange} />
+                    </InputGroup>
+                    <InputGroup size="md">
+                        <Input pr="4.5rem" type={show1 ? "text" : "password"} placeholder="비밀번호" borderRadius={0} value={passwordInput} onChange={passwordInputOnChange} />
+                        <InputRightElement width="4.5rem">
+                            <Button h="1.75rem" size="sm" borderRadius={0} backgroundColor={"transparent"} color={"gray.300"} onClick={() => setShow1(!show1)}>
+                                {show1 ? "Hide" : "Show"}
                             </Button>
                         </InputRightElement>
                     </InputGroup>
-                }
-                <InputGroup>
-                    <Input placeholder="닉네임" borderRadius={0} value={nicknameInput} onChange={nicknameInputOnChange} />
-                </InputGroup>
-                <InputGroup size="md">
-                    <Input pr="4.5rem" type={show1 ? "text" : "password"} placeholder="비밀번호" borderRadius={0} value={passwordInput} onChange={passwordInputOnChange}/>
-                    <InputRightElement width="4.5rem">
-                        <Button h="1.75rem" size="sm" borderRadius={0} backgroundColor={"transparent"} color={"gray.300"} onClick={() => setShow1(!show1)}>
-                            {show1 ? "Hide" : "Show"}
+                    <InputGroup size="md">
+                        <Input pr="4.5rem" type={show2 ? "text" : "password"} placeholder="비밀번호 확인" borderRadius={0} mb="1rem" value={passwordConfirmInput} onChange={passwordConfirmInputOnChange} />
+                        <InputRightElement width="4.5rem">
+                            <Button h="1.75rem" size="sm" borderRadius={0} backgroundColor={"transparent"} color={"gray.300"} onClick={() => setShow2(!show2)}>
+                                {show2 ? "Hide" : "Show"}
+                            </Button>
+                        </InputRightElement>
+                    </InputGroup>
+                    <Flex justify={"flex-end"}>
+                        <Button borderRadius={0} borderWidth={1} size={"sm"} onClick={() => memberJoin()}>
+                            가입하기
                         </Button>
-                    </InputRightElement>
-                </InputGroup>
-                <InputGroup size="md">
-                    <Input pr="4.5rem" type={show2 ? "text" : "password"} placeholder="비밀번호 확인" borderRadius={0} mb="1rem" value={passwordConfirmInput} onChange={passwordConfirmInputOnChange}/>
-                    <InputRightElement width="4.5rem">
-                        <Button h="1.75rem" size="sm" borderRadius={0} backgroundColor={"transparent"} color={"gray.300"} onClick={() => setShow2(!show2)}>
-                            {show2 ? "Hide" : "Show"}
-                        </Button>
-                    </InputRightElement>
-                </InputGroup>
-                <Flex justify={"flex-end"}>
-                    <Button borderRadius={0} borderWidth={1} size={"sm"} onClick={() => memberJoin()}>
-                        가입하기
-                    </Button>
-                </Flex>
-            </Stack>
-        </section>
+                    </Flex>
+                </Stack>
+            </section>
+        </>
     );
 };
 

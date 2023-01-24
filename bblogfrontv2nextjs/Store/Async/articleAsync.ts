@@ -46,7 +46,7 @@ export const imgUpload = createAsyncThunk("article/uploadImage", async (formData
 });
 
 export const getTagerArticleInformaiton = createAsyncThunk("article/modify/getinfo", async (info: articleRequestAxios) => {
-    const { data } = await axiosJSON.post("/blogapi/article/modifyinfo", {aid:info.aid}, { headers: { access: info.access, refresh: info.refresh } });
+    const { data } = await axiosJSON.post("/blogapi/article/modifyinfo", { aid: info.aid }, { headers: { access: info.access, refresh: info.refresh } });
     return data;
 });
 

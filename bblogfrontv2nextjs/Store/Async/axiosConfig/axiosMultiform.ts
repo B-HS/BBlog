@@ -9,4 +9,3 @@ const axiosMultiform = Axios.create({
 });
 
 export default axiosMultiform;
-

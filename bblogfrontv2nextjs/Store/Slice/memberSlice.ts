@@ -18,9 +18,9 @@ export const memberSlice = createSlice({
     name: "member",
     initialState,
     reducers: {
-        setUserInfo: (state, action:PayloadAction<memberInfo>)=>{
-            state.member = action.payload
-        }
+        setUserInfo: (state, action: PayloadAction<memberInfo>) => {
+            state.member = action.payload;
+        },
     },
     extraReducers(builder) {
         builder.addCase(join.pending, (state) => {
@@ -150,9 +150,9 @@ export const memberSlice = createSlice({
         });
         builder.addCase(tokenRefresher.fulfilled, (state, action: PayloadAction<token>) => {
             state.Loading = false;
-            state.Done = true;            
-            state.access = action.payload.access
-            state.refresh = action.payload.refresh
+            state.Done = true;
+            state.access = action.payload.access;
+            state.refresh = action.payload.refresh;
         });
         builder.addCase(tokenRefresher.rejected, (state, action) => {
             state.Loading = false;
@@ -160,5 +160,5 @@ export const memberSlice = createSlice({
         });
     },
 });
-export const { setUserInfo } = memberSlice.actions
+export const { setUserInfo } = memberSlice.actions;
 export default memberSlice.reducer;

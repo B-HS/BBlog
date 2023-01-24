@@ -1,4 +1,5 @@
 import { CircularProgress, Flex, Input, InputGroup, InputLeftElement, Tab, TabList, Tabs } from "@chakra-ui/react";
+import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import ArticleCard from "../../Components/Card/ArticleCard";
@@ -59,8 +60,8 @@ const Blog = () => {
         dispatch(setTabIndex(num));
     };
 
-    const menu = (menu: listRequest) => {       
-        if (info.current.page >= info.current.total || totalArticle == 0 || searchKeyword ) {
+    const menu = (menu: listRequest) => {
+        if (info.current.page >= info.current.total || totalArticle == 0 || searchKeyword) {
             return;
         }
         if (tabIndex === 3) {
@@ -112,6 +113,18 @@ const Blog = () => {
 
     return (
         <>
+            <Head>
+                <title>HS :: Blog article list</title>
+                <meta name="description" content="List of blog article" />
+                <meta name="keywords" content="blog" />
+                <meta property="og:type" content="blog" />
+                <meta property="og:url" content="https://hyns.dev" />
+                <meta property="og:title" content="HS :: Blog article list" />
+                <meta property="og:image" content="https://portfolio.hyns.co.kr/favicon.ico" />
+                <meta property="og:description" content="Blog by Hyunseok byun" />
+                <meta property="og:site_name" content="Hyunseok" />
+                <meta property="og:locale" content="ko_KR" />
+            </Head>
             <section className="info_area mb-3 w-100">
                 <Tabs index={tabIndex} colorScheme="purple">
                     <TabList className="mx-[0.05rem] ">

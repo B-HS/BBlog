@@ -8,7 +8,7 @@ export const replyGuestWrite = createAsyncThunk("reply/write/guest", async (info
 });
 
 export const replyUserWrite = createAsyncThunk("reply/write/user", async (info: replyInfo) => {
-    const { data } = await axiosJSON.post(`/blogapi/reply/write/user`, info, { headers: { "access": info.access, "refresh": info.refresh } });
+    const { data } = await axiosJSON.post(`/blogapi/reply/write/user`, info, { headers: { access: info.access, refresh: info.refresh } });
     return data;
 });
 
@@ -28,7 +28,7 @@ export const replyGuestDelete = createAsyncThunk("reply/delete/guest", async (in
 });
 
 export const replyUserDelete = createAsyncThunk("reply/delete/user", async (info: replyInfo) => {
-    const { data } = await axiosJSON.post(`/blogapi/reply/delete/user`, info, { headers: { "access": info.access, "refresh": info.refresh } });
+    const { data } = await axiosJSON.post(`/blogapi/reply/delete/user`, info, { headers: { access: info.access, refresh: info.refresh } });
     return data;
 });
 
@@ -38,7 +38,6 @@ export const replyGuestModify = createAsyncThunk("reply/modify/guest", async (in
 });
 
 export const replyUserModify = createAsyncThunk("reply/modify/user", async (info: replyInfo) => {
-    const { data } = await axiosJSON.post(`/blogapi/reply/modify/user`, info, { headers: { "access": info.access, "refresh": info.refresh } });
+    const { data } = await axiosJSON.post(`/blogapi/reply/modify/user`, info, { headers: { access: info.access, refresh: info.refresh } });
     return data;
 });
-

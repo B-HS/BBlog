@@ -16,7 +16,7 @@ export const replySlice = createSlice({
     reducers: {
         clearReply: (state) => {
             state.reply = [];
-            state.totalReply = Math.random()*999
+            state.totalReply = Math.random() * 999;
         },
     },
     extraReducers(builder) {
