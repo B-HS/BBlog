@@ -1,4 +1,5 @@
 import { Button, CircularProgress, Flex } from "@chakra-ui/react";
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { getCookie } from "typescript-cookie";
@@ -7,14 +8,20 @@ import Hashtag from "../../Components/Article/Hashtag";
 import ReplyInput from "../../Components/Article/ReplyInput";
 import ReplyCard from "../../Components/Card/ReplyCard";
 import { removeRequest, reqeustArticleDetail } from "../../Store/Async/articleAsync";
-import { adminChecker, adminCookie } from "../../Store/Async/memberAsync";
+import { adminCookie } from "../../Store/Async/memberAsync";
 import { replyListReuqestMore } from "../../Store/Async/replyAsync";
 import { clearArticles } from "../../Store/Slice/articleSlice";
 import { clearReply } from "../../Store/Slice/replySlice";
-import { useAppDispatch, useAppSelector } from "../../Store/store";
+import wrapper, { useAppDispatch, useAppSelector } from "../../Store/store";
 import { listRequest } from "../../Typings/type";
 
-const Read = () => {
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+    const { slug } = context.query;
+    const {payload} = await store.dispatch(reqeustArticleDetail(slug));
+    return { props: { message: "Message from SSR", payload:payload } };
+});
+
+const Read:NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const router = useRouter();
     const { slug } = router.query;
     const { articleDetail, Loading } = useAppSelector((state) => state.article);
@@ -35,7 +42,6 @@ const Read = () => {
         if (!router.isReady) {
             return;
         }
-        dispatch(reqeustArticleDetail(slug));
         if (getCookie("admin")) {
             dispatch(adminCookie({ access: getCookie("admin") })).then((res) => setAdditional(res.payload));
         }

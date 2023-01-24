@@ -1,7 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 import { articleInfo, articleRequestAxios, imgUploadAxios, listRequest } from "../../Typings/type";
 import axiosJSON from "./axiosConfig/axiosJSON";
 import axiosMultiform from "./axiosConfig/axiosMultiform";
+import AXIOS_URL from "./axiosConfig/URL";
 
 export const requestArticleList = createAsyncThunk("article/list", async (request: listRequest) => {
     const { data } = await axiosJSON.get(`/blogapi/article/menu/${request.menu}/${request.page}/${request.size}`);
@@ -24,7 +26,7 @@ export const requestMoreSearch = createAsyncThunk("article/serach/more", async (
 });
 
 export const reqeustArticleDetail = createAsyncThunk("article/read", async (num: string | string[]) => {
-    const { data } = await axiosJSON.get(`/blogapi/article/${num}`);
+    const { data } = await axios.get(`${AXIOS_URL}/blogapi/article/${num}`);
     return data;
 });
 
@@ -34,7 +36,7 @@ export const write = createAsyncThunk("article/write", async (info: articleInfo)
 });
 
 export const requestIntro = createAsyncThunk("article/intro", async () => {
-    const { data } = await axiosJSON.get(`/blogapi/article/intro`);
+    const { data } = await axios.get(`${AXIOS_URL}/blogapi/article/intro`);
     return data;
 });
 

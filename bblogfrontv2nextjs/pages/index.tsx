@@ -1,18 +1,24 @@
 import { Box, CircularProgress, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import dompurify from "isomorphic-dompurify";
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from "next";
 import React, { useEffect } from "react";
 import { BiCalendar } from "react-icons/bi";
 import { requestIntro } from "../Store/Async/articleAsync";
-import { useAppDispatch, useAppSelector } from "../Store/store";
+import wrapper, { useAppSelector } from "../Store/store";
 
-const Resume = () => {
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+    console.log(context);
+    
+    const {payload} = await store.dispatch(requestIntro());
+    return { props: { message: "Message from SSR", payload:payload } };
+});
+
+const Resume:NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const { articleDetail, Loading } = useAppSelector((state) => state.article);
-    const dispatch = useAppDispatch();
     const sanitizer = dompurify.sanitize;
     useEffect(() => {
-        dispatch(requestIntro());
-    }, []);
+    }, [props]);
     return (
         <Box borderWidth="1px" p={5} mt={5}>
             {Loading && (
@@ -32,4 +38,7 @@ const Resume = () => {
         </Box>
     );
 };
+
+
+
 export default Resume;

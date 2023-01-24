@@ -1,23 +1,23 @@
 import { ChakraProvider, Container } from "@chakra-ui/react";
 import type { AppContext, AppProps } from "next/app";
-import React from "react";
-import App from 'next/app'
+import React, { FC } from "react";
+import App from "next/app";
 import { Provider } from "react-redux";
 import { Header } from "../Components/Header/Header";
 import wrapper from "../Store/store";
 import "./index.sass";
 
-function MyApp({ Component, pageProps }: AppProps) {
-    const { store, props } = wrapper.useWrappedStore(pageProps);
+const MyApp: FC<AppProps> = ({ Component, ...rest }) => {
+    const { store, props } = wrapper.useWrappedStore(rest);
     return (
-        <ChakraProvider>
-            <Provider store={store}>
+        <Provider store={store}>
+            <ChakraProvider>
                 <Container maxW="1024px" minWidth="400px" marginBottom="2rem" p={0}>
                     <Header />
-                    <Component {...props} />
+                    <Component {...props.pageProps} />
                 </Container>
-            </Provider>
-        </ChakraProvider>
+            </ChakraProvider>
+        </Provider>
     );
-}
+};
 export default MyApp;
