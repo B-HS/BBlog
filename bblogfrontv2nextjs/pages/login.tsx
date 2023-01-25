@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { BiLockAlt } from "react-icons/bi";
 import { BsPersonCircle } from "react-icons/bs";
 import useInput from "../Hook/useInput";
-import AXIOS_URL from "../Store/Async/axiosConfig/URL";
+import AXIOS_URL, { OUTER_LINK } from "../Store/Async/axiosConfig/URL";
 import { login } from "../Store/Async/memberAsync";
 import { useAppDispatch, useAppSelector } from "../Store/store";
 
@@ -61,7 +61,7 @@ const Login = () => {
                     </InputGroup>
                     <Flex justify={"space-between"}>
                         <Flex gap={4}>
-                            <Link href={`${AXIOS_URL}/blogapi/oauth/google`}>
+                            <Link href={`${OUTER_LINK}/oauth/google`}>
                                 <img src="https://www.google.com/favicon.ico" alt="google" />
                             </Link>
                         </Flex>
