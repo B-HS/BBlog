@@ -1,4 +1,6 @@
 # BBlog v2
+1차 배포 끝
+ㄴ https://hyns.dev/
 ### 작업 목표
 - 프론트 vue + vite -> React + nextjs
 - 백엔드 spring boot 코드개선
@@ -9,8 +11,9 @@
 - Nextjs 적용
 - 인증 / 인가(Spring Security + JWT + OAuth2)
 - 게시글CRUD / 댓글CRUD+대댓글 / 페이징 / 검색 / 게시글 페이지 SSR / 메타태그
+- 배포
 ### v2 작업 예정 사항
-- 배포 후 구글 서치
+- 방문자 누적기능(조회수)
 - 관리자페이지
 - 채팅방(본체 끝내고 시작)
 
