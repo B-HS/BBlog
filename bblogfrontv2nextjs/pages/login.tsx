@@ -64,7 +64,6 @@ const Login = () => {
                             <Link href={`${AXIOS_URL}/blogapi/oauth/google`}>
                                 <img src="https://www.google.com/favicon.ico" alt="google" />
                             </Link>
-                            <img src="https://github.githubassets.com/favicons/favicon.svg" alt="github" width="34%" />
                         </Flex>
                         <Flex gap={1}>
                             <Button borderRadius={0} borderWidth={1} size={"sm"} onClick={() => router.push("/join")}>

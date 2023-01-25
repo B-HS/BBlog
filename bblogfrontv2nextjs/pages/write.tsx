@@ -14,6 +14,7 @@ import { BiAlignLeft, BiAlignMiddle, BiAlignRight, BiBold, BiBrushAlt, BiCodeAlt
 import { getCookie } from "typescript-cookie";
 import useInput from "../Hook/useInput";
 import { getTagerArticleInformaiton, imgUpload, modifyRequest, write } from "../Store/Async/articleAsync";
+import { OUTER_LINK } from "../Store/Async/axiosConfig/URL";
 import { adminChecker } from "../Store/Async/memberAsync";
 import { clearArticleDetail } from "../Store/Slice/articleSlice";
 import { useAppDispatch, useAppSelector } from "../Store/store";
@@ -121,15 +122,13 @@ const Write = () => {
                 formData.append("files", element);
             }
             dispatch(imgUpload({ data: formData, access: getCookie("access"), refresh: getCookie("refresh") })).then((res) => {
-                if (OptionsText[options as unknown as number] != "PORTFOLIO") {
-                    for (let i = 0; i < res.payload.length; i++) {
-                        const element = res.payload[i];
-                        editor
-                            .chain()
-                            .focus()
-                            .setImage({ src: `./blogapi/image/${element}`, alt: "bblog img" })
-                            .run();
-                    }
+                for (let i = 0; i < res.payload.length; i++) {
+                    const element = res.payload[i];
+                    editor
+                        .chain()
+                        .focus()
+                        .setImage({ src: `${OUTER_LINK}/image/${element}`, alt: "bblog img" })
+                        .run();
                 }
                 setUploadedImg((v) => [...v, ...res.payload]);
             });

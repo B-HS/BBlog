@@ -3,17 +3,18 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { BiLogOut } from "react-icons/bi";
-import { BsBoxArrowRight, BsGithub } from "react-icons/bs";
+import { BsBoxArrowRight } from "react-icons/bs";
 import { TbLetterT } from "react-icons/tb";
-import { getCookie, setCookie, removeCookie } from "typescript-cookie";
+import { VscGithub } from "react-icons/vsc";
+import { getCookie, removeCookie, setCookie } from "typescript-cookie";
 import { logout, tokenRefresher } from "../../Store/Async/memberAsync";
 import { setUserInfo } from "../../Store/Slice/memberSlice";
 import { useAppDispatch, useAppSelector } from "../../Store/store";
 import { tokenInfo } from "../../Typings/type";
 
 export const decodeJwt = (tkn: string) => {
-    if(!tkn.includes(".")){
-        return
+    if (!tkn.includes(".")) {
+        return;
     }
     const base64Payload = tkn.split(".")[1];
     const payloadBuffer = Buffer.from(base64Payload, "base64");
@@ -40,19 +41,18 @@ export const Header = () => {
         setCurrentLocation(name);
     };
 
-
     useEffect(() => (window.onscroll = () => scrollbar()), []);
     useEffect(() => setCurrentLocation(window.location.href.split("/")[3]), [router]);
     useEffect(() => {
         if (!getCookie("refresh") && !getCookie("access")) {
             dispatch(setUserInfo(null));
             return;
-        }        
-        if(!decodeJwt(getCookie("access"))&&!decodeJwt(getCookie("refresh"))){
+        }
+        if (!decodeJwt(getCookie("access")) && !decodeJwt(getCookie("refresh"))) {
             removeCookie("refresh");
             removeCookie("access");
             dispatch(setUserInfo(null));
-            return
+            return;
         }
 
         const atkn: tokenInfo = decodeJwt(getCookie("access"));
@@ -60,14 +60,14 @@ export const Header = () => {
         const now = new Date();
         const msNow = Number.parseInt((now.getTime() / 1000).toFixed(0));
 
-        if (atkn.exp - msNow < 300 || rtkn.exp - msNow < 300) {          
+        if (atkn.exp - msNow < 300 || rtkn.exp - msNow < 300) {
             dispatch(tokenRefresher({ access: getCookie("access"), refresh: getCookie("refresh") })).then((res) => {
                 if (!res.payload) {
                     removeCookie("refresh");
                     removeCookie("access");
                     return;
                 }
-                                
+
                 setCookie("access", "Bearer " + res.payload.access, { path: "/" });
                 setCookie("refresh", "Bearer " + res.payload.refresh, { path: "/" });
             });
@@ -83,6 +83,7 @@ export const Header = () => {
                 mid: atkn.userNumber,
                 nickname: atkn.nickname,
                 email: atkn.email,
+                userimg: atkn.userImg,
             })
         );
     }, [router]);
@@ -95,7 +96,6 @@ export const Header = () => {
                 router.push("/logout");
             }
         });
-        
     };
 
     return (
@@ -131,7 +131,7 @@ export const Header = () => {
                     <a href="https://github.com/B-HS" aria-label={"github/b-hs"}>
                         <Tooltip label="깃허브" aria-label="gibhub" hasArrow arrowSize={10}>
                             <span>
-                                <BsGithub />
+                                <VscGithub />
                             </span>
                         </Tooltip>
                     </a>

@@ -5,7 +5,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
 import React from "react";
 import { BsTools } from "react-icons/bs";
-import AXIOS_URL from "../../Store/Async/axiosConfig/URL";
+import { OUTER_LINK } from "../../Store/Async/axiosConfig/URL";
 import { articleProps } from "../../Typings/type";
 import Tag from "./Tag";
 
@@ -16,7 +16,7 @@ const PortfolioCard = ({ info }: articleProps) => {
         <Card className="card" borderRadius={0}>
             <CardBody>
                 <Link href={`/portfolio/${info.aid}`}>
-                    <Image src={info.imgs[0] ? `${AXIOS_URL}/blogapi/image/${info.imgs[0]}` : "./favicon.ico"} alt={`${info.aid}`} borderRadius="0" minHeight={"400px"} />
+                    <Image src={info.imgs[0] ? `${OUTER_LINK}/image/${info.imgs[0]}` : "/favicon.ico"} alt={`${info.aid}`} borderRadius="0" minHeight={"400px"} />
                 </Link>
                 <Stack mt="6" mb={2} spacing="3">
                     <section className="date flex items-center gap-1 text-gray-500">
@@ -34,7 +34,9 @@ const PortfolioCard = ({ info }: articleProps) => {
                         )}
                     </section>
                     <Link href={`/portfolio/${info.aid}`}>
-                        <Heading size="md">{info.title}</Heading>
+                        <Heading size="md" border={0}>
+                            {info.title}
+                        </Heading>
                     </Link>
                 </Stack>
                 <section className="stack">

@@ -30,13 +30,13 @@ public class LoginSuccessHanlder extends SimpleUrlAuthenticationSuccessHandler {
             Authentication authentication) throws IOException, ServletException {
         Member member = mrepo.findByEmail(authentication.getName()).get();
         List<String> tokenList = jwtManager.AccessRefreshGenerator(member.getMid(), member.getEmail(),
-                member.getNickname());
+                member.getNickname(), member.getImage());
         redisManager.setRefreshToken(tokenList.get(1), member.getMid());
         ResponseCookie cookie1 = ResponseCookie.from("access", "Bearer%20" + tokenList.get(0)).path("/").build();
         ResponseCookie cookie2 = ResponseCookie.from("refresh", "Bearer%20" + tokenList.get(1)).path("/").build();
             
         if(member.getRoles().contains(Role.ADMIN)){
-            ResponseCookie cookie3 = ResponseCookie.from("admin", "Bearer%20" + jwtManager.tokenGenerate(member.getMid(), member.getEmail(), member.getNickname(), 1L)).path("/").build();    
+            ResponseCookie cookie3 = ResponseCookie.from("admin", "Bearer%20" + jwtManager.tokenGenerate(member.getMid(), member.getEmail(), member.getNickname(), member.getImage(), 1L)).path("/").build();    
             response.addHeader("Set-Cookie", cookie3.toString());
         }
 

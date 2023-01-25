@@ -1,11 +1,12 @@
-import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, ButtonGroup, Checkbox, Flex, Image, Input, InputGroup, InputRightElement, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverFooter, PopoverHeader, PopoverTrigger, useDisclosure, useToast, UseToastOptions } from "@chakra-ui/react";
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, ButtonGroup, Checkbox, Flex, Image, Input, InputGroup, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverFooter, PopoverHeader, PopoverTrigger, useDisclosure, useToast, UseToastOptions } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import relativeTime from "dayjs/plugin/relativeTime";
 import React, { useRef, useState } from "react";
 import { getCookie } from "typescript-cookie";
 import useInput from "../../Hook/useInput";
-import { replyGuestDelete, replyGuestModify, replyListReuqest, replyUserDelete, replyUserModify, replyUserWrite, replyGuestWrite } from "../../Store/Async/replyAsync";
+import { OUTER_LINK } from "../../Store/Async/axiosConfig/URL";
+import { replyGuestDelete, replyGuestModify, replyGuestWrite, replyListReuqest, replyUserDelete, replyUserModify, replyUserWrite } from "../../Store/Async/replyAsync";
 import { useAppDispatch, useAppSelector } from "../../Store/store";
 import { replyInfo } from "../../Typings/type";
 import { decodeJwt } from "../Header/Header";
@@ -181,9 +182,9 @@ const ReplyCard = ({ reply }: replyProp) => {
 
     return (
         <>
-            <Flex borderWidth={1} borderTopWidth={`${reply.replySort>0?0:1}`} padding="1.25rem" flexDirection={"column"} width={"100%"} className={`${reply.replySort > 0 ? "ml-5" : reply.replyGroup==1?"":"mt-5"}`}>
+            <Flex borderWidth={1} borderTopWidth={`${reply.replySort > 0 ? 0 : 1}`} padding="1.25rem" flexDirection={"column"} width={"100%"} className={`${reply.replySort > 0 ? "ml-5" : reply.replyGroup == 1 ? "" : "mt-5"}`}>
                 <Flex alignItems={"center"} gap={5}>
-                    <Image boxSize="60px" objectFit="cover" src={`${reply.member?.userimg ? reply.member.userimg : "../favicon.ico"}`} alt={`profile-${reply.guestName ? reply.guestName : reply.member.nickname}`} alignSelf="flex-start" />
+                    <Image boxSize="60px" objectFit="cover" src={`${reply.member?.img ? (reply.member.img.split("/").length > 1 ? reply.member.img : OUTER_LINK + "/image/" + reply.member.img) : "/favicon.ico"}`} alt={`profile-${reply.guestName ? reply.guestName : reply.member.nickname}`} alignSelf="flex-start" />
                     <Flex flexDirection={"column"} width={"100%"}>
                         <Flex gap={3} alignItems={"baseline"} className="font-extralight">
                             <span className="text-sm">{reply.guestName ? reply.guestName : reply.member.nickname}</span>

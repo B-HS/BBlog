@@ -69,7 +69,7 @@ public class MemberServiceImpl implements MemberService {
         if (redisManager.TokenValidator(access, refresh)) {
             Claims info = jwtManager.tokenParser(refresh);
             List<String> result = jwtManager.AccessRefreshGenerator(Long.parseLong(info.get("userNumber").toString()),
-                    info.get("email").toString(), info.get("nickname").toString());
+                    info.get("email").toString(), info.get("nickname").toString(), info.get("userImg").toString());
             redisManager.removeRefreshToken(refresh.split(" ")[1]);
             redisManager.setRefreshToken(result.get(1), Long.parseLong(info.get("userNumber").toString()));
             return Token.builder().access(result.get(0)).refresh(result.get(1)).build();

@@ -47,7 +47,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         Member member = mrepo.findById(rtknMid).orElseThrow(() -> new UsernameNotFoundException("INVALID USER"));
         
         if (!jwtManager.tokenValidator(access) && jwtManager.tokenValidator(refresh) && member.getLogged()) {
-            access =  jwtManager.tokenGenerate(rtknMid, member.getEmail(), member.getNickname(), 1L);
+            access =  jwtManager.tokenGenerate(rtknMid, member.getEmail(), member.getNickname(), member.getImage(), 1L);
         }
         if (redisManager.TokenValidator(access, refresh)) {
             SecurityContextHolder.getContext().setAuthentication(getAuthentication(member.getEmail()));

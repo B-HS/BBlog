@@ -1,10 +1,11 @@
-import React, { useState } from "react";
 import { Button, Checkbox, Flex, Image, Input, Textarea, useToast, UseToastOptions } from "@chakra-ui/react";
-import useInput from "../../Hook/useInput";
-import { useAppDispatch, useAppSelector } from "../../Store/store";
-import { replyGuestWrite, replyListReuqest, replyUserWrite } from "../../Store/Async/replyAsync";
 import { useRouter } from "next/router";
+import React, { useState } from "react";
 import { getCookie } from "typescript-cookie";
+import useInput from "../../Hook/useInput";
+import { OUTER_LINK } from "../../Store/Async/axiosConfig/URL";
+import { replyGuestWrite, replyListReuqest, replyUserWrite } from "../../Store/Async/replyAsync";
+import { useAppDispatch, useAppSelector } from "../../Store/store";
 import { decodeJwt } from "../Header/Header";
 
 const ReplyInput = () => {
@@ -41,11 +42,11 @@ const ReplyInput = () => {
             toast(toastOptions("내용을 입력해주세요") as UseToastOptions);
             return;
         }
-        
-        if(!/^[a-zA-Z0-9]*$/.test(password) ){    
+
+        if (!/^[a-zA-Z0-9]*$/.test(password)) {
             toast(toastOptions("비밀번호는 영어 또는 숫자만 입력 가능합니다") as UseToastOptions);
-            setPassword("")
-            return
+            setPassword("");
+            return;
         }
 
         const replyInfo = {
@@ -57,14 +58,13 @@ const ReplyInput = () => {
             aid: slug,
         };
 
-
         dispatch(replyGuestWrite(replyInfo)).then((res) => {
             dispatch(replyListReuqest({ aid: slug, size: res.payload, page: 0 })).then((res) => {
                 if (res.payload.total > 0) {
                     window.scrollTo({
-                        top:window.innerHeight,
-                        left:0,
-                        behavior: 'smooth'
+                        top: window.innerHeight,
+                        left: 0,
+                        behavior: "smooth",
                     });
                     setContext("");
                     setNickname("");
@@ -97,9 +97,9 @@ const ReplyInput = () => {
             dispatch(replyListReuqest({ aid: slug, size: res.payload, page: 0 })).then((res) => {
                 if (res.payload.total > 0) {
                     window.scrollTo({
-                        top:window.innerHeight,
-                        left:0,
-                        behavior: 'smooth'
+                        top: window.innerHeight,
+                        left: 0,
+                        behavior: "smooth",
                     });
                     toast(toastOptions("댓글이 작성되었습니다", "success") as UseToastOptions);
                     setContext("");
@@ -113,7 +113,7 @@ const ReplyInput = () => {
     return (
         <Flex borderWidth={1} padding="1.25rem" marginY={"2rem"} flexDirection={"column"} width={"100%"}>
             <Flex alignItems={"center"} gap={5}>
-                <Image boxSize="68px" objectFit="cover" src={`${false ? "" : "../favicon.ico"}`} alt={`profile-${"username"}`} alignSelf="flex-start" />
+                <Image boxSize="68px" objectFit="cover" src={`${member ? (member.userimg.split("/").length > 1 ? member.userimg : OUTER_LINK + "/image/" + member.userimg) : "/favicon.ico"}`} alt={`profile-${"username"}`} alignSelf="flex-start" />
                 <Flex flexDirection={"column"} width={"100%"} gap={2}>
                     {!member && (
                         <Flex gap={1} alignItems={"baseline"} className="font-extralight" flexDirection={"column"}>

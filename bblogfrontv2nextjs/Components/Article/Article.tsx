@@ -2,7 +2,6 @@ import { Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import dompurify from "isomorphic-dompurify";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { BiCalendar, BiLink, BiMenu } from "react-icons/bi";
@@ -21,7 +20,7 @@ const Post = ({ info }: articleProps) => {
                 </Text>
             </section>
             <section className="title mb-2">
-                <h1 className="text-3xl">:: {info.title}</h1>
+                <Text className="text-3xl">:: {info.title}</Text>
             </section>
             <section className="date flex items-center text-gray-500 text-sm justify-between">
                 <Flex className="data_string" alignItems={"center"} gap={1} width={"100%"}>

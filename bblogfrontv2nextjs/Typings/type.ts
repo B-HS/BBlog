@@ -37,6 +37,7 @@ export interface tokenInfo {
     userNumber: number;
     nickname: string;
     email: string;
+    userImg?: string;
 }
 
 export interface memberInfo {
@@ -44,6 +45,7 @@ export interface memberInfo {
     email?: string;
     nickname: string;
     userimg?: string;
+    img?: string;
 }
 
 export interface replyInfo extends token {
