@@ -1,5 +1,5 @@
 # BBlog v2
-1차 배포 끝<br>
+1차 배포 끝 및 운영 중<br>
 ㄴ https://hyns.dev/
 ### 작업 목표
 - 프론트 vue + vite -> React + nextjs
@@ -11,13 +11,11 @@
 - Nextjs 적용
 - 인증 / 인가(Spring Security + JWT + OAuth2)
 - 게시글CRUD / 댓글CRUD+대댓글 / 페이징 / 검색 / 게시글 페이지 SSR / 메타태그
+- 메뉴별 글 개수 표시
+- 글 카드 본문 제한
 - 배포
 ### v2 작업 예정 사항
-- 메뉴별 글 개수 표시
-- 글 카드 출력시 본문 60자 이하로 변경
-- 상세 페이지에서 sanitizer적용 시에 개행 사라지는 버그 수정
-- oauth 리다이렉트 링크 문제 해결
-- 채팅방(본체 끝내고 시작)
+- 채팅방(기술 더 고민하고 시작)
 
 ### 🚂 개인 블로그 토이 프로젝트
 - React(Typescript + Redux Toolkit + Nextjs)
