@@ -14,11 +14,12 @@ import { replyListReuqestMore } from "../../Store/Async/replyAsync";
 import { clearArticles } from "../../Store/Slice/articleSlice";
 import { clearReply } from "../../Store/Slice/replySlice";
 import wrapper, { useAppDispatch, useAppSelector } from "../../Store/store";
-import { listRequest } from "../../Typings/type";
+import { listRequest, replyInfo } from "../../Typings/type";
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
     const { slug } = context.query;
-    const { payload } = await store.dispatch(reqeustArticleDetail(slug));
+    const { referer } = context.req.headers;
+    const { payload } = await store.dispatch(reqeustArticleDetail({ num: slug, prev: referer }));
     return { props: { message: "Message from SSR", payload: payload } };
 });
 
@@ -107,7 +108,7 @@ const Read: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
                     <Hashtag tags={articleDetail.hashtag}></Hashtag>
                     <ReplyInput></ReplyInput>
                     <Flex flexDirection={"column"} overflow={"hidden"}>
-                        {replyState.reply.map((v) => (
+                        {replyState.reply.map((v:replyInfo) => (
                             <ReplyCard key={v.rid} reply={v}></ReplyCard>
                         ))}
                     </Flex>

@@ -22,6 +22,7 @@ import hyns.dev.bblogbacksecond.Repository.ArticleHashtagRepository;
 import hyns.dev.bblogbacksecond.Repository.ArticleRepository;
 import hyns.dev.bblogbacksecond.Repository.HashtagRepository;
 import hyns.dev.bblogbacksecond.Repository.ImageRepository;
+import hyns.dev.bblogbacksecond.Repository.ArticleRepository.articleCountByMenu;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -38,7 +39,14 @@ public class ArticleServiceImpl implements ArticleService {
     public HashMap<String, Object> list(Menu menu, Integer page, Integer size) {
         HashMap<String, Object> result = new HashMap<>();
         Page<Article> entities = arepo.findDistinctAllByMenu(PageRequest.of(page, size, Direction.DESC, "aid"), menu);
-        result.put("articles", entities.getContent().stream().map(v -> toDTO(v)).toList());
+        result.put("articles", entities.getContent().stream().map(v -> {
+            ArticleDTO dto =toDTO(v);
+            if(dto.getContext().length()>225){
+                dto.setContext(dto.getContext().replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "").substring(0, 225));
+            }
+            return dto;
+        }).toList());
+            
         result.put("total", entities.getTotalPages());
         return result;
     }
@@ -124,5 +132,10 @@ public class ArticleServiceImpl implements ArticleService {
         result.put("articles", entities.getContent().stream().map(v -> toDTO(v)).toList());
         result.put("total", entities.getTotalPages());
         return result;
+    }
+
+    @Override
+    public articleCountByMenu countByMenu() {
+        return arepo.countingArticleByMenu();
     }
 }

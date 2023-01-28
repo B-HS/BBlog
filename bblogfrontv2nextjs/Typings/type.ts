@@ -13,6 +13,9 @@ export interface article extends statusType {
     imgName?: string[] | null;
     totalArticle: number;
     searchKeyword: string;
+    frontCount?: number;
+    backCount?: number;
+    etcCount?: number;
 }
 
 export interface reply extends statusType {
@@ -113,6 +116,17 @@ export interface imgUploadAxios extends token {
 
 export interface articleRequestAxios extends token {
     aid: number;
+}
+
+export interface menuCountResultAxiosValue {
+    frontend: number;
+    backend: number;
+    etc: number;
+}
+export interface detailRequestAxios {
+    num: string | string[];
+    prev: string
+
 }
 
 export interface listRequest {

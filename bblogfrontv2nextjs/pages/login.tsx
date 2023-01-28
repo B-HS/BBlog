@@ -59,12 +59,12 @@ const Login = () => {
                             </Button>
                         </InputRightElement>
                     </InputGroup>
-                    <Flex justify={"space-between"}>
-                        <Flex gap={4}>
+                    <Flex justify={"flex-end"}>
+                        {/* <Flex gap={4}>
                             <Link href={`${OUTER_LINK}/oauth/google`}>
                                 <img src="https://www.google.com/favicon.ico" alt="google" />
                             </Link>
-                        </Flex>
+                        </Flex> */}
                         <Flex gap={1}>
                             <Button borderRadius={0} borderWidth={1} size={"sm"} onClick={() => router.push("/join")}>
                                 회원가입

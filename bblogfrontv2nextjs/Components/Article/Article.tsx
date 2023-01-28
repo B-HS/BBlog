@@ -24,7 +24,7 @@ const Post = ({ info }: articleProps) => {
             </section>
             <section className="date flex items-center text-gray-500 text-sm justify-between">
                 <Flex className="data_string" alignItems={"center"} gap={1} width={"100%"}>
-                    {!info.start && <BiCalendar className="translate-y-[1px]" />}
+                    {!info.start && <BiCalendar className="translate-y-[0.25px]"/>}
                     {!info.start && (
                         <Text color="gray.500" transform={"auto"} translateY={"1px"}>
                             {dayjs(info.articleCreatedDate).locale("ko").format("YYYY년 MM월 DD일 ddd요일 HH:mm")}

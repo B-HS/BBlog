@@ -1,12 +1,17 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { articleInfo, articleRequestAxios, imgUploadAxios, listRequest } from "../../Typings/type";
+import { articleInfo, articleRequestAxios, detailRequestAxios, imgUploadAxios, listRequest } from "../../Typings/type";
 import axiosJSON from "./axiosConfig/axiosJSON";
 import axiosMultiform from "./axiosConfig/axiosMultiform";
 import AXIOS_URL from "./axiosConfig/URL";
 
 export const requestArticleList = createAsyncThunk("article/list", async (request: listRequest) => {
     const { data } = await axiosJSON.get(`/blogapi/article/menu/${request.menu}/${request.page}/${request.size}`);
+    return data;
+});
+
+export const requestArticleCountByMenu = createAsyncThunk("article/articlecount", async () => {
+    const { data } = await axiosJSON.get(`/blogapi/article/articlecount`);
     return data;
 });
 
@@ -25,8 +30,8 @@ export const requestMoreSearch = createAsyncThunk("article/serach/more", async (
     return data;
 });
 
-export const reqeustArticleDetail = createAsyncThunk("article/read", async (num: string | string[]) => {
-    const { data } = await axios.get(`${AXIOS_URL}/blogapi/article/${num}`);
+export const reqeustArticleDetail = createAsyncThunk("article/read", async (info:detailRequestAxios) => {
+    const { data } = await axios.get(`${AXIOS_URL}/blogapi/article/${info.num}?prev=${info.prev}`);
     return data;
 });
 

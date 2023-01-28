@@ -28,4 +28,18 @@ public interface ArticleRepository extends JpaRepository<Article, Long>{
     Article findByAid(Long aid);
 
     Optional<Article> findFirstByMenuOrderByAidDesc(Menu menu);
+
+    @Query("""
+            SELECT 
+                (SELECT COUNT(att) FROM Article att where att.menu = 'FRONTEND') as frontend, 
+                (SELECT COUNT(att) FROM Article att where att.menu = 'BACKEND') as backend, 
+                (SELECT COUNT(att) FROM Article att where att.menu = 'ETC') as etc
+            """)
+    articleCountByMenu countingArticleByMenu();
+
+    public interface articleCountByMenu{
+        Long getFrontend();
+        Long getBackend();
+        Long getEtc();
+    }
 }

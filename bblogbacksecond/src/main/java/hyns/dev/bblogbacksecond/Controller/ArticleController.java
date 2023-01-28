@@ -10,17 +10,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import hyns.dev.bblogbacksecond.DTO.ArticleDTO;
 import hyns.dev.bblogbacksecond.Entity.Article.Menu;
+import hyns.dev.bblogbacksecond.Repository.ArticleRepository.articleCountByMenu;
 import hyns.dev.bblogbacksecond.Service.ArticleService.ArticleService;
+import hyns.dev.bblogbacksecond.Service.VIsitorService.VisitorService;
 import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("article")
 @RequiredArgsConstructor
 public class ArticleController {
     private final ArticleService aser;
+    private final VisitorService vser;
 
     @GetMapping("intro")
     public ResponseEntity<ArticleDTO> getIntropage() {
@@ -44,7 +48,8 @@ public class ArticleController {
     }
 
     @GetMapping("{num}")
-    public ResponseEntity<ArticleDTO> getArticleDetail(@PathVariable("num") Long aid) {
+    public ResponseEntity<ArticleDTO> getArticleDetail(@PathVariable("num") Long aid, @RequestParam("prev") String prev) {
+        vser.postVisit(aid, prev);
         return new ResponseEntity<>(aser.read(aid), HttpStatus.OK);
     }
 
@@ -68,4 +73,9 @@ public class ArticleController {
     public ResponseEntity<ArticleDTO> articleInfoByAdmin(@RequestBody ArticleDTO dto) {
         return new ResponseEntity<>(aser.read(dto.getAid()), HttpStatus.OK);
     } 
+
+    @GetMapping("articlecount")
+    public ResponseEntity<articleCountByMenu> requestCountByMenu(){
+        return new ResponseEntity<>(aser.countByMenu(), HttpStatus.OK);
+    }
 }

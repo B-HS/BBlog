@@ -8,10 +8,12 @@ import hyns.dev.bblogbacksecond.Entity.ArticleHashtag;
 import hyns.dev.bblogbacksecond.Entity.ArticleImage;
 import hyns.dev.bblogbacksecond.Entity.Hashtag;
 import hyns.dev.bblogbacksecond.Entity.Article.Menu;
+import hyns.dev.bblogbacksecond.Repository.ArticleRepository.articleCountByMenu;
 
 public interface ArticleService {
     HashMap<String, Object> list(Menu menu, Integer page, Integer size);
     HashMap<String, Object> searchedList(String keywords, Integer page, Integer size);
+    articleCountByMenu countByMenu();
     Long wrtie(ArticleDTO dto);
     ArticleDTO read(Long num);
     Long modify(ArticleDTO dto);

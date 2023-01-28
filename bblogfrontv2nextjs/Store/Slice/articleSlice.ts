@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { article, articleInfo, articleListAxios } from "../../Typings/type";
-import { getTagerArticleInformaiton, imgUpload, modifyRequest, removeRequest, reqeustArticleDetail, requestArticleList, requestIntro, requestMoreArticleList, requestMoreSearch, requestSearchList, write } from "../Async/articleAsync";
+import { article, articleInfo, articleListAxios, menuCountResultAxiosValue } from "../../Typings/type";
+import { getTagerArticleInformaiton, imgUpload, modifyRequest, removeRequest, reqeustArticleDetail, requestArticleCountByMenu, requestArticleList, requestIntro, requestMoreArticleList, requestMoreSearch, requestSearchList, write } from "../Async/articleAsync";
 
 const initialState: article = {
     article: [],
@@ -14,6 +14,9 @@ const initialState: article = {
     Error: null,
     imgName: [],
     searchKeyword: null,
+    frontCount:0,
+    backCount:0,
+    etcCount:0,
 };
 
 export const articleSlice = createSlice({
@@ -170,6 +173,23 @@ export const articleSlice = createSlice({
             state.Done = true;
         });
         builder.addCase(removeRequest.rejected, (state, action) => {
+            state.Loading = false;
+            state.Error = action.payload;
+        });
+
+        builder.addCase(requestArticleCountByMenu.pending, (state) => {
+            state.Loading = true;
+            state.Done = false;
+            state.Error = null;
+        });
+        builder.addCase(requestArticleCountByMenu.fulfilled, (state, action:PayloadAction<menuCountResultAxiosValue>) => {
+            state.frontCount = action.payload.frontend
+            state.backCount = action.payload.backend
+            state.etcCount = action.payload.etc
+            state.Loading = false;
+            state.Done = true;
+        });
+        builder.addCase(requestArticleCountByMenu.rejected, (state, action) => {
             state.Loading = false;
             state.Error = action.payload;
         });

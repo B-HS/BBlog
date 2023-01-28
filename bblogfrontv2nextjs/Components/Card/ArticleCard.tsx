@@ -16,14 +16,14 @@ const ArticleCard = ({ info }: articleProps) => {
     const contexthtml = document.createElement("p");
     contexthtml.innerHTML = info.context;
     return (
-        <Card className="card" direction={{ base: "column", sm: "row" }} variant="outline" borderRadius="0">
+        <Card className="card" direction={{ base: "column", sm: "row" }} variant="outline" borderRadius="0" boxSize={""}>
             <Link href={`/blog/${info.aid}`}>
                 <Image objectFit="cover" minW={"300px"} minH={"300px"} width={"100%"} maxH={"300px"} maxW={{ base: "100%", sm: "250px" }} src={info.imgs[0] ? `${OUTER_LINK}/image/${info.imgs[0]}` : "/favicon.ico"} alt="Caffe Latte" />
             </Link>
             <Stack>
                 <CardBody>
                     <section className="menu flex items-center text-gray-500">
-                        <BiMenu />
+                        <BiMenu/>
                         <Text fontSize="small">{info.menu}</Text>
                     </section>
                     <Link href={`/blog/${info.aid}`}>
@@ -31,17 +31,17 @@ const ArticleCard = ({ info }: articleProps) => {
                             {info.title}
                         </Heading>
                     </Link>
-                    <section className="date flex items-center text-gray-500">
-                        <BiCalendar />
+                    <section className="date flex items-center gap-1 text-gray-500">
+                        <BiCalendar className="-translate-y-[0.5px]"/>
                         <Text fontSize="small" color="gray.500">
                             {dayjs(info.articleCreatedDate).fromNow()}
                         </Text>
                     </section>
                     <Link href={`/blog/${info.aid}`}>
-                        <Text py="2">{contexthtml.textContent}</Text>
+                        <Text py="2" color={"ThreeDLightShadow"}>{contexthtml.textContent} · · · ↲</Text>
                     </Link>
                 </CardBody>
-                <CardFooter flexDirection="row" gap="0.5rem">
+                <CardFooter flexDirection="row" gap="0.5rem" pt={0}>
                     <Tag tagName={info.hashtag} />
                 </CardFooter>
             </Stack>

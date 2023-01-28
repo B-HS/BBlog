@@ -1,16 +1,16 @@
-import { CircularProgress, Flex, Input, InputGroup, InputLeftElement, Tab, TabList, Tabs } from "@chakra-ui/react";
+import { Badge, CircularProgress, Flex, Input, InputGroup, InputLeftElement, Tab, TabList, Tabs } from "@chakra-ui/react";
 import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import ArticleCard from "../../Components/Card/ArticleCard";
 import useInput from "../../Hook/useInput";
-import { requestArticleList, requestMoreArticleList, requestMoreSearch, requestSearchList } from "../../Store/Async/articleAsync";
+import { requestArticleCountByMenu, requestArticleList, requestMoreArticleList, requestMoreSearch, requestSearchList } from "../../Store/Async/articleAsync";
 import { clearArticles, setSearchKeyword, setTabIndex } from "../../Store/Slice/articleSlice";
 import { useAppDispatch, useAppSelector } from "../../Store/store";
 import { articleInfo, listRequest } from "../../Typings/type";
 
 const Blog = () => {
-    const { tabIndex, article, Loading, totalArticle, searchKeyword } = useAppSelector((state) => state.article);
+    const { tabIndex, article, Loading, totalArticle, searchKeyword, frontCount, backCount, etcCount } = useAppSelector((state) => state.article);
     const [searchToggle, setSearchToggle] = useState<Boolean>(false);
     const [searchingSwtich, setSearchingSwtich] = useState<Boolean>(false);
     const [keywordsInput, onChangeKeywordsInput, setKeywordsInput] = useInput();
@@ -31,6 +31,10 @@ const Blog = () => {
             setToSearchingPage(searchKeyword);
         }
     }, [searchKeyword]);
+
+    useEffect(() => {
+        dispatch(requestArticleCountByMenu());
+    }, [frontCount, backCount, etcCount]);
 
     const menuChangeEventor = (tab: number) => {
         switch (tab) {
@@ -133,21 +137,21 @@ const Blog = () => {
                                 stateClear(0);
                             }}
                         >
-                            Frontend
+                            Frontend {<Badge bg={"transparent"} ml={1}>{frontCount}</Badge>}
                         </Tab>
                         <Tab
                             onClick={() => {
                                 stateClear(1);
                             }}
                         >
-                            Backend
+                            Backend {<Badge bg={"transparent"} ml={1}>{backCount}</Badge>}
                         </Tab>
                         <Tab
                             onClick={() => {
                                 stateClear(2);
                             }}
                         >
-                            etc.
+                            etc. {<Badge bg={"transparent"} ml={1}>{etcCount}</Badge>}
                         </Tab>
                         <Tab
                             onClick={() => {
