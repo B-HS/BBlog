@@ -60,7 +60,7 @@ const PortfolioCard = ({ info }: articleProps) => {
                             </Button>
                         </a>
                     )}
-                    <Link href={`/blog/${info.aid}`}>
+                    <Link href={`/portfolio/${info.aid}`}>
                         <Button variant="solid" colorScheme="telegram" borderRadius={0}>
                             자세히
                         </Button>

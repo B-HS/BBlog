@@ -21,7 +21,7 @@ const ArticleCard = ({ info }: articleProps) => {
                 <Image objectFit="cover" minW={"300px"} minH={"300px"} width={"100%"} maxH={"300px"} maxW={{ base: "100%", sm: "250px" }} src={info.imgs[0] ? `${OUTER_LINK}/image/${info.imgs[0]}` : "/favicon.ico"} alt="Caffe Latte" />
             </Link>
             <Stack>
-                <CardBody>
+                <CardBody pb={0}>
                     <section className="menu flex items-center text-gray-500">
                         <BiMenu/>
                         <Text fontSize="small">{info.menu}</Text>

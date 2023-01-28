@@ -14,7 +14,8 @@ import wrapper, { useAppDispatch, useAppSelector } from "../../Store/store";
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
     const { slug } = context.query;
-    const { payload } = await store.dispatch(reqeustArticleDetail(slug));
+    const { referer } = context.req.headers;
+    const { payload } = await store.dispatch(reqeustArticleDetail({ num: slug, prev: referer }));
     return { props: { message: "Message from SSR", payload: payload } };
 });
 
