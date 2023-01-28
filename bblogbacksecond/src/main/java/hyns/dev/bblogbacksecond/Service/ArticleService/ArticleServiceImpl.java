@@ -41,7 +41,7 @@ public class ArticleServiceImpl implements ArticleService {
         Page<Article> entities = arepo.findDistinctAllByMenu(PageRequest.of(page, size, Direction.DESC, "aid"), menu);
         result.put("articles", entities.getContent().stream().map(v -> {
             ArticleDTO dto =toDTO(v);
-            if(dto.getContext().length()>225){
+            if(dto.getContext().replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "").length()>225){
                 dto.setContext(dto.getContext().replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "").substring(0, 225));
             }
             return dto;
