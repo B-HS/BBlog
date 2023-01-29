@@ -47,12 +47,11 @@ echo -e "\e[1;34m--------------------------------------------------\e[0m"
 
 
 echo -e "\e[1;32m4. Checking maven \e[0m"
+
+source /etc/profile
 mvn --version
 if [[ "$?" -ne 0 ]] ; then
-    echo -e "\e[1;32mChecking /etc/profile \e[0m"
-    source /etc/profile
-    if [[ "$?" -ne 0 ]] ; then
-        echo -e "\e[1;31mMaven not installed, exist shell \e[0m"; exit $rc
+    echo -e "\e[1;31mMaven not installed, exist shell \e[0m"; exit $rc
 fi
 
 echo -e "\e[1;34m--------------------------------------------------\e[0m"
