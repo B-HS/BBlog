@@ -1,0 +1,91 @@
+#!/bin/sh
+(
+echo -e "\e[1;34m###################################################\e[0m"
+echo -e "\e[1;34m#####                                         #####\e[0m"
+echo -e "\e[1;34m#####    BUILD AND RUN SPRING BOOT PROJECT    #####\e[0m"
+echo -e "\e[1;34m#####            https://hyns.dev             #####\e[0m"
+echo -e "\e[1;34m#####                                         #####\e[0m"
+echo -e "\e[1;34m###################################################\e[0m"
+echo -e "\e[1;34m###################################################\e[0m"
+
+echo -e "\e[1;32m1. Deleting test folder before building maven project\e[0m"
+if [ -d ./src/test ]; then
+    echo -e "\e[1;31mFolder exist, on deleting\e[0m"
+    rm -rf ./src/test
+    echo -e "\e[1;32mFolder deleted, move to next step\e[0m"
+else
+    echo -e "\e[1;32mFolder not exist, move to next step\e[0m"
+fi
+
+echo -e "\e[1;34m--------------------------------------------------\e[0m"
+echo -e "\e[1;34m--------------------------------------------------\e[0m"
+
+echo -e "\e[1;32m2. Checking application.properties\e[0m"
+
+if [ -f ./src/main/resources/application.properties ]; then
+    echo -e "\e[1;32mFile exist, move to next step\e[0m"
+else
+    echo -e "\e[1;31mFile not exist, Please generate aplication.properties\e[0m"
+    exit 
+fi
+
+echo -e "\e[1;34m--------------------------------------------------\e[0m"
+echo -e "\e[1;34m--------------------------------------------------\e[0m"
+
+
+echo -e "\e[1;32m3. Kill process if acoback is running \e[0m"
+PID=`ps -ef | grep bblogback | grep -v grep | awk '{print $2}'`
+if [[ "" !=  "$PID" ]]; then
+    kill -9 $PID
+    echo -e "\e[1;32mProcess killed which id = $PID, move to next step\e[0m"
+else
+    echo -e "\e[1;32mProcess not exist, move to next step\e[0m"
+fi
+
+echo -e "\e[1;34m--------------------------------------------------\e[0m"
+echo -e "\e[1;34m--------------------------------------------------\e[0m"
+
+
+echo -e "\e[1;32m4. Checking maven \e[0m"
+mvn --version
+if [[ "$?" -ne 0 ]] ; then
+    echo -e "\e[1;32mChecking /etc/profile \e[0m"
+    source /etc/profile
+    if [[ "$?" -ne 0 ]] ; then
+        echo -e "\e[1;31mMaven not installed, exist shell \e[0m"; exit $rc
+fi
+
+echo -e "\e[1;34m--------------------------------------------------\e[0m"
+echo -e "\e[1;34m--------------------------------------------------\e[0m"
+
+echo -e "\e[1;32m5. Clean and packaging the project \e[0m"
+mvn clean install
+if [[ "$?" -ne 0 ]] ; then
+    echo -e "\e[1;31mFailed, exist shell \e[0m"; exit $rc
+else
+    echo -e "\e[1;32m.jar file generated, move to next step\e[0m"
+fi
+
+echo -e "\e[1;34m--------------------------------------------------\e[0m"
+echo -e "\e[1;34m--------------------------------------------------\e[0m"
+
+echo -e "\e[1;32m6. Move generated jar file to root folder \e[0m"
+if [ -f ./target/bblogback-0.0.1-SNAPSHOT.jar ]; then
+    echo -e "\e[1;32mFile exist, move to ../ \e[0m"
+    mv ./target/bblogback-0.0.1-SNAPSHOT.jar ./bblogback.jar
+else
+    echo -e "\e[1;31mFile not exist, exit shell\e[0m"; exit $rc
+    echo -e "\e[1;32mIf check the folder and file generated,  \e[0m"
+    echo -e "\e[1;32mPlease execute yourself with below command  \e[0m"
+    echo -e "\e[1;32mnohup java -jar generated_file_name.jar  \e[0m"
+    exit 
+fi
+
+echo -e "\e[1;34m--------------------------------------------------\e[0m"
+echo -e "\e[1;34m--------------------------------------------------\e[0m"
+
+nohup java -jar bblogback.jar &
+echo -e "\e[1;32mJar file generated and executed, check with below command \e[0m"
+echo -e "\e[1;32m ps -ef | grep back \e[0m"
+
+)

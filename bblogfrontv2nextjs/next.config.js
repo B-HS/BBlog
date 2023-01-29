@@ -7,11 +7,11 @@ const nextConfig = {
         return [
             {
                 source: "/blogapi/:path*",
-                destination: `http://localhost:10500/blogapi/:path*`,
+                destination: `http://blog.hyns.dev/:path*`,
             },
             {
                 source: "/blog/blogapi/image/:path*",
-                destination: `http://localhost:10500/blogapi/image/:path*`,
+                destination: `https://hyns.dev/blogapi/image/:path*`,
             },
         ];
     },

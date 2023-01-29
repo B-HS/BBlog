@@ -263,11 +263,11 @@ const Write = () => {
         }
         if (aid) {
             dispatch(modifyRequest(articleData)).then((res) => {
-                router.push(`./blog/${res.payload}`);
+                router.push(`./blog`);
             });
         } else {
             dispatch(write(articleData)).then((res) => {
-                router.push(`./blog/${res.payload}`);
+                router.push(`./blog`);
             });
         }
     };
