@@ -1,6 +1,7 @@
 package hyns.dev.bblogbacksecond.Security.Service;
 
 import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -40,8 +41,8 @@ public class OauthAuthServiceImpl extends DefaultOAuth2UserService {
                 .orElse(Member
                         .builder()
                         .email(userInfoByVender.getEmail())
-                        .nickname("")
-                        .password("")
+                        .nickname("Google ::"+userInfoByVender.getEmail().substring(0, 3)+"...")
+                        .password(UUID.randomUUID().toString())
                         .image(userInfoByVender.getPicture())
                         .roles(Set.of(Role.OAUTH))
                         .build());

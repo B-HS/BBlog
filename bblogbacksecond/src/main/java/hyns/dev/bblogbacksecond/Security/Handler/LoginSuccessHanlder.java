@@ -42,7 +42,7 @@ public class LoginSuccessHanlder extends SimpleUrlAuthenticationSuccessHandler {
 
         if (member.getRoles().contains(Role.OAUTH)) {
             if (member.getNickname().length() == 0 || member.getPassword().length() == 0) {
-                response.sendRedirect("http://hyns.dev/initoauth");
+                response.sendRedirect("http://hyns.dev/login");
             } else {
                 response.sendRedirect("http://hyns.dev/token/"+"Bearer%20" + tokenList.get(0)+"/"+"Bearer%20" + tokenList.get(1));
             }
