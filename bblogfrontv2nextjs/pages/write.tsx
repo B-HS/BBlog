@@ -280,7 +280,7 @@ const Write = () => {
                 <meta property="og:type" content="blog" />
                 <meta property="og:url" content="https://hyns.dev" />
                 <meta property="og:title" content="HS :: Intro" />
-                <meta property="og:image" content="https://portfolio.hyns.co.kr/favicon.ico" />
+                <meta property="og:image" content="/favicon.ico" />
                 <meta property="og:description" content="Blog by Hyunseok byun" />
                 <meta property="og:site_name" content="Hyunseok" />
                 <meta property="og:locale" content="ko_KR" />

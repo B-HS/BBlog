@@ -11,7 +11,7 @@ const nextConfig = {
             },
             {
                 source: "/blog/blogapi/image/:path*",
-                destination: `https://hyns.dev/blogapi/image/:path*`,
+                destination: `https://blog.hyns.dev/image/:path*`,
             },
         ];
     },

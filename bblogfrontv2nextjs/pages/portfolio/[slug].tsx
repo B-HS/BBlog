@@ -50,7 +50,7 @@ const ReadPortfolio: NextPage = (props: InferGetServerSidePropsType<typeof getSe
                 <meta property="og:type" content="blog" />
                 <meta property="og:url" content="https://hyns.dev" />
                 <meta property="og:title" content={`HS :: ${articleDetail.title}`} />
-                <meta property="og:image" content={articleDetail.imgName ? articleDetail.imgName[0] : "https://portfolio.hyns.co.kr/favicon.ico"} />
+                <meta property="og:image" content={articleDetail.imgName ? articleDetail.imgName[0] : "/favicon.ico"} />
                 <meta property="og:description" content={`${articleDetail.context.replace(/<[^>]+>/g, "")}`} />
                 <meta property="og:site_name" content="Hyunseok" />
                 <meta property="og:locale" content="ko_KR" />
