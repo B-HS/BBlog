@@ -6,12 +6,12 @@ const nextConfig = {
     async rewrites() {
         return [
             {
-                source: "/:path*",
-                destination: `https://blog.hyns.dev/:path*`,
+                source: "/v1/:path*",
+                destination: `https://blog.hyns.dev/v1/:path*`,
             },
             {
-                source: "/blog/image/:path*",
-                destination: `https://blog.hyns.dev/image/:path*`,
+                source: "/image/:path*",
+                destination: `https://blog.hyns.dev/v1/image/:path*`,
             },
         ];
     },
