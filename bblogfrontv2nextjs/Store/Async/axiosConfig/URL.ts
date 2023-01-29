@@ -1,3 +1,3 @@
-const AXIOS_URL = "http://blog.hyns.dev";
-export const OUTER_LINK ="https://hyns.dev/blogapi"
+const AXIOS_URL = "https://blog.hyns.dev/v1";
+export const OUTER_LINK ="https://blog.hyns.dev/v1"
 export default AXIOS_URL;
