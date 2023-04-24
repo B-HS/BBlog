@@ -1,4 +1,18 @@
 # BBlog v2
+### 작업 목표
+- v2를 베이스로 개량
+- I18n 적용
+- 다크모드 적용
+- 검색 삭제
+- oauth2 삭제
+- ssg로 변경 및 코드 최소화
+- 백엔드는 bblog_svelte의 백엔드 사용
+### 📅 기간
+-  ~5월 중순까지
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+# BBlog v2
 1차 배포 끝 및 운영 중<br>
 ㄴ https://hyns.dev/
 ### 작업 목표
