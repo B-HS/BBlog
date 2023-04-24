@@ -1,0 +1,40 @@
+{
+  "name": "bblog",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^2.5.5",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@reduxjs/toolkit": "^1.9.5",
+    "@types/node": "18.16.0",
+    "@types/react": "18.0.38",
+    "@types/react-dom": "18.0.11",
+    "autoprefixer": "10.4.14",
+    "axios": "^1.3.6",
+    "dayjs": "^1.11.7",
+    "framer-motion": "^10.12.4",
+    "i18next": "^22.4.15",
+    "isomorphic-dompurify": "^1.3.0",
+    "next": "13.3.1",
+    "next-redux-wrapper": "^8.1.0",
+    "postcss": "8.4.23",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-i18next": "^12.2.0",
+    "react-redux": "^8.0.5",
+    "sass": "^1.62.0",
+    "tailwindcss": "3.3.1",
+    "typescript": "5.0.4",
+    "typescript-cookie": "^1.0.6"
+  },
+  "devDependencies": {
+    "@iconify/react": "^4.1.0"
+  }
+}
