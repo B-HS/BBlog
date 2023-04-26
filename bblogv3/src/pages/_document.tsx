@@ -1,14 +1,6 @@
-import { ColorModeScript, theme } from "@chakra-ui/react";
-import { mode } from "@chakra-ui/theme-tools";
 import Document, { Head, Html, Main, NextScript } from "next/document";
 import React from "react";
-theme.config = { initialColorMode: "dark", useSystemColorMode: false };
-theme.styles.global = {
-    color: {},
-    _dark: {
-        bg: mode("#202020", "white")
-    },
-};
+
 class MyDocument extends Document {
     render() {
         return (
@@ -19,7 +11,7 @@ class MyDocument extends Document {
                     <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
                 </Head>
                 <body>
-                    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+                    
                     <Main />
                     <NextScript />
                 </body>

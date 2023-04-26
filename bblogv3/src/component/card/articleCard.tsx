@@ -17,7 +17,7 @@ const ArticleCard = ({ info }: { info: { article: article } }) => {
         
     }, [])
     return (
-        <Card className="card hover:-translate-y-1 hover:shadow-lg transition-all" direction={{ base: "column", sm: "row" }} variant="outline" borderRadius="0" boxSize={""} shadow={"md"}>
+        <Card className="card hover:-translate-y-1 hover:shadow-lg transition-all" direction={{ base: "column", sm: "row" }} variant="outline" borderRadius="0" shadow={"md"}>
             <Link href={`/blog/${article.aid}`}>
                 <Image objectFit="cover" minW={"300px"} minH={"300px"} width={"100%"} maxH={"300px"} maxW={{ base: "100%", sm: "250px" }} src={article.thumbnail ? `https://hyns.dev/v1/image/${article.thumbnail}` : "https://mi.gumyo.net/files/47df371c-ec7f-4579-ac93-ca32fd25d54b"} alt={article.title} />
             </Link>

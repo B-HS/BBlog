@@ -4,7 +4,7 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { mode } from '@chakra-ui/theme-tools'
+
 
 const Header = () => {
     const { t } = useTranslation();
