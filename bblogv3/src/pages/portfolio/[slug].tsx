@@ -1,6 +1,4 @@
 import { article as articleProps } from "@/app";
-import CommentCard from "@/component/article/commentCard";
-import CommentInput from "@/component/article/commentInput";
 import Post from "@/component/article/post";
 import Tags from "@/component/article/tags";
 import { Flex } from "@chakra-ui/react";
@@ -16,7 +14,7 @@ export const getServerSideProps = async (context: NextPageContext) => {
     return { props: { article: data } };
 };
 
-const blogPost = (props: { article: articleProps; className: string }) => {
+const portfolioPost = (props: { article: articleProps; className: string }) => {
     const article = props.article;
     return (
         <>
@@ -36,16 +34,10 @@ const blogPost = (props: { article: articleProps; className: string }) => {
                 <Flex borderWidth={1} borderColor={"GrayText"} w="full" flexDirection={"column"}>
                     <Post article={props.article} />
                     <Tags tags={props.article.tags} />
-                    <CommentInput />
-                </Flex>
-                <Flex borderWidth={1} borderColor={"GrayText"} w="full" flexDirection={"column"}>
-                    {[0, 1, 2, 3, 4, 5].map((val) => (
-                        <CommentCard comment={{ aid: 1, commentDesc: "TEST", commentGroup: 0, commentImg: "https://mi.gumyo.net/proxy/avatar.webp?url=https%3A%2F%2Fmi.gumyo.net%2Ffiles%2F47df371c-ec7f-4579-ac93-ca32fd25d54b&avatar=1", commentSort: 0, nickname: "TEST", uploadedDated:new Date("2023-01-01") }} />
-                    ))}
                 </Flex>
             </Flex>
         </>
     );
 };
 
-export default blogPost;
+export default portfolioPost;

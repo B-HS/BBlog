@@ -1,19 +1,32 @@
+import { authCheck } from "@/ajax/ajax";
+import { AppDispatch, RootState } from "@/store/store";
 import { Flex, Link, Text } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-
+import { useDispatch, useSelector } from "react-redux";
 
 const Header = () => {
     const { t } = useTranslation();
-    const [currentLocation, setCurrentLocation] = useState<string>("");
     const router = useRouter();
-    useEffect(() => setCurrentLocation(window.location.href.split("/")[3]), [router]);
+    const [auth, setAuth] = useState<boolean>(false);
+    const [currentLocation, setCurrentLocation] = useState<string>("");
+    const dispatch = useDispatch<AppDispatch>();
+    const globals = useSelector((state: RootState) => state.global);
+    const routeCheck = async () => {
+        dispatch(authCheck());
+    };
+
+    useEffect(() => {
+        setCurrentLocation(window.location.href.split("/")[3]);
+        routeCheck();
+        setAuth(globals.auth);
+    }, [router]);
 
     return (
-        <Flex className="resume bg-opacity-10" alignItems={"baseline"} justify={"space-between"} position={"sticky"} top={0} py={3} borderBottom={"1px solid"} mb={5} px={2}  zIndex={1000000} backgroundColor={'chakra-body-bg'}>
+        <Flex className="resume bg-opacity-10" alignItems={"baseline"} justify={"space-between"} position={"sticky"} top={0} py={3} borderBottom={"1px solid"} mb={5} px={2} zIndex={1000000} backgroundColor={"chakra-body-bg"}>
             <Flex alignItems={"baseline"} gap={2}>
                 <Link as={NextLink} href="/">
                     <Flex className="title" alignItems={"baseline"} gap={1}>
@@ -37,15 +50,21 @@ const Header = () => {
                 <Link href="https://github.com/B-HS">
                     <Icon icon="mdi:github" />
                 </Link>
-                <Link as={NextLink} href="/login">
-                    <Icon icon="ri:login-box-line" />
-                </Link>
-                {/* <Link as={NextLink} href="/logout">
-                    <Icon icon="ri:logout-box-line" />
-                </Link>
-                <Link as={NextLink} href="/write">
-                    <Icon icon="mdi:pencil" />
-                </Link> */}
+                {!auth && (
+                    <Link as={NextLink} href="/login">
+                        <Icon icon="ri:login-box-line" />
+                    </Link>
+                )}
+                {auth && (
+                    <Link as={NextLink} href="/logout">
+                        <Icon icon="ri:logout-box-line" />
+                    </Link>
+                )}
+                {auth && (
+                    <Link as={NextLink} href="/write">
+                        <Icon icon="mdi:pencil" />
+                    </Link>
+                )}
             </Flex>
         </Flex>
     );

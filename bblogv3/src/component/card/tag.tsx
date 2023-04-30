@@ -1,7 +1,5 @@
-import { Badge, Flex } from "@chakra-ui/react";
+import { Badge, Flex, Tag as CTag } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import React from "react";
-import { Icon } from '@iconify/react';
 
 const Tag = (props: { tagName: string[] }) => {
     const router = useRouter();
@@ -10,9 +8,9 @@ const Tag = (props: { tagName: string[] }) => {
             <Flex gap={3} flexWrap={"wrap"}>
                 {props.tagName.map((v, i) => {
                     return (
-                        <Badge cursor={"pointer"} key={i} px={2}>
+                        <CTag border={"1px solid rgba(255, 255, 255, 0.1)"} borderRadius={0} cursor={"pointer"} key={i} px={2}>
                             # {v}
-                        </Badge>
+                        </CTag>
                     );
                 })}
             </Flex>

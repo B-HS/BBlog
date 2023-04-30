@@ -35,7 +35,7 @@ const Home = ({ props }: homeProps) => {
                 <meta property="og:site_name" content="Hyunseok" />
                 <meta property="og:locale" content="ko_KR" />
             </Head>
-            <Box borderWidth="1px" p={3} mt={5} shadow={'md'}>
+            <Box className="" borderWidth="1px" borderColor={'#303030'} p={3} mt={5}>
                 <Flex direction={"column"} gap={3}>
                     <Flex alignItems={"center"} gap={1}>
                         <Icon icon="uil:calender" />

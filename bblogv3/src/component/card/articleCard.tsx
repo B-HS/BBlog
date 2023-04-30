@@ -1,5 +1,6 @@
 import { article } from "@/app";
 import { Card, CardBody, CardFooter, Heading, Image, Stack, Text } from "@chakra-ui/react";
+import { Icon } from "@iconify/react";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -9,13 +10,11 @@ import Tag from "./tag";
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
 const ArticleCard = ({ info }: { info: { article: article } }) => {
-    const para = useRef(null)
+    const para = useRef(null);
     dayjs.extend(relativeTime);
     dayjs.locale("ko");
     const { article } = info;
-    useEffect(()=>{
-        
-    }, [])
+    useEffect(() => {}, []);
     return (
         <Card className="card hover:-translate-y-1 hover:shadow-lg transition-all" direction={{ base: "column", sm: "row" }} variant="outline" borderRadius="0" shadow={"md"}>
             <Link href={`/blog/${article.aid}`}>
@@ -24,6 +23,7 @@ const ArticleCard = ({ info }: { info: { article: article } }) => {
             <Stack>
                 <CardBody pb={0}>
                     <section className="menu flex items-center text-gray-500">
+                        <Icon icon="ic:baseline-menu" />
                         <Text fontSize="small">{article.menu}</Text>
                     </section>
                     <Link href={`/blog/${article.aid}`}>
@@ -32,15 +32,14 @@ const ArticleCard = ({ info }: { info: { article: article } }) => {
                         </Heading>
                     </Link>
                     <section className="date flex items-center gap-1 text-gray-500">
+                        <Icon icon="material-symbols:date-range-sharp" />
                         <Text fontSize="small" color="gray.500">
                             {dayjs(article.createdDate).fromNow()}
                         </Text>
                     </section>
                     <Link href={`/blog/${article.aid}`}>
-                        <div className="p-2 text-gray-500" dangerouslySetInnerHTML={{__html: article.context + " · · · ↲"}}></div>
-                        <Text >
-                        
-                        </Text>
+                        <div className="p-2 text-gray-500" dangerouslySetInnerHTML={{ __html: article.context + " · · · ↲" }}></div>
+                        <Text></Text>
                     </Link>
                 </CardBody>
                 <CardFooter flexDirection="row" gap="0.5rem" pt={0}>

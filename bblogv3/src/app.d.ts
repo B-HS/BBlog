@@ -32,7 +32,7 @@ export interface article {
 	createdDate?: Date | string;
 	hide: boolean;
 	menu: string;
-	thumbnail: string;
+	thumbnail?: string;
 	tags: string[];
 	visitCnt?: number;
 	github?: string;

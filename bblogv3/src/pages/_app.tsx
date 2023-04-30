@@ -1,15 +1,14 @@
-import wrapper from "@/store/store";
-import { ChakraProvider, ColorModeScript, Container, theme } from "@chakra-ui/react";
-import { Hahmlet, Saira } from "next/font/google";
-import type { AppProps } from "next/app";
-import { FC } from "react";
-import { Provider } from "react-redux";
-import { mode } from "@chakra-ui/theme-tools";
-import "../styles/globals.sass";
+import Switch from "@/component/float/switch";
+import Theme from "@/component/float/theme";
 import Header from "@/component/header/header";
 import "@/locales/locales";
-import Theme from "@/component/float/theme";
-import Switch from "@/component/float/switch";
+import { ChakraProvider, ColorModeScript, Container, theme } from "@chakra-ui/react";
+import { mode } from "@chakra-ui/theme-tools";
+import { Hahmlet, Saira } from "next/font/google";
+import { Provider } from "react-redux";
+import "../styles/globals.sass";
+import { AppProps } from "next/app";
+import store from "@/store/store";
 const hahmlet = Hahmlet({ subsets: ["latin"] });
 const saira = Saira({ subsets: ["latin"] });
 
@@ -23,8 +22,7 @@ theme.styles.global = {
     },
 };
 
-const MyApp: FC<AppProps> = ({ Component, ...rest }) => {
-    const { store, props } = wrapper.useWrappedStore(rest);
+const App = ({ Component, pageProps }: AppProps) => {
     return (
         <>
             <style jsx global>{`
@@ -37,7 +35,7 @@ const MyApp: FC<AppProps> = ({ Component, ...rest }) => {
                     <ColorModeScript initialColorMode={theme.config.initialColorMode} />
                     <Header />
                     <Container maxW="1024px" minWidth="400px" p={0} px={0} mb={5} position={"relative"}>
-                        <Component {...props.pageProps} />
+                        <Component {...pageProps} />
                         <Theme />
                         <Switch />
                     </Container>
@@ -46,4 +44,4 @@ const MyApp: FC<AppProps> = ({ Component, ...rest }) => {
         </>
     );
 };
-export default MyApp;
+export default App;
