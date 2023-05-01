@@ -1,11 +1,15 @@
+import { comment } from "@/app";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { Cookies } from "typescript-cookie";
 
 export const authCheck = createAsyncThunk("user/token", async () => {
-    const token = typeof Cookies.get("token") !== "undefined" ? Cookies.get("token")?.toString() : "no token";
-    const { data } = await axios.post("/v1/article/check", { aid: 0 }, { headers: { token: "Bearer " + token!, "Content-Type": "application/json" } });
-    return data;
+    const token = typeof Cookies.get("token") !== "undefined" ? "Bearer " + Cookies.get("token")?.toString() : null;
+    if (token) {
+        const { data } = await axios.post("/v1/article/check", { aid: 0 }, { headers: { token: token, "Content-Type": "application/json" } });
+        return data;
+    }
+    return;
 });
 
 export const login = createAsyncThunk("/user/login", async (loginInfo: { id: string; pw: string }) => {
@@ -13,7 +17,23 @@ export const login = createAsyncThunk("/user/login", async (loginInfo: { id: str
     return data;
 });
 
-export const uploadImage = createAsyncThunk("/user/login", async (file: FormData) => {
-    const { data } = await axios.post("/v1/image/upload", { file }, {headers:{'Content-Type': 'multipart/form-data'}});
+export const uploadImage = createAsyncThunk("/user/upload", async (file: FormData) => {
+    const { data } = await axios.post("/v1/image/upload", file , { headers: { "Content-Type": "multipart/form-data" } });
     return data;
 });
+
+export const requestArticleList = createAsyncThunk("/article/list", async (info: { page: number; size: number; menu: string }) => {
+    const { data } = await axios.post("/v1/article/list", info);
+    return data;
+});
+
+export const requestCommentList = createAsyncThunk("/comment/list", async (info: { page: number; size: number; aid: string }) => {
+    const { data } = await axios.post("/v1/comment/list", info);
+    return data;
+});
+
+export const requestAddComment = createAsyncThunk("/article/comment/add", async (info: comment) => {
+    const { data } = await axios.post("/v1/comment/write", info);
+    return data;
+});
+

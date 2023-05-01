@@ -58,6 +58,7 @@ export default {
     comment_no_desc: "댓글 내용을 입력해주세요",
     comment_no_nickname: "닉네임을 입력해주세요",
     comment_no_pw: "비밀번호를 입력해주세요",
+    comment_wrong_pw: "비밀번호는 영어 또는 숫자만 입력 가능합니다",
     write_no_title: "제목을 입력해주세요",
     write_no_desc: "내용을 입력해주세요",
     no_id: "아이디를 입력해주세요",

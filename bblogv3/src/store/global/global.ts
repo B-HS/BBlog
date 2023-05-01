@@ -1,14 +1,23 @@
-import { authCheck, login } from "@/ajax/ajax";
+import { authCheck, login, requestAddComment, requestArticleList, requestCommentList, uploadImage } from "@/ajax/ajax";
+import { article, comment } from "@/app";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export interface globalState {
     loading: boolean;
     auth: boolean;
+    articles: article[];
+    total: number;
+    comments: comment[];
+    commentTotal: number;
 }
 
 const initialState: globalState = {
     auth: false,
     loading: false,
+    articles: [],
+    comments: [],
+    total: Number.MAX_SAFE_INTEGER,
+    commentTotal: Number.MAX_SAFE_INTEGER,
 };
 export const global = createSlice({
     name: "global",
@@ -20,9 +29,19 @@ export const global = createSlice({
         setAuth: (state, action: PayloadAction<boolean>) => {
             state.loading = action.payload;
         },
-        reset: (state) => {
+        resetAll: (state) => {
+            state.articles = [];
+            state.total = Number.MAX_SAFE_INTEGER;
             state.loading = false;
             state.auth = false;
+        },
+        resetArticleInfo: (state) => {
+            state.articles = [];
+            state.total = Number.MAX_SAFE_INTEGER;
+        },
+        resetCommentInfo: (state) => {
+            state.comments = [];
+            state.commentTotal = Number.MAX_SAFE_INTEGER;
         },
     },
     extraReducers(builder) {
@@ -48,10 +67,64 @@ export const global = createSlice({
         builder.addCase(login.fulfilled, (state, action: PayloadAction<string>) => {
             action.payload === "logged" ? (state.auth = true) : (state.auth = false);
             state.loading = false;
-            console.log(state.auth);
+        });
+
+        builder.addCase(uploadImage.rejected, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(uploadImage.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(uploadImage.fulfilled, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(requestArticleList.rejected, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(requestArticleList.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(requestArticleList.fulfilled, (state, action: PayloadAction<{ total: number; articles: article[] }>) => {
+            console.log(action.payload);
+
+            if (action.payload.articles) {
+                state.articles = [...state.articles, ...action.payload.articles];
+                state.total = action.payload.total;
+                state.loading = false;
+            } else {
+                resetArticleInfo();
+            }
+        });
+
+        builder.addCase(requestAddComment.rejected, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(requestAddComment.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(requestAddComment.fulfilled, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(requestCommentList.rejected, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(requestCommentList.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(requestCommentList.fulfilled, (state, action: PayloadAction<{ total: number; comments: comment[] }>) => {
+            console.log(action.payload);
+            if (action.payload.comments) {
+                state.comments = [...state.comments, ...action.payload.comments];
+                state.commentTotal = action.payload.total;
+                state.loading = false;
+            } else {
+                resetCommentInfo();
+            }
         });
     },
 });
 
-export const {} = global.actions;
+export const { resetArticleInfo, resetCommentInfo, resetAll } = global.actions;
 export default global.reducer;

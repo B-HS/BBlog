@@ -5,16 +5,11 @@ import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
-import React, { useEffect, useRef } from "react";
 import Tag from "./tag";
-dayjs.extend(relativeTime);
-dayjs.locale("ko");
 const ArticleCard = ({ info }: { info: { article: article } }) => {
-    const para = useRef(null);
     dayjs.extend(relativeTime);
     dayjs.locale("ko");
     const { article } = info;
-    useEffect(() => {}, []);
     return (
         <Card className="card hover:-translate-y-1 hover:shadow-lg transition-all" direction={{ base: "column", sm: "row" }} variant="outline" borderRadius="0" shadow={"md"}>
             <Link href={`/blog/${article.aid}`}>
@@ -34,7 +29,7 @@ const ArticleCard = ({ info }: { info: { article: article } }) => {
                     <section className="date flex items-center gap-1 text-gray-500">
                         <Icon icon="material-symbols:date-range-sharp" />
                         <Text fontSize="small" color="gray.500">
-                            {dayjs(article.createdDate).fromNow()}
+                            {dayjs(article.createdDate).format("YYYY MM DD - hh:mm")}
                         </Text>
                     </section>
                     <Link href={`/blog/${article.aid}`}>

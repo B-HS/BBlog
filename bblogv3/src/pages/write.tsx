@@ -1,7 +1,7 @@
 import { uploadImage } from "@/ajax/ajax";
 import useInput from "@/hooks/useInput";
 import { AppDispatch } from "@/store/store";
-import { Flex, Input, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import { Button, Flex, Input, Menu, MenuButton, MenuItem, MenuList, Select, Text } from "@chakra-ui/react";
 import { Highlight } from "@tiptap/extension-highlight";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
@@ -13,6 +13,8 @@ import { useRouter } from "next/router";
 import { ChangeEvent, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Icon } from "@iconify/react";
+import DelTags from "@/component/article/deletableTags";
+import { t } from "i18next";
 const Write = () => {
     const router = useRouter();
     const OptionsText = ["INTRO", "FRONTEND", "BACKEND", "ETC", "PORTFOLIO"];
@@ -28,6 +30,7 @@ const Write = () => {
     const [published, publishedOnChange, setPublished] = useInput();
     const [uploadedImg, setUploadedImg] = useState<string[]>([]);
     const [thumbnail, setThumbtail] = useState<string>("");
+    const [tag, onChangeTag, setTag] = useInput();
     const dispatch = useDispatch<AppDispatch>();
     const editor = useEditor({
         extensions: [
@@ -59,7 +62,7 @@ const Write = () => {
         return null;
     }
 
-    const imgUpload = (e:ChangeEvent<HTMLInputElement>) => {
+    const imgUpload = (e: ChangeEvent<HTMLInputElement>) => {
         let formData = new FormData();
         if (e.target.files) {
             formData.append("upload", e.target.files[0]);
@@ -68,7 +71,7 @@ const Write = () => {
                 editor
                     .chain()
                     .focus()
-                    .setImage({ src: `/v1/image/` + res, alt: "bblog img" })
+                    .setImage({ src: `/v1/image/` + res.payload, alt: "bblog img" })
                     .run();
             });
         }
@@ -127,10 +130,19 @@ const Write = () => {
         }
     };
 
+    const delTags = (tag: string) => {
+        setTagList(() => [...taglist].filter((v) => v != tag));
+    };
+
+    const setFilteredTag = (e: Event) => {
+        e.preventDefault;
+        console.log(tag);
+    };
+
     return (
         <Flex w="full" direction={"column"} gap={2}>
             <form className="p-0 m-0">
-                <Input className="custom-input2" borderWidth={1} type="text" p="2" h={"3.5rem"} />
+                <Input value={title} onChange={titleOnChange} className="custom-input2" borderWidth={1} type="text" p="2" h={"3.5rem"} />
             </form>
             <Flex className="text-3xl custom-input2 p-3" justify={"space-between"}>
                 <Icon icon="mdi:undo" onClick={() => undo()} />
@@ -166,9 +178,51 @@ const Write = () => {
             <section className="custom-input2">
                 <EditorContent className="p-3" editor={editor} />
             </section>
-            <form>
-                <input type="file" ref={imgBox} id="img" className="invisible w-0 h-0" onChange={(e)=>imgUpload(e)} />
+            <form className="invisible w-0 h-0">
+                <input type="file" ref={imgBox} id="img" className="invisible w-0 h-0" onChange={(e) => imgUpload(e)} />
             </form>
+
+            <section className="tag w-full h-full">
+                <div className="p-3 bg-slate-300 dark:bg-slate-500 flex flex-wrap gap-3 items-center">
+                    <Icon icon="mdi:tag" className="translate-y-[0.125rem]" />
+                    <DelTags tags={taglist} delTags={delTags} />
+                    <form
+                        className="taginput flex items-center translate-y-[0.1rem]"
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                        }}
+                    >
+                        <label htmlFor="tagInput" className="-translate-y-[1px]">
+                            <Icon icon="mdi:pencil" className="translate-y-[0.1rem]" />
+                        </label>
+                        <input id="tagInput" type="text" placeholder={t("enter_tag")!} value={tag} onChange={onChangeTag} className="h-7 bg-transparent outline-none border-0 focus:ring-transparent shadow-none px-1" />
+                    </form>
+                </div>
+            </section>
+            <Flex flexDirection={"column"} gap={2}>
+                <Flex alignItems={"center"} gap={5} width={"50%"}>
+                    <Input size="sm" borderRadius={0} type="date" value={start} onChange={startOnChange} />
+                    <Text>~</Text>
+                    <Input size="sm" borderRadius={0} type="date" value={end} onChange={endOnChange} />
+                </Flex>
+                <Input size="sm" placeholder="깃허브" borderRadius={0} type="text" value={github} onChange={githubOnChange} width={"50%"} />
+                <Input size="sm" placeholder="배포 사이트" borderRadius={0} type="text" value={published} onChange={publishedOnChange} width={"50%"} />
+            </Flex>
+
+            <Flex gap={2} justifyContent={"flex-end"}>
+                <Select placeholder="공개 설정" padding={0} borderRadius={0} borderColor={'transparent'} value={hide} onChange={hideOnChange} width={"30%"} maxW={"130px"}>
+                    <option value="0">공개</option>
+                    <option value="1">비공개</option>
+                </Select>
+                <Button
+                    borderWidth={1}
+                    borderRadius={0}
+                    //  onClick={writeArticle}
+                >
+                    {/* {aid ? "수정" : "등록"} */}
+                    수정
+                </Button>
+            </Flex>
         </Flex>
     );
 };

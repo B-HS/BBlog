@@ -15,7 +15,7 @@ const CommentCard = ({ comment }: { comment: comment }) => {
         <section className={`comment border-gray-600 my-3 px-2 py-5 ${comment.commentSort === 1 ? "pl-16" : ""}`}>
             <section className="comment_main flex">
                 <section className="comment_icon w-28 flex align-top justify-center px-3 pb-6 pt-0">
-                    <Avatar src={comment.commentImg} width="w-32" />
+                    <Avatar src={comment.commentImg ? "/v1/image/" + comment.commentImg : ""} width="w-32" />
                 </section>
                 <section className="comment_main w-full flex flex-col gap-3">
                     <section className="comment_user flex gap-2 items-baseline">
