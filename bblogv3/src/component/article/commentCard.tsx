@@ -38,9 +38,9 @@ const CommentCard = ({ comment }: { comment: comment }) => {
                     </section>
                 </section>
             </section>
-            <CommentDelete setShowModal={isDeleteOpen} showModal={deleteOpen} />
-            <CommentModify setShowModal={isEditOpen} showModal={editOpen} />
-            <CommentReply setShowModal={isReplyOpen} showModal={replyOpen} />
+            <CommentDelete setShowModal={isDeleteOpen} showModal={deleteOpen} rid={comment.rid!}/>
+            <CommentModify setShowModal={isEditOpen} showModal={editOpen} rid={comment.rid!}/>
+            <CommentReply setShowModal={isReplyOpen} showModal={replyOpen} comment={comment}/>
         </section>
     );
 };

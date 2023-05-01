@@ -1,5 +1,6 @@
-import { requestAddComment, uploadImage } from "@/ajax/ajax";
+import { requestAddComment, requestCommentList, uploadImage } from "@/ajax/ajax";
 import useInput from "@/hooks/useInput";
+import { resetCommentInfo } from "@/store/global/global";
 import { AppDispatch } from "@/store/store";
 import { Button, Flex, Image, Input, Textarea, useToast } from "@chakra-ui/react";
 import { t } from "i18next";
@@ -18,12 +19,12 @@ const CommentInput = () => {
     const imgBox = useRef<HTMLInputElement>(null);
     const dispatch = useDispatch<AppDispatch>();
 
-    const imgUpload = (e:ChangeEvent<HTMLInputElement>) => {
+    const imgUpload = (e: ChangeEvent<HTMLInputElement>) => {
         let formData = new FormData();
         if (e.target.files) {
             formData.append("upload", e.target.files[0]);
             dispatch(uploadImage(formData)).then((res) => {
-                setUploadedImg(res.payload)
+                setUploadedImg(res.payload);
             });
         }
     };
@@ -77,10 +78,22 @@ const CommentInput = () => {
                 commentDesc: context,
                 commentSort: 0,
             })
-        ).then(res=>{
-            console.log(res);
-            
-        })
+        ).then((res) => {
+            toast({
+                title: t("comment_registered"),
+                isClosable: false,
+                variant: "subtle",
+                status: "success",
+            });
+            dispatch(resetCommentInfo());
+            dispatch(requestCommentList({ size: res.payload, page: 0, aid: slug as string })).then(() => {
+                window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+                setNickname("")
+                setPassword("")
+                setUploadedImg("")
+                setContext("")
+            });
+        });
     };
 
     return (
@@ -96,9 +109,9 @@ const CommentInput = () => {
                     </form>
                     <Textarea placeholder={t("context")!} border={0} borderRadius={0} className="custom-input resize-none" value={context} onChange={contextOnChange} />
                     <Flex justifyContent={"flex-end"} className="text-sm text-gray-500 " gap={3}>
-                        <input type="file" ref={imgBox} className="hidden" onChange={imgUpload}/>
+                        <input type="file" ref={imgBox} className="hidden" onChange={imgUpload} />
                         <Button size={"sm"} borderRadius={0} onClick={() => imgBox.current?.click()}>
-                            {uploadedImg?t('upload_finished'):t("upload_profile_img")}
+                            {uploadedImg ? t("upload_finished") : t("upload_profile_img")}
                         </Button>
                         <Button size={"sm"} borderRadius={0} onClick={commentWrite}>
                             {t("write_submit")}

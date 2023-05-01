@@ -2,25 +2,54 @@ import { t } from "i18next";
 import { useEffect, useRef } from "react";
 import { Icon } from "@iconify/react";
 import useInput from "@/hooks/useInput";
-import { Button, Input } from "@chakra-ui/react";
+import { Button, Input, useToast } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/store";
+import { useRouter } from "next/router";
+import { requestCommentList, requestEditComment } from "@/ajax/ajax";
+import { resetCommentInfo } from "@/store/global/global";
 
-const CommentModify = ({ showModal, setShowModal }: { showModal: boolean; setShowModal: Function }) => {
+const CommentModify = ({ showModal, setShowModal, rid }: { showModal: boolean; setShowModal: Function; rid: number }) => {
     const [commentDesc, onChangeCommentDesc, setCommentDesc] = useInput();
     const [pw, onChangePw, setPw] = useInput();
     const dialog = useRef<HTMLDialogElement>(null);
+    const toast = useToast();
+    const dispatch = useDispatch<AppDispatch>();
+    const router = useRouter();
     const validator = () => {
         if (!pw || pw.trim().length === 0) {
-            // tst('warning', t('comment_no_pw'));
+            toast({
+                title: t("comment_no_pw"),
+                isClosable: false,
+                variant: "subtle",
+                status: "warning",
+            });
             return false;
         }
         if (!commentDesc || commentDesc.trim().length === 0) {
-            // tst('warning', t('comment_no_desc'));
+            toast({
+                title: t("comment_no_desc"),
+                isClosable: false,
+                variant: "subtle",
+                status: "warning",
+            });
             return false;
         }
         return true;
     };
     const commentModify = () => {
-        console.log("comment modify");
+        if (validator()) {
+            dispatch(requestEditComment({ rid: rid, pw: pw, commentDesc: commentDesc })).then((res) => {
+                toast({
+                    title: t("comment_edited"),
+                    isClosable: false,
+                    variant: "subtle",
+                    status: "success",
+                });
+                dispatch(resetCommentInfo());
+                dispatch(requestCommentList({ page: 0, size: res.payload + 10, aid: router.query.slug as string }));
+            });
+        }
     };
     useEffect(() => {
         if (showModal) dialog.current?.showModal();
@@ -44,7 +73,7 @@ const CommentModify = ({ showModal, setShowModal }: { showModal: boolean; setSho
 
                         <div className="px-2 flex justify-end">
                             <Button className="btn btn-sm opacity-50 hover:opacity-100 transition-opacity" onClick={commentModify}>
-                                {t("comment_delete")}
+                                {t("modify")}
                             </Button>
                         </div>
                     </dl>

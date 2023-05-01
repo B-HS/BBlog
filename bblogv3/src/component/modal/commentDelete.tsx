@@ -2,14 +2,19 @@ import { t } from "i18next";
 import { useEffect, useRef } from "react";
 import { Icon } from "@iconify/react";
 import useInput from "@/hooks/useInput";
-import { Button, Input } from "@chakra-ui/react";
+import { Button, Input, useToast } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import { requestCommentList, requestDeleteComment } from "@/ajax/ajax";
+import { useRouter } from "next/router";
+import { resetCommentInfo } from "@/store/global/global";
 
-const CommentDelete = ({ showModal, setShowModal }: { showModal: boolean; setShowModal: Function }) => {
+const CommentDelete = ({ showModal, setShowModal, rid }: { showModal: boolean; setShowModal: Function; rid: number }) => {
     const [pw, onChangePw, setPw] = useInput();
     const dialog = useRef<HTMLDialogElement>(null);
-    const commentDelete = () => {
-        console.log("comment delete");
-    };
+    const toast = useToast();
+    const dispatch = useDispatch<AppDispatch>();
+    const router = useRouter();
     useEffect(() => {
         if (showModal) dialog.current?.showModal();
         if (!showModal) dialog.current?.close();
@@ -17,11 +22,31 @@ const CommentDelete = ({ showModal, setShowModal }: { showModal: boolean; setSho
 
     const validator = () => {
         if (!pw || pw.trim().length === 0) {
-            // tst('warning', t('comment_no_pw'));
+            toast({
+                title: t("comment_no_pw"),
+                isClosable: false,
+                variant: "subtle",
+                status: "warning",
+            });
             return false;
         }
         return true;
     };
+    const commentDelete = () => {
+        if (validator()) {
+            dispatch(requestDeleteComment({ rid: rid, pw: pw })).then((res) => {
+                toast({
+                    title: t("comment_removed"),
+                    isClosable: false,
+                    variant: "subtle",
+                    status: "success",
+                });
+                dispatch(resetCommentInfo());
+                dispatch(requestCommentList({ page: 0, size: rid, aid: router.query.slug as string }));
+            });
+        }
+    };
+
     return (
         <dialog ref={dialog} onClose={() => setShowModal(false)} className="card w-[20%] min-w-[350px] h-fit shadow-xl">
             <div className="flex flex-col gap-2 justify-between h-full w-full dark:text-white">

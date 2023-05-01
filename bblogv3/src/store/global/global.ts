@@ -1,4 +1,4 @@
-import { authCheck, login, requestAddComment, requestArticleList, requestCommentList, uploadImage } from "@/ajax/ajax";
+import { authCheck, login, requestAddArticle, requestAddComment, requestArticleList, requestCommentList, requestDeleteComment, requestEditComment, uploadImage } from "@/ajax/ajax";
 import { article, comment } from "@/app";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
@@ -122,6 +122,36 @@ export const global = createSlice({
             } else {
                 resetCommentInfo();
             }
+        });
+
+        builder.addCase(requestAddArticle.rejected, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(requestAddArticle.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(requestAddArticle.fulfilled, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(requestDeleteComment.rejected, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(requestDeleteComment.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(requestDeleteComment.fulfilled, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(requestEditComment.rejected, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(requestEditComment.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(requestEditComment.fulfilled, (state) => {
+            state.loading = false;
         });
     },
 });

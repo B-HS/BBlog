@@ -1,7 +1,9 @@
-import { uploadImage } from "@/ajax/ajax";
+import { requestAddArticle, uploadImage } from "@/ajax/ajax";
+import DelTags from "@/component/article/deletableTags";
 import useInput from "@/hooks/useInput";
 import { AppDispatch } from "@/store/store";
-import { Button, Flex, Input, Menu, MenuButton, MenuItem, MenuList, Select, Text } from "@chakra-ui/react";
+import { Button, Flex, Input, Menu, MenuButton, MenuItem, MenuList, Select, Tab, TabList, Tabs, Text, useToast } from "@chakra-ui/react";
+import { Icon } from "@iconify/react";
 import { Highlight } from "@tiptap/extension-highlight";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
@@ -9,18 +11,13 @@ import Placeholder from "@tiptap/extension-placeholder";
 import TextAlign from "@tiptap/extension-text-align";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { useRouter } from "next/router";
-import { ChangeEvent, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Icon } from "@iconify/react";
-import DelTags from "@/component/article/deletableTags";
 import { t } from "i18next";
+import { useRouter } from "next/router";
+import { ChangeEvent, KeyboardEvent, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 const Write = () => {
-    const router = useRouter();
-    const OptionsText = ["INTRO", "FRONTEND", "BACKEND", "ETC", "PORTFOLIO"];
+    const OptionsText = ["INTRO", "DEV", "ETC", "PORTFOLIO"];
     const imgBox = useRef<HTMLInputElement>(null);
-    const [hash, hashOnChange, setHash] = useInput();
-    const [options, optionsOnChange, setOptions] = useInput();
     const [hide, hideOnChange, setHide] = useInput();
     const [title, titleOnChange, setTitle] = useInput();
     const [taglist, setTagList] = useState<string[]>([]);
@@ -28,10 +25,12 @@ const Write = () => {
     const [end, endOnChange, setEnd] = useInput();
     const [github, githubOnChange, setGithub] = useInput();
     const [published, publishedOnChange, setPublished] = useInput();
-    const [uploadedImg, setUploadedImg] = useState<string[]>([]);
     const [thumbnail, setThumbtail] = useState<string>("");
     const [tag, onChangeTag, setTag] = useInput();
+    const [tab, setTab] = useState<number>(0);
     const dispatch = useDispatch<AppDispatch>();
+    const router = useRouter();
+    const toast = useToast();
     const editor = useEditor({
         extensions: [
             StarterKit.configure({
@@ -67,12 +66,27 @@ const Write = () => {
         if (e.target.files) {
             formData.append("upload", e.target.files[0]);
             dispatch(uploadImage(formData)).then((res) => {
-                setThumbtail(`https://hyns.dev/v1/image/` + res);
-                editor
-                    .chain()
-                    .focus()
-                    .setImage({ src: `/v1/image/` + res.payload, alt: "bblog img" })
-                    .run();
+                if (res.meta.requestStatus === "fulfilled") {
+                    toast({
+                        title: t("image_upload_success"),
+                        isClosable: false,
+                        variant: "subtle",
+                        status: "success",
+                    });
+                    setThumbtail(`https://hyns.dev/v1/image/` + res);
+                    editor
+                        .chain()
+                        .focus()
+                        .setImage({ src: `/v1/image/` + res.payload, alt: "bblog img" })
+                        .run();
+                } else {
+                    toast({
+                        title: t("unknownError"),
+                        isClosable: false,
+                        variant: "subtle",
+                        status: "error",
+                    });
+                }
             });
         }
     };
@@ -134,13 +148,79 @@ const Write = () => {
         setTagList(() => [...taglist].filter((v) => v != tag));
     };
 
-    const setFilteredTag = (e: Event) => {
-        e.preventDefault;
-        console.log(tag);
+    const setFilteredTag = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key == "Enter") {
+            if (tag.trim().length == 0) {
+                setTag("");
+                return;
+            }
+            if (tag.length > 30) {
+                toast({
+                    title: t("thirty_character"),
+                    isClosable: false,
+                    variant: "subtle",
+                    status: "warning",
+                });
+                setTag("");
+                return;
+            }
+
+            if (taglist.includes(tag)) {
+                toast({
+                    title: t("already_registered"),
+                    isClosable: false,
+                    variant: "subtle",
+                    status: "warning",
+                });
+                setTag("");
+                return;
+            }
+            const madeTag = tag
+                .split("")
+                .filter((v: string) => v != ",")
+                .join("");
+            setTagList(() => [...taglist, madeTag]);
+            setTag("");
+        }
+    };
+
+    const writeArticle = () => {
+        dispatch(
+            requestAddArticle({
+                context: editor.getHTML(),
+                hide: hide,
+                tags: taglist,
+                menu: OptionsText[tab],
+                title: title,
+                startDate: start,
+                endDate: end,
+                github: github,
+                publish: published,
+                thumbnail: thumbnail,
+            })
+        ).then((res) => {
+            if (res.meta.requestStatus === "fulfilled") {
+                tab === 3 ? router.push("/portfolio/" + res.payload) : router.push("/blog/" + res.payload);
+            }
+        }).catch(res=>{
+            toast({
+                title: res.error.code + t("request_fail"),
+                isClosable: false,
+                variant: "subtle",
+                status: "error",
+            });
+        })
     };
 
     return (
         <Flex w="full" direction={"column"} gap={2}>
+            <Tabs onChange={(idx) => setTab(idx)} w="fit-content">
+                <TabList border="0">
+                    {OptionsText.map((val, idx) => (
+                        <Tab key={idx}>{val}</Tab>
+                    ))}
+                </TabList>
+            </Tabs>
             <form className="p-0 m-0">
                 <Input value={title} onChange={titleOnChange} className="custom-input2" borderWidth={1} type="text" p="2" h={"3.5rem"} />
             </form>
@@ -195,30 +275,28 @@ const Write = () => {
                         <label htmlFor="tagInput" className="-translate-y-[1px]">
                             <Icon icon="mdi:pencil" className="translate-y-[0.1rem]" />
                         </label>
-                        <input id="tagInput" type="text" placeholder={t("enter_tag")!} value={tag} onChange={onChangeTag} className="h-7 bg-transparent outline-none border-0 focus:ring-transparent shadow-none px-1" />
+                        <input id="tagInput" type="text" placeholder={t("enter_tag")!} value={tag} onKeyDown={(e) => setFilteredTag(e)} onChange={onChangeTag} className="h-7 bg-transparent outline-none border-0 focus:ring-transparent shadow-none px-1" />
                     </form>
                 </div>
             </section>
-            <Flex flexDirection={"column"} gap={2}>
-                <Flex alignItems={"center"} gap={5} width={"50%"}>
-                    <Input size="sm" borderRadius={0} type="date" value={start} onChange={startOnChange} />
-                    <Text>~</Text>
-                    <Input size="sm" borderRadius={0} type="date" value={end} onChange={endOnChange} />
+            {tab === 3 && (
+                <Flex flexDirection={"column"} gap={2}>
+                    <Flex alignItems={"center"} gap={5} width={"50%"}>
+                        <Input size="sm" borderRadius={0} type="date" value={start} onChange={startOnChange} />
+                        <Text>~</Text>
+                        <Input size="sm" borderRadius={0} type="date" value={end} onChange={endOnChange} />
+                    </Flex>
+                    <Input size="sm" placeholder="깃허브" borderRadius={0} type="text" value={github} onChange={githubOnChange} width={"50%"} />
+                    <Input size="sm" placeholder="배포 사이트" borderRadius={0} type="text" value={published} onChange={publishedOnChange} width={"50%"} />
                 </Flex>
-                <Input size="sm" placeholder="깃허브" borderRadius={0} type="text" value={github} onChange={githubOnChange} width={"50%"} />
-                <Input size="sm" placeholder="배포 사이트" borderRadius={0} type="text" value={published} onChange={publishedOnChange} width={"50%"} />
-            </Flex>
+            )}
 
             <Flex gap={2} justifyContent={"flex-end"}>
-                <Select placeholder="공개 설정" padding={0} borderRadius={0} borderColor={'transparent'} value={hide} onChange={hideOnChange} width={"30%"} maxW={"130px"}>
+                <Select placeholder="공개 설정" padding={0} borderRadius={0} borderColor={"transparent"} value={hide} onChange={hideOnChange} width={"30%"} maxW={"130px"}>
                     <option value="0">공개</option>
                     <option value="1">비공개</option>
                 </Select>
-                <Button
-                    borderWidth={1}
-                    borderRadius={0}
-                    //  onClick={writeArticle}
-                >
+                <Button borderWidth={1} borderRadius={0} onClick={writeArticle}>
                     {/* {aid ? "수정" : "등록"} */}
                     수정
                 </Button>

@@ -15,7 +15,7 @@ const PortfolioCard = ({ info }: { info: article }) => {
         <Card borderRadius={0} border={'1px solid rgba(200, 200, 200, 0.2)'} shadow={'md'}>
             <CardBody p={0}>
                     <Link href={`/portfolio/${info.aid}`}>
-                        <Image className="bg-cover h-[220px]  min-w-[395px]" src={info.thumbnail ? `https://hyns.dev/image/${info.thumbnail}` : "/favicon.ico"} alt={`${info.aid}`} borderRadius="0" />
+                        <Image className="bg-cover h-[220px]  min-w-[395px]" src={info.thumbnail ? `https://hyns.dev/v1/image/${info.thumbnail}` : "/favicon.ico"} borderRadius="0" />
                     </Link>
                 
                 <Stack p="3">

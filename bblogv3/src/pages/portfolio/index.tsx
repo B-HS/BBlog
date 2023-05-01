@@ -1,8 +1,21 @@
+import { requestArticleList } from "@/ajax/ajax";
 import PortfolioCard from "@/component/card/portfolioCard";
+import { resetArticleInfo } from "@/store/global/global";
+import { AppDispatch, RootState } from "@/store/store";
 import dayjs from "dayjs";
 import Head from "next/head";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const Portfolio = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const globals = useSelector((state: RootState) => state.global);
+    useEffect(() => {
+        dispatch(requestArticleList({ page: 0, size: 100, menu: "PORTFOLIO" }));
+        return ()=>{
+            dispatch(resetArticleInfo)
+        }
+    }, []);
     return (
         <>
             <Head>
@@ -18,8 +31,8 @@ const Portfolio = () => {
                 <meta property="og:locale" content="ko_KR" />
             </Head>
             <section className="portfolio_list grid grid-cols-fluid justify-items-center gap-6 p-2 mt-3">
-                {[0, 1, 2, 3, 4, 5, 6, 7].map((v) => (
-                    <PortfolioCard key={v} info={{context:"test",hide:false, menu:"PORTFOLIO", tags:["1", "2","3"], title:"title", aid:51, startDate:dayjs("20230101").toString(), endDate:dayjs("20230202").toString(), publish:"https://hbyun.tistory.com", github:"https://hbyun.tistory.com" }} />
+                {globals.articles.map((v, idx) => (
+                    <PortfolioCard key={idx} info={v} />
                 ))}
             </section>
         </>

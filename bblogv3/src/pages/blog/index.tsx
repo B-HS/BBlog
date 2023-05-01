@@ -47,6 +47,12 @@ const Blog = () => {
         };
     }, [globals.total]);
 
+    useEffect(()=>{
+        return ()=>{
+            dispatch(resetArticleInfo())
+        }
+    }, [])
+
     return (
         <Flex flexDirection={"column"} gap={3} alignItems={"flex-start"}>
             <Tabs index={tabIndex} variant="enclosed">
