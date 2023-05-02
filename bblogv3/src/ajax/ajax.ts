@@ -33,6 +33,18 @@ export const requestAddArticle = createAsyncThunk("/article/add", async (info: a
     return data;
 });
 
+export const requestDeleteArticle = createAsyncThunk("/article/delete", async (info: article) => {
+    const token = typeof Cookies.get("token") !== "undefined" ? "Bearer " + Cookies.get("token")?.toString() : null;
+    const { data } = await axios.post("/v1/article/delete", info, { headers: { token: token, "Content-Type": "application/json" } });
+    return data;
+});
+
+export const requestEditArticle = createAsyncThunk("/article/edit", async (info: article) => {
+    const token = typeof Cookies.get("token") !== "undefined" ? "Bearer " + Cookies.get("token")?.toString() : null;
+    const { data } = await axios.post("/v1/article/modify", info, { headers: { token: token, "Content-Type": "application/json" } });
+    return data;
+});
+
 export const requestCommentList = createAsyncThunk("/comment/list", async (info: { page: number; size: number; aid: string }) => {
     const { data } = await axios.post("/v1/comment/list", info);
     return data;
@@ -47,6 +59,7 @@ export const requestDeleteComment = createAsyncThunk("/article/comment/delete", 
     const { data } = await axios.post("/v1/comment/delete", info);
     return data;
 });
+
 export const requestEditComment = createAsyncThunk("/article/comment/edit", async (info: comment) => {
     const { data } = await axios.post("/v1/comment/modify", info);
     return data;

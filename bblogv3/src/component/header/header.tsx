@@ -15,15 +15,16 @@ const Header = () => {
     const [currentLocation, setCurrentLocation] = useState<string>("");
     const dispatch = useDispatch<AppDispatch>();
     const globals = useSelector((state: RootState) => state.global);
-    const routeCheck = async () => {
-        dispatch(authCheck());
-    };
+    const routeCheck = async () => dispatch(authCheck());
+    const authChecking = async () => routeCheck();
+    useEffect(() => {
+        authChecking();
+        setCurrentLocation(window.location.href.split("/")[3]);
+    }, [router]);
 
     useEffect(() => {
-        setCurrentLocation(window.location.href.split("/")[3]);
-        routeCheck();
         setAuth(globals.auth);
-    }, [router]);
+    }, [globals.auth]);
 
     return (
         <Flex className="resume bg-opacity-10" alignItems={"baseline"} justify={"space-between"} position={"sticky"} top={0} py={3} borderBottom={"1px solid"} mb={5} px={2} zIndex={1000000} backgroundColor={"chakra-body-bg"}>

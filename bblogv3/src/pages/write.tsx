@@ -198,18 +198,20 @@ const Write = () => {
                 publish: published,
                 thumbnail: thumbnail,
             })
-        ).then((res) => {
-            if (res.meta.requestStatus === "fulfilled") {
-                tab === 3 ? router.push("/portfolio/" + res.payload) : router.push("/blog/" + res.payload);
-            }
-        }).catch(res=>{
-            toast({
-                title: res.error.code + t("request_fail"),
-                isClosable: false,
-                variant: "subtle",
-                status: "error",
+        )
+            .then((res) => {
+                if (res.meta.requestStatus === "fulfilled") {
+                    tab === 3 ? router.push("/portfolio/" + res.payload) : router.push("/blog/" + res.payload);
+                }
+            })
+            .catch((res) => {
+                toast({
+                    title: res.error.code + t("request_fail"),
+                    isClosable: false,
+                    variant: "subtle",
+                    status: "error",
+                });
             });
-        })
     };
 
     return (

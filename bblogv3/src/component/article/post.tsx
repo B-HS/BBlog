@@ -1,17 +1,34 @@
 import { article } from "@/app";
-import { Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import dompurify from "isomorphic-dompurify";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { Icon } from "@iconify/react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import ArticleDelete from "../modal/articleDelete";
+import ArticleModify from "../modal/articleModify";
 
 const Post = ({ article }: { article: article }) => {
+    const [isDelete, setIsDelete] = useState<boolean>(false);
+    const [isModify, setIsModify] = useState<boolean>(false);
+    const globals = useSelector((state: RootState) => state.global);
     const sanitizer = dompurify.sanitize;
     const router = useRouter();
     return (
         <Flex w="full" padding="1.25rem" flexDirection={"column"} gap={2}>
+            {globals.auth && (
+                <section className="admin-btn flex gap-2">
+                    <Button p="0.5" px="2" onClick={() => setIsDelete(true)}>
+                        Remove
+                    </Button>
+                    <Button p="0.5" px="2" onClick={() => setIsModify(true)}>
+                        modify
+                    </Button>
+                </section>
+            )}
             <section className="menu flex items-center gap-1 text-gray-500" onClick={() => (!article.startDate ? router.push("/blog") : router.push("/portfolio"))}>
                 <Icon icon="ic:baseline-menu" />
                 <Text fontSize="medium" cursor={"pointer"}>
@@ -58,6 +75,8 @@ const Post = ({ article }: { article: article }) => {
             </section>
             <hr className="my-3 border-t-gray-500" />
             <div dangerouslySetInnerHTML={{ __html: sanitizer(article.context) }}></div>
+            <ArticleDelete article={article} showModal={isDelete} setShowModal={setIsDelete} />
+            <ArticleModify article={article} showModal={isModify} setShowModal={setIsModify} />
         </Flex>
     );
 };

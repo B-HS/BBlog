@@ -1,4 +1,4 @@
-import { authCheck, login, requestAddArticle, requestAddComment, requestArticleList, requestCommentList, requestDeleteComment, requestEditComment, uploadImage } from "@/ajax/ajax";
+import { authCheck, login, requestAddArticle, requestAddComment, requestArticleList, requestCommentList, requestDeleteArticle, requestDeleteComment, requestEditArticle, requestEditComment, uploadImage } from "@/ajax/ajax";
 import { article, comment } from "@/app";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
@@ -86,8 +86,6 @@ export const global = createSlice({
             state.loading = true;
         });
         builder.addCase(requestArticleList.fulfilled, (state, action: PayloadAction<{ total: number; articles: article[] }>) => {
-            console.log(action.payload);
-
             if (action.payload.articles) {
                 state.articles = [...state.articles, ...action.payload.articles];
                 state.total = action.payload.total;
@@ -114,7 +112,6 @@ export const global = createSlice({
             state.loading = true;
         });
         builder.addCase(requestCommentList.fulfilled, (state, action: PayloadAction<{ total: number; comments: comment[] }>) => {
-            console.log(action.payload);
             if (action.payload.comments) {
                 state.comments = [...state.comments, ...action.payload.comments];
                 state.commentTotal = action.payload.total;
@@ -151,6 +148,26 @@ export const global = createSlice({
             state.loading = true;
         });
         builder.addCase(requestEditComment.fulfilled, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(requestDeleteArticle.rejected, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(requestDeleteArticle.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(requestDeleteArticle.fulfilled, (state) => {
+            state.loading = false;
+        });
+
+        builder.addCase(requestEditArticle.rejected, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(requestEditArticle.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(requestEditArticle.fulfilled, (state) => {
             state.loading = false;
         });
     },
