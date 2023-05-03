@@ -64,6 +64,3 @@ export const requestEditComment = createAsyncThunk("/article/comment/edit", asyn
     const { data } = await axios.post("/v1/comment/modify", info);
     return data;
 });
-
-
-

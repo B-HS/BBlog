@@ -37,7 +37,6 @@ const Login = () => {
     };
 
     const login = () => {
-        console.log("1234");
         if (validator()) {
             dispatch(userLogin({ id: id, pw: pw })).then((res) => {
                 if (res.payload === "logged") {

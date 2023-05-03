@@ -7,6 +7,7 @@ import Link from "next/link";
 import React from "react";
 import Tag from "./tag";
 import { article } from "@/app";
+import { t } from "i18next";
 
 const PortfolioCard = ({ info }: { info: article }) => {
     dayjs.extend(relativeTime);
@@ -49,20 +50,20 @@ const PortfolioCard = ({ info }: { info: article }) => {
                     {info.github && (
                         <a href={info.github}>
                             <Button variant="solid" borderRadius={0}>
-                                깃허브
+                                {t('move_to_github')}
                             </Button>
                         </a>
                     )}
                     {info.publish && (
                         <a href={info.publish}>
                             <Button variant="solid" borderRadius={0}>
-                                배포 사이트
+                                {t('move_to_publish')}
                             </Button>
                         </a>
                     )}
                     <Link href={`/portfolio/${info.aid}`}>
                         <Button variant="solid" borderRadius={0}>
-                            자세히
+                            {t('detail')}
                         </Button>
                     </Link>
                 </ButtonGroup>

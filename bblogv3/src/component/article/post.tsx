@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import ArticleDelete from "../modal/articleDelete";
 import ArticleModify from "../modal/articleModify";
+import { t } from "i18next";
 
 const Post = ({ article }: { article: article }) => {
     const [isDelete, setIsDelete] = useState<boolean>(false);
@@ -22,10 +23,10 @@ const Post = ({ article }: { article: article }) => {
             {globals.auth && (
                 <section className="admin-btn flex gap-2">
                     <Button p="0.5" px="2" onClick={() => setIsDelete(true)}>
-                        Remove
+                        {t('article_delete')}
                     </Button>
                     <Button p="0.5" px="2" onClick={() => setIsModify(true)}>
-                        modify
+                        {t('article_modify')}
                     </Button>
                 </section>
             )}

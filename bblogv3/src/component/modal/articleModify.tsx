@@ -7,6 +7,7 @@ import { t } from "i18next";
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import DelTags from "../article/deletableTags";
+import { useToast } from "@chakra-ui/react";
 
 const ArticleModify = ({ article, showModal, setShowModal }: { article: article; showModal: boolean; setShowModal: Function }) => {
     const dialog = useRef<HTMLDialogElement>(null);
@@ -17,7 +18,7 @@ const ArticleModify = ({ article, showModal, setShowModal }: { article: article;
     const [tags, setTags] = useState<string[]>(article.tags);
     const [hashInput, onChangeHashInput, setHashInput] = useInput();
     const [tab, setTab] = useState<boolean>(false);
-
+    const toast = useToast();
     const enterHandler = (e: KeyboardEvent) => {
         if (e.code === "Enter") {
             setHtml(html + "</br>");
@@ -28,15 +29,21 @@ const ArticleModify = ({ article, showModal, setShowModal }: { article: article;
 
     const validator = () => {
         if (!title || title.trim().length === 0) {
-            console.log("1");
-
-            // tst('warning', t('write_no_title'));
+            toast({
+                title: t("write_no_title"),
+                isClosable: false,
+                variant: "subtle",
+                status: "warning",
+            });
             return false;
         }
         if (!html || html.trim().length === 0) {
-            console.log(2);
-
-            // tst('warning', t('write_no_desc'));
+            toast({
+                title: t("write_no_desc"),
+                isClosable: false,
+                variant: "subtle",
+                status: "warning",
+            });
             return false;
         }
         return true;
@@ -59,13 +66,23 @@ const ArticleModify = ({ article, showModal, setShowModal }: { article: article;
                 return;
             }
             if (hashInput.length > 35) {
-                // tst("warning", t("thirty_character"));
+                toast({
+                    title: t("thirty_character"),
+                    isClosable: false,
+                    variant: "subtle",
+                    status: "warning",
+                });
                 setHashInput("");
                 return;
             }
 
             if (tags.includes(hashInput)) {
-                // tst("warning", t("already_registered"));
+                toast({
+                    title: t("already_registered"),
+                    isClosable: false,
+                    variant: "subtle",
+                    status: "warning",
+                });
                 setHashInput("");
                 return;
             }

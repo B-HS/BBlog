@@ -51,7 +51,7 @@ const Write = () => {
                 linkOnPaste: true,
             }),
             Placeholder.configure({
-                placeholder: "내용",
+                placeholder: t('context')!,
             }),
         ],
         content: "",
@@ -288,19 +288,18 @@ const Write = () => {
                         <Text>~</Text>
                         <Input size="sm" borderRadius={0} type="date" value={end} onChange={endOnChange} />
                     </Flex>
-                    <Input size="sm" placeholder="깃허브" borderRadius={0} type="text" value={github} onChange={githubOnChange} width={"50%"} />
-                    <Input size="sm" placeholder="배포 사이트" borderRadius={0} type="text" value={published} onChange={publishedOnChange} width={"50%"} />
+                    <Input size="sm" placeholder={t('github')!} borderRadius={0} type="text" value={github} onChange={githubOnChange} width={"50%"} />
+                    <Input size="sm" placeholder={t('publish')!} borderRadius={0} type="text" value={published} onChange={publishedOnChange} width={"50%"} />
                 </Flex>
             )}
 
             <Flex gap={2} justifyContent={"flex-end"}>
-                <Select placeholder="공개 설정" padding={0} borderRadius={0} borderColor={"transparent"} value={hide} onChange={hideOnChange} width={"30%"} maxW={"130px"}>
-                    <option value="0">공개</option>
-                    <option value="1">비공개</option>
+                <Select placeholder={t('hide_true')+" "+t('hide_false')} padding={0} borderRadius={0} borderColor={"transparent"} value={hide} onChange={hideOnChange} width={"30%"} maxW={"130px"}>
+                    <option value="0">{t('hide_false')}</option>
+                    <option value="1">{t('hide_true')}</option>
                 </Select>
                 <Button borderWidth={1} borderRadius={0} onClick={writeArticle}>
-                    {/* {aid ? "수정" : "등록"} */}
-                    수정
+                    {t('write_submit')}
                 </Button>
             </Flex>
         </Flex>
