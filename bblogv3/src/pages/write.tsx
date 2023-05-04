@@ -77,7 +77,7 @@ const Write = () => {
                     editor
                         .chain()
                         .focus()
-                        .setImage({ src: `/v1/image/` + res.payload, alt: "bblog img" })
+                        .setImage({ src: `https://hyns.dev/v1/image/` + res.payload, alt: "bblog img" })
                         .run();
                 } else {
                     toast({

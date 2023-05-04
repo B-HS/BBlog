@@ -11,7 +11,7 @@ const Logout = () => {
     }, []);
     return (
         <Flex direction={"column"} alignItems={"center"}>
-            <img className="seyana w-[50%] max-w-[500px] min-w-[350px]" src="/v1/image/default.png" alt="" />
+            <img className="seyana w-[50%] max-w-[500px] min-w-[350px]" src="https://hyns.dev/v1/image/default.png" alt="" />
             <span className="btn btn-sm">{t("logout_done")}</span>
             <span className="btn btn-sm">{t("go_back_soon")}</span>
         </Flex>
