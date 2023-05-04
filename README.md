@@ -1,8 +1,7 @@
 # BBlog v3
 
-### 남은 작업
-- 배포
 ### 작업 끝
+- https://hyns.dev 운영중
 - i18n (ko/jp)
 - 게시글 CRUD
 - 댓글 CRUD
