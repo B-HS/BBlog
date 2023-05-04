@@ -13,7 +13,7 @@ const PortfolioCard = ({ info }: { info: article }) => {
     dayjs.extend(relativeTime);
     dayjs.locale("ko");
     return (
-        <Card className="hover:-translate-y-1 hover:shadow-lg transition-all" borderRadius={0} border={'1px solid rgba(200, 200, 200, 0.2)'} shadow={'md'}>
+        <Card className="hover:-translate-y-1 hover:shadow-lg transition-all" borderRadius={0} border={'1px solid rgba(200, 200, 200, 0.2)'} shadow={'md'} minH="395px">
             <CardBody p={0}>
                     <Link href={`/portfolio/${info.aid}`}>
                         <Image objectFit={'fill'} className="w-full h-full max-h-[225px] max-w-[395px]" src={info.thumbnail ? `https://hyns.dev/v1/image/${info.thumbnail}` : "/favicon.ico"} borderRadius="0" />
