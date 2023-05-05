@@ -73,7 +73,7 @@ const Write = () => {
                         variant: "subtle",
                         status: "success",
                     });
-                    setThumbtail(`https://hyns.dev/v1/image/` + res);
+                    setThumbtail(`https://hyns.dev/v1/image/` + res.payload);
                     editor
                         .chain()
                         .focus()
@@ -188,7 +188,7 @@ const Write = () => {
         dispatch(
             requestAddArticle({
                 context: editor.getHTML(),
-                hide: hide,
+                hide: hide?0:1,
                 tags: taglist,
                 menu: OptionsText[tab],
                 title: title,

@@ -30,7 +30,7 @@ export interface article {
 	title: string;
 	context: string;
 	createdDate?: Date | string;
-	hide: boolean;
+	hide: boolean | number?;
 	menu: string;
 	thumbnail?: string;
 	tags: string[];

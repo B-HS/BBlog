@@ -48,21 +48,21 @@ const Header = () => {
                 </Flex>
             </Flex>
             <Flex className="icons text-xl gap-2 translate-y-0.5 align-baseline">
-                <Link href="https://github.com/B-HS">
+                <Link href="https://github.com/B-HS" aria-label="Redirect to Hyunseok's github">
                     <Icon icon="mdi:github" />
                 </Link>
                 {!auth && (
-                    <Link as={NextLink} href="/login">
+                    <Link as={NextLink} href="/login" aria-label="Redirect to login page">
                         <Icon icon="ri:login-box-line" />
                     </Link>
                 )}
                 {auth && (
-                    <Link as={NextLink} href="/logout">
+                    <Link as={NextLink} href="/logout" aria-label="Redirect to logout page">
                         <Icon icon="ri:logout-box-line" />
                     </Link>
                 )}
                 {auth && (
-                    <Link as={NextLink} href="/write">
+                    <Link as={NextLink} href="/write" aria-label="Redirect to write page">
                         <Icon icon="mdi:pencil" />
                     </Link>
                 )}
