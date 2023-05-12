@@ -13,7 +13,7 @@ const Portfolio = () => {
     useEffect(() => {
         dispatch(requestArticleList({ page: 0, size: 100, menu: "PORTFOLIO" }));
         return ()=>{
-            dispatch(resetArticleInfo)
+            dispatch(resetArticleInfo())
         }
     }, []);
     return (
