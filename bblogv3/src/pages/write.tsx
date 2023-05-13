@@ -73,7 +73,7 @@ const Write = () => {
                         variant: "subtle",
                         status: "success",
                     });
-                    setThumbtail(`https://hyns.dev/v1/image/` + res.payload);
+                    setThumbtail(res.payload);
                     editor
                         .chain()
                         .focus()
