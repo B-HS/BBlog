@@ -1,4 +1,7 @@
-# BBlog v3
+# BBLOG FINAL
+- 구상중
+  
+- # BBlog v3
 
 ### 작업 끝
 - https://hyns.dev 운영중
