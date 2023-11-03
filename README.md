@@ -1,7 +1,13 @@
 # BBLOG FINAL
-- 구상중
-  
-- # BBlog v3
+- 프론트는 다음 링크 기반으로 제작
+> https://github.com/B-HS/gumyo.net
+- Collpasable sidebar
+- 백엔드는 다음 링크 기반으로 제작
+> https://github.com/B-HS/B_CMS
+- 다 작성 후 기존 글들 마이그레이션
+- 프로젝트 시작하면 새 레포지토리로 시작
+
+- BBlog v3
 
 ### 작업 끝
 - https://hyns.dev 운영중
