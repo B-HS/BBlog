@@ -1,5 +1,5 @@
-'use client'
 import { cn } from '@/lib/utils'
+import Link from 'next/link'
 import Flex from '../flex'
 import CollapsibleSidebar from '../sidebar/collapsibleSidebar'
 import UpdownAnime from '../transition/updown'
@@ -13,10 +13,10 @@ const Header = ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => {
             <UpdownAnime>
                 <Flex className='gap-2 items-center'>
                     <CollapsibleSidebar />
-                    <Flex className='items-baseline gap-2 p-0'>
+                    <Link href='/' className='flex items-baseline gap-2 p-0'>
                         <span className='text-lg font-bold whitespace-nowrap'>BLOGTITLE</span>
                         <span className='text-[0.7rem] opacity-70'>SUBTITLE</span>
-                    </Flex>
+                    </Link>
                 </Flex>
             </UpdownAnime>
             <UpdownAnime>
