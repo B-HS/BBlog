@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import net.gumyo.bblog.service.local.LocaleService;
+import net.gumyo.bblog.service.locale.LocaleService;
 
 @RestController
 @RequiredArgsConstructor
