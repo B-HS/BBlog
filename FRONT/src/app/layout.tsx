@@ -2,6 +2,7 @@ import Flex from '@/components/flex'
 import Header from '@/components/header/header'
 import Sidebar from '@/components/sidebar/sidebar'
 import ThemeProvider from '@/components/themeProvider'
+import { Toaster } from '@/components/ui/toaster'
 import { cn } from '@/lib/utils'
 import { ReactNode } from 'react'
 import './globals.css'
@@ -19,6 +20,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
                             <Flex className='flex-col items-center justify-center border-t h-10'>Copyright © 2023. BLOGOWNER</Flex>
                         </Flex>
                     </Flex>
+                    <Toaster />
                 </ThemeProvider>
             </body>
         </html>
