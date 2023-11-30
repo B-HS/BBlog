@@ -38,6 +38,7 @@ const LoginModal = ({ children }: React.HTMLAttributes<HTMLElement>) => {
     const login = async () => {
         const data: LoginRes = await userLogin(formData.email, formData.pw)
         if (data.atk) {
+            window.location.reload()
             Object.keys(data).forEach((info) => setCookie(info, data[info]))
             resetModal()
         } else {
