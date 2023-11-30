@@ -1,4 +1,4 @@
-import { axios } from '../axios'
+import axios from 'axios'
 
 export const userLogin = async (email: string, pw: string) => {
     try {
