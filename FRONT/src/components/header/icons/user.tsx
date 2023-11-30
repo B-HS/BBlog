@@ -11,26 +11,30 @@ import {
     DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { UserContext, UserLogout } from '@/module/context/user'
 import { LogInIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useContext } from 'react'
 
 const User = () => {
-    const [isLogin] = useState(false)
-    return isLogin ? (
+    const { userdata } = useContext(UserContext)
+    const { atk, rtk, nickname, email, introduce, lastLogin, roles, urkey, urname } = userdata
+    console.log('Rest infos', introduce, lastLogin, roles, urkey, urname)
+
+    return atk && rtk && nickname ? (
         <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild className='p-0 m-0 justify-center'>
                 <Button variant='ghost' className='p-0 m-0 rounded-full'>
                     <Avatar>
                         <AvatarImage src='/avatars/01.png' alt='@shadcn' />
-                        <AvatarFallback>SC</AvatarFallback>
+                        <AvatarFallback>{nickname}</AvatarFallback>
                     </Avatar>
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className='w-36' forceMount>
                 <DropdownMenuItem>
                     <div className='flex flex-col space-y-1'>
-                        <p className='text-sm font-medium leading-none'>USERID</p>
-                        <p className='text-xs leading-none text-muted-foreground'>EMAIL@GMAIL.COM</p>
+                        <p className='text-sm font-medium leading-none'>{nickname}</p>
+                        <p className='text-xs leading-none text-muted-foreground'>{email}</p>
                     </div>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
@@ -41,7 +45,7 @@ const User = () => {
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={UserLogout}>
                     Log out
                     <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                 </DropdownMenuItem>
