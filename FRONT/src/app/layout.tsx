@@ -1,9 +1,10 @@
 import Flex from '@/components/flex'
 import Header from '@/components/header/header'
+import Loading from '@/components/loading'
 import Sidebar from '@/components/sidebar/sidebar'
-import ThemeProvider from '@/components/themeProvider'
 import { Toaster } from '@/components/ui/toaster'
 import { cn } from '@/lib/utils'
+import ModuleProvider from '@/module/moduleProvider'
 import { ReactNode } from 'react'
 import './globals.css'
 
@@ -11,7 +12,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
     return (
         <html lang='ko' suppressHydrationWarning>
             <body className={cn('min-h-screen bg-primary-foreground font-mplusrounded antialiased flex flex-col')}>
-                <ThemeProvider attribute='class'>
+                <ModuleProvider>
                     <Header />
                     <Flex className='justify-start p-0 h-full flex-1'>
                         <Sidebar className='min-h-full pt-[3.75rem]' />
@@ -21,7 +22,8 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
                         </Flex>
                     </Flex>
                     <Toaster />
-                </ThemeProvider>
+                    <Loading />
+                </ModuleProvider>
             </body>
         </html>
     )
