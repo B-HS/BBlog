@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
                         .isLogged(false)
                         .introduce("HELLO!")
                         .isDeleted(false)
-                        .roles(Set.of(Role.ADMIN, Role.USER))
+                        .roles(Set.of(Role.USER))
                         .build());
                 urepo.save(user);
 

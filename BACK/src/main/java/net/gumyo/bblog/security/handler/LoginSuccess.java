@@ -19,7 +19,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import net.gumyo.bblog.entity.User;
 import net.gumyo.bblog.repository.UserRepository;
-import net.gumyo.bblog.service.menu.MenuService;
 import net.gumyo.bblog.utils.JwtManager;
 import net.gumyo.bblog.utils.redis.RedisRepository;
 
@@ -29,7 +28,7 @@ public class LoginSuccess implements AuthenticationSuccessHandler {
     private final UserRepository urepo;
     private final JwtManager jwtManager;
     private final RedisRepository redisManager;
-    private final MenuService mser;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
@@ -45,7 +44,6 @@ public class LoginSuccess implements AuthenticationSuccessHandler {
         result.put("atk", tokens.get(0));
         result.put("rtk", tokens.get(1));
         result.put("userInfo", user.getLoginInfo());
-        result.put("menu", mser.menuListByUrkey(user.getUrkey()));
         response.getWriter().write(objectMapper.writeValueAsString(result));
     }
 }

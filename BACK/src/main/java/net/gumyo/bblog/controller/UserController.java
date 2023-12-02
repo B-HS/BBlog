@@ -17,11 +17,6 @@ public class UserController {
 
     private final UserService user;
 
-    @PostMapping("/user/list")
-    public List<Map<String, Object>> getMenuList(@RequestBody(required = false) Map<String, Object> map) {
-        return user.getUserList(map);
-    }
-
     @PostMapping("/user/save")
     public ResponseEntity<Boolean> saveMenuList(@RequestBody List<Map<String, Object>> list) {
         user.saveUserList(list);
