@@ -31,6 +31,8 @@ class BblogApplicationTests {
 				.isLogged(false)
 				.introduce("HELLO!")
 				.isDeleted(false)
+				.title("BBlog")
+				.subtitle("FINAL")
 				.roles(Set.of(Role.ADMIN, Role.USER))
 				.build());
 		urepo.save(user);

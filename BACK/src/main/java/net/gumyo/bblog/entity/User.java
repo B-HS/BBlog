@@ -53,6 +53,12 @@ public class User {
     private Boolean isLogged;
 
     @Column
+    private String title;
+
+    @Column
+    private String subtitle;
+
+    @Column
     private String introduce;
 
     @Column
@@ -81,6 +87,8 @@ public class User {
         user.put("urname", urname);
         user.put("nickname", urnickname);
         user.put("introduce", introduce);
+        user.put("title", title);
+        user.put("subtitle", subtitle);
         user.put("lastLogin", lastLogin);
         user.put("roles", roles);
         return user;

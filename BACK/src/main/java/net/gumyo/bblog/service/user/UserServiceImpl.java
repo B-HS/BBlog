@@ -23,6 +23,14 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
+    public Map<String, Object> getUserInfo(Integer urkey) {
+
+        return objectMapper
+                .convertValue(urepo.findById(urkey).get().getLoginInfo(), new TypeReference<Map<String, Object>>() {
+                });
+    }
+
+    @Override
     public List<Map<String, Object>> getUserList(Map<String, Object> map) {
         return urepo.findAll().stream()
                 .map(val -> objectMapper.convertValue(val.getLoginInfo(), new TypeReference<Map<String, Object>>() {
