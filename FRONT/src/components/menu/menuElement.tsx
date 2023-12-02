@@ -15,6 +15,7 @@ const MenuElement = ({ className, title, count }: menuElementProps) => {
             className={cn(
                 `pl-5 gap-1 items-baseline cursor-pointer hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-all rounded 
                 ${!isActivated ? 'opacity-50' : ''}
+                hover:opacity-100
                 `,
                 className,
             )}
