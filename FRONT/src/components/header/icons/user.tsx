@@ -8,7 +8,6 @@ import {
     DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuSeparator,
-    DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { UserContext, UserLogout } from '@/module/context/user'
@@ -17,7 +16,7 @@ import { useContext } from 'react'
 
 const User = () => {
     const { userdata } = useContext(UserContext)
-    const { atk, rtk, nickname, email, introduce, lastLogin, roles, urkey, urname } = userdata
+    const { atk, rtk, nickname, email, introduce, lastLogin, roles, urkey, urname, img } = userdata
     console.log('Rest infos', introduce, lastLogin, roles, urkey, urname)
 
     return atk && rtk && nickname ? (
@@ -25,12 +24,12 @@ const User = () => {
             <DropdownMenuTrigger asChild className='p-0 m-0 justify-center'>
                 <Button variant='ghost' className='p-0 m-0 rounded-full'>
                     <Avatar>
-                        <AvatarImage src='/avatars/01.png' alt='@shadcn' />
-                        <AvatarFallback>{nickname}</AvatarFallback>
+                        <AvatarImage src={img ? img : ''} alt='@shadcn' />
+                        <AvatarFallback>{nickname.split(' ').length === 1 ? nickname.slice(0, 2) : nickname}</AvatarFallback>
                     </Avatar>
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className='w-36' forceMount>
+            <DropdownMenuContent className='w-72' forceMount>
                 <DropdownMenuItem>
                     <div className='flex flex-col space-y-1'>
                         <p className='text-sm font-medium leading-none'>{nickname}</p>
@@ -39,16 +38,10 @@ const User = () => {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                        Settings
-                        <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                    </DropdownMenuItem>
+                    <DropdownMenuItem>Settings</DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={UserLogout}>
-                    Log out
-                    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-                </DropdownMenuItem>
+                <DropdownMenuItem onClick={UserLogout}>Log out</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     ) : (
