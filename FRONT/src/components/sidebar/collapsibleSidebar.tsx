@@ -12,9 +12,9 @@ const CollapsibleSidebar = () => {
                     <MenuIcon />
                 </Button>
             </SheetTrigger>
-            <SheetContent side={'left'} className='min-w-[280px] w-full'>
+            <SheetContent side={'left'} className='min-w-[280px] w-full p-0'>
                 <SheetHeader>
-                    <SheetTitle className='text-left'>
+                    <SheetTitle className='text-left p-2.5'>
                         <span className='text-xl font-bold whitespace-nowrap'>BLOGTITLE</span>
                     </SheetTitle>
                     <SheetDescription asChild>
