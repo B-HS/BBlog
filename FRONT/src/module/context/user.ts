@@ -8,6 +8,7 @@ export interface UserData {
         urname: string
         nickname: string
         introduce: string
+        img: string
         lastLogin: null | Date
         roles: string[]
         atk: string
@@ -24,6 +25,7 @@ const DEFAULT_USER_DATA = {
     introduce: '',
     lastLogin: null,
     roles: [],
+    img: '',
     atk: '',
     rtk: '',
 }
@@ -40,7 +42,7 @@ const getInitialUserData = () => {
     const rtk = getCookie('rtk')
 
     if (isLogout) {
-        Array.of('atk', 'rtk', 'userInfo', 'menu', 'logout').forEach((info) => deleteCookie(info))
+        Array.of('atk', 'rtk', 'userInfo', 'logout').forEach((info) => deleteCookie(info))
         return DEFAULT_USER_DATA
     }
 
