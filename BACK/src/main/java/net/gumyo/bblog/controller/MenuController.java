@@ -17,15 +17,14 @@ public class MenuController {
 
     private final MenuService mser;
 
-    @PostMapping("/menus/list")
+    @PostMapping("/menu/list")
     public List<Map<String, Object>> getMenuList(@RequestBody(required = false) Map<String, Object> map) {
         return mser.getMenuList(map);
     }
 
-    @PostMapping("/menus/save")
+    @PostMapping("/menu/save")
     public ResponseEntity<Boolean> saveMenuList(@RequestBody List<Map<String, Object>> list) {
         mser.saveMenuList(list);
         return ResponseEntity.ok(true);
     }
-
 }
