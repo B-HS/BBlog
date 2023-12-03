@@ -11,7 +11,7 @@ import { ReactNode } from 'react'
 import './globals.css'
 
 const mplus = M_PLUS_Rounded_1c({
-    weight: ['300', '700'],
+    weight: ['500', '800'],
     subsets: ['latin'],
     display: 'swap',
 })
