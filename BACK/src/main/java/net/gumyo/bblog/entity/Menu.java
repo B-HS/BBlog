@@ -35,4 +35,11 @@ public class Menu {
     @Column
     private String icon;
 
+    @Column
+    private MenuType type;
+
+    public enum MenuType {
+        PAGE, LIST
+    }
+
 }
