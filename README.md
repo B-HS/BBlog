@@ -4,12 +4,11 @@
 - Spring boot, MySQL8, Redis
 ---
 ## 목표
-1. i18n
-2. 포스트 리스트
-3. 포스트 내용
-4. 사용자 메뉴
-5. Markdown vs wysiwyg 에디터 정하기
-6. SEO
+1. 포스트 리스트
+2. 포스트 내용
+3. 사용자 메뉴
+4. Markdown vs wysiwyg 에디터 정하기
+5. SEO
 
 ## 끝
 1. 로그인
