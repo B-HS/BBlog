@@ -22,9 +22,9 @@ const User = () => {
     return atk && rtk && nickname ? (
         <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild className='p-0 m-0 justify-center'>
-                <Button variant='ghost' className='p-0 m-0 rounded-full'>
+                <Button variant='ghost' className='p-0 m-0 rounded-full bg-white'>
                     <Avatar>
-                        <AvatarImage src={img ? img : ''} alt='@shadcn' />
+                        <AvatarImage src={img ? img : '/favicon.ico'} alt='usericon' />
                         <AvatarFallback>{nickname.split(' ').length === 1 ? nickname.slice(0, 2) : nickname}</AvatarFallback>
                     </Avatar>
                 </Button>
