@@ -1,6 +1,8 @@
 
 package net.gumyo.bblog.entity;
 
+import org.springframework.data.annotation.CreatedDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,4 +46,8 @@ public class Article {
 
     @Column
     private String publishlink;
+
+    @Column
+    @CreatedDate
+    private String insertDate;
 }

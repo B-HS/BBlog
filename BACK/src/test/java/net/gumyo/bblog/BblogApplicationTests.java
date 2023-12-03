@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import net.gumyo.bblog.entity.Article;
 import net.gumyo.bblog.entity.Menu;
 import net.gumyo.bblog.entity.User;
 import net.gumyo.bblog.entity.User.Role;
+import net.gumyo.bblog.repository.ArticleRepository;
 import net.gumyo.bblog.repository.MenuRepository;
 import net.gumyo.bblog.repository.UserRepository;
 
@@ -22,13 +24,15 @@ class BblogApplicationTests {
 	private UserRepository urepo;
 	@Autowired
 	private MenuRepository mrepo;
+	@Autowired
+	private ArticleRepository arepo;
 
 	@Test
 	void createUser() {
 		User user = urepo.save(User
 				.builder()
 				.urname("admin")
-				.urnickname("bblog")
+				.urnickname("hs")
 				.email("hs")
 				.pw(passwordEncoder.encode("1234"))
 				.isAuthed(true)
@@ -46,12 +50,33 @@ class BblogApplicationTests {
 	@Test
 	void createMenu() {
 		List<Menu> menus = List.of(
-				createMenu("dev", 0L),
-				createMenu("front", 1L),
-				createMenu("back", 1L),
-				createMenu("travel", 0L),
-				createMenu("etc", 3L));
+				createMenu("Dev", 0L),
+				createMenu("Frontend", 1L),
+				createMenu("Backend", 1L),
+				createMenu("etc.", 0L),
+				createMenu("Travel", 4L));
 		mrepo.saveAll(menus);
+	}
+
+	@Test
+	void createArticle() {
+		arepo.saveAll(List.of(createArticle("test", new String[] { "test" }, "test"),
+				createArticle("test2", new String[] { "test2" }, "test2"),
+				createArticle("test3", new String[] { "test3" }, "test3")));
+
+	}
+
+	private Article createArticle(String title, String[] tags, String context) {
+		return Article.builder()
+				.title(title)
+				.context(context)
+				.tags(tags)
+				.mekey(1L)
+				.fileseq(null)
+				.hide(false)
+				.github(null)
+				.publishlink(null)
+				.build();
 	}
 
 	private Menu createMenu(String menuname, Long parentmekey) {
