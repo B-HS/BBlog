@@ -5,11 +5,11 @@ import Flex from '../flex'
 type menuElementProps = {
     className?: string
     title: string
-    count: string | number
 } & HTMLAttributes<HTMLElement>
 
-const MenuElement = ({ className, title, count }: menuElementProps) => {
+const MenuElement = ({ className, title }: menuElementProps) => {
     const isActivated = false
+    const count = 0
     return (
         <Flex
             className={cn(
