@@ -1,4 +1,5 @@
 import { getPostById } from '@/api/article/post'
+import ArticleContext from '@/components/article/articleContext'
 import Flex from '@/components/flex'
 import { Separator } from '@/components/ui/separator'
 
@@ -15,16 +16,18 @@ export interface Article {
     insertDate: null | string
 }
 
-const Article = async ({ params: { aid } }: { params: { aid: string } }) => {
+const Article = async ({ params: { aid, category } }: { params: { aid: string; category: string } }) => {
     const data: Article = await getPostById(aid, true)
-
     return (
-        <Flex className='min-h-screen flex-wrap justify-between'>
-            <Flex className='posting flex-col bg-gray-700 flex-none w-9/12'>
-                <p>{data.title}</p>
-                <Separator />
+        <Flex className='flex-col flex-wrap justify-start max-w-5xl w-full'>
+            {ArticleContext({ data, category })}
+            <Separator className='my-5' />
+            <Flex className='flex-col'>
+                <header className='flex gap-1 items-baseline'>
+                    <p className='text-2xl'>Comment</p>
+                    <span className='text-xs opacity-80'>({0})</span>
+                </header>
             </Flex>
-            <Flex className='flex-col bg-yellow-800 w-[23.5%]'></Flex>
         </Flex>
     )
 }
