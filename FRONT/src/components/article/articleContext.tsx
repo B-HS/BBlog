@@ -30,9 +30,9 @@ const ArticleContext = ({ data, category }: { data: Article; category: string })
                 </Flex>
             </header>
             <Separator className='my-3' />
-            <div className='p-10' dangerouslySetInnerHTML={{ __html: data.context }}></div>
+            <div className='p-10' dangerouslySetInnerHTML={{ __html: data.context ? data.context : '' }}></div>
             <Flex className='p-0 gap-2 flex-wrap'>
-                {data.tags.map((tag, idx) => (
+                {data.tags?.map((tag, idx) => (
                     <Badge variant='outline' className='rounded py-2 dark:shadow-neutral-900 shadow-md' key={idx}>
                         {tag.toUpperCase()}
                     </Badge>
