@@ -1,12 +1,12 @@
 'use client'
 import { loadMenu } from '@/api/menu/menu'
+import { DELAY } from '@/lib/constant'
 import { cn } from '@/lib/utils'
 import { useEffect, useState } from 'react'
 import Flex from '../flex'
 import UpdownAnime from '../transition/updown'
 import MenuCategory from './menuCategory'
 import MenuElement from './menuElement'
-import { DELAY } from '@/lib/constant'
 
 export interface MenuItem {
     mekey: number
@@ -29,7 +29,7 @@ const Menu = ({ className }: React.HTMLAttributes<HTMLElement>) => {
     }, [])
 
     const createMenuHierarchy = (menuItems: MenuItem[], parentKey: number = 0): Record<string, any>[] => {
-        const filteredItems = menuItems.filter((item) => item.parentmekey === parentKey)
+        const filteredItems = menuItems.filter((item) => item.parentmekey === parentKey).sort((a, b) => a.meorder - b.meorder)
         return filteredItems.map((item: MenuItem) => ({
             mekey: item.mekey,
             mename: item.mename,
