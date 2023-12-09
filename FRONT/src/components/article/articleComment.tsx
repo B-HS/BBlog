@@ -18,8 +18,9 @@ export interface Comment {
 }
 
 const ArticleComement = ({ data }: { data: Comment }) => {
+    const isCildrenBorder = data.level > 0 ? { borderTop: 0 } : {}
     return (
-        <Flex className='flex-col border dark:shadow-neutral-900 shadow-lg' style={{ marginLeft: `${data.level * 50}px` }}>
+        <Flex className='flex-col border dark:shadow-neutral-900' style={{ marginLeft: `${data.level * 50}px`, ...isCildrenBorder }}>
             <Flex className='gap-2 items-center'>
                 <Avatar className='border'>
                     <AvatarImage src={data.img ? data.img : '/favicon.ico'} alt='usericon' />
