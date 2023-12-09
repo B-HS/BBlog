@@ -10,6 +10,16 @@ export const getPostById = async (id: number | string, isServerside?: boolean) =
     }
 }
 
+export const getListByMenuName = async (menuName: string, page: number, count: number, isServerside?: boolean) => {
+    try {
+        if (isServerside) axios.defaults.baseURL = process.env.NEXT_PUBLIC_BACK
+        const { data } = await axios.get(`/article/list/${menuName}/${page}/${count}`)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+
 export const getAllPost = async (isServerside?: boolean, onlyCount?: boolean) => {
     try {
         if (isServerside) axios.defaults.baseURL = process.env.NEXT_PUBLIC_BACK
