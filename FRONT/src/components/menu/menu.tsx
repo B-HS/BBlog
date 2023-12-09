@@ -29,6 +29,7 @@ const Menu = ({ className }: React.HTMLAttributes<HTMLElement>) => {
     }, [])
 
     const createMenuHierarchy = (menuItems: MenuItem[], parentKey: number = 0): Record<string, any>[] => {
+        if (!Array.isArray(menuItems)) return []
         const filteredItems = menuItems.filter((item) => item.parentmekey === parentKey).sort((a, b) => a.meorder - b.meorder)
         return filteredItems.map((item: MenuItem) => ({
             mekey: item.mekey,
