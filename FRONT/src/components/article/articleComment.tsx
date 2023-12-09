@@ -11,13 +11,15 @@ export interface Comment {
     img: string
     context: string
     commentorder: number
-    uppercid: null | number
+    uppercid: number
     insertdate: null | string
+    children?: Comment[]
+    level: number
 }
 
 const ArticleComement = ({ data }: { data: Comment }) => {
     return (
-        <Flex className='flex-col border dark:shadow-neutral-900 shadow-lg'>
+        <Flex className='flex-col border dark:shadow-neutral-900 shadow-lg' style={{ marginLeft: `${data.level * 50}px` }}>
             <Flex className='gap-2 items-center'>
                 <Avatar className='border'>
                     <AvatarImage src={data.img ? data.img : '/favicon.ico'} alt='usericon' />
