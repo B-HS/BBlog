@@ -20,7 +20,7 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mekey;
 
-    @Column
+    @Column(unique = true)
     private String mename;
 
     @Column
