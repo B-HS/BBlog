@@ -1,12 +1,10 @@
-import { adminProfile } from '@/api/user/user'
 import { MenuIcon } from 'lucide-react'
 import Menu from '../menu/menu'
 import Profile from '../profile/profile'
 import { Button } from '../ui/button'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '../ui/sheet'
 
-const CollapsibleSidebar = async () => {
-    const bloginfo = await adminProfile(true)
+const CollapsibleSidebar = () => {
     return (
         <Sheet>
             <SheetTrigger asChild>
@@ -14,11 +12,12 @@ const CollapsibleSidebar = async () => {
                     <MenuIcon />
                 </Button>
             </SheetTrigger>
-            <SheetContent side={'left'} className='min-w-[280px] w-full p-0'>
+            <SheetContent
+                side={'left'}
+                className='min-w-[280px] w-full p-0 top-[60px] backdrop-blur-0 backdrop-filter-none border-0 shadow-xl dark:shadow-neutral-900'
+            >
                 <SheetHeader>
-                    <SheetTitle className='text-left p-2.5'>
-                        <span className='text-xl font-bold whitespace-nowrap'>{bloginfo.title}</span>
-                    </SheetTitle>
+                    <SheetTitle className='text-left p-2.5'></SheetTitle>
                     <SheetDescription asChild>
                         <section>
                             <Profile />
