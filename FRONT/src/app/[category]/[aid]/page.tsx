@@ -27,13 +27,13 @@ const Article = async ({ params: { aid, category } }: { params: { aid: string; c
     const article = (await getPostById(aid, true)) || []
     const comment = (await getCommentByAid(aid, true)) || []
     return (
-        <Flex className='flex-col flex-wrap justify-start max-w-6xl w-full'>
+        <Flex className='flex-col flex-wrap justify-start w-full'>
             <ArticleContext data={article} category={category} />
             <Separator className='my-5' />
             <Flex className='flex-col gap-5'>
                 <header className='flex gap-1 items-baseline mb-5'>
                     <p className='text-2xl'>Comment</p>
-                    <span className='text-xs opacity-80'>({0})</span>
+                    <span className='text-xs opacity-80'>({comment.length})</span>
                 </header>
                 {createCommentHierarchy(comment).map((item) => (
                     <UpdownAnime key={item.cid}>
