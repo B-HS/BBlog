@@ -33,7 +33,7 @@ const ArticleContext = ({ data, category }: { data: Article; category: string })
             <div className='p-3.5' dangerouslySetInnerHTML={{ __html: data.context ? data.context : '' }}></div>
             <Flex className='p-0 gap-2 flex-wrap'>
                 {data.tags?.map((tag, idx) => (
-                    <Badge variant='outline' className='rounded py-2 dark:shadow-neutral-900 shadow-md' key={idx}>
+                    <Badge variant='outline' className='rounded py-2 dark:shadow-neutral-900 shadow-sm' key={idx}>
                         {tag.toUpperCase()}
                     </Badge>
                 ))}
