@@ -16,15 +16,13 @@ import { useContext } from 'react'
 
 const User = () => {
     const { userdata } = useContext(UserContext)
-    const { atk, rtk, nickname, email, introduce, lastLogin, roles, urkey, urname, img } = userdata
-    console.log('Rest infos', introduce, lastLogin, roles, urkey, urname)
-
+    const { atk, rtk, nickname, email, img } = userdata
     return atk && rtk && nickname ? (
         <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild className='p-0 m-0 justify-center'>
-                <Button variant='ghost' className='p-0 m-0 rounded-full bg-white'>
+                <Button variant='ghost' className={`p-0 m-0 rounded-full ${img ? '' : 'bg-white'}`}>
                     <Avatar>
-                        <AvatarImage src={img ? img : '/favicon.ico'} alt='usericon' />
+                        <AvatarImage className='p-1.5' src={img ? img : '/favicon.ico'} alt='usericon' />
                         <AvatarFallback>{nickname.split(' ').length === 1 ? nickname.slice(0, 2) : nickname}</AvatarFallback>
                     </Avatar>
                 </Button>
@@ -38,7 +36,7 @@ const User = () => {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem>Settings</DropdownMenuItem>
+                    <DropdownMenuItem>Write</DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={UserLogout}>Log out</DropdownMenuItem>
