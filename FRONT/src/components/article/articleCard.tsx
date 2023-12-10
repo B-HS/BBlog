@@ -35,15 +35,17 @@ const ArticleCard = ({ article }: { article: Article }) => {
                         <span className='pl-3 font-bold text-3xl'>{title}</span>
                     </Link>
                     <Flex className='flex-col overflow-ellipsis h-[9.75rem] lg:h-auto p-5'>
-                        {context
-                            .replace(/<\/?[^>]+(>|$)/g, '')
-                            .replace(/&nbsp;/g, ' ')
-                            .slice(0, 500) + '...'}
+                        <Link className='h-100 w-100 aspect-video lg:aspect-square rounded-none' href={`/${param.category}/${aid}`}>
+                            {context
+                                .replace(/<\/?[^>]+(>|$)/g, '')
+                                .replace(/&nbsp;/g, ' ')
+                                .slice(0, 500) + '...'}
+                        </Link>
                     </Flex>
                 </Flex>
                 <Flex className='pl-5'>
                     {tags?.map((tag, idx) => (
-                        <Badge variant='outline' className='rounded py-2 dark:shadow-neutral-900 shadow-md' key={idx}>
+                        <Badge variant='outline' className='rounded py-2 dark:shadow-neutral-900 shadow-sm' key={idx}>
                             {tag.toUpperCase()}
                         </Badge>
                     ))}
