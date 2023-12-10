@@ -1,5 +1,7 @@
 package net.gumyo.bblog.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,5 +41,28 @@ public class Comment {
     private Long uppercid;
 
     @Column
+    @JsonIgnore
+    private String password;
+
+    @Column
+    private Boolean deleted;
+
+    @Column
+    private Boolean modified;
+
+    @Column
     private String insertdate;
+
+    public void updateComment(String context) {
+        this.context = context;
+        this.modified = true;
+    }
+
+    public void deleteComment() {
+        this.deleted = true;
+    }
+
+    public void deleteContext() {
+        this.context = null;
+    }
 }
