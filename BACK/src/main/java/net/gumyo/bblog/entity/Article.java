@@ -36,7 +36,7 @@ public class Article {
     private Long mekey;
 
     @Column
-    private String fileseq;
+    private String[] filelist;
 
     @Column
     private Boolean hide;
