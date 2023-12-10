@@ -72,7 +72,7 @@ class BblogApplicationTests {
 				.context(context)
 				.tags(tags)
 				.mekey(1L)
-				.fileseq(null)
+				.filelist(null)
 				.hide(false)
 				.github(null)
 				.publishlink(null)
