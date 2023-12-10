@@ -7,11 +7,8 @@ import { Separator } from '@/components/ui/separator'
 import { useToast } from '@/components/ui/use-toast'
 import useForm from '@/hooks/useForm'
 import { setCookie } from 'cookies-next'
-import { GithubIcon, UserPlus2Icon } from 'lucide-react'
 import { useState } from 'react'
 import Flex from '../flex'
-import ForgotPassword from './forgotPasswordModal'
-import SignIn from './joinModal'
 interface LoginData {
     email: string
     pw: string
@@ -73,27 +70,13 @@ const LoginModal = ({ children }: React.HTMLAttributes<HTMLElement>) => {
                     </div>
                 </form>
                 <DialogFooter>
-                    <Flex className='p-0 justify-end gap-2 w-full'>
-                        <ForgotPassword>
-                            <Button variant={'ghost'}>Forgot password</Button>
-                        </ForgotPassword>
-                    </Flex>
+                    <Flex className='p-0 justify-end gap-2 w-full'></Flex>
                 </DialogFooter>
                 <Separator />
                 <Flex className='flex-col gap-2 mt-3'>
                     <Button type='submit' onClick={login}>
                         Login
                     </Button>
-                    <Button className='bg-neutral-500'>
-                        <GithubIcon className='mr-1' />
-                        Log in with Github
-                    </Button>
-                    <SignIn>
-                        <Button size='default' variant={'outline'}>
-                            <UserPlus2Icon className='mr-1' />
-                            Sign in
-                        </Button>
-                    </SignIn>
                 </Flex>
             </DialogContent>
         </Dialog>
