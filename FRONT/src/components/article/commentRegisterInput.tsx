@@ -2,9 +2,10 @@
 import { saveComment } from '@/api/article/comment'
 import useForm from '@/hooks/useForm'
 import { CURRENT_DATE } from '@/lib/constant'
+import { handleFileChange } from '@/lib/upload'
 import { UploadCloudIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
-import { ChangeEventHandler, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import Flex from '../flex'
 import LeftRightAnime from '../transition/leftright'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
@@ -43,35 +44,7 @@ const CommentRegisterInput = ({ data, reloadComment }: { data?: Comment; reloadC
         }
     }
 
-    const handleFileChange: ChangeEventHandler<HTMLInputElement> = async (event) => {
-        const selectedFile = event.target.files?.[0]
-
-        if (selectedFile) {
-            if (!isImage(selectedFile)) {
-                toast({
-                    title: 'Invalid Image',
-                    description: 'Please select a valid image file.',
-                    variant: 'destructive',
-                })
-                return
-            }
-            setIsOnUploading(true)
-            const form = new FormData()
-            form.append('file', selectedFile)
-            const fileUploadObj = await fetch('/api/img/upload', {
-                method: 'POST',
-                body: form,
-            })
-            const filename = await fileUploadObj.json()
-            setFormData((prev) => ({ ...prev, img: filename }))
-        }
-        setIsOnUploading(false)
-    }
-
-    const isImage = (file: { type: string }) => {
-        const acceptedImageTypes = ['image/jpeg', 'image/png', 'image/gif']
-        return file && acceptedImageTypes.includes(file.type)
-    }
+    const setFilename = (filename: string) => setFormData((prev) => ({ ...prev, img: filename }))
 
     return (
         <LeftRightAnime>
@@ -120,7 +93,7 @@ const CommentRegisterInput = ({ data, reloadComment }: { data?: Comment; reloadC
                     </Button>
                 </Flex>
             </form>
-            <input onChange={handleFileChange} ref={fileInputRef} type='file' style={{ display: 'none' }} />
+            <input onChange={handleFileChange(toast, setFilename, setIsOnUploading)} ref={fileInputRef} type='file' style={{ display: 'none' }} />
         </LeftRightAnime>
     )
 }
