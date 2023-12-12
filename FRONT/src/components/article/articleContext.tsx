@@ -21,7 +21,7 @@ const ArticleContext = ({ data, category }: { data: Article; category: string })
         <Flex className='posting flex-col flex-none w-full '>
             <header className='flex justify-between items-baseline'>
                 <Flex className='gap-2 items-baseline'>
-                    <span className='text-5xl'>{data.title}</span>
+                    <span className='text-3xl'>{data.title}</span>
                     <span> | </span>
                     <span className='text-sm'>{category.toUpperCase()}</span>
                 </Flex>
