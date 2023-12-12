@@ -11,8 +11,6 @@ export interface Article {
     mekey: number
     fileseq: null | number
     hide: boolean
-    github: null | string
-    publishlink: null | string
     insertDate: null | string
 }
 
