@@ -25,7 +25,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
                     <Flex className='justify-start p-0 h-full flex-1'>
                         <Sidebar className='min-h-full pt-[3.75rem]' />
                         <Flex className='p-0 pt-[3.75rem] flex-col transition-all md:ml-[285px] w-full'>
-                            <section className='p-5 bg-background'>{children}</section>
+                            <Flex className='flex-col p-5 w-full h-full bg-background'>{children}</Flex>
                             <Footer />
                         </Flex>
                     </Flex>
