@@ -74,8 +74,6 @@ class BblogApplicationTests {
 				.mekey(1L)
 				.filelist(null)
 				.hide(false)
-				.github(null)
-				.publishlink(null)
 				.build();
 	}
 

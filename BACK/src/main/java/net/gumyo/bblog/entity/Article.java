@@ -42,12 +42,6 @@ public class Article {
     private Boolean hide;
 
     @Column
-    private String github;
-
-    @Column
-    private String publishlink;
-
-    @Column
     @CreatedDate
     private String insertDate;
 }
