@@ -28,7 +28,7 @@ const User = () => {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className='w-72' forceMount>
-                <DropdownMenuItem>
+                <DropdownMenuItem className='cursor-pointer'>
                     <div className='flex flex-col space-y-1'>
                         <p className='text-sm font-medium leading-none'>{nickname}</p>
                         <p className='text-xs leading-none text-muted-foreground'>{email}</p>
@@ -36,10 +36,14 @@ const User = () => {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem>Write</DropdownMenuItem>
+                    <DropdownMenuItem className='cursor-pointer' onClick={() => (location.href = '/write')}>
+                        Write
+                    </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={UserLogout}>Log out</DropdownMenuItem>
+                <DropdownMenuItem className='cursor-pointer' onClick={UserLogout}>
+                    Log out
+                </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     ) : (
