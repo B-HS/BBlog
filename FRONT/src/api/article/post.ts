@@ -1,3 +1,4 @@
+import { Article } from '@/components/article/articleContext'
 import axios from 'axios'
 
 export const getPostById = async (id: number | string, isServerside?: boolean) => {
@@ -30,6 +31,15 @@ export const getAllPost = async (isServerside?: boolean, onlyCount?: boolean) =>
                 return prev
             }, {})
         }
+        return data
+    } catch (error) {
+        return error
+    }
+}
+
+export const savePost = async (article: Partial<Article>) => {
+    try {
+        const { data } = await axios.post('/article/save', article)
         return data
     } catch (error) {
         return error
