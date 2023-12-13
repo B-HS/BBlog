@@ -28,7 +28,6 @@ const Tiptap = forwardRef(({ tags }: { tags: string[] }, tEditor) => {
             aid: 10,
             title,
             context: html,
-            fileseq: null,
             insertDate: dayjs().format('YYYYMMDDHHmmss'),
             tags: tags,
         }),
@@ -61,6 +60,7 @@ const Tiptap = forwardRef(({ tags }: { tags: string[] }, tEditor) => {
         setTitle('')
     }
     const getImages = () => imageList
+    const getTitle = () => title
 
     const addImageToEditor = (imgName: string) => {
         editor
@@ -72,6 +72,7 @@ const Tiptap = forwardRef(({ tags }: { tags: string[] }, tEditor) => {
     }
 
     useImperativeHandle(tEditor, () => ({
+        getTitle,
         getHTML,
         reset,
         getImages,
