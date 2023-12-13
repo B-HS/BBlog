@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import net.gumyo.bblog.entity.Article;
 import net.gumyo.bblog.service.article.ArticleService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,4 +36,10 @@ public class ArticleController {
             @PathVariable("count") Long count) {
         return aser.getArticleListByMenuName(Arrays.asList(mename.split(",")), page, count);
     }
+
+    @PostMapping("/article/save")
+    public Long saveArticle(@RequestBody Article article) {
+        return aser.saveArticle(article);
+    }
+
 }

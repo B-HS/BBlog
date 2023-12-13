@@ -36,12 +36,9 @@ public class Article {
     private Long mekey;
 
     @Column
-    private String[] filelist;
-
-    @Column
     private Boolean hide;
 
     @Column
     @CreatedDate
-    private String insertDate;
+    private String insertdate;
 }

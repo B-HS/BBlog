@@ -72,7 +72,6 @@ class BblogApplicationTests {
 				.context(context)
 				.tags(tags)
 				.mekey(1L)
-				.filelist(null)
 				.hide(false)
 				.build();
 	}

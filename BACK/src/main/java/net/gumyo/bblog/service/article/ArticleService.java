@@ -12,4 +12,6 @@ public interface ArticleService {
     Page<Article> getArticleListByMenuName(List<String> mename, Long page, Long count);
 
     Article getArticleById(Long aid);
+
+    Long saveArticle(Article article);
 }

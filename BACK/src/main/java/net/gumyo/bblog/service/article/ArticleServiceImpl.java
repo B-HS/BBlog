@@ -35,4 +35,9 @@ public class ArticleServiceImpl implements ArticleService {
     public Article getArticleById(Long aid) {
         return arepo.findByAidAndHideFalse(aid);
     }
+
+    @Override
+    public Long saveArticle(Article article) {
+        return arepo.save(article).getAid();
+    }
 }
