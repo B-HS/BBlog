@@ -9,7 +9,6 @@ export interface Article {
     context: string
     tags: string[]
     mekey: number
-    fileseq: null | number
     hide: boolean
     insertDate: null | string
 }
