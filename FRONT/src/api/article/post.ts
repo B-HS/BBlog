@@ -37,6 +37,16 @@ export const getAllPost = async (isServerside?: boolean, onlyCount?: boolean) =>
     }
 }
 
+export const getAllpostByKeyword = async (keyword: string, isServerside?: boolean) => {
+    try {
+        if (isServerside) axios.defaults.baseURL = process.env.NEXT_PUBLIC_BACK
+        const { data } = await axios.get('/article/search/' + keyword)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+
 export const savePost = async (article: Partial<Article>) => {
     try {
         const { data } = await axios.post('/article/save', article)
