@@ -11,6 +11,7 @@ export interface Article {
     mekey: number
     hide: boolean
     insertDate: null | string
+    category?: string
 }
 
 const ArticleContext = ({ data, category }: { data: Article; category: string }) => {
