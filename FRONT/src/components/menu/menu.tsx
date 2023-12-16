@@ -2,6 +2,7 @@
 import { getAllPost } from '@/api/article/post'
 import { loadMenu } from '@/api/menu/menu'
 import { DELAY } from '@/lib/constant'
+import { createMenuHierarchy, flattenMenuHierarchy } from '@/lib/menu'
 import { cn } from '@/lib/utils'
 import { useEffect, useState } from 'react'
 import Flex from '../flex'
@@ -31,45 +32,31 @@ const Menu = ({ className }: React.HTMLAttributes<HTMLElement>) => {
         loadMenuInfo()
     }, [])
 
-    const createMenuHierarchy = (menuItems: MenuItem[], parentKey: number = 0): Record<string, any>[] => {
-        if (!Array.isArray(menuItems)) return []
-        const filteredItems = menuItems.filter((item) => item.parentmekey === parentKey).sort((a, b) => a.meorder - b.meorder)
-        return filteredItems.map((item: MenuItem) => ({
-            mekey: item.mekey,
-            mename: item.mename,
-            hide: item.hide,
-            icon: item.icon,
-            parentmekey: item.parentmekey,
-            meorder: item.meorder,
-            children: createMenuHierarchy(menuItems, item.mekey),
-        }))
-    }
-
-    const flattenMenuHierarchy = (menuItems: MenuItem[], targetParentKey: number): number[] => {
-        const targetParent = menuItems.find((item) => item.mekey === targetParentKey)
-        if (!targetParent) return []
-        const children = menuItems.filter((item) => item.parentmekey === targetParentKey).sort((a, b) => a.meorder - b.meorder)
-        return [targetParent.mekey, ...children.map((item) => item.mekey)]
-    }
-
     const getMenuCount = (target: number[]) => {
         return target.map((ele) => postCount[`ME_${ele}`] || 0).reduce((prev, next) => prev + next, 0)
     }
 
-    const Menu = () => {
-        return createMenuHierarchy(menu).map((me) => (
-            <UpdownAnime key={me.mekey} delay={DELAY(2)}>
-                <div>
-                    <MenuCategory key={me.mekey} title={me.mename} count={getMenuCount(flattenMenuHierarchy(menu, me.mekey))} />
-                    {me.children?.map((category: MenuItem) => (
-                        <MenuElement key={category.mekey} title={category.mename} count={getMenuCount([category.mekey])} />
-                    ))}
-                </div>
-            </UpdownAnime>
-        ))
+    const childrenRendering = (category: MenuItem, pl = 0): JSX.Element => {
+        return (
+            <div key={category.mekey} className={`pl-${pl}`}>
+                <MenuElement key={category.mekey} title={category.mename} count={getMenuCount([category.mekey])} />
+                {category.children?.map((subcat: MenuItem) => childrenRendering(subcat, pl + 5))}
+            </div>
+        )
     }
 
-    return <Flex className={cn('flex-col', className)}>{Menu()}</Flex>
+    return (
+        <Flex className={cn('flex-col', className)}>
+            {createMenuHierarchy(menu).map((me) => (
+                <UpdownAnime key={me.mekey} delay={DELAY(2)}>
+                    <>
+                        <MenuCategory key={me.mekey} title={me.mename} count={getMenuCount(flattenMenuHierarchy(menu, me.mekey))} />
+                        {me.children?.map((category: MenuItem) => childrenRendering(category))}
+                    </>
+                </UpdownAnime>
+            ))}
+        </Flex>
+    )
 }
 
 export default Menu
