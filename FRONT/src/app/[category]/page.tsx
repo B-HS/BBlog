@@ -1,12 +1,15 @@
 'use client'
 import { getListByMenuName } from '@/api/article/post'
+import { loadMenu } from '@/api/menu/menu'
 import ArticleCard from '@/components/article/articleCard'
 import { Article } from '@/components/article/articleContext'
 import PageSize from '@/components/article/pagesize'
 import Pagination from '@/components/article/pagination'
 import Flex from '@/components/flex'
+import { MenuItem } from '@/components/menu/menu'
 import UpdownAnime from '@/components/transition/updown'
 import { DELAY } from '@/lib/constant'
+import { getMenuNameWithChildrensName } from '@/lib/menu'
 import { Layers3Icon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
@@ -17,12 +20,18 @@ const ArticleList = ({ params: { category } }: { params: { category: string } })
     const [totalPage, setTotalPage] = useState(0)
 
     useEffect(() => {
-        const getArticle = async () => {
-            const pagedArticleList = await getListByMenuName(category, page, count)
+        const getInfo = async () => {
+            const menu: MenuItem[] = await loadMenu()
+            const categories = getMenuNameWithChildrensName(category, menu).join(',')
+            const pagedArticleList = await getListByMenuName(categories, page, count)
+            const remappedArticleList = pagedArticleList.content?.map((ele: { mekey: number }) => ({
+                ...ele,
+                category: menu.find((me) => me.mekey === ele.mekey)!.mename,
+            }))
             setTotalPage(pagedArticleList.totalPages || 0)
-            setArticleList(pagedArticleList.content || [])
+            setArticleList(remappedArticleList || [])
         }
-        getArticle()
+        getInfo()
     }, [category, count, page])
 
     return (
