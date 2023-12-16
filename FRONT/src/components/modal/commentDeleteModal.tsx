@@ -16,13 +16,17 @@ const DeleteComment = ({ children, removeFn }: { children: React.ReactNode; remo
                 </DialogHeader>
                 <p>{`Are you sure you want to delete this comment?`}</p>
                 <p>{`This will remove the comment and can't be undone.`}</p>
-                <Input type='text' placeholder='Enter your password' onChange={(e) => setPw(e.target.value)} value={pw} />
+                <form className='w-full'>
+                    <Input type='password' autoComplete='off' placeholder='Enter your password' onChange={(e) => setPw(e.target.value)} value={pw} />
+                </form>
                 <DialogFooter>
                     <Flex className='p-0 justify-end gap-2 w-full'>
                         <Button variant={'destructive'} onClick={() => removeFn(pw, () => setOpen(false))}>
                             Remove
                         </Button>
-                        <Button variant={'outline'}>Cancel</Button>
+                        <Button variant={'outline'} onClick={() => setOpen(false)}>
+                            Cancel
+                        </Button>
                     </Flex>
                 </DialogFooter>
             </DialogContent>

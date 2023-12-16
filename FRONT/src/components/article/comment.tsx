@@ -86,7 +86,16 @@ const Comment = ({ data, reloadComment }: { data: Comment; reloadComment?: Funct
             </Flex>
             {isModifyMode ? (
                 <Flex className='items-center gap-3 p-3.5 flex-wrap'>
-                    <Input className='w-2/12 text-center' placeholder='Password' value={pw} onChange={(e) => setPw(e.target.value)} />
+                    <form className='w-2/12'>
+                        <Input
+                            className='text-center'
+                            type='password'
+                            autoComplete='off'
+                            placeholder='Password'
+                            value={pw}
+                            onChange={(e) => setPw(e.target.value)}
+                        />
+                    </form>
                     <Input className='w-4/5' value={modifiedContext} onChange={(e) => setModifiedContext(e.target.value)} />
                 </Flex>
             ) : (
