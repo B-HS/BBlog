@@ -40,4 +40,10 @@ public class ArticleServiceImpl implements ArticleService {
     public Long saveArticle(Article article) {
         return arepo.save(article).getAid();
     }
+
+    @Override
+    public List<Article> getArticleListByTitleAndContext(String param) {
+        String keyword = "%" + param + "%";
+        return arepo.findAllByTitleLikeOrContextLikeAndHideFalse(keyword, keyword);
+    }
 }

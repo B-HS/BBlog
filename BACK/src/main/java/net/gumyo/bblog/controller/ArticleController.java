@@ -13,6 +13,7 @@ import net.gumyo.bblog.entity.Article;
 import net.gumyo.bblog.service.article.ArticleService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,6 +41,11 @@ public class ArticleController {
     @PostMapping("/article/save")
     public Long saveArticle(@RequestBody Article article) {
         return aser.saveArticle(article);
+    }
+
+    @GetMapping("/article/search/{param}")
+    public List<Article> getArticlesByTitleAndContext(@PathVariable("param") String param) {
+        return aser.getArticleListByTitleAndContext(param);
     }
 
 }

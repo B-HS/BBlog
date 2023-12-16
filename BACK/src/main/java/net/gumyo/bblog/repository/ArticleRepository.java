@@ -14,4 +14,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     Page<Article> findAllByMekeyInAndHideFalse(List<Long> mekey, Pageable pageable);
 
     Article findByAidAndHideFalse(Long aid);
+
+    List<Article> findAllByTitleLikeOrContextLikeAndHideFalse(String title, String context);
+
 }
