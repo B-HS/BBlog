@@ -23,6 +23,7 @@ const Search = () => {
     const searchEvent = async (keyword: string) => {
         timeoutList.forEach((ele) => clearTimeout(ele))
         setTimeoutList([])
+        setPosts(() => [])
         setIsOnSearch(true)
         const timeout = setTimeout(async () => {
             if (keyword === '') {
@@ -68,6 +69,11 @@ const Search = () => {
                                     </Flex>
                                 </Flex>
                             ))}
+                        {!isOnSearch && posts.length === 0 && (
+                            <Flex className='p-3 w-full h-full justify-center items-center'>
+                                <span>No result</span>
+                            </Flex>
+                        )}
                     </Flex>
                 </Command>
             </PopoverContent>
