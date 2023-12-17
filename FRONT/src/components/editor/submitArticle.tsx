@@ -15,7 +15,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Switch } from '../ui/switch'
 import { useToast } from '../ui/use-toast'
 
-const SubmitArticle = ({ children, saveArticle, ctxImageList }: { children: React.ReactNode; saveArticle: Function; ctxImageList: string[] }) => {
+const SubmitArticle = ({
+    children,
+    saveArticle,
+    ctxImageList,
+    currentMenu,
+}: {
+    children: React.ReactNode
+    saveArticle: Function
+    ctxImageList: string[]
+    currentMenu?: number
+}) => {
     const [open, setOpen] = useState(false)
     const [thumbnail, setThumbnail] = useState('')
     const [mekey, setMekey] = useState(0)
@@ -62,6 +72,10 @@ const SubmitArticle = ({ children, saveArticle, ctxImageList }: { children: Reac
         ctxImageList && setImageList((ele) => Array.from(new Set([...ele, ...ctxImageList])))
     }, [ctxImageList])
 
+    useEffect(() => {
+        setMekey(currentMenu || 0)
+    }, [currentMenu])
+
     return (
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>{children}</SheetTrigger>
@@ -88,7 +102,7 @@ const SubmitArticle = ({ children, saveArticle, ctxImageList }: { children: Reac
                             <Flex className='flex-col p-0 justify-start flex-1'>
                                 <Flex className='items-baseline gap-3'>
                                     <Label className='w-1/12 text-right'>Menu</Label>
-                                    <Select onValueChange={(mekey) => setMekey(Number(mekey))}>
+                                    <Select value={String(mekey)} onValueChange={(mekey) => setMekey(Number(mekey))}>
                                         <SelectTrigger>
                                             <SelectValue placeholder='Menu' />
                                         </SelectTrigger>
