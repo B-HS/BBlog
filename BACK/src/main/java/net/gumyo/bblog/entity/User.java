@@ -41,6 +41,9 @@ public class User {
     private String pw;
 
     @Column
+    private String img;
+
+    @Column
     private Boolean isAuthed;
 
     @Column
@@ -85,6 +88,7 @@ public class User {
         user.put("urkey", urkey);
         user.put("email", email);
         user.put("urname", urname);
+        user.put("img", img);
         user.put("nickname", urnickname);
         user.put("introduce", introduce);
         user.put("title", title);
