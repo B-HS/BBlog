@@ -9,9 +9,11 @@ import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
 import useInput from '@/hooks/useInput'
 import { tokenCheck } from '@/lib/token'
+import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
 const Write = () => {
+    const router = useRouter()
     const editor = useRef<{
         getTitle: Function
         getHTML: Function
@@ -52,17 +54,18 @@ const Write = () => {
                 title: 'Success',
                 description: 'Article saved successfully.',
             })
-            window.location.href = `${post.href}/${aid}`
+            router.push(`${post.href}/${aid}`)
         }
     }
 
     useEffect(() => {
         if (!tokenCheck()) {
+            router.push(`/`)
             window.location.href = '/'
         } else {
             setAbleToAccess(true)
         }
-    }, [])
+    }, [router])
 
     return (
         ableToAccess && (
