@@ -10,8 +10,10 @@ export interface Article {
     tags: string[]
     mekey: number
     hide: boolean
-    insertDate: null | string
+    insertdate: null | string
     category?: string
+    thumbnail?: string
+    viewcount?: number
 }
 
 const ArticleContext = ({ data, category }: { data: Article; category: string }) => {
@@ -23,8 +25,10 @@ const ArticleContext = ({ data, category }: { data: Article; category: string })
                     <span> | </span>
                     <span className='text-sm'>{category.toUpperCase()}</span>
                 </Flex>
-                <Flex>
-                    <span className='text-sm'>{dayjs(data.insertDate, { format: 'YYYYMMDDHHmmss' }).format('YYYY. MM. DD. HH:mm')}</span>
+                <Flex className='gap-2'>
+                    <span className='text-sm'>{dayjs(data.insertdate, { format: 'YYYYMMDDHHmmss' }).format('YYYY. MM. DD. HH:mm')}</span>
+                    <span className='text-sm'> | </span>
+                    <span className='text-sm'>{data.viewcount || 0} views</span>
                 </Flex>
             </header>
             <Separator className='my-3' />
