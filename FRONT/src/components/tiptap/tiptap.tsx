@@ -72,8 +72,6 @@ const Tiptap = forwardRef(({ tags }: { tags: string[] }, tEditor) => {
     }
 
     const setArticle = (article: Article) => {
-        console.log(article)
-
         editor?.commands.setContent(article.context)
         setTitle(article.title)
         setImageList([article.thumbnail!])

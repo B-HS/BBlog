@@ -24,10 +24,6 @@ const ArticleManage = () => {
         loadPost()
     }, [])
 
-    useEffect(() => {
-        console.log(postlist)
-    }, [postlist])
-
     return (
         <TabsContent className='m-5 w-11/12' value='article'>
             <DataTable

@@ -46,8 +46,6 @@ const Modify = ({ article }: { article: Article }) => {
     useEffect(() => {
         if (article) {
             getPostById(article.aid).then((data) => {
-                console.log(data)
-
                 if (data) {
                     editor.current?.setArticle(data)
                     setCurrentMenu(data.mekey)

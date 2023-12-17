@@ -36,7 +36,6 @@ const CommentRegisterInput = ({ data, reloadComment }: { data?: Comment; reloadC
     }
 
     const submitReply = async () => {
-        console.log({ ...formData, aid: Number(aid), uppercid: data?.cid, insertdate: CURRENT_DATE })
         const reply = await saveComment({ ...formData, aid: Number(aid), uppercid: data?.cid, insertdate: CURRENT_DATE })
         if (reply) {
             formReset()
