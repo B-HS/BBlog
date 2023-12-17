@@ -26,7 +26,7 @@ public class JwtManager {
 
     public List<String> tokenGenerator(Integer urkey, String email) {
         return List.of(
-                tokenGenerate(urkey, email, 1L),
+                tokenGenerate(urkey, email, -1L),
                 tokenGenerate(urkey, email, 7L));
     }
 
