@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import net.gumyo.bblog.entity.User;
 import net.gumyo.bblog.repository.UserRepository;
 import net.gumyo.bblog.utils.JwtManager;
@@ -19,7 +18,6 @@ import net.gumyo.bblog.utils.JwtManager;
 @Component
 @RequiredArgsConstructor
 @NoRepositoryBean
-@Log4j2
 public class RedisRepository {
     private final RedisTemplate<String, Object> redisTemplate;
     private final UserRepository urepo;
@@ -43,7 +41,6 @@ public class RedisRepository {
 
     @Transactional
     public Boolean tokenChecker(String atk, String rtk) {
-        log.info(atk, rtk);
         Claims atkClaims = manager.tokenParser(atk);
         Integer atkUrkey = atkClaims.get("urkey", Integer.class);
         Integer rtkUrkey = Integer
