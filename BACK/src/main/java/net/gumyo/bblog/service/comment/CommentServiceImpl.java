@@ -17,6 +17,11 @@ public class CommentServiceImpl implements CommentService {
     private final PasswordEncoder pEncoder;
 
     @Override
+    public List<Comment> getAllComments() {
+        return crepo.findAll();
+    }
+
+    @Override
     public Long saveComment(Map<String, Object> comment) {
         Object uppercid = comment.get("uppercid");
 
@@ -68,5 +73,14 @@ public class CommentServiceImpl implements CommentService {
             }
             return ele;
         }).toList();
+    }
+
+    @Override
+    public Long removeCommentByAdmin(Map<String, Object> comment) {
+        crepo.findById(Long.parseLong(comment.get("cid").toString())).ifPresent(c -> {
+            c.deleteComment();
+            crepo.save(c);
+        });
+        return 1L;
     }
 }
