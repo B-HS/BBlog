@@ -17,6 +17,7 @@ import { useToast } from '../ui/use-toast'
 import EditorMenubar from './tiptapMenubar'
 
 const Tiptap = forwardRef(({ tags }: { tags: string[] }, tEditor) => {
+    const [currentdate, setCurrentdate] = useState(dayjs().format('YYYYMMDDHHmmss'))
     const [title, onChangeTitle, setTitle] = useInput()
     const [html, setHtml] = useState('')
     const [imageList, setImageList] = useState<string[]>([])
@@ -28,10 +29,10 @@ const Tiptap = forwardRef(({ tags }: { tags: string[] }, tEditor) => {
             aid: 10,
             title,
             context: html,
-            insertDate: dayjs().format('YYYYMMDDHHmmss'),
+            insertdate: currentdate,
             tags: tags,
         }),
-        [html, title, tags],
+        [html, title, tags, currentdate],
     )
 
     const editor = useEditor({
@@ -61,7 +62,6 @@ const Tiptap = forwardRef(({ tags }: { tags: string[] }, tEditor) => {
     }
     const getImages = () => imageList
     const getTitle = () => title
-
     const addImageToEditor = (imgName: string) => {
         editor
             ?.chain()
@@ -71,7 +71,18 @@ const Tiptap = forwardRef(({ tags }: { tags: string[] }, tEditor) => {
         setImageList((ele) => [...ele, imgName])
     }
 
+    const setArticle = (article: Article) => {
+        console.log(article)
+
+        editor?.commands.setContent(article.context)
+        setTitle(article.title)
+        setImageList([article.thumbnail!])
+        setHtml(article.context)
+        setCurrentdate(article.insertdate!)
+    }
+
     useImperativeHandle(tEditor, () => ({
+        setArticle,
         getTitle,
         getHTML,
         reset,
