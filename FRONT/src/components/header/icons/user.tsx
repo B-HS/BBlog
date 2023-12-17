@@ -40,6 +40,11 @@ const User = () => {
                         Write
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
+                <DropdownMenuGroup>
+                    <DropdownMenuItem className='cursor-pointer' onClick={() => (location.href = '/admin')}>
+                        Admin
+                    </DropdownMenuItem>
+                </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className='cursor-pointer' onClick={UserLogout}>
                     Log out
