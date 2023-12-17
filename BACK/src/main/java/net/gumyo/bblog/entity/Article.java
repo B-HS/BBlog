@@ -30,6 +30,9 @@ public class Article {
     private String context;
 
     @Column
+    private String thumbnail;
+
+    @Column
     private String[] tags;
 
     @Column
@@ -39,6 +42,18 @@ public class Article {
     private Boolean hide;
 
     @Column
+    private Integer viewcount;
+
+    @Column
     @CreatedDate
     private String insertdate;
+
+    public void increateViewCount() {
+        if (this.viewcount == null) {
+            this.viewcount = 1;
+        } else {
+            this.viewcount = this.viewcount + 1;
+        }
+
+    }
 }
