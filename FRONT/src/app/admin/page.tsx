@@ -2,13 +2,14 @@
 import ArticleManage from '@/components/admin/article/articleManage'
 import CommentManage from '@/components/admin/comment/commentManage'
 import LogManage from '@/components/admin/logs/logManage'
+import UpdownAnime from '@/components/transition/updown'
 import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import WithAuth from '@/hoc/withAuth'
 
 const Admin = () => {
     return (
-        <section className='h-full w-full'>
+        <UpdownAnime className='h-full w-full'>
             <Tabs defaultValue='dashboard' className='w-full h-full flex flex-col overflow-y-scroll items-center'>
                 <TabsList className='m-3 w-fit'>
                     <TabsTrigger value='dashboard'>Dashboard</TabsTrigger>
@@ -24,7 +25,7 @@ const Admin = () => {
                 <CommentManage />
                 <LogManage />
             </Tabs>
-        </section>
+        </UpdownAnime>
     )
 }
 
