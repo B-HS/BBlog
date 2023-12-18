@@ -53,7 +53,7 @@ public class AspectLogger {
 
         slrepo.save(syslog);
 
-        if (methodName.equals("getCommentsByAid")) {
+        if (methodName.equals("getArticle")) {
             increateViewCount(Long.parseLong(requestBody.replace("[", "").replace("]", "")));
         }
     }
