@@ -39,7 +39,7 @@ public class Menu {
     private MenuType type;
 
     public enum MenuType {
-        PAGE, LIST
+        PAGE, LIST, INTRODUCE
     }
 
 }
