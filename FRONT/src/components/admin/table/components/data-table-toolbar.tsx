@@ -10,9 +10,10 @@ import { DataTableViewOptions } from './data-table-view-options'
 
 interface DataTableToolbarProps<TData> {
     table: Table<TData>
+    filterTarget?: string
 }
 
-export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>) {
+export function DataTableToolbar<TData>({ table, filterTarget }: DataTableToolbarProps<TData>) {
     const isFiltered = table.getState().columnFilters.length > 0
 
     return (
@@ -20,7 +21,7 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
             <div className='flex flex-1 items-center space-x-2'>
                 <Input
                     placeholder='Search ...'
-                    onChange={(event) => table.getColumn('insertdate')?.setFilterValue(event.target.value)}
+                    onChange={(event) => table.getColumn(filterTarget ? filterTarget : 'insertdate')?.setFilterValue(event.target.value)}
                     className='h-8 w-[150px] lg:w-[250px]'
                 />
 

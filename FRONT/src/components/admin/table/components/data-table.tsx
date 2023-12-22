@@ -1,6 +1,5 @@
 'use client'
 
-import * as React from 'react'
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -15,6 +14,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from '@tanstack/react-table'
+import * as React from 'react'
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
@@ -24,9 +24,10 @@ import { DataTableToolbar } from '../components/data-table-toolbar'
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
+    filterTarget?: string
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, filterTarget }: DataTableProps<TData, TValue>) {
     const [rowSelection, setRowSelection] = React.useState({})
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -56,7 +57,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
 
     return (
         <div className='space-y-4'>
-            <DataTableToolbar table={table} />
+            {filterTarget && <DataTableToolbar table={table} filterTarget={filterTarget} />}
             <div className='rounded-md border'>
                 <Table>
                     <TableHeader>
