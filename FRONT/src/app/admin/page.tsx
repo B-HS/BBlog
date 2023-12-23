@@ -1,10 +1,11 @@
 'use client'
 import ArticleManage from '@/components/admin/article/articleManage'
 import CommentManage from '@/components/admin/comment/commentManage'
-import LogManage from '@/components/admin/logs/logManage'
+import Dashboard from '@/components/admin/dashboard/dashboard'
+import LogManage from '@/components/admin/log/logManage'
 import UpdownAnime from '@/components/transition/updown'
 import { Separator } from '@/components/ui/separator'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import WithAuth from '@/hoc/withAuth'
 
 const Admin = () => {
@@ -18,9 +19,7 @@ const Admin = () => {
                     <TabsTrigger value='logs'>Logs</TabsTrigger>
                 </TabsList>
                 <Separator />
-                <TabsContent className='m-5 w-11/12' value='dashboard'>
-                    Dashboard
-                </TabsContent>
+                <Dashboard />
                 <ArticleManage />
                 <CommentManage />
                 <LogManage />
