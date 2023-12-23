@@ -23,8 +23,8 @@ export const generateMetadata = async ({ params: { docid } }: { params: { docid:
             index: true,
             follow: true,
         },
-        canonical: `https://gumyo.net/doc/${docid}`,
-        authors: { name: 'Hyunoseok Byun', url: 'https://gumyo.net' },
+        canonical: `https://hyns.dev/doc/${docid}`,
+        authors: { name: 'Hyunoseok Byun', url: 'https://hyns.dev' },
         icons: { icon: '/favicon.ico' },
     }
 }
