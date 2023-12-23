@@ -15,5 +15,7 @@ public interface ArticleService {
 
     Article getArticleById(Long aid);
 
+    Article getArticleByMenuName(String name);
+
     Long saveArticle(Article article);
 }

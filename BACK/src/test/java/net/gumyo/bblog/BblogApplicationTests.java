@@ -57,7 +57,9 @@ class BblogApplicationTests {
 				createMenu("Backend", 2L, MenuType.LIST),
 				createMenu("etc.", 0L, MenuType.LIST),
 				createMenu("Travel", 5L, MenuType.LIST),
-				createMenu("React", 3L, MenuType.LIST));
+				createMenu("React", 3L, MenuType.LIST),
+				createMenu("MAIN", 0L, MenuType.MAIN));
+
 		mrepo.saveAll(menus);
 	}
 

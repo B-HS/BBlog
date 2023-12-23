@@ -46,4 +46,9 @@ public class ArticleServiceImpl implements ArticleService {
         String keyword = "%" + param + "%";
         return arepo.findAllByTitleLikeOrContextLikeAndHideFalse(keyword, keyword);
     }
+
+    @Override
+    public Article getArticleByMenuName(String name) {
+        return arepo.getArticleByMenuName(name);
+    }
 }

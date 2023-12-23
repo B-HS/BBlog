@@ -47,4 +47,9 @@ public class ArticleController {
         return aser.getArticleListByTitleAndContext(param);
     }
 
+    @GetMapping("/article/doc/{menu}")
+    public Article getMainArticle(@PathVariable("menu") String menu) {
+        return aser.getArticleByMenuName(menu);
+    }
+
 }
