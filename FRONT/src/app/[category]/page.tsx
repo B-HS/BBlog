@@ -17,8 +17,8 @@ export const generateMetadata = async ({ params: { category } }: { params: { aid
             index: true,
             follow: true,
         },
-        canonical: `https://gumyo.net/${category}`,
-        authors: { name: 'Hyunoseok Byun', url: 'https://gumyo.net' },
+        canonical: `https://hyns.dev/${category}`,
+        authors: { name: 'Hyunoseok Byun', url: 'https://hyns.dev' },
         icons: { icon: '/favicon.ico' },
     }
 }

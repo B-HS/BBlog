@@ -23,7 +23,7 @@ export const metadata = {
     openGraph: {
         title: 'BBlog',
         description: 'BBlog',
-        url: 'https://gumyo.net',
+        url: 'https://hyns.dev',
         siteName: 'BBlog',
     },
     twitter: {
