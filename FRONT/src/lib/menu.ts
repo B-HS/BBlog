@@ -10,6 +10,7 @@ const createMenuHierarchy = (menuItems: MenuItem[], parentKey: number = 0): Reco
         icon: item.icon,
         parentmekey: item.parentmekey,
         meorder: item.meorder,
+        type: item.type,
         children: createMenuHierarchy(menuItems, item.mekey),
     }))
 }
@@ -26,9 +27,7 @@ const getMenuNameWithChildrensName = (currentMename: string, menulist: MenuItem[
     const currentObject = menulist.find((obj) => obj.mename.toLowerCase() === currentMename.toLowerCase())
     if (currentObject) {
         result.push(currentObject.mename)
-
         const children = menulist.filter((obj) => obj.parentmekey === currentObject.mekey)
-
         children.forEach((child) => {
             result.push(...getMenuNameWithChildrensName(child.mename, menulist))
         })
