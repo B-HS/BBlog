@@ -47,6 +47,16 @@ export const getAllpostByKeyword = async (keyword: string, isServerside?: boolea
     }
 }
 
+export const getArticleByMenuName = async (menuname: string, isServerside?: boolean) => {
+    try {
+        if (isServerside) axios.defaults.baseURL = process.env.NEXT_PUBLIC_BACK
+        const { data } = await axios.get(`/article/doc/${menuname}`)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+
 export const savePost = async (article: Partial<Article>) => {
     try {
         const { data } = await axios.post('/article/save', article)
