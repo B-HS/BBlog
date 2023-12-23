@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import DOMPurify from 'isomorphic-dompurify'
 import Flex from '../flex'
 import { Badge } from '../ui/badge'
 import { Separator } from '../ui/separator'
@@ -17,6 +18,7 @@ export interface Article {
 }
 
 const ArticleContext = ({ data, category }: { data: Article; category: string }) => {
+    const context = DOMPurify.sanitize(data.context || '')
     return (
         <Flex className='posting flex-col flex-none w-full '>
             <header className='flex justify-between items-baseline'>
@@ -32,7 +34,7 @@ const ArticleContext = ({ data, category }: { data: Article; category: string })
                 </Flex>
             </header>
             <Separator className='my-3' />
-            <div className='p-3.5' dangerouslySetInnerHTML={{ __html: data.context ? data.context : '' }}></div>
+            <div className='p-3.5' dangerouslySetInnerHTML={{ __html: context }}></div>
             <Flex className='p-0 gap-2 flex-wrap'>
                 {data.tags?.map((tag, idx) => (
                     <Badge variant='outline' className='rounded py-2 dark:shadow-neutral-900 shadow-sm' key={idx}>
