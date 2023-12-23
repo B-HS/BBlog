@@ -8,3 +8,13 @@ export const getLogs = async () => {
         return error
     }
 }
+
+export const getFullLogs = async () => {
+    try {
+        const { data } = await axios.post('/admin/dashboard/all')
+        console.log(data)
+        return data
+    } catch (error) {
+        return error
+    }
+}
