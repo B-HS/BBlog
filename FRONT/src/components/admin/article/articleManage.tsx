@@ -25,7 +25,7 @@ const ArticleManage = () => {
     }, [])
 
     return (
-        <TabsContent className='m-5 w-11/12' value='article'>
+        <TabsContent className='w-full' value='article'>
             <DataTable
                 filterTarget='title'
                 columns={[

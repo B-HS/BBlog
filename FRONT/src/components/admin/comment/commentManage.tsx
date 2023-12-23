@@ -22,7 +22,7 @@ const CommentManage = () => {
 
     const removeRow = (row: Comment) => deleteCommentAdmin(row).then(() => setList())
     return (
-        <TabsContent className='m-5 w-11/12' value='comment'>
+        <TabsContent className='w-full' value='comment'>
             <DataTable
                 columns={[
                     ...columns.map((col) => ({
