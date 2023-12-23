@@ -16,6 +16,29 @@ const mplus = M_PLUS_Rounded_1c({
     display: 'swap',
 })
 
+export const metadata = {
+    metadataBase: new URL('https://img.gumyo.net'),
+    title: 'BBlog',
+    description: 'BBlog',
+    openGraph: {
+        title: 'BBlog',
+        description: 'BBlog',
+        url: 'https://gumyo.net',
+        siteName: 'BBlog',
+    },
+    twitter: {
+        title: 'BBlog',
+        description: 'BBlog',
+    },
+    robots: {
+        index: true,
+        follow: true,
+    },
+    icons: {
+        icon: '/favicon.ico',
+    },
+}
+
 const RootLayout = ({ children }: { children: ReactNode }) => {
     return (
         <html lang='ko' suppressHydrationWarning>
