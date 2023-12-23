@@ -5,9 +5,11 @@ import Flex from '../flex'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Badge } from '../ui/badge'
 import { Article } from './articleContext'
+import DOMPurify from 'isomorphic-dompurify'
 
 const ArticleCard = ({ article }: { article: Article }) => {
-    const { aid, title, context, tags, insertdate, category: rawCategory, thumbnail } = article
+    const { aid, title, context: rawContext, tags, insertdate, category: rawCategory, thumbnail } = article
+    const context = DOMPurify.sanitize(rawContext || '')
     const category = rawCategory?.toLowerCase()
 
     return (
