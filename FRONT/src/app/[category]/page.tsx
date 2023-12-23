@@ -1,68 +1,30 @@
-'use client'
-import { getListByMenuName } from '@/api/article/post'
-import { loadMenu } from '@/api/menu/menu'
-import ArticleCard from '@/components/article/articleCard'
-import { Article } from '@/components/article/articleContext'
-import PageSize from '@/components/article/pagesize'
-import Pagination from '@/components/article/pagination'
-import Flex from '@/components/flex'
-import { MenuItem } from '@/components/menu/menu'
-import UpdownAnime from '@/components/transition/updown'
-import { DELAY } from '@/lib/constant'
-import { getMenuNameWithChildrensName } from '@/lib/menu'
-import { Layers3Icon } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import ArticleList from '@/components/article/articlelist'
 
-const ArticleList = ({ params: { category } }: { params: { category: string } }) => {
-    const [articleList, setArticleList] = useState<Article[]>()
-    const [page, setPage] = useState(1)
-    const [count, setCount] = useState(5)
-    const [totalPage, setTotalPage] = useState(0)
-
-    useEffect(() => {
-        const getInfo = async () => {
-            const menu: MenuItem[] = await loadMenu()
-            const categories = getMenuNameWithChildrensName(category, menu).join(',')
-            const pagedArticleList = await getListByMenuName(categories, page, count)
-            const remappedArticleList = pagedArticleList.content?.map((ele: { mekey: number }) => ({
-                ...ele,
-                category: menu.find((me) => me.mekey === ele.mekey)!.mename,
-            }))
-            setTotalPage(pagedArticleList.totalPages || 0)
-            setArticleList(remappedArticleList || [])
-        }
-        getInfo()
-    }, [category, count, page])
-
-    return (
-        <UpdownAnime delay={DELAY(2)}>
-            <Flex className='flex gap-1 items-center'>
-                <Layers3Icon className='h-5' />
-                <p className='text-2xl'>{category.toUpperCase()}</p>
-            </Flex>
-            <Flex className='flex-col'>
-                <Flex className='flex-col gap-3'>
-                    {articleList?.map((ele, idx) => (
-                        <UpdownAnime delay={DELAY(1.5 + idx)} key={ele.aid}>
-                            <ArticleCard article={ele} />
-                        </UpdownAnime>
-                    ))}
-                </Flex>
-                <UpdownAnime delay={DELAY(5)}>
-                    {articleList && articleList?.length > 0 ? (
-                        <Flex className='justify-between'>
-                            <Flex className='gap-2 flex-auto justify-center'>
-                                <Pagination page={page} setPage={setPage} totalPage={totalPage} />
-                                <PageSize count={count} setCount={setCount} />
-                            </Flex>
-                        </Flex>
-                    ) : (
-                        <Flex className='flex-auto justify-center items-center h-72'>EMPTY</Flex>
-                    )}
-                </UpdownAnime>
-            </Flex>
-        </UpdownAnime>
-    )
+export const generateMetadata = async ({ params: { category } }: { params: { aid: string; category: string } }) => {
+    return {
+        title: `${category.toUpperCase()} Articles | BBlog`,
+        description: `${category.toUpperCase()} Articles | BBlog`,
+        keywords: [category.toUpperCase(), category],
+        openGraph: {
+            title: `${category.toUpperCase()} Articles | BBlog`,
+            description: `${category.toUpperCase()} Articles | BBlog`,
+        },
+        twitter: {
+            title: `${category.toUpperCase()} Articles | BBlog`,
+            description: `${category.toUpperCase()} Articles | BBlog`,
+        },
+        robots: {
+            index: true,
+            follow: true,
+        },
+        canonical: `https://gumyo.net/${category}`,
+        authors: { name: 'Hyunoseok Byun', url: 'https://gumyo.net' },
+        icons: { icon: '/favicon.ico' },
+    }
 }
 
-export default ArticleList
+const ArticleListPage = ({ params: { category } }: { params: { category: string } }) => {
+    return <ArticleList category={category} />
+}
+
+export default ArticleListPage
