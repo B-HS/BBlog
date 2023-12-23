@@ -1,6 +1,7 @@
 'use client'
 import { deleteComment, updateComment } from '@/api/article/comment'
 import dayjs from 'dayjs'
+import DOMPurify from 'isomorphic-dompurify'
 import { CheckIcon, MessageSquareIcon, PenIcon, XIcon } from 'lucide-react'
 import { useState } from 'react'
 import Flex from '../flex'
@@ -36,7 +37,7 @@ const Comment = ({ data, reloadComment }: { data: Comment; reloadComment?: Funct
 
     const setModifyMode = () => {
         setIsModifyMode(true)
-        setModifiedContext(data.context)
+        setModifiedContext(DOMPurify.sanitize(data.context || ''))
     }
 
     const passwordFailToast = () =>
@@ -100,7 +101,7 @@ const Comment = ({ data, reloadComment }: { data: Comment; reloadComment?: Funct
                 </Flex>
             ) : (
                 <section className='px-3.5 py-2'>
-                    {data.deleted ? <p className='opacity-50'>삭제된 댓글입니다.</p> : <p>{data.context}</p>}
+                    {data.deleted ? <p className='opacity-50'>삭제된 댓글입니다.</p> : <p>{DOMPurify.sanitize(data.context || '')}</p>}
                 </section>
             )}
 
