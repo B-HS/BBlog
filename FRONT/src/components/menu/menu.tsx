@@ -17,6 +17,7 @@ export interface MenuItem {
     meorder: number
     hide: boolean
     icon: string | null
+    type: string
     children?: MenuItem[]
 }
 
@@ -47,14 +48,22 @@ const Menu = ({ className }: React.HTMLAttributes<HTMLElement>) => {
 
     return (
         <Flex className={cn('flex-col', className)}>
-            {createMenuHierarchy(menu).map((me) => (
-                <UpdownAnime key={me.mekey} delay={DELAY(2)}>
-                    <>
-                        <MenuCategory key={me.mekey} title={me.mename} count={getMenuCount(flattenMenuHierarchy(menu, me.mekey))} />
-                        {me.children?.map((category: MenuItem) => childrenRendering(category))}
-                    </>
-                </UpdownAnime>
-            ))}
+            {createMenuHierarchy(menu).map(
+                (me) =>
+                    !me.hide && (
+                        <UpdownAnime key={me.mekey} delay={DELAY(2)}>
+                            <>
+                                <MenuCategory
+                                    key={me.mekey}
+                                    title={me.mename}
+                                    type={me.type}
+                                    count={me.type === 'LIST' ? getMenuCount(flattenMenuHierarchy(menu, me.mekey)) : undefined}
+                                />
+                                {me.children?.map((category: MenuItem) => childrenRendering(category))}
+                            </>
+                        </UpdownAnime>
+                    ),
+            )}
         </Flex>
     )
 }
