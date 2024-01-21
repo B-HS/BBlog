@@ -4,6 +4,9 @@
 - Spring boot, MySQL8, Redis
 - Cloudflare R2
 ---
+## 예정
+- supabase로 싸악 마이그레이션
+- ㄴ 써보니 너무좋음 bood끝나고 정리되면 시작
 ## 보류 
 - [서버 정리되는 대로 배포 및 포스팅 옮기기](https://hbyun.tistory.com/262)
 - 대시보드 블로그 정보
