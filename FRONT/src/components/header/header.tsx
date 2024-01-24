@@ -1,6 +1,8 @@
+'use client'
 import { adminProfile } from '@/api/user/user'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import Flex from '../flex'
 import CollapsibleSidebar from '../sidebar/collapsibleSidebar'
 import UpdownAnime from '../transition/updown'
@@ -8,8 +10,12 @@ import Search from './icons/search'
 import Theme from './icons/theme'
 import User from './icons/user'
 
-const Header = async ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => {
-    const bloginfo = await adminProfile(true)
+const Header = ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => {
+    const [bloginfo, setBloginfo] = useState<Record<string, string | number | boolean>>()
+    useEffect(() => {
+        const getbloginfo = async () => setBloginfo(await adminProfile())
+        getbloginfo()
+    }, [])
     return (
         !!bloginfo && (
             <nav
