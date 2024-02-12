@@ -10,6 +10,7 @@ const middleware = async (request: NextRequest) => {
     const ip = (headersList.get('x-forwarded-for') ?? 'UNKNOWN').split(',')[0]
 
     const { pathname } = request.nextUrl
+    // TODO - HS // pathname비교 로직 필요
     console.log(pathname)
 
     let session
