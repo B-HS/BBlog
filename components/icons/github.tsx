@@ -7,7 +7,7 @@ const Github = ({ variant }: { variant?: 'default' | 'destructive' | 'outline' |
     return (
         <TooltipProvider>
             <Tooltip>
-                <TooltipTrigger>
+                <TooltipTrigger className='leading-normal'>
                     <Button variant={variant || 'ghost'} size={'icon'} asChild>
                         <Link className='p-2' href={'https://github.com/B-HS'}>
                             <GitHubLogoIcon className='h-6 w-6' />
