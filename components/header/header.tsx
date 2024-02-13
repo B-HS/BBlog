@@ -1,7 +1,7 @@
+import { getFileInfo } from '@/lib/files'
 import Link from 'next/link'
 import Navigation from './navigation'
 import ScrollStatus from './scroll-status'
-import { getFileInfo } from '@/lib/files'
 
 const SiteHeader = async () => {
     const posts = await getFileInfo(true)

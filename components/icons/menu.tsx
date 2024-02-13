@@ -1,10 +1,10 @@
 'use client'
-import { MenuIcon } from 'lucide-react'
+import { Menubar, MenubarContent, MenubarGroup, MenubarItem, MenubarMenu, MenubarSeparator, MenubarTrigger } from '@/components/ui/menubar'
+import { MenuIcon, TagIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { Badge } from '../ui/badge'
-import { Button } from '../ui/button'
 import { FrontmatterProps } from '../mdx/custom-mdx'
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
+import { buttonVariants } from '../ui/button'
+import Link from 'next/link'
 
 const Menu = ({ articleInfo }: { articleInfo: Partial<FrontmatterProps>[] | undefined }) => {
     const [categories, setCategories] = useState<string[]>(['ALL'])
@@ -27,29 +27,40 @@ const Menu = ({ articleInfo }: { articleInfo: Partial<FrontmatterProps>[] | unde
     }, [articleInfo])
 
     return (
-        <Dialog modal={false}>
-            <DialogTrigger>
-                <Button variant='ghost' size='icon' className='p-2 cursor-pointer' asChild>
+        <Menubar className='border-none p-0 space-0'>
+            <MenubarMenu>
+                <MenubarTrigger className={buttonVariants({ variant: 'ghost', size: 'icon', className: 'p-2 cursor-pointer' })}>
                     <MenuIcon />
-                </Button>
-            </DialogTrigger>
-            <DialogContent className='backdrop-blur-md h-screen w-screen max-w-full'>
-                <MenuSection title='Menu' items={categories} />
-                <MenuSection title='Tags' items={tags} />
-            </DialogContent>
-        </Dialog>
+                </MenubarTrigger>
+                <MenubarContent>
+                    <MenubarGroup className='flex justify-center items-center font-bold'>
+                        <MenuIcon className='py-1 pb-2' />
+                        <span>Menu</span>
+                    </MenubarGroup>
+                    {categories.map((ele, idx) => (
+                        <section key={ele + idx}>
+                            <MenubarSeparator />
+                            <Link href={`/article?menu=${ele}`}>
+                                <MenubarItem>{ele}</MenubarItem>
+                            </Link>
+                        </section>
+                    ))}
+                    <MenubarSeparator />
+                    <MenubarGroup className='flex justify-center items-center font-bold'>
+                        <TagIcon className='py-1 pb-2' />
+                        <span>Tags</span>
+                    </MenubarGroup>
+                    {tags.map((ele, idx) => (
+                        <section key={ele + idx}>
+                            <MenubarSeparator />
+                            <Link href={`/article?tags=${ele}`}>
+                                <MenubarItem>{ele}</MenubarItem>
+                            </Link>
+                        </section>
+                    ))}
+                </MenubarContent>
+            </MenubarMenu>
+        </Menubar>
     )
 }
-
-const MenuSection = ({ title, items }: { title: string; items: string[] }) => (
-    <section className='p-3'>
-        <p className='text-2xl'>{title}</p>
-        <section className='flex gap-1 p-3 flex-wrap'>
-            {items.map((item, idx) => (
-                <Badge key={idx}>{item}</Badge>
-            ))}
-        </section>
-    </section>
-)
-
 export default Menu

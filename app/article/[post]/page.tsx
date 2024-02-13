@@ -1,5 +1,5 @@
 import { CustomMdx } from '@/components/mdx/custom-mdx'
-import MdxFallback from '@/components/mdx/fall-back'
+import Fallback from '@/components/fall-back'
 import MdxPage from '@/components/mdx/mdx-page'
 
 import { getStartEndDate, markdownToText } from '@/lib/utils'
@@ -83,7 +83,7 @@ const RemoteMdxPage = async ({ params }: { params: { post: string } }) => {
     const viewCnt = await manageViewCnt(params.post)
     const { content, frontmatter } = await CustomMdx({ source })
     return (
-        <Suspense fallback={<MdxFallback />}>
+        <Suspense fallback={<Fallback />}>
             <MdxPage content={content} frontmatter={{ ...frontmatter, viewCnt }} />
         </Suspense>
     )
