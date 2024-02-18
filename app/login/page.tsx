@@ -1,28 +1,11 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { createClient } from '@/utils/supabase/server'
+import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import { BirdIcon } from 'lucide-react'
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
+import { githubSignIn, signIn } from './singin-fn'
 
-const Login = ({ searchParams }: { searchParams: { message: string } }) => {
-    const signIn = async (formData: FormData) => {
-        'use server'
-        const email = formData.get('email') as string
-        const password = formData.get('password') as string
-        const cookieStore = cookies()
-        const supabase = createClient(cookieStore)
-        const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        })
-        if (error) {
-            return redirect('/login?message=Could not authenticate user')
-        }
-        return redirect('/')
-    }
-
+const Login = async ({ searchParams }: { searchParams: { message: string } }) => {
     return (
         <section className='w-full flex-1 flex flex-col justify-center items-center gap-3 py-5'>
             <BirdIcon className='animate-bounce' />
@@ -36,8 +19,14 @@ const Login = ({ searchParams }: { searchParams: { message: string } }) => {
                     <Input name='password' type='password' id='password' placeholder='password' autoComplete='current-password' />
                 </div>
                 <Button variant={'default'}>Sign In</Button>
-                {searchParams?.message && <p className='mt-4 p-4 bg-foreground/10 text-foreground text-center'>{searchParams.message}</p>}
             </form>
+            <form className='animate-in flex flex-col w-full justify-center gap-5 text-foreground max-w-xs' action={githubSignIn}>
+                <Button variant={'secondary'} className='flex gap-1 items-center'>
+                    <GitHubLogoIcon width={22} height={22} />
+                    <span>Sign in with Github</span>
+                </Button>
+            </form>
+            {searchParams?.message && <p className='mt-7 px-3.5 py-1.5 bg-foreground/10 text-foreground text-center'>{searchParams.message}</p>}
         </section>
     )
 }

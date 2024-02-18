@@ -21,7 +21,6 @@ const LoginButton = async () => {
 
     return (
         <>
-            <UserToast user={user} />
             {user ? (
                 <form action={signOut} className='w-9 h-9'>
                     <Button variant='ghost' size={'icon'}>
@@ -35,6 +34,7 @@ const LoginButton = async () => {
                     </Link>
                 </Button>
             )}
+            <UserToast user={user} />
         </>
     )
 }
