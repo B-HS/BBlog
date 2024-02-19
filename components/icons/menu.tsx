@@ -41,7 +41,7 @@ const Menu = ({ articleInfo }: { articleInfo: Partial<FrontmatterProps>[] | unde
                         <section key={ele + idx}>
                             <MenubarSeparator />
                             <Link href={`/article?menu=${ele}`}>
-                                <MenubarItem>{ele}</MenubarItem>
+                                <MenubarItem className='cursor-pointer'>{ele}</MenubarItem>
                             </Link>
                         </section>
                     ))}
@@ -54,7 +54,7 @@ const Menu = ({ articleInfo }: { articleInfo: Partial<FrontmatterProps>[] | unde
                         <section key={ele + idx}>
                             <MenubarSeparator />
                             <Link href={`/article?tags=${ele}`}>
-                                <MenubarItem>{ele}</MenubarItem>
+                                <MenubarItem className='cursor-pointer'>{ele}</MenubarItem>
                             </Link>
                         </section>
                     ))}
