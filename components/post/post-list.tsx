@@ -11,32 +11,33 @@ import PostTileLong from './post-tile-long'
 
 const PostList = ({ which, posts }: { which: string; posts: Partial<FrontmatterProps>[] }) => {
     const menulist = ['ALL', ...Array.from(new Set(posts.map((ele) => ele.category)))]
+    const taglist = ['ALL', ...Array.from(new Set(posts.flatMap((ele) => ele.tags)))]
     const [listtype, setListtype] = useState('list')
     const param = useSearchParams()
+    const menuParam = param.get('menu')
+    const tagParam = param.get('tags')
     const postlist = useMemo(
         () =>
             posts.filter((ele) => {
-                const isMenu = param.get('menu')
-                const isTag = param.get('tags')
-                if (isMenu) {
-                    console.log(isMenu)
-                    return isMenu === 'ALL' ? true : ele.category === param.toString().split('=')[1]
+                if (menuParam) {
+                    console.log(menuParam)
+                    return menuParam === 'ALL' ? true : ele.category === menuParam
                 }
 
-                if (isTag) {
-                    return ele.tags?.includes(isTag)
+                if (tagParam) {
+                    return tagParam === 'ALL' ? true : ele.tags?.includes(tagParam)
                 }
 
                 return true
             }),
-        [posts, param],
+        [posts, menuParam, tagParam],
     )
     return (
         <section className='p-3'>
             <section className='flex justify-between'>
-                <ToggleGroup type='single' variant={'outline'} className='justify-start' defaultValue={param.toString().split('=')[1]}>
-                    {menulist.map((ele, idx) => (
-                        <Link key={which + idx} href={`/article?menu=${ele}`}>
+                <ToggleGroup type='single' variant={'outline'} className='justify-start' defaultValue={menuParam ? menuParam! : tagParam!}>
+                    {(menuParam ? menulist : taglist).map((ele, idx) => (
+                        <Link key={which + idx} href={`/article?${menuParam ? 'menu' : 'tags'}=${ele}`}>
                             <ToggleGroupItem value={ele!} aria-label={which + idx}>
                                 {ele}
                             </ToggleGroupItem>
