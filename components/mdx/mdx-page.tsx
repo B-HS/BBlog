@@ -16,7 +16,12 @@ const MdxPage = async ({ frontmatter, content }: MdxPageProps) => {
                     <Separator orientation='vertical' />
                     <span className='text-xl font-bold'>{frontmatter?.title}</span>
                 </section>
-                <span>{dayjs(frontmatter?.date).format('YYYY-MM-DD')}</span>
+
+                <section className='flex items-center space-x-2 h-5'>
+                    <span>{dayjs(frontmatter?.date).format('YYYY-MM-DD')}</span>
+                    <Separator orientation='vertical' />
+                    <span>{frontmatter.viewCnt} views</span>
+                </section>
             </section>
             <Separator className='my-2' />
             <section className='flex flex-wrap gap-2 py-3 justify-end'>

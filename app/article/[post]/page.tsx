@@ -64,17 +64,14 @@ const getPostSource = async (postName: string) => {
 
 const manageViewCnt = async (postName: string): Promise<string> => {
     try {
-        const { startOfDay, endOfDay } = getStartEndDate()
         const cookieStore = cookies()
         const supabase = createClient(cookieStore)
-        const postinfo = await Promise.all([
-            supabase.from('post').insert({ post: postName }),
-            supabase.from('post').select('*').gte('created_at', startOfDay).lte('created_at', endOfDay),
-        ])
+        const postinfo = await Promise.all([supabase.from('post').insert({ post: postName }), supabase.from('post').select('*')])
+        const { data } = postinfo[1]
 
-        return String(postinfo[1].count || 0)
+        return String(data?.length || 0)
     } catch (error) {
-        return '0'
+        return 'NONE'
     }
 }
 
