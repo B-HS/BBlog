@@ -8,10 +8,7 @@ const middleware = async (request: NextRequest) => {
     const origin = headersList.get('x-forwarded-proto')
     const currentURL = `${origin}://${domain}`
     const ip = (headersList.get('x-forwarded-for') ?? 'UNKNOWN').split(',')[0]
-
     const { pathname } = request.nextUrl
-    // TODO - HS // pathname비교 로직 필요
-    console.log(pathname)
 
     let session
     let res
