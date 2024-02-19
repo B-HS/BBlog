@@ -65,7 +65,7 @@ const manageViewCnt = async (postName: string): Promise<string> => {
     try {
         const cookieStore = cookies()
         const supabase = createClient(cookieStore)
-        const postinfo = await Promise.all([supabase.from('post').insert({ post: postName }), supabase.from('post').select('*')])
+        const postinfo = await Promise.all([supabase.from('post').insert({ post: postName }), supabase.from('post').select('*').eq('post', postName)])
         const { data } = postinfo[1]
 
         return String(data?.length || 0)
