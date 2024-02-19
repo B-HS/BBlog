@@ -16,8 +16,18 @@ const PostList = ({ which, posts }: { which: string; posts: Partial<FrontmatterP
     const postlist = useMemo(
         () =>
             posts.filter((ele) => {
-                const target = param.toString().split('=')[1]
-                return target === 'ALL' ? true : ele.category === param.toString().split('=')[1]
+                const isMenu = param.get('menu')
+                const isTag = param.get('tags')
+                if (isMenu) {
+                    console.log(isMenu)
+                    return isMenu === 'ALL' ? true : ele.category === param.toString().split('=')[1]
+                }
+
+                if (isTag) {
+                    return ele.tags?.includes(isTag)
+                }
+
+                return true
             }),
         [posts, param],
     )
