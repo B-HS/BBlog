@@ -13,12 +13,16 @@ const PostTile = async ({ post }: { post: Partial<FrontmatterProps> }) => {
                 <section className='w-full h-full z-30 absolute top-0 left-0 bg-white dark:bg-black bg-opacity-80 dark:bg-opacity-80 flex flex-col translate-y-72 group-hover:translate-y-0 items-center justify-center transition-all duration-300 cursor-pointer border-2'>
                     <p>{title}</p>
                     <p>{dayjs(date).format('YYYY-MM-DD')}</p>
-                    <section className='flex flex-wrap gap-2'>
-                        {tags?.map((ele, idx) => (
-                            <Badge variant={'outline'} key={idx}>
-                                {ele}
-                            </Badge>
-                        ))}
+                    <section className='flex flex-wrap gap-2 px-5 justify-center'>
+                        {tags
+                            ?.sort((prev, next) => prev.length - next.length)
+                            ?.map((ele, idx) => (
+                                <Link href={`/article?tags=${ele}`} key={idx}>
+                                    <Badge className='hover:text-background hover:bg-foreground' variant={'outline'}>
+                                        {ele}
+                                    </Badge>
+                                </Link>
+                            ))}
                     </section>
                 </section>
             </Link>

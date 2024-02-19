@@ -24,11 +24,15 @@ const PostTileLong = async ({ post }: { post: Partial<FrontmatterProps> }) => {
                     <p className='text-5xl'>- {title}</p>
                     <section>
                         <section className='flex flex-wrap gap-2'>
-                            {tags?.map((ele, idx) => (
-                                <Badge variant={'outline'} key={idx}>
-                                    {ele}
-                                </Badge>
-                            ))}
+                            {tags
+                                ?.sort((prev, next) => prev.length - next.length)
+                                ?.map((ele, idx) => (
+                                    <Link href={`/article?tags=${ele}`} key={idx}>
+                                        <Badge className='hover:text-background hover:bg-foreground' variant={'outline'}>
+                                            {ele}
+                                        </Badge>
+                                    </Link>
+                                ))}
                         </section>
                     </section>
                 </section>
