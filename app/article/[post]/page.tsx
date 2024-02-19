@@ -1,8 +1,7 @@
-import { CustomMdx } from '@/components/mdx/custom-mdx'
 import Fallback from '@/components/fall-back'
+import { CustomMdx } from '@/components/mdx/custom-mdx'
 import MdxPage from '@/components/mdx/mdx-page'
-
-import { getStartEndDate, markdownToText } from '@/lib/utils'
+import { markdownToText } from '@/lib/utils'
 import { createClient } from '@/utils/supabase/server'
 import fs from 'fs'
 import { Metadata } from 'next'
