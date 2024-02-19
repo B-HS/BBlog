@@ -1,3 +1,4 @@
+import Comments, { CommentProps } from '@/components/comments/comments'
 import Fallback from '@/components/fall-back'
 import { CustomMdx } from '@/components/mdx/custom-mdx'
 import MdxPage from '@/components/mdx/mdx-page'
@@ -61,13 +62,23 @@ const getPostSource = async (postName: string) => {
     }
 }
 
+const getCommentList = async (postName: string) => {
+    try {
+        const cookieStore = cookies()
+        const supabase = createClient(cookieStore)
+        const { data } = await supabase.from('comments').select('*').eq('post', postName)
+        return data as CommentProps[]
+    } catch (error) {
+        return []
+    }
+}
+
 const manageViewCnt = async (postName: string): Promise<string> => {
     try {
         const cookieStore = cookies()
         const supabase = createClient(cookieStore)
         const postinfo = await Promise.all([supabase.from('post').insert({ post: postName }), supabase.from('post').select('*').eq('post', postName)])
         const { data } = postinfo[1]
-
         return String(data?.length || 0)
     } catch (error) {
         return 'NONE'
@@ -77,10 +88,13 @@ const manageViewCnt = async (postName: string): Promise<string> => {
 const RemoteMdxPage = async ({ params }: { params: { post: string } }) => {
     const source = (await getPostSource(params.post)) as MDXRemoteProps['source']
     const viewCnt = await manageViewCnt(params.post)
+    const comments = await getCommentList(params.post)
     const { content, frontmatter } = await CustomMdx({ source })
+
     return (
         <Suspense fallback={<Fallback />}>
             <MdxPage content={content} frontmatter={{ ...frontmatter, viewCnt }} />
+            <Comments comments={comments} post={params.post} />
         </Suspense>
     )
 }
