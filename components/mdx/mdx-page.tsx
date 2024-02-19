@@ -3,6 +3,7 @@ import { JSXElementConstructor, ReactElement } from 'react'
 import { Badge } from '../ui/badge'
 import { Separator } from '../ui/separator'
 import { FrontmatterProps } from './custom-mdx'
+import Tags from '../post/tags'
 interface MdxPageProps {
     content: ReactElement<any, string | JSXElementConstructor<any>>
     frontmatter: Partial<FrontmatterProps>
@@ -25,11 +26,7 @@ const MdxPage = async ({ frontmatter, content }: MdxPageProps) => {
             </section>
             <Separator className='my-2' />
             <section className='flex flex-wrap gap-2 py-3 justify-end'>
-                {frontmatter.tags?.map((tag) => (
-                    <Badge key={tag} variant={'outline'}>
-                        {tag}
-                    </Badge>
-                ))}
+                <Tags tags={frontmatter?.tags} />
             </section>
             <section>{content}</section>
         </section>
