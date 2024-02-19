@@ -3,6 +3,7 @@ import { FrontmatterProps } from '../mdx/custom-mdx'
 import dayjs from 'dayjs'
 import { Badge } from '../ui/badge'
 import Link from 'next/link'
+import Tags from './tags'
 
 const PostTile = async ({ post }: { post: Partial<FrontmatterProps> }) => {
     const { title, date, tags, thumbnail, file } = post
@@ -14,15 +15,7 @@ const PostTile = async ({ post }: { post: Partial<FrontmatterProps> }) => {
                     <p className='text-3xl font-bold'>{title}</p>
                     <p>{dayjs(date).format('YYYY-MM-DD')}</p>
                     <section className='flex flex-wrap gap-2 px-5 justify-center'>
-                        {tags
-                            ?.sort((prev, next) => prev.length - next.length)
-                            ?.map((ele, idx) => (
-                                <Link href={`/article?tags=${ele}`} key={idx}>
-                                    <Badge className='hover:text-background hover:bg-foreground' variant={'outline'}>
-                                        {ele}
-                                    </Badge>
-                                </Link>
-                            ))}
+                        <Tags tags={tags} />
                     </section>
                 </section>
             </Link>

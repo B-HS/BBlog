@@ -1,9 +1,9 @@
-import Image from 'next/image'
-import { FrontmatterProps } from '../mdx/custom-mdx'
 import dayjs from 'dayjs'
-import { Badge } from '../ui/badge'
-import Link from 'next/link'
 import { Calendar } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { FrontmatterProps } from '../mdx/custom-mdx'
+import Tags from './tags'
 
 const PostTileLong = async ({ post }: { post: Partial<FrontmatterProps> }) => {
     const { title, date, tags, thumbnail, file } = post
@@ -24,15 +24,7 @@ const PostTileLong = async ({ post }: { post: Partial<FrontmatterProps> }) => {
                     <p className='text-5xl'>- {title}</p>
                     <section>
                         <section className='flex flex-wrap gap-2'>
-                            {tags
-                                ?.sort((prev, next) => prev.length - next.length)
-                                ?.map((ele, idx) => (
-                                    <Link href={`/article?tags=${ele}`} key={idx}>
-                                        <Badge className='hover:text-background hover:bg-foreground' variant={'outline'}>
-                                            {ele}
-                                        </Badge>
-                                    </Link>
-                                ))}
+                            <Tags tags={tags} />
                         </section>
                     </section>
                 </section>
