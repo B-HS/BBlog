@@ -7,7 +7,7 @@ export const cn = (...inputs: ClassValue[]) => {
 
 export const markdownToText = (markdown: string): string => {
     let text: string = markdown
-        .split('---')[2]
+        ?.split('---')[2]
         .replace(/(^#+\s*)|(\n#+\s*)/g, '')
         .replace(/(\*{1,2}|_{1,2})(.*?)\1/g, '$2')
         .replace(/`{1,3}([\s\S]*?)`{1,3}/g, '')
@@ -17,7 +17,7 @@ export const markdownToText = (markdown: string): string => {
         .replace(/^\s*[-*_]\s*$/gm, '')
         .replace(/\s+/g, ' ')
         .trim()
-    return text
+    return text || ''
 }
 
 export const getStartEndDate = () => {
