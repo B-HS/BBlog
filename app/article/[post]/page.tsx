@@ -18,7 +18,7 @@ export const generateMetadata = async ({ params }: { params: { post: string } })
     const currentURL = `${origin}://${domain}/image/`
     const source = (await getPostSource(params.post)) as MDXRemoteProps['source']
     const { frontmatter } = await CustomMdx({ source })
-    const context = (markdownToText(source.toString().slice(0, 250)) || frontmatter.title || '').replace(/<\/?[^>]+(>|$)/g, '') + '...'
+    const context = (markdownToText(source?.toString().slice(0, 250)) || frontmatter.title || '').replace(/<\/?[^>]+(>|$)/g, '') + '...'
 
     return {
         title: {
@@ -66,7 +66,7 @@ const getCommentList = async (postName: string) => {
     try {
         const cookieStore = cookies()
         const supabase = createClient(cookieStore)
-        const { data } = await supabase.from('comments').select('*').eq('post', postName)
+        const { data } = await supabase.from('comments').select('*').order('created_at', { ascending: true }).eq('post', postName)
         return data as CommentProps[]
     } catch (error) {
         return []
@@ -92,10 +92,10 @@ const RemoteMdxPage = async ({ params }: { params: { post: string } }) => {
     const { content, frontmatter } = await CustomMdx({ source })
 
     return (
-        <Suspense fallback={<Fallback />}>
+        <>
             <MdxPage content={content} frontmatter={{ ...frontmatter, viewCnt }} />
             <Comments comments={comments} post={params.post} />
-        </Suspense>
+        </>
     )
 }
 export default RemoteMdxPage
