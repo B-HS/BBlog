@@ -8,7 +8,7 @@ const Tags = ({ tags }: { tags?: string[] }) => {
         ?.sort((prev, next) => prev.length - next.length)
         ?.map((ele, idx) => (
             <Badge
-                className='hover:text-background hover:bg-foreground z-50 cursor-pointer'
+                className='hover:text-background hover:bg-foreground z-30 cursor-pointer'
                 variant={'outline'}
                 key={idx}
                 onClick={() => router.push(`/article?tags=${ele}`)}
