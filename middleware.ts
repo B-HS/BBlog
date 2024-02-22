@@ -4,9 +4,6 @@ import { headers } from 'next/headers'
 
 const middleware = async (request: NextRequest) => {
     const headersList = headers()
-    const domain = headersList.get('x-forwarded-host')
-    const origin = headersList.get('x-forwarded-proto')
-    const currentURL = `${origin}://${domain}`
     const ip = (headersList.get('x-forwarded-for') ?? 'UNKNOWN').split(',')[0]
     const { pathname } = request.nextUrl
 
@@ -23,12 +20,6 @@ const middleware = async (request: NextRequest) => {
                 headers: request.headers,
             },
         })
-    }
-
-    if (pathname.includes('admin')) {
-        if (!session.data.session) {
-            return NextResponse.redirect(currentURL + '/login')
-        }
     }
 
     return res

@@ -1,5 +1,4 @@
 import Comments, { CommentProps } from '@/components/comments/comments'
-import Fallback from '@/components/fall-back'
 import { CustomMdx } from '@/components/mdx/custom-mdx'
 import MdxPage from '@/components/mdx/mdx-page'
 import { markdownToText } from '@/lib/utils'
@@ -9,7 +8,6 @@ import { Metadata } from 'next'
 import { MDXRemoteProps } from 'next-mdx-remote/rsc'
 import { cookies, headers } from 'next/headers'
 import path from 'path'
-import { Suspense } from 'react'
 
 export const generateMetadata = async ({ params }: { params: { post: string } }): Promise<Metadata> => {
     const headersList = headers()
