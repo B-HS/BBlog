@@ -2,12 +2,11 @@ import { LinkIcon } from 'lucide-react'
 import { MDXComponents } from 'mdx/types'
 import Link from 'next/link'
 import { DetailedHTMLProps, HTMLAttributes, createElement } from 'react'
-import { Badge } from '../ui/badge'
 
 const HeaderCompoenet = (level: number) => {
     const HeaderComponent = (props: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) => {
         const Tag = `h${level}`
-        const id = props.children?.toString().replace(' ', '-').toLowerCase()
+        const id = props.children?.toString().replaceAll(' ', '-').toLowerCase()
 
         return (
             <Link className='no-underline heading-url' id={id} href={`#${id}`}>
@@ -29,7 +28,7 @@ const HeaderCompoenet = (level: number) => {
 const codeComponent = (props: DetailedHTMLProps<HTMLAttributes<HTMLElement> & { 'data-language'?: string }, HTMLElement>) => {
     return (
         <code className='flex flex-col relative'>
-            <span className='absolute top-0 right-0 uppercase px-1.5 rounded border'>{props['data-language']}</span>
+            <span className='absolute top-0 right-0 px-1.5 rounded border'>{props['data-language']}</span>
             {props.children}
         </code>
     )
