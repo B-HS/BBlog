@@ -28,7 +28,7 @@ const HeaderCompoenet = (level: number) => {
 const codeComponent = (props: DetailedHTMLProps<HTMLAttributes<HTMLElement> & { 'data-language'?: string }, HTMLElement>) => {
     return (
         <code className='flex flex-col relative'>
-            <span className='absolute top-0 right-0 px-1.5 rounded border'>{props['data-language']}</span>
+            <span className='absolute top-0 right-0 px-1.5 rounded border capitalize'>{props['data-language']}</span>
             {props.children}
         </code>
     )
