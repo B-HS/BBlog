@@ -43,13 +43,6 @@
     "@supabase/auth-helpers-nextjs": "^0.8.7",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "^2.39.7",
-    "@tiptap/extension-color": "latest",
-    "@tiptap/extension-image": "latest",
-    "@tiptap/extension-list-item": "latest",
-    "@tiptap/extension-text-style": "latest",
-    "@tiptap/pm": "^2.2.3",
-    "@tiptap/react": "^2.2.3",
-    "@tiptap/starter-kit": "^2.2.3",
     "@types/mdx": "^2.0.11",
     "autoprefixer": "10.4.17",
     "axios": "^1.6.7",
@@ -84,7 +77,6 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@cloudflare/next-on-pages": "^1.9.0",
     "@tailwindcss/typography": "^0.5.10",
     "@types/node": "20.11.5",
     "@types/react": "18.2.48",
