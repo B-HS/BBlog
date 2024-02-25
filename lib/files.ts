@@ -15,7 +15,7 @@ export const getFileInfo = async (recent?: boolean) => {
                     parseFrontmatter: true,
                 },
             })
-            return { ...frontmatter, file, category: frontmatter.category || 'NO_CATEGORY' }
+            return { ...frontmatter, file, category: frontmatter.category || 'Not specified' }
         })
         const list = await Promise.all(fileInfoPromises)
         recent && list.sort((prev, next) => Number(next.date) - Number(prev.date))

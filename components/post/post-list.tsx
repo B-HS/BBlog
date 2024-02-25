@@ -10,8 +10,8 @@ import PostTile from './post-tile'
 import PostTileLong from './post-tile-long'
 
 const PostList = ({ which, posts }: { which: string; posts: Partial<FrontmatterProps>[] }) => {
-    const menulist = ['ALL', ...Array.from(new Set(posts.map((ele) => ele.category)))]
-    const taglist = ['ALL', ...Array.from(new Set(posts.flatMap((ele) => ele.tags)))]
+    const menulist = ['All', ...Array.from(new Set(posts.map((ele) => ele.category)))]
+    const taglist = ['All', ...Array.from(new Set(posts.flatMap((ele) => ele.tags)))]
     const [listtype, setListtype] = useState('list')
     const param = useSearchParams()
     const menuParam = param.get('menu')
@@ -20,12 +20,11 @@ const PostList = ({ which, posts }: { which: string; posts: Partial<FrontmatterP
         () =>
             posts.filter((ele) => {
                 if (menuParam) {
-                    console.log(menuParam)
-                    return menuParam === 'ALL' ? true : ele.category === menuParam
+                    return menuParam === 'All' ? true : ele.category === menuParam
                 }
 
                 if (tagParam) {
-                    return tagParam === 'ALL' ? true : ele.tags?.includes(tagParam)
+                    return tagParam === 'All' ? true : ele.tags?.includes(tagParam)
                 }
 
                 return true

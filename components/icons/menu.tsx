@@ -7,12 +7,12 @@ import { buttonVariants } from '../ui/button'
 import Link from 'next/link'
 
 const Menu = ({ articleInfo }: { articleInfo: Partial<FrontmatterProps>[] | undefined }) => {
-    const [categories, setCategories] = useState<string[]>(['ALL'])
+    const [categories, setCategories] = useState<string[]>(['All'])
     const [tags, setTags] = useState<string[]>([])
 
     useEffect(() => {
         if (articleInfo) {
-            const uniqueCategories: Set<string> = new Set(['ALL'])
+            const uniqueCategories: Set<string> = new Set(['All'])
             const uniqueTags: Set<string> = new Set()
 
             articleInfo.forEach((article) => {
