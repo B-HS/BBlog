@@ -26,6 +26,8 @@ export const githubSignIn = async () => {
     const currentURL = `${origin}://${domain}`
     const cookieStore = cookies()
     const supabase = createClient(cookieStore)
+    console.log(currentURL)
+
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'github',
         options: {
