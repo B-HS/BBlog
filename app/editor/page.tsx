@@ -81,7 +81,6 @@ const Editor = () => {
     }
 
     const loadImageList = async () => {
-        console.log('loading')
         setR2Images(await getR2UploadList())
         if (fileInput.current) {
             fileInput.current.nodeValue = null

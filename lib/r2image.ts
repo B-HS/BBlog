@@ -23,7 +23,6 @@ export const r2Upload = (toast: Function, callbackFn: Function): ChangeEventHand
             const acceptedImageTypes = ['image/jpeg', 'image/png', 'image/gif']
             return file && acceptedImageTypes.includes(file.type)
         }
-        console.log('here')
 
         const selectedFile = event.target.files?.[0]
         if (selectedFile) {
@@ -35,14 +34,12 @@ export const r2Upload = (toast: Function, callbackFn: Function): ChangeEventHand
                 })
                 return
             }
-            console.log('here2')
             const form = new FormData()
             form.append('file', selectedFile)
             await fetch('/api/image/upload', {
                 method: 'POST',
                 body: form,
             })
-            console.log('here3')
             callbackFn()
         }
     }
