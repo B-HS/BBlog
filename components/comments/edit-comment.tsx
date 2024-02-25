@@ -8,6 +8,7 @@ import { Label } from '../ui/label'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { CommentProps } from './comments'
 import { addComment } from './crud-comment-fn'
+import PopClose from './pop-close'
 
 const EditComment = ({ comment, user, post }: { comment: CommentProps; user: User | null; post: string }) => {
     const removeComment = async (formData: FormData) => {
@@ -65,10 +66,11 @@ const EditComment = ({ comment, user, post }: { comment: CommentProps; user: Use
                                     Submit
                                 </Button>
                             </form>
-
-                            <Button variant={'secondary'} size={'sm'} className='w-full'>
-                                Cancel
-                            </Button>
+                            <PopClose>
+                                <Button variant={'secondary'} size={'sm'} className='w-full'>
+                                    Cancel
+                                </Button>
+                            </PopClose>
                         </section>
                     </PopoverContent>
                 </Popover>
@@ -93,10 +95,11 @@ const EditComment = ({ comment, user, post }: { comment: CommentProps; user: Use
                                     Submit
                                 </Button>
                             </form>
-
-                            <Button variant={'secondary'} size={'sm'} className='w-full'>
-                                Cancel
-                            </Button>
+                            <PopClose>
+                                <Button variant={'secondary'} size={'sm'} className='w-full'>
+                                    Cancel
+                                </Button>
+                            </PopClose>
                         </section>
                     </PopoverContent>
                 </Popover>
@@ -113,9 +116,11 @@ const EditComment = ({ comment, user, post }: { comment: CommentProps; user: Use
                                     Yes
                                 </Button>
                             </form>
-                            <Button variant={'secondary'} size={'sm'} className='w-full'>
-                                No
-                            </Button>
+                            <PopClose>
+                                <Button variant={'secondary'} size={'sm'} className='w-full'>
+                                    No
+                                </Button>
+                            </PopClose>
                         </section>
                     </PopoverContent>
                 </Popover>
