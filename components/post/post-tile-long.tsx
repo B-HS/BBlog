@@ -11,8 +11,8 @@ const PostTileLong = async ({ post }: { post: Partial<FrontmatterProps> }) => {
         <Link href={`/article/${file?.split('.')[0]}`}>
             <section className='w-full h-52 flex border hover:-translate-y-1 transition-transform'>
                 <Image
-                    className='aspect-square object-cover border'
-                    src={`/image/${thumbnail}`}
+                    className='aspect-square object-cover border-r'
+                    src={`/image/${thumbnail || 'hs-padding.png'}`}
                     alt={`${title}-thumbnail`}
                     width={288}
                     height={288}
