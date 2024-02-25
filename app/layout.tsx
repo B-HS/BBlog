@@ -10,8 +10,6 @@ import { cookies } from 'next/headers'
 import SiteFooter from '../components/footer/footer'
 import './globals.css'
 
-export const runtime = 'edge'
-
 const font = M_PLUS_Rounded_1c({
     subsets: ['latin'],
     weight: ['100', '300', '500', '700'],
