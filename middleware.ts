@@ -22,6 +22,15 @@ const middleware = async (request: NextRequest) => {
         })
     }
 
+    const authPaths = ['/editor', '/git', '/api/image/upload']
+    const isAuthPath = authPaths.some((authPath) => pathname.includes(authPath))
+    const isAdmin = session.data.session?.user.email === process.env.ADMIN_EMAIL
+
+    if (isAuthPath && !isAdmin) {
+        return NextResponse.redirect(new URL('/login', request.url))
+    }
+
+    pathname
     return res
 }
 
