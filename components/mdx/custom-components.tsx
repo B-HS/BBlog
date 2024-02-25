@@ -6,7 +6,7 @@ import { DetailedHTMLProps, HTMLAttributes, createElement } from 'react'
 const HeaderCompoenet = (level: number) => {
     const HeaderComponent = (props: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) => {
         const Tag = `h${level}`
-        const id = props.children?.toString().replaceAll(' ', '-').toLowerCase()
+        const id = props.children?.toString()?.replaceAll(' ', '-').toLowerCase()
 
         return (
             <Link className='no-underline heading-url' id={id} href={`#${id}`}>

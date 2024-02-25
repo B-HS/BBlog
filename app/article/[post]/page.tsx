@@ -16,7 +16,7 @@ export const generateMetadata = async ({ params }: { params: { post: string } })
     const currentURL = `${origin}://${domain}/image/`
     const source = (await getPostSource(params.post)) as MDXRemoteProps['source']
     const { frontmatter } = await CustomMdx({ source })
-    const context = (markdownToText(source?.toString().slice(0, 250)) || frontmatter.title || '').replace(/<\/?[^>]+(>|$)/g, '') + '...'
+    const context = (markdownToText(source?.toString().slice(0, 250)) || frontmatter.title || '')?.replace(/<\/?[^>]+(>|$)/g, '') + '...'
 
     return {
         title: {

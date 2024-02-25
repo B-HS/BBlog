@@ -8,15 +8,15 @@ export const cn = (...inputs: ClassValue[]) => {
 export const markdownToText = (markdown: string): string => {
     let text: string = markdown
         ?.split('---')[2]
-        .replace(/(^#+\s*)|(\n#+\s*)/g, '')
-        .replace(/(\*{1,2}|_{1,2})(.*?)\1/g, '$2')
-        .replace(/`{1,3}([\s\S]*?)`{1,3}/g, '')
-        .replace(/!\[.*?\]\((.*?)\)|\[.*?\]\((.*?)\)/g, '$1$2')
-        .replace(/^\s*[\-\+\*]\s*/gm, '')
-        .replace(/^\s*>/gm, '')
-        .replace(/^\s*[-*_]\s*$/gm, '')
-        .replace(/\s+/g, ' ')
-        .trim()
+        ?.replace(/(^#+\s*)|(\n#+\s*)/g, '')
+        ?.replace(/(\*{1,2}|_{1,2})(.*?)\1/g, '$2')
+        ?.replace(/`{1,3}([\s\S]*?)`{1,3}/g, '')
+        ?.replace(/!\[.*?\]\((.*?)\)|\[.*?\]\((.*?)\)/g, '$1$2')
+        ?.replace(/^\s*[\-\+\*]\s*/gm, '')
+        ?.replace(/^\s*>/gm, '')
+        ?.replace(/^\s*[-*_]\s*$/gm, '')
+        ?.replace(/\s+/g, ' ')
+        ?.trim()
     return text || ''
 }
 
