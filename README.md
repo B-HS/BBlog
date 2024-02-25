@@ -6,6 +6,4 @@
 - tailwind
 ---
 ## 예정
-- 서버 Gipull trigger
-- R2업로드/목록
-- 배포 (blog.gumyo.net 예정)
+- 배포 (blog.gumyo.net, oauth 수정하는대로 배포 예정)
