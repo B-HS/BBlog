@@ -37,5 +37,8 @@ export const githubSignIn = async () => {
     if (error) {
         return redirect('/login?message=Could not authenticate user')
     }
+
+    console.log('check data.url', data.url)
+
     return redirect(data.url)
 }
