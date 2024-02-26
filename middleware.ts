@@ -29,8 +29,6 @@ const middleware = async (request: NextRequest) => {
     if (isAuthPath && !isAdmin) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
-
-    pathname
     return res
 }
 
