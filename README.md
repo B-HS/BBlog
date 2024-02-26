@@ -1,3 +1,6 @@
+![preview](https://github.com/B-HS/BBlog/assets/49316060/ddee7e0a-5291-42b2-9955-107ea67fc60e)
+
+
 ## BBlog
 ---
 - Nexjts
@@ -5,5 +8,5 @@
 - shadcn/ui
 - tailwind
 ---
-## 예정
-- 배포 (blog.gumyo.net, oauth 수정하는대로 배포 예정)
+
+## 4월부터 보수 시작
