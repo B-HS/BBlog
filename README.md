@@ -11,5 +11,5 @@
 
 ## 4월부터 보수 시작
 
-[[BBlog mdx] Nextjs + 마크다운으로 블로그를 작성해보자 - 2](https://hbyun.tistory.com/268)
-[[BBlog mdx] Nextjs + 마크다운으로 블로그를 작성해보자 - 1](https://hbyun.tistory.com/267)
+- [[BBlog mdx] Nextjs + 마크다운으로 블로그를 작성해보자 - 2](https://hbyun.tistory.com/268)
+- [[BBlog mdx] Nextjs + 마크다운으로 블로그를 작성해보자 - 1](https://hbyun.tistory.com/267)
