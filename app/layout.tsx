@@ -29,10 +29,22 @@ export const metadata: Metadata = {
         description: 'BBlog',
         url: 'https://blog.guymyo.net',
         siteName: 'BBlog',
+        images: [
+            {
+                url: `/image/hs-padding.png`,
+                width: 1200,
+                height: 630,
+            },
+        ],
     },
     twitter: {
+        images: {
+            url: `/image/hs-padding.png`,
+            alt: 'Post thumbnail',
+        },
         title: 'BBlog',
         description: 'BBlog',
+        creator: 'Hyunseok Byun',
     },
     robots: {
         index: true,
