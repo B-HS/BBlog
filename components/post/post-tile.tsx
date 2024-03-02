@@ -9,6 +9,7 @@ const PostTile = async ({ post }: { post: Partial<FrontmatterProps> }) => {
     return (
         <section className='w-72 h-72 relative group overflow-hidden border text-center'>
             <Image
+                rel='preload'
                 className='aspect-square object-cover max-w-72'
                 src={`${thumbnail || 'hs-padding.png'}`}
                 alt={`${title}-thumbnail`}

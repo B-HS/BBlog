@@ -8,7 +8,7 @@ const Misskey = ({ variant }: { variant?: 'default' | 'destructive' | 'outline' 
         <TooltipProvider>
             <Tooltip>
                 <TooltipTrigger>
-                    <Button variant={variant || 'ghost'} size={'icon'} asChild>
+                    <Button variant={variant || 'ghost'} size={'icon'} asChild aria-label='Misskey'>
                         <Link href={'https://mi.gumyo.net/'}>
                             <Image className='grayscale hover:grayscale-0' src={'/image/misskeyicon.png'} width={24} height={24} alt='misskeyicon' />
                         </Link>

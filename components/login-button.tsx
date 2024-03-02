@@ -23,12 +23,12 @@ const LoginButton = async () => {
         <>
             {user ? (
                 <form action={signOut} className='w-9 h-9'>
-                    <Button variant='ghost' size={'icon'}>
+                    <Button variant='ghost' size={'icon'} aria-label='Log out'>
                         <LogOutIcon className='p-0.5' />
                     </Button>
                 </form>
             ) : (
-                <Button variant={'ghost'} size={'icon'} className='p-2' asChild>
+                <Button variant={'ghost'} size={'icon'} className='p-2' asChild aria-label='Log in'>
                     <Link className='p-0' href={'/login'}>
                         <LogInIcon />
                     </Link>

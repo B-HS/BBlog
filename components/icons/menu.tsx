@@ -29,7 +29,7 @@ const Menu = ({ articleInfo }: { articleInfo: Partial<FrontmatterProps>[] | unde
     return (
         <Menubar className='border-none p-0 space-0'>
             <MenubarMenu>
-                <MenubarTrigger className={buttonVariants({ variant: 'ghost', size: 'icon', className: 'p-2 cursor-pointer' })}>
+                <MenubarTrigger className={buttonVariants({ variant: 'ghost', size: 'icon', className: 'p-2 cursor-pointer' })} aria-label='Menu'>
                     <MenuIcon />
                 </MenubarTrigger>
                 <MenubarContent>

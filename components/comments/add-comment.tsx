@@ -12,6 +12,9 @@ const AddCommentInput = ({ username, user, avatarUrl, post }: { username: string
                 <AvatarFallback>{user?.user_metadata?.name || user?.email}</AvatarFallback>
             </Avatar>
             <form className='flex-1 flex gap-1' action={addComment}>
+                <label htmlFor='context' className='sr-only'>
+                    Comment:
+                </label>
                 <Input type='text' id='context' name='context' />
                 <input type='hidden' id='post' name='post' value={post} />
                 <Button variant='secondary' type='submit'>

@@ -7,7 +7,7 @@ const Bird = ({ isTooltip, visitCnt, children }: { isTooltip?: boolean; visitCnt
         <TooltipProvider>
             <Tooltip>
                 <TooltipTrigger className='cursor-default'>
-                    <BirdIcon className='animate-pulse h-6 w-6 hover:animate-none' />
+                    <BirdIcon className='animate-pulse h-6 w-6 hover:animate-none' aria-label='Tools' />
                 </TooltipTrigger>
                 {visitCnt && (
                     <TooltipContent>
