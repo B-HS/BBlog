@@ -6,14 +6,10 @@ import { createClient } from '@/utils/supabase/server'
 import fs from 'fs'
 import { Metadata } from 'next'
 import { MDXRemoteProps } from 'next-mdx-remote/rsc'
-import { cookies, headers } from 'next/headers'
+import { cookies } from 'next/headers'
 import path from 'path'
 
 export const generateMetadata = async ({ params }: { params: { post: string } }): Promise<Metadata> => {
-    const headersList = headers()
-    const domain = headersList.get('x-forwarded-host')
-    const origin = headersList.get('x-forwarded-proto')
-    const currentURL = `${origin}://${domain}/image/`
     const source = (await getPostSource(params.post)) as MDXRemoteProps['source']
     const { frontmatter } = await CustomMdx({ source })
     const context = (markdownToText(source?.toString().slice(0, 250)) || frontmatter.title || '')?.replace(/<\/?[^>]+(>|$)/g, '') + '...'
@@ -30,7 +26,7 @@ export const generateMetadata = async ({ params }: { params: { post: string } })
             description: context || 'Article | BBlog',
             images: [
                 {
-                    url: `${currentURL}${frontmatter?.thumbnail}`,
+                    url: `${frontmatter?.thumbnail}`,
                     width: 1200,
                     height: 630,
                 },
@@ -38,7 +34,7 @@ export const generateMetadata = async ({ params }: { params: { post: string } })
         },
         twitter: {
             images: {
-                url: `${currentURL}${frontmatter?.thumbnail}`,
+                url: `${frontmatter?.thumbnail}`,
                 alt: 'Post thumbnail',
             },
             title: frontmatter.title,
