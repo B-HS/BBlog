@@ -1,8 +1,7 @@
-import { GitHubLogoIcon } from '@radix-ui/react-icons'
-import Link from 'next/link'
-import { Button } from '../ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import Image from 'next/image'
+import Link from 'next/link'
+import { Button } from '../ui/button'
 
 const Misskey = ({ variant }: { variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' }) => {
     return (

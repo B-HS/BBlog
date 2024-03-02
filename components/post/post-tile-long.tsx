@@ -11,13 +11,13 @@ const PostTileLong = async ({ post }: { post: Partial<FrontmatterProps> }) => {
         <Link href={`/article/${file?.split('.')[0]}`}>
             <section className='w-full h-52 flex border hover:-translate-y-1 transition-transform'>
                 <Image
-                    className='aspect-square object-cover border-r'
-                    src={`/image/${thumbnail || 'hs-padding.png'}`}
+                    className='aspect-square object-cover border-r max-w-72'
+                    src={`${thumbnail || 'hs-padding.png'}`}
                     alt={`${title}-thumbnail`}
                     width={288}
                     height={288}
                 />
-                <section className='flex flex-col justify-center px-5 gap-3'>
+                <section className='flex flex-col justify-center px-5 gap-3 flex-1'>
                     <section className='flex items-center text-xs text-foreground/75'>
                         <Calendar className='p-1' /> <p>{dayjs(date).format('YYYY-MM-DD')}</p>
                     </section>
