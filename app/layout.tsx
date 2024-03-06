@@ -9,6 +9,7 @@ import { M_PLUS_Rounded_1c } from 'next/font/google'
 import { cookies } from 'next/headers'
 import SiteFooter from '../components/footer/footer'
 import './globals.css'
+import dynamic from 'next/dynamic'
 
 const font = M_PLUS_Rounded_1c({
     subsets: ['latin'],
@@ -55,6 +56,8 @@ export const metadata: Metadata = {
     },
 }
 
+const GoToTop = dynamic(() => import('@/components/go-to-top'), { ssr: false })
+
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
     const cookieStore = cookies()
     const canInitSupabaseClient = () => {
@@ -71,7 +74,10 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
             <body className={cn('container max-w-screen-lg font-mplus-rounded-1c antialiased', font.variable)}>
                 <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
                     <SiteHeader />
-                    <section className='w-full h-full'>{isSupabaseConnected ? children : <span>500 Error</span>}</section>
+                    <section className='w-full h-full'>
+                        {isSupabaseConnected ? children : <span>500 Error</span>}
+                        <GoToTop />
+                    </section>
                     <SiteFooter />
                     <Toaster />
                 </ThemeProvider>
