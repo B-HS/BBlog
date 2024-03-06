@@ -27,3 +27,52 @@
 
 - [[BBlog mdx] Nextjs + 마크다운으로 블로그를 작성해보자 - 2](https://hbyun.tistory.com/268)
 - [[BBlog mdx] Nextjs + 마크다운으로 블로그를 작성해보자 - 1](https://hbyun.tistory.com/267)
+
+
+---
+
+
+# Table information for supabase
+
+
+# comments
+
+Column Name | Data Type
+-- | --
+id | bigint (int8)
+upper_id | bigint (int8)
+context | text
+user_id | uuid
+post | text
+created_at | timestamptz
+updated_at | timestamptz
+deleted | boolean (bool)
+avatar | text
+username | text
+
+# errors
+
+Column Name | Data Type
+-- | --
+id | bigint (int8)
+created_at | timestamp with time zone (timestamptz)
+error | text
+
+
+# post
+
+Column Name | Data Type
+-- | --
+id | bigint (int8)
+post | text
+created_at | timestamp with time zone
+
+# visitors
+
+ip | text
+-- | --
+url | text
+visit_date | timestamp with time zone
+
+
+
