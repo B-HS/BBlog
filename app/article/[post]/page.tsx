@@ -1,6 +1,7 @@
 import Comments, { CommentProps } from '@/components/comments/comments'
 import { CustomMdx } from '@/components/mdx/custom-mdx'
 import MdxPage from '@/components/mdx/mdx-page'
+import { TocProps } from '@/components/mdx/toc'
 import { markdownToText } from '@/lib/utils'
 import { createClient } from '@/utils/supabase/server'
 import fs from 'fs'
@@ -79,15 +80,32 @@ const manageViewCnt = async (postName: string): Promise<string> => {
     }
 }
 
+const generateToc = (markdown: string): TocProps[] => {
+    const headingsRegex = /^(#+)\s+(.*)$/gm
+    const headings: { level: number; title: string }[] = []
+
+    markdown.replace(headingsRegex, (_match, levelString, title) => {
+        const level = levelString.length
+        headings.push({ level, title })
+        return ''
+    })
+
+    return headings.map(({ level, title }) => {
+        const indent = '‎ ‎ '.repeat((level - 1) * 3)
+        return { heading: `${indent}- ${title}`, link: title.replaceAll(' ', '-').toLowerCase() }
+    })
+}
+
 const RemoteMdxPage = async ({ params }: { params: { post: string } }) => {
     const source = (await getPostSource(params.post)) as MDXRemoteProps['source']
     const viewCnt = await manageViewCnt(params.post)
     const comments = await getCommentList(params.post)
+    const toc = generateToc(source as string)
     const { content, frontmatter } = await CustomMdx({ source })
 
     return (
         <>
-            <MdxPage content={content} frontmatter={{ ...frontmatter, viewCnt }} />
+            <MdxPage content={content} frontmatter={{ ...frontmatter, viewCnt }} toc={toc} />
             <Comments comments={comments} post={params.post} />
         </>
     )
