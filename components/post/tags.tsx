@@ -11,8 +11,7 @@ const Tags = ({ tags }: { tags?: string[] }) => {
                 className='hover:text-background hover:bg-foreground z-30 cursor-pointer'
                 variant={'outline'}
                 key={idx}
-                onClick={() => router.push(`/article?tags=${ele}`)}
-            >
+                onClick={() => router.push(`/article?tags=${ele}`)}>
                 {ele}
             </Badge>
         ))

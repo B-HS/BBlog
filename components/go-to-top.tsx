@@ -24,8 +24,7 @@ const GoToTop = () => {
                 isTop ? 'opacity-0' : 'opacity-100',
                 'h-12 w-12',
             )}
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        >
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
             <ArrowUp />
         </Button>
     )

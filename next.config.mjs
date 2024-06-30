@@ -5,10 +5,10 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'img.gumyo.net'
-            }
-        ]
-    }
+                hostname: 'img.gumyo.net',
+            },
+        ],
+    },
 }
 
-export default nextConfig;
+export default nextConfig
