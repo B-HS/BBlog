@@ -49,8 +49,7 @@ const Editor = () => {
         const { compiledSource, frontmatter, scope } = await serialize(value, {
             parseFrontmatter: true,
             mdxOptions: {
-                // Change it to true if app running on dev mode
-                development: false,
+                development: process.env.NODE_ENV === 'development',
                 remarkPlugins: [remarkGfm],
                 rehypePlugins: [
                     [
