@@ -7,7 +7,7 @@ import Tags from './tags'
 const PostTile = async ({ post }: { post: Partial<FrontmatterProps> }) => {
     const { title, date, tags, thumbnail, file } = post
     return (
-        <section className='w-72 h-72 relative group overflow-hidden border text-center'>
+        <section className='w-72 h-72 relative group overflow-hidden border text-center bg-foreground/5'>
             <Image
                 rel='preload'
                 className='aspect-square object-cover max-w-72'

@@ -9,7 +9,7 @@ const PostTileLong = ({ post }: { post: Partial<FrontmatterProps> }) => {
     const { title, date, tags, thumbnail, file } = post
     return (
         <Link href={`/article/${file?.split('.')[0]}`}>
-            <section className='w-full h-52 flex border hover:-translate-y-1 transition-transform'>
+            <section className='w-full h-52 flex border hover:-translate-y-1 transition-transform bg-foreground/5'>
                 <Image
                     className='aspect-square object-cover border-r max-w-72'
                     src={`${thumbnail || 'hs-padding.png'}`}
