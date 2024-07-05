@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { FrontmatterProps } from '../mdx/custom-mdx'
 import Tags from './tags'
 
-const PostTileLong = async ({ post }: { post: Partial<FrontmatterProps> }) => {
+const PostTileLong = ({ post }: { post: Partial<FrontmatterProps> }) => {
     const { title, date, tags, thumbnail, file } = post
     return (
         <Link href={`/article/${file?.split('.')[0]}`}>
@@ -21,7 +21,7 @@ const PostTileLong = async ({ post }: { post: Partial<FrontmatterProps> }) => {
                     <section className='flex items-center text-xs text-foreground/75'>
                         <Calendar className='p-1' /> <p>{dayjs(date).format('YYYY-MM-DD')}</p>
                     </section>
-                    <p className='text-5xl'>- {title}</p>
+                    <p className='text-3xl'>- {title}</p>
                     <section>
                         <section className='flex flex-wrap gap-2'>
                             <Tags tags={tags} />
