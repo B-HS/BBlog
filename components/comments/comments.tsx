@@ -36,7 +36,7 @@ const Comments = async ({ comments, post }: { comments: CommentProps[]; post: st
             className='prose prose-neutral dark:prose-invert container max-w-screen-lg py-7 bg-neutral-50 dark:bg-neutral-900 rounded my-5'>
             <section className='space-x-1'>
                 <span className='text-xl'>Comments</span>
-                <span className='text-foreground/30'>({comments.length})</span>
+                <span className='text-foreground/50'>({comments.length})</span>
             </section>
             <AddCommentInput username={username} user={user} avatarUrl={avatarUrl} post={post} />
             <Separator className='my-3 h-2' />
