@@ -1,13 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    experimental: {
-        optimizePackageImports:[
-            'shiki',
-            'next-mdx-remote',
-            'next-mdx-remote/serialize',
-            'lucide-react'
-        ]
-    },
+    transpilePackages: [
+        'shiki',
+        'next-mdx-remote',
+        'next-mdx-remote/serialize',
+    ],
     images: {
         formats: ['image/avif', 'image/webp'],
         remotePatterns: [
