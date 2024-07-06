@@ -32,6 +32,7 @@
 
 -   [[BBlog mdx] Nextjs + 마크다운으로 블로그를 작성해보자 - 2](https://hbyun.tistory.com/268)
 -   [[BBlog mdx] Nextjs + 마크다운으로 블로그를 작성해보자 - 1](https://hbyun.tistory.com/267)
+-   [[Nextjs 14.2] ERR_REQUIRE_ESM 오류를 해결해보자](https://hbyun.tistory.com/275)
 
 ---
 
