@@ -1,0 +1,94 @@
+---
+category: '잡담'
+title: 배포를 정리해보자 feat. github action
+tags: ['Github Action', '깃허브 액션', 'CI/CD']
+date: '20240818125033'
+thumbnail: https://img.gumyo.net/cicd.jpg
+---
+
+# 서론
+하루하루 열심히 배워가고는 있으나
+해도해도 오류가 뜨는 영역이 있으니 .. 그건 바로 배포  
+최근들어 github action의 감사함을 알고 열심히 활용하고있다  
+서버도 3개로 정리가 끝났고 ..  
+이제 이것들을 이용해서 action만 잘 긁어 쓰면 되는 상황이지만  
+항상 골치를 썩이는 action의 스크립트들 .. 쓰면서 헷갈렸던 것들을 정리해보자  
+
+
+# checkout
+- https://github.com/actions/checkout  
+
+가장 먼저, 그리고 가장 많이 쓰이는 것이 바로 기본이 되는 checkout  
+action이 실행되고 해당 레포지토리의 소스를 냅다 당기는 역할을 한다  
+여러 커스텀 값들이 많아 보이는데 레포지토리를 막 2~3개 쓰는 거 아니니까 ..  
+일단 " . " 에 모든 레포지토리의 내용을 clone한다 생각하자  
+
+#  actions/setup-node@??
+- https://github.com/actions/setup-node
+```sh
+-  name: Setup Node.js
+   uses: actions/setup-node@v??
+        with:
+            node-version: 20
+```
+프론트 개발자들이 가장 많이 보게될 .. 그리고 무조건 쓰게될 구문이다  
+다른 의미는 없고 해당 action에 node를 설정한다
+
+# appleboy/ssh-action
+- https://github.com/appleboy/ssh-action  
+24.8.18기준 4.6k라는 엄청난 별수집을 한 action이다  
+예를들어 deployment라는 파일을 action > 서버로 mv 치는 로직을 생성한다 하면 보통 아래와 같이 짠다  
+```sh
+- name: Copy file to target server
+  run: scp -o StrictHostKeyChecking=no ./deploy.zip ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/
+```
+보기만해도 끔찍하긴 하지만.. 이걸 ssh-action을 사용하면 아래와같이 적절한 커맨드로 사용 할 수 있다  
+
+```sh
+- name: Upload deployment.zip to server
+  uses: appleboy/ssh-action@v0.1.6
+  with:
+    host: ${{ secrets.SSH_HOST }}
+    username: ${{ secrets.SSH_USER }}
+    key: ${{ secrets.SSH_KEY }}
+    file: "./deploy.zip"
+    target: "/home"
+```
+매우 가독성이 좋아졌다  
+애용하자  
+
+## docker/setup-buildx-action@v??
+- https://github.com/docker/setup-buildx-action  
+
+설명을 뭐 장황하게 써놨는데 간단히 설명하자면  
+
+1. 여러 플랫폼 (arm, x86 등)으로의 docker image build를 가능하게함
+2. docker hub의 push를 위한 사전준비
+3. build cache
+
+이렇게 3가지만 기억하자 
+
+# 기타 잡지식
+1. action에서, run으로 구동할 때 관리가 귀찮아지는 경우가 있다  
+  - 이런 경우에는 그냥 sh 파일을 하나 작성해서 구동하게끔 하자  
+  - checkout된 레포지토리에서 그냥 scp 혹은 ssh action으로 mv친 뒤 sh 파일을 구동시키자  
+2. GPT에 의존하지 말자
+  - 이놈들은 뒤통수를 아주 쎄게 때린다
+  - 그냥 맡겨놨다가 안된다고 포기하지말고 한 줄 한 줄 읽다보면 생각보다 GPT가 빡대가리라는 것을 깨달을 것이다
+3. 배포가 한방에 된다면 그건 그거대로 문제가 있는 것이다
+  - 무조건 오류가 발생해야 정상이다 빡대가리 GPT라해도 컴퓨터, 컴퓨터도 틀리는 작업인데 휴먼에러가 없을 수 없다
+  - 물론 만물에 능통하고 action외길 장인이라면 한방에 될 수도 있겠으나 .. 그냥 오류가 있다 생각하고 최소 1시간은 박을 각오로 시작하자
+
+# 마지막으로 ..
+<img src='https://img.gumyo.net/mytime.jpg' alt='nothingidid'/>
+아마 가장 지루하고 멘탈이 나가는 작업이 CI/CD부분 아닐까 싶다  
+매번 개인프로젝트 새로 열면서 github action열 때마다 오류가 나서 애초에 action부터 잡고 시작하는데  
+그래도 화가 나는 것은 매한가지. 하지만 조금씩 나아지며 개발속도가 미친듯이 올라가는 것을 보면 뿌듯하기도하다  
+
+이전 회사에서는 jenkins로 지지고 볶고 다했는데 ..  
+이번회사에서 github action쓰는 거 보고 매우 행복해졌다  
+새로운 기술을 쓰는 느낌이 너무 좋다 행복하다  
+
+
+행복한 코딩 하자  
+
