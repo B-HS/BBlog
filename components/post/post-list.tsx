@@ -4,7 +4,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { Grid2X2, List } from 'lucide-react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { FrontmatterProps } from '../mdx/custom-mdx'
 import PostTile from './post-tile'
 import PostTileLong from './post-tile-long'
@@ -12,7 +12,8 @@ import PostTileLong from './post-tile-long'
 const PostList = ({ which, posts }: { which: string; posts: Partial<FrontmatterProps>[] }) => {
     const menulist = ['All', ...Array.from(new Set(posts.map((ele) => ele.category)))]
     const taglist = ['All', ...Array.from(new Set(posts.flatMap((ele) => ele.tags)))]
-    const [listtype, setListtype] = useState('list')
+    const [listtype, setListtype] = useState('grid')
+    const [isListType, setIsListType] = useState(false)
     const param = useSearchParams()
     const menuParam = param.get('menu')
     const tagParam = param.get('tags')
@@ -31,6 +32,10 @@ const PostList = ({ which, posts }: { which: string; posts: Partial<FrontmatterP
             }),
         [posts, menuParam, tagParam],
     )
+
+    useEffect(() => {
+        setIsListType(window.innerWidth > 768)
+    }, [])
     return (
         <section className='p-3'>
             <section className='flex justify-between'>
@@ -44,16 +49,18 @@ const PostList = ({ which, posts }: { which: string; posts: Partial<FrontmatterP
                     ))}
                 </ToggleGroup>
                 <ToggleGroup type='single' variant={'outline'} className='justify-end' value={listtype}>
-                    <ToggleGroupItem value='list' onClick={() => setListtype('list')}>
-                        <List />
-                    </ToggleGroupItem>
+                    {isListType && (
+                        <ToggleGroupItem value='list' onClick={() => setListtype('list')}>
+                            <List />
+                        </ToggleGroupItem>
+                    )}
                     <ToggleGroupItem value='grid' onClick={() => setListtype('grid')}>
                         <Grid2X2 />
                     </ToggleGroupItem>
                 </ToggleGroup>
             </section>
             {listtype === 'grid' ? (
-                <section className='flex flex-wrap w-full gap-3 mt-3'>
+                <section className='flex flex-wrap w-full gap-3 mt-3 justify-center'>
                     {postlist.map((ele, idx) => (
                         <PostTile key={idx} post={ele} />
                     ))}

@@ -20,7 +20,7 @@ const GoToTop = () => {
             variant={'secondary'}
             size={'icon'}
             className={cx(
-                'fixed bottom-3 right-10 text-foreground/50 hover:text-foreground/100 transition-all z-50',
+                'fixed bottom-10 right-10 text-foreground/50 hover:text-foreground/100 transition-all z-[9999]',
                 'h-12 w-12',
             )}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>

@@ -1,10 +1,11 @@
 'use client'
 import { Menubar, MenubarContent, MenubarGroup, MenubarItem, MenubarMenu, MenubarSeparator, MenubarTrigger } from '@/components/ui/menubar'
 import { MenuIcon, TagIcon } from 'lucide-react'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { FrontmatterProps } from '../mdx/custom-mdx'
 import { buttonVariants } from '../ui/button'
-import Link from 'next/link'
+import { ScrollArea } from '../ui/scroll-area'
 
 const Menu = ({ articleInfo }: { articleInfo: Partial<FrontmatterProps>[] | undefined }) => {
     const [categories, setCategories] = useState<string[]>(['All'])
@@ -50,6 +51,7 @@ const Menu = ({ articleInfo }: { articleInfo: Partial<FrontmatterProps>[] | unde
                         <TagIcon className='py-1 pb-2' />
                         <span>Tags</span>
                     </MenubarGroup>
+                    <ScrollArea className='h-52'>
                     {tags.map((ele, idx) => (
                         <section key={ele + idx}>
                             <MenubarSeparator />
@@ -58,6 +60,23 @@ const Menu = ({ articleInfo }: { articleInfo: Partial<FrontmatterProps>[] | unde
                             </Link>
                         </section>
                     ))}
+                    {tags.map((ele, idx) => (
+                        <section key={ele + idx}>
+                            <MenubarSeparator />
+                            <Link href={`/article?tags=${ele}`}>
+                                <MenubarItem className='cursor-pointer'>{ele}</MenubarItem>
+                            </Link>
+                        </section>
+                    ))}
+                    {tags.map((ele, idx) => (
+                        <section key={ele + idx}>
+                            <MenubarSeparator />
+                            <Link href={`/article?tags=${ele}`}>
+                                <MenubarItem className='cursor-pointer'>{ele}</MenubarItem>
+                            </Link>
+                        </section>
+                    ))}
+                    </ScrollArea>
                 </MenubarContent>
             </MenubarMenu>
         </Menubar>

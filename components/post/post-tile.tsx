@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { FrontmatterProps } from '../mdx/custom-mdx'
 import Tags from './tags'
 
-const PostTile = async ({ post }: { post: Partial<FrontmatterProps> }) => {
+const PostTile =  ({ post }: { post: Partial<FrontmatterProps> }) => {
     const { title, date, tags, thumbnail, file } = post
     return (
         <section className='w-72 h-72 relative group overflow-hidden border text-center bg-foreground/5'>
