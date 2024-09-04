@@ -22,6 +22,7 @@
 -   [x] 레이아웃 수정 (포스트 카드)
 -   [x] robot.txt 추가
 -   [x] sitemap.xml 추가
+-   [ ] 에디터 textarea > novel로 변경
 -   [ ] TOC 최적화 (라이브러리를 쓰던 뭘 하던 일단 수정)
 -   [ ] 쉘스크립트 짜서 빌드 자동화
 -   [ ] Github Action으로 배포 자동화 (그냥 git pull 당기는 작업만 자동화하면됨)
