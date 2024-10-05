@@ -1,38 +1,31 @@
-import SiteHeader from '@/components/header/header'
-import { ThemeProvider } from '@/components/theme-provider'
-import { Toaster } from '@/components/ui/toaster'
-import { cn } from '@/lib/utils'
-import { createClient } from '@/utils/supabase/server'
-import 'dayjs/locale/ko'
-import { Metadata } from 'next'
-import { M_PLUS_Rounded_1c } from 'next/font/google'
-import { cookies } from 'next/headers'
-import SiteFooter from '../components/footer/footer'
-import './globals.css'
+import { Toaster } from '@shared/ui/toaster'
+import { cn } from '@shared/utils'
+import { SiteHeader } from '@widgets/header'
+import { SessionProvider, ThemeProvider } from '@widgets/provider'
+import type { Metadata } from 'next'
 import dynamic from 'next/dynamic'
+import { M_PLUS_Rounded_1c } from 'next/font/google'
+import { FC, ReactNode } from 'react'
+import './globals.css'
 
-const font = M_PLUS_Rounded_1c({
-    subsets: ['latin'],
-    weight: ['100', '300', '500', '700'],
-    variable: '--font-mplus-rounded-1c',
-})
+const GoToTop = dynamic(() => import('@features/common').then((comp) => comp.GoToTop), { ssr: false })
 
 export const metadata: Metadata = {
     metadataBase: new URL('https://blog.guymyo.net'),
     title: {
-        default: '- HS',
-        template: '%s | HS ',
+        default: `- ${process.env.SITE_NAME}`,
+        template: `%s | ${process.env.SITE_NAME}`,
     },
     authors: [{ name: 'Hyunseok Byun', url: 'https://github.com/B-HS' }],
-    description: 'Hyunseok Byun - BBlog',
+    description: `Hyunseok Byun - ${process.env.SITE_NAME}`,
     openGraph: {
-        title: 'BBlog',
-        description: 'BBlog',
+        title: process.env.SITE_NAME,
+        description: process.env.SITE_NAME,
         url: 'https://blog.guymyo.net',
-        siteName: 'BBlog',
+        siteName: process.env.SITE_NAME,
         images: [
             {
-                url: `/image/hs-padding.png`,
+                url: 'https://img.gumyo.net/hs-padding.png',
                 width: 1200,
                 height: 630,
             },
@@ -40,11 +33,11 @@ export const metadata: Metadata = {
     },
     twitter: {
         images: {
-            url: `/image/hs-padding.png`,
+            url: 'https://img.gumyo.net/hs-padding.png',
             alt: 'Post thumbnail',
         },
-        title: 'BBlog',
-        description: 'BBlog',
+        title: process.env.SITE_NAME,
+        description: process.env.SITE_NAME,
         creator: 'Hyunseok Byun',
     },
     robots: {
@@ -56,31 +49,26 @@ export const metadata: Metadata = {
     },
 }
 
-const GoToTop = dynamic(() => import('@/components/go-to-top'), { ssr: false })
+const fontRound = M_PLUS_Rounded_1c({
+    subsets: ['latin'],
+    variable: '--font-mplus',
+    weight: ['100', '300', '500', '700', '800', '900'],
+})
 
-const RootLayout = ({ children }: { children: React.ReactNode }) => {
-    const cookieStore = cookies()
-    const canInitSupabaseClient = () => {
-        try {
-            createClient(cookieStore)
-            return true
-        } catch (e) {
-            return false
-        }
-    }
-    const isSupabaseConnected = canInitSupabaseClient()
+const RootLayout: FC<{ children: ReactNode }> = ({ children }) => {
     return (
         <html lang='ko' suppressHydrationWarning>
-            <body className={cn('container max-w-screen-lg font-mplus-rounded-1c antialiased', font.variable)}>
-                <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-                    <SiteHeader />
-                    <section className='w-full h-full'>
-                        {isSupabaseConnected ? children : <span>500 Error</span>}
-                        <GoToTop />
-                    </section>
-                    <SiteFooter />
-                    <Toaster />
-                </ThemeProvider>
+            <body className={cn('flex flex-col min-h-dvh font-mplus antialiased max-w-screen-lg mx-auto', fontRound.variable)}>
+                <SessionProvider>
+                    <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
+                        <SiteHeader />
+                        <section className='mx-auto overflow-auto size-full flex-1'>
+                            {children}
+                            <GoToTop />
+                        </section>
+                        <Toaster />
+                    </ThemeProvider>
+                </SessionProvider>
             </body>
         </html>
     )

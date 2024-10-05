@@ -1,29 +1,43 @@
-import Github from '@/components/icons/github'
-import Misskey from '@/components/icons/misskey'
-import Resume from '@/components/icons/resume'
-import PostTile from '@/components/post/post-tile'
-import { Separator } from '@/components/ui/separator'
-import { getFileInfo } from '@/lib/files'
-const Page = async () => {
-    const posts = await getFileInfo(true)
+import { Article, ResponseArticleList } from '@entities/article'
+import { Category } from '@entities/category'
+import { useCurrentPath } from '@shared/hooks/use-current-path'
+import { Github, Misskey, Resume } from '@shared/icons'
+
+const ArticleList = ({ articles, category }: { articles?: Article[]; category?: Category[] }) => {
+    if (articles?.length === 0) return <section>No articles found</section>
     return (
-        <section className='py-10 space-y-2 flex flex-col items-center justify-start'>
-            <p className='text-5xl font-extrabold tracking-widest'>blog.</p>
-            <section className='space-x-1'>
-                <Github variant='outline' />
-                <Resume variant='outline' />
-                <Misskey variant='outline' />
+        <section>
+            {articles?.map((article) => (
+                <section key={article.postId}>
+                    <p>{article.title}</p>
+                    <p>{category?.find((c) => c.categoryId === article.categoryId)?.category}</p>
+                    <p>{article.updatedAt.toString()}</p>
+                    <p>{article.isNotice ? 'Notice' : 'Article'}</p>
+                </section>
+            ))}
+        </section>
+    )
+}
+
+const Page = async () => {
+    const { url } = useCurrentPath()
+    const { posts, categories } = await fetch(`${url}/api/article`, {
+        method: 'GET',
+    }).then((res) => res.json() as ResponseArticleList)
+
+    return (
+        <section className='size-full flex flex-col gap-10 p-2'>
+            <section className='flex flex-col gap-2'>
+                <p className='font-extrabold text-xl'>Informations</p>
+                <section className='space-x-1'>
+                    <Github variant='outline' />
+                    <Resume variant='outline' />
+                    <Misskey variant='outline' />
+                </section>
             </section>
 
-            <Separator className='w-20 h-2' />
-            <section className='flex flex-col items-center p-3'>
-                <p className='text-3xl font-bold'>Recent Posts</p>
-            </section>
-            <section className='flex flex-wrap gap-2 justify-center'>
-                {posts.splice(0, 3).map((ele, idx) => (
-                    <PostTile post={ele} key={idx} />
-                ))}
-            </section>
+            <p className='font-extrabold text-xl'>Recent Articles</p>
+            <ArticleList articles={posts} category={categories} />
         </section>
     )
 }

@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/button'
-import { ArrowDownLeft, ArrowDownLeftFromSquareIcon, ArrowDownLeftSquareIcon, ArrowUpLeftFromSquareIcon, BirdIcon } from 'lucide-react'
+import { Button } from '@shared/ui/button'
+import { ArrowUpLeftFromSquareIcon, BirdIcon } from 'lucide-react'
 import Link from 'next/link'
 
 export default function NotFound() {

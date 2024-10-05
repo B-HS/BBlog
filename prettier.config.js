@@ -1,3 +1,3 @@
 module.exports = {
-    ...require('feconfig-bhs/prettier.config'),
+    ...require('feconfig-bhs/prettier.config.js'),
 }

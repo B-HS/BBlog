@@ -1,9 +1,9 @@
 import type { Config } from 'tailwindcss'
-const { fontFamily } = require('tailwindcss/defaultTheme')
+import { fontFamily } from 'tailwindcss/defaultTheme'
 
 const config = {
     darkMode: ['class'],
-    content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
+    content: ['./shared/**/*.tsx', './widgets/**/*.tsx', './features/**/*.tsx', './app/**/*.tsx', './lib/**/*.tsx', './entities/**/*.tsx'],
     prefix: '',
     theme: {
         container: {
@@ -15,7 +15,7 @@ const config = {
         },
         extend: {
             fontFamily: {
-                sans: ['var(--font-mplus-rounded-1c)', ...fontFamily.sans],
+                sans: ['var(--font-sans)', ...fontFamily.sans],
             },
             colors: {
                 border: 'hsl(var(--border))',
