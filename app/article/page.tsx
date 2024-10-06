@@ -8,7 +8,7 @@ import { Skeleton } from '@shared/ui/skeleton'
 import { cn } from '@shared/utils'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { ArticleList } from '@widgets/article'
-import { Fragment, useCallback, useState } from 'react'
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 
 const SkeletonLoader = ({ count, className, isFlex }: { count: number; className: string; isFlex?: boolean }) => (
     <section className={cn(isFlex ? 'flex gap-2' : 'grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3')}>
@@ -20,6 +20,7 @@ const SkeletonLoader = ({ count, className, isFlex }: { count: number; className
 
 const ArticleListPage = () => {
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
+    const observerRef = useRef<HTMLDivElement | null>(null)
 
     const fetchCategories = async () => {
         const res = await fetch('/api/category')
@@ -60,6 +61,28 @@ const ArticleListPage = () => {
         setSelectedCategory(category)
     }, [])
 
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+                    fetchNextPage()
+                }
+            },
+            { threshold: 1.0 },
+        )
+
+        if (observerRef.current) {
+            observer.observe(observerRef.current)
+        }
+
+        return () => {
+            if (observerRef.current) {
+                // eslint-disable-next-line react-hooks/exhaustive-deps
+                observer.unobserve(observerRef.current)
+            }
+        }
+    }, [fetchNextPage, hasNextPage, isFetchingNextPage])
+
     return (
         <section className='size-full flex flex-col gap-10 p-2'>
             <section className='flex flex-col gap-2 p-2'>
@@ -87,20 +110,10 @@ const ArticleListPage = () => {
                         </Fragment>
                     )}
                 </section>
-
-                {isArticleLoading ? (
-                    <SkeletonLoader count={6} className='sm:w-90 h-[119px]' />
-                ) : (
-                    <ArticleList articles={articlesData?.pages.flatMap((page) => page.posts)} category={categories} />
-                )}
-
-                <Button
-                    onClick={() => fetchNextPage()}
-                    variant={hasNextPage ? 'outline' : 'ghost'}
-                    disabled={!hasNextPage || isFetchingNextPage}
-                    className={cn(!hasNextPage && 'hover:bg-background cursor-default')}>
-                    {isFetchingNextPage ? 'Loading...' : hasNextPage ? 'Load more' : 'No more articles.'}
-                </Button>
+                {(isArticleLoading || isCategoryLoading) && <SkeletonLoader count={6} className='sm:w-90 h-[119px]' />}
+                {!isArticleLoading && <ArticleList articles={articlesData?.pages.flatMap((page) => page.posts)} category={categories} />}
+                <div ref={observerRef} className='w-full h-10' />
+                {isFetchingNextPage && <p className='text-secondary'>Loading ...</p>}
             </section>
         </section>
     )
