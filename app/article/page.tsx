@@ -3,7 +3,6 @@
 import { ResponseArticleList } from '@entities/article'
 import { Category } from '@entities/category'
 import { Badge } from '@shared/ui/badge'
-import { Button } from '@shared/ui/button'
 import { Skeleton } from '@shared/ui/skeleton'
 import { cn } from '@shared/utils'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
