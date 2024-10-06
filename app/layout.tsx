@@ -12,10 +12,7 @@ const GoToTop = dynamic(() => import('@features/common').then((comp) => comp.GoT
 
 export const metadata: Metadata = {
     metadataBase: new URL('https://blog.guymyo.net'),
-    title: {
-        default: `- ${process.env.SITE_NAME}`,
-        template: `%s | ${process.env.SITE_NAME}`,
-    },
+    title: process.env.SITE_NAME,
     authors: [{ name: 'Hyunseok Byun', url: 'https://github.com/B-HS' }],
     description: `Hyunseok Byun - ${process.env.SITE_NAME}`,
     openGraph: {
