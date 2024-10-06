@@ -63,7 +63,7 @@ export const EditComment = ({ comment, user, post }: { comment: CommentProps; us
                             <form className='grid w-full items-center gap-1.5' action={addComment}>
                                 <Label htmlFor='context'>Reply</Label>
                                 <Input type='text' id='context' name='context' className='bg-foreground/25' placeholder='Reply to comment' />
-                                <input type='hidden' value={comment.id} name='id' id='id' />
+                                <input type='hidden' value={comment.commentId} name='id' id='id' />
                                 <input type='hidden' value={post} name='post' id='post' />
                                 <Button variant={'default'} size={'sm'} className='w-full' type='submit'>
                                     Submit
@@ -78,56 +78,54 @@ export const EditComment = ({ comment, user, post }: { comment: CommentProps; us
                     </PopoverContent>
                 </Popover>
             )}
-            {user?.id === comment.user_id && (
-                <Popover>
-                    <PopoverTrigger className={buttonVariants({ variant: 'link', size: 'sm', className: 'px-0.5' })}>Edit</PopoverTrigger>
-                    <PopoverContent>
-                        <section className='space-y-2 flex flex-col items-center'>
-                            <form className='grid w-full items-center gap-1.5' action={updateComment}>
-                                <Label htmlFor='context'>Context</Label>
-                                <Input
-                                    type='text'
-                                    id='context'
-                                    name='context'
-                                    className='bg-foreground/25'
-                                    placeholder='Edit your comment'
-                                    defaultValue={comment.context}
-                                />
-                                <input type='hidden' value={comment.id} name='id' id='id' />
-                                <Button variant={'default'} size={'sm'} className='w-full' type='submit'>
-                                    Submit
-                                </Button>
-                            </form>
-                            <PopClose>
-                                <Button variant={'secondary'} size={'sm'} className='w-full'>
-                                    Cancel
-                                </Button>
-                            </PopClose>
-                        </section>
-                    </PopoverContent>
-                </Popover>
-            )}
-            {user?.id === comment.user_id && (
-                <Popover>
-                    <PopoverTrigger className={buttonVariants({ variant: 'link', size: 'sm', className: 'px-0.5' })}>Delete</PopoverTrigger>
-                    <PopoverContent>
-                        <section className='space-y-2 flex flex-col items-center'>
-                            <p className='font-bold text-lg'>Delete this comment?</p>
-                            <form action={removeComment} className='w-full'>
-                                <input type='hidden' value={comment.id} name='id' id='id' />
-                                <Button variant={'destructive'} size={'sm'} className='w-full' type='submit'>
-                                    Yes
-                                </Button>
-                            </form>
-                            <PopClose>
-                                <Button variant={'secondary'} size={'sm'} className='w-full'>
-                                    No
-                                </Button>
-                            </PopClose>
-                        </section>
-                    </PopoverContent>
-                </Popover>
-            )}
+
+            <Popover>
+                <PopoverTrigger className={buttonVariants({ variant: 'link', size: 'sm', className: 'px-0.5' })}>Edit</PopoverTrigger>
+                <PopoverContent>
+                    <section className='space-y-2 flex flex-col items-center'>
+                        <form className='grid w-full items-center gap-1.5' action={updateComment}>
+                            <Label htmlFor='context'>Context</Label>
+                            <Input
+                                type='text'
+                                id='context'
+                                name='context'
+                                className='bg-foreground/25'
+                                placeholder='Edit your comment'
+                                defaultValue={comment.comment}
+                            />
+                            <input type='hidden' value={comment.commentId} name='id' id='id' />
+                            <Button variant={'default'} size={'sm'} className='w-full' type='submit'>
+                                Submit
+                            </Button>
+                        </form>
+                        <PopClose>
+                            <Button variant={'secondary'} size={'sm'} className='w-full'>
+                                Cancel
+                            </Button>
+                        </PopClose>
+                    </section>
+                </PopoverContent>
+            </Popover>
+
+            <Popover>
+                <PopoverTrigger className={buttonVariants({ variant: 'link', size: 'sm', className: 'px-0.5' })}>Delete</PopoverTrigger>
+                <PopoverContent>
+                    <section className='space-y-2 flex flex-col items-center'>
+                        <p className='font-bold text-lg'>Delete this comment?</p>
+                        <form action={removeComment} className='w-full'>
+                            <input type='hidden' value={comment.commentId} name='id' id='id' />
+                            <Button variant={'destructive'} size={'sm'} className='w-full' type='submit'>
+                                Yes
+                            </Button>
+                        </form>
+                        <PopClose>
+                            <Button variant={'secondary'} size={'sm'} className='w-full'>
+                                No
+                            </Button>
+                        </PopClose>
+                    </section>
+                </PopoverContent>
+            </Popover>
         </>
     )
 }

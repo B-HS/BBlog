@@ -1,7 +1,7 @@
 import { auth } from '@shared/auth'
 import { db } from 'drizzle'
 import { and, eq, inArray, sql } from 'drizzle-orm'
-import { categories, comments, posts, postTags, tags } from 'drizzle/schema'
+import { categories, posts, postTags, tags } from 'drizzle/schema'
 import { NextRequest, NextResponse } from 'next/server'
 const handleError = (_: unknown, status: number = 500) => NextResponse.json({ message: 'An error occurred' }, { status })
 

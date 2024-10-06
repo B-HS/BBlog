@@ -13,11 +13,11 @@ export const ArticleCard = ({ article, category }: { article: Article & { tags?:
             key={article.postId}
             className={cn(
                 article.isNotice && 'border bg-border/50',
-                'p-3 rounded-sm shadow hover:shadow-md transition-shadow flex flex-col gap-1.5',
+                'p-3 rounded-sm shadow hover:shadow-md transition-shadow flex flex-col gap-1.5 dark:border',
             )}>
             <section className='flex items-center gap-2 justify-between'>
-                <Badge className='rounded-sm'>
-                    <section className='flex items-center gap-0.5'>
+                <Badge className='rounded-sm h-fit px-1.5'>
+                    <section className='flex items-center gap-0.5 h-3'>
                         {article.isNotice && <LightbulbIcon className='pb-0.5' size={14} fill='#FF0' />}
                         {category?.find((c) => c.categoryId === article.categoryId)?.category}
                     </section>

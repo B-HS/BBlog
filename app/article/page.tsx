@@ -1,64 +1,14 @@
 'use client'
 
-import { Article } from '@entities/article'
+import { ResponseArticleList } from '@entities/article'
 import { Category } from '@entities/category'
 import { Badge } from '@shared/ui/badge'
 import { Button } from '@shared/ui/button'
 import { Skeleton } from '@shared/ui/skeleton'
 import { cn } from '@shared/utils'
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { ArticleList } from '@widgets/article'
-import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
-
-const useArticles = (selectedCategory: Category | null, page: number, isCategoryLoaded: boolean) => {
-    const [articles, setArticles] = useState<Article[]>([])
-    const [hasNext, setHasNext] = useState(true)
-    const [isArticleLoaded, setIsArticleLoaded] = useState(false)
-    const isFirstFetch = useRef(true) // This will track if it's the first load
-
-    useEffect(() => {
-        if (isFirstFetch.current) {
-            isFirstFetch.current = false // Prevents further fetches on initial load
-            return
-        }
-
-        const queryBuilder = new URLSearchParams()
-        queryBuilder.append('page', page.toString())
-        if (selectedCategory) {
-            queryBuilder.append('categoryId', selectedCategory.categoryId.toString())
-        }
-
-        fetch(`/api/article?${queryBuilder.toString()}`)
-            .then((res) => res.json())
-            .then((data) => {
-                const { posts } = data as { posts: Article[] }
-                if (posts.length > 0) {
-                    setArticles((prev) => [...prev, ...posts])
-                } else {
-                    setHasNext(false)
-                }
-            })
-            .finally(() => setIsArticleLoaded(true))
-    }, [page, selectedCategory])
-
-    return { articles, hasNext, isArticleLoaded, setArticles, setIsArticleLoaded }
-}
-
-const useCategories = () => {
-    const [categories, setCategories] = useState<Category[]>([])
-    const [isCategoryLoaded, setIsCategoryLoaded] = useState(false)
-
-    useEffect(() => {
-        fetch('/api/category')
-            .then((res) => res.json())
-            .then((data) => {
-                const { categories } = data
-                setCategories(categories || [])
-            })
-            .finally(() => setIsCategoryLoaded(true))
-    }, [])
-
-    return { categories, isCategoryLoaded }
-}
+import { Fragment, useCallback, useState } from 'react'
 
 const SkeletonLoader = ({ count, className, isFlex }: { count: number; className: string; isFlex?: boolean }) => (
     <section className={cn(isFlex ? 'flex gap-2' : 'grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3')}>
@@ -70,15 +20,43 @@ const SkeletonLoader = ({ count, className, isFlex }: { count: number; className
 
 const ArticleListPage = () => {
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
-    const [page, setPage] = useState(1)
 
-    const { categories, isCategoryLoaded } = useCategories()
-    const { articles, hasNext, isArticleLoaded, setArticles, setIsArticleLoaded } = useArticles(selectedCategory, page, isCategoryLoaded)
+    const fetchCategories = async () => {
+        const res = await fetch('/api/category')
+        const { categories } = (await res.json()) as unknown as { categories: Category[] }
+        return categories
+    }
+
+    const fetchArticles = async ({ pageParam = 1 }) => {
+        const query = selectedCategory ? `categoryId=${selectedCategory.categoryId}&page=${pageParam}` : `page=${pageParam}`
+        const res = await fetch(`/api/article?${query}`)
+        const result = (await res.json()) as ResponseArticleList
+        return {
+            posts: (await result).posts,
+            nextPage: (await result).posts.length > 0 ? pageParam + 1 : undefined,
+        }
+    }
+
+    const { data: categories, isLoading: isCategoryLoading } = useQuery({
+        queryKey: ['categories'],
+        queryFn: fetchCategories,
+    })
+
+    const {
+        data: articlesData,
+        isLoading: isArticleLoading,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+    } = useInfiniteQuery({
+        queryKey: ['articles', selectedCategory],
+        queryFn: fetchArticles,
+        getNextPageParam: (lastPage) => (lastPage.nextPage ? lastPage.nextPage : null),
+        enabled: Boolean(categories),
+        initialPageParam: 1,
+    })
 
     const handleCategorySelect = useCallback((category: Category | null) => {
-        setIsArticleLoaded(false)
-        setArticles([])
-        setPage(1)
         setSelectedCategory(category)
     }, [])
 
@@ -87,7 +65,7 @@ const ArticleListPage = () => {
             <section className='flex flex-col gap-2 p-2'>
                 <p className='font-bold text-2xl'>Articles</p>
                 <section className='flex gap-2 overflow-scroll'>
-                    {!isCategoryLoaded ? (
+                    {isCategoryLoading ? (
                         <SkeletonLoader count={5} className='h-[22px] w-10' isFlex />
                     ) : (
                         <Fragment>
@@ -97,7 +75,7 @@ const ArticleListPage = () => {
                                 variant={!selectedCategory?.categoryId ? 'default' : 'outline'}>
                                 All
                             </Badge>
-                            {categories.map((category) => (
+                            {categories?.map((category) => (
                                 <Badge
                                     onClick={() => handleCategorySelect(category)}
                                     className='rounded-sm'
@@ -110,17 +88,18 @@ const ArticleListPage = () => {
                     )}
                 </section>
 
-                {!isArticleLoaded ? (
+                {isArticleLoading ? (
                     <SkeletonLoader count={6} className='sm:w-90 h-[119px]' />
                 ) : (
-                    <ArticleList articles={articles} category={categories} />
+                    <ArticleList articles={articlesData?.pages.flatMap((page) => page.posts)} category={categories} />
                 )}
 
                 <Button
-                    onClick={() => hasNext && setPage((page) => page + 1)}
-                    variant={hasNext ? 'outline' : 'ghost'}
-                    className={cn(!hasNext && 'hover:bg-background cursor-default')}>
-                    {hasNext ? 'Load more' : 'No more articles.'}
+                    onClick={() => fetchNextPage()}
+                    variant={hasNextPage ? 'outline' : 'ghost'}
+                    disabled={!hasNextPage || isFetchingNextPage}
+                    className={cn(!hasNextPage && 'hover:bg-background cursor-default')}>
+                    {isFetchingNextPage ? 'Loading...' : hasNextPage ? 'Load more' : 'No more articles.'}
                 </Button>
             </section>
         </section>

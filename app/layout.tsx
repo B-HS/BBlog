@@ -1,7 +1,7 @@
 import { Toaster } from '@shared/ui/toaster'
 import { cn } from '@shared/utils'
 import { SiteHeader } from '@widgets/header'
-import { SessionProvider, ThemeProvider } from '@widgets/provider'
+import { QueryProvider, SessionProvider, ThemeProvider } from '@widgets/provider'
 import type { Metadata } from 'next'
 import dynamic from 'next/dynamic'
 import { M_PLUS_Rounded_1c } from 'next/font/google'
@@ -58,12 +58,14 @@ const RootLayout: FC<{ children: ReactNode }> = ({ children }) => {
             <body className={cn('flex flex-col min-h-dvh font-mplus antialiased max-w-screen-lg mx-auto', fontRound.variable)}>
                 <SessionProvider>
                     <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-                        <SiteHeader />
-                        <section className='mx-auto overflow-auto size-full flex-1'>
-                            {children}
-                            <GoToTop />
-                        </section>
-                        <Toaster />
+                        <QueryProvider>
+                            <SiteHeader />
+                            <section className='mx-auto overflow-auto size-full flex-1'>
+                                {children}
+                                <GoToTop />
+                            </section>
+                            <Toaster />
+                        </QueryProvider>
                     </ThemeProvider>
                 </SessionProvider>
             </body>

@@ -7,8 +7,7 @@ import { Metadata } from 'next'
 import { Fragment } from 'react'
 
 export const generateMetadata = async ({ params }: { params: { post: string } }): Promise<Metadata> => {
-    const { url } = useCurrentPath()
-    const fetchedData = await fetch(`${url}/api/article/${params.post}`).then((res) => res.json())
+    const fetchedData = await fetch(`${process.env.NEXTAUTH_URL}/api/article/${params.post}`).then((res) => res.json())
     const source = fetchedData as ArticleDetail
     const frontmatter = {
         title: source?.post?.title || '',
