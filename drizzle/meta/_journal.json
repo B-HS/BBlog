@@ -1,13 +1,13 @@
 {
-  "version": "7",
-  "dialect": "mysql",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "5",
-      "when": 1728145509208,
-      "tag": "0000_gorgeous_the_phantom",
-      "breakpoints": true
-    }
-  ]
+    "version": "7",
+    "dialect": "mysql",
+    "entries": [
+        {
+            "idx": 0,
+            "version": "5",
+            "when": 1728145509208,
+            "tag": "0000_gorgeous_the_phantom",
+            "breakpoints": true
+        }
+    ]
 }

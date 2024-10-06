@@ -11,7 +11,7 @@ const handleError = (error: unknown, status: number = 500) => {
 
 export const GET = async () => {
     const session = await auth()
-    
+
     try {
         const result = await db
             .select()

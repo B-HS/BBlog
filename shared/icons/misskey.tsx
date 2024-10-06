@@ -10,7 +10,13 @@ export const Misskey = ({ variant }: { variant?: 'default' | 'destructive' | 'ou
                 <TooltipTrigger>
                     <Button variant={variant || 'ghost'} size={'icon'} asChild aria-label='Misskey'>
                         <Link href={'https://mi.gumyo.net/'}>
-                            <Image className='grayscale hover:grayscale-0' src={'https://img.gumyo.net/misskeyicon.png'} width={24} height={24} alt='misskeyicon' />
+                            <Image
+                                className='grayscale hover:grayscale-0'
+                                src={'https://img.gumyo.net/misskeyicon.png'}
+                                width={24}
+                                height={24}
+                                alt='misskeyicon'
+                            />
                         </Link>
                     </Button>
                 </TooltipTrigger>
@@ -19,4 +25,3 @@ export const Misskey = ({ variant }: { variant?: 'default' | 'destructive' | 'ou
         </TooltipProvider>
     )
 }
-

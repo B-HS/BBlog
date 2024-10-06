@@ -23,14 +23,14 @@ jobs:
             - uses: pnpm/action-setup@v4
               name: Install pnpm
               with:
-                version: 9
-                run_install: false
+                  version: 9
+                  run_install: false
 
             - name: Install Node.js
               uses: actions/setup-node@v4
               with:
-                node-version: '20'
-                cache: 'pnpm'
+                  node-version: '20'
+                  cache: 'pnpm'
 
             - name: Create .env file
               run: echo "${{ env.ENV_TEXT }}" > .env
@@ -92,7 +92,7 @@ jobs:
                       docker rmi -f $old_image
                       fi
                       docker load -i ${{ env.PROJECT_NAME }}.tar
-                      
+
                       PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} docker compose down
                       PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} docker compose up -d
 

@@ -12,8 +12,6 @@ const middleware = async (request: NextRequest, response: NextResponse) => {
     const isAuthPath = authPaths.some((authPath) => pathname.includes(authPath))
     const isAdmin = session?.user
 
-    
-
     if (isAuthPath && !isAdmin) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
