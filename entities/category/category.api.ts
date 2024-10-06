@@ -1,3 +1,4 @@
+import { auth } from '@shared/auth'
 import { db } from 'drizzle'
 import { eq } from 'drizzle-orm'
 import { categories } from 'drizzle/schema'
@@ -9,8 +10,14 @@ const handleError = (error: unknown, status: number = 500) => {
 }
 
 export const GET = async () => {
+    const session = await auth()
+    
     try {
-        const result = await db.select().from(categories)
+        const result = await db
+            .select()
+            .from(categories)
+            .where(!session?.user ? eq(categories.isHide, false) : undefined)
+            .execute()
         return NextResponse.json({ categories: result }, { status: 200 })
     } catch (error) {
         return handleError(error)

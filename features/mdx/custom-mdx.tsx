@@ -18,11 +18,10 @@ export interface FrontmatterProps {
 
 export const CustomMdx = async (opts: MDXRemoteProps) => {
     const { source } = opts
-    const { content, frontmatter } = await compileMDX<Partial<FrontmatterProps>>({
+    const { content } = await compileMDX<Partial<FrontmatterProps>>({
         source,
         components: CustomComponents,
         options: {
-            parseFrontmatter: true,
             mdxOptions: {
                 remarkPlugins: [remarkGfm, remarkVideos],
                 rehypePlugins: [[rehypePrettyCode, { theme: 'dark-plus' }]],
@@ -30,5 +29,5 @@ export const CustomMdx = async (opts: MDXRemoteProps) => {
         },
     })
 
-    return { content, frontmatter }
+    return { content }
 }

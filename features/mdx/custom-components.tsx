@@ -1,8 +1,8 @@
-import { Player } from '@shared/player'
+import { VideoComponent } from '@shared/player'
 import { LinkIcon } from 'lucide-react'
 import { MDXComponents } from 'mdx/types'
 import Link from 'next/link'
-import { DetailedHTMLProps, HTMLAttributes, VideoHTMLAttributes, createElement } from 'react'
+import { DetailedHTMLProps, HTMLAttributes, createElement } from 'react'
 
 const HeaderCompoenet = (level: number) => {
     const HeaderComponent = (props: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) => {
@@ -33,10 +33,6 @@ const codeComponent = (props: DetailedHTMLProps<HTMLAttributes<HTMLElement> & { 
             {props.children}
         </code>
     )
-}
-
-const VideoComponent = (props: DetailedHTMLProps<VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement> & { alt?: string }) => {
-    return <Player key={props.src} url={props.src || ''} title={props.alt} />
 }
 
 export const CustomComponents: MDXComponents = {

@@ -1,51 +1,86 @@
+import { auth } from '@shared/auth'
 import { db } from 'drizzle'
-import { and, eq, inArray } from 'drizzle-orm'
+import { and, eq, inArray, sql } from 'drizzle-orm'
 import { categories, comments, posts, postTags, tags } from 'drizzle/schema'
 import { NextRequest, NextResponse } from 'next/server'
-
 const handleError = (_: unknown, status: number = 500) => NextResponse.json({ message: 'An error occurred' }, { status })
 
 export const PostListGET = async (req: NextRequest) => {
+    const session = await auth()
+
     try {
         const page = Number(req.nextUrl.searchParams.get('page') || '1')
         const categoryId = Number(req.nextUrl.searchParams.get('categoryId') || 0)
         const limit = 20
 
         const query = db
-            .select()
+            .select({
+                post: posts,
+                tags: sql`GROUP_CONCAT(${tags.tag} ORDER BY ${tags.tagId} SEPARATOR ',')`,
+            })
             .from(posts)
+            .leftJoin(postTags, eq(posts.postId, postTags.postId))
+            .leftJoin(tags, eq(postTags.tagId, tags.tagId))
+            .leftJoin(categories, eq(posts.categoryId, categories.categoryId))
+            .groupBy(posts.postId)
             .limit(limit)
             .offset((page - 1) * limit)
 
         if (categoryId > 0) {
-            console.log('category id', categoryId)
-
             const category = await db
                 .select()
                 .from(categories)
-                .where(and(eq(categories.categoryId, categoryId), eq(categories.isHide, false)))
-
+                .where(and(eq(categories.categoryId, categoryId), !session?.user ? eq(categories.isHide, false) : undefined))
             if (category.length === 0) return NextResponse.json({ posts: [] }, { status: 200 })
-            return NextResponse.json({ posts: await query.where(eq(posts.categoryId, categoryId)).execute(), categories: category }, { status: 200 })
+            const postsWithCategory = await query
+                .where(!session?.user ? and(eq(posts.categoryId, categoryId), eq(categories.isHide, false)) : eq(posts.categoryId, categoryId))
+                .execute()
+
+            return NextResponse.json(
+                {
+                    posts: postsWithCategory.map((postObj) => {
+                        const { post, tags } = postObj as { post: typeof posts.$inferSelect; tags: string }
+                        return {
+                            postId: post.postId,
+                            title: post.title,
+                            categoryId: post.categoryId,
+                            updatedAt: post.updatedAt,
+                            isNotice: post.isNotice,
+                            tags: tags.split(','),
+                        }
+                    }),
+                    categories: category,
+                },
+                { status: 200 },
+            )
         }
 
-        const postList = await query.execute()
-        const categoryList = await db.select().from(categories).where(eq(categories.isHide, false)).execute()
+        const postList = await query.where(session?.user ? undefined : eq(categories.isHide, false)).execute()
+        const categoryList = await db
+            .select()
+            .from(categories)
+            .where(session?.user ? undefined : eq(categories.isHide, false))
+            .execute()
 
         return NextResponse.json(
             {
-                posts: postList.map((post) => ({
-                    postId: post.postId,
-                    title: post.title,
-                    categoryId: post.categoryId,
-                    updatedAt: post.updatedAt,
-                    isNotice: post.isNotice,
-                })),
+                posts: postList.map((postObj) => {
+                    const { post, tags } = postObj as { post: typeof posts.$inferSelect; tags: string }
+                    return {
+                        postId: post.postId,
+                        title: post.title,
+                        categoryId: post.categoryId,
+                        updatedAt: post.updatedAt,
+                        isNotice: post.isNotice,
+                        tags: tags.split(','),
+                    }
+                }),
                 categories: categoryList,
             },
             { status: 200 },
         )
     } catch (error) {
+        console.log(error)
         return handleError(error)
     }
 }
@@ -60,15 +95,15 @@ export const PostGet = async (_: NextRequest, { params }: { params: { id: string
         const result = await db
             .select({
                 post: posts,
-                comments: comments,
                 categories: categories,
-                tags: tags,
+                tags: sql`GROUP_CONCAT(${tags.tag} ORDER BY ${tags.tagId} SEPARATOR ',')`,
             })
             .from(posts)
-            .leftJoin(comments, eq(comments.postId, posts.postId))
-            .leftJoin(tags, eq(tags.tagId, postTags.tagId))
-            .leftJoin(categories, eq(categories.categoryId, posts.categoryId))
+            .leftJoin(postTags, eq(posts.postId, postTags.postId))
+            .leftJoin(tags, eq(postTags.tagId, tags.tagId))
+            .leftJoin(categories, eq(posts.categoryId, categories.categoryId))
             .where(eq(posts.postId, postId))
+            .groupBy(posts.postId)
             .execute()
 
         if (result.length === 0) {
@@ -79,14 +114,15 @@ export const PostGet = async (_: NextRequest, { params }: { params: { id: string
         await db.update(posts).set({ views: postViews }).where(eq(posts.postId, postId)).execute()
 
         const postWithComments = {
-            post: result[0].post,
-            category: result[0].categories?.category,
-            comments: result.map((row) => row.comments).filter((comment) => comment !== null),
+            post: result.at(0)?.post,
+            category: result.at(0)?.categories?.category,
+            comments: [],
             tags: result.map((row) => row.tags).filter((tag) => tag !== null),
         }
 
         return NextResponse.json(postWithComments)
     } catch (error) {
+        console.log(error)
         return handleError(error)
     }
 }

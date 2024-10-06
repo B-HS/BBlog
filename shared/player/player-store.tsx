@@ -1,3 +1,5 @@
+'use client'
+
 import React, { createContext, ReactNode, RefObject, useContext, useReducer } from 'react'
 import ReactPlayer from 'react-player'
 

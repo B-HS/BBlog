@@ -46,7 +46,7 @@ const videoFormats = [
 ]
 
 export const remarkVideos = () => {
-    let videoIndex = 0 // Initialize an index for generating keys
+    let videoIndex = 0
 
     const visitor = (node: any) => {
         if (videoFormats.some((format) => node.url.includes(format))) {
@@ -56,7 +56,7 @@ export const remarkVideos = () => {
                 { type: 'mdxJsxAttribute', name: 'src', value: node.url },
                 { type: 'mdxJsxAttribute', name: 'alt', value: node.alt || '' },
                 { type: 'mdxJsxAttribute', name: 'controls', value: true },
-                { type: 'mdxJsxAttribute', name: 'key', value: `video-${videoIndex++}` }, // Set a unique key attribute
+                { type: 'mdxJsxAttribute', name: 'key', value: `video-${videoIndex++}` },
             ]
             node.children = []
         }
@@ -66,22 +66,16 @@ export const remarkVideos = () => {
         visit(tree, 'image', visitor)
 
         visit(tree, 'paragraph', (node, index, parent) => {
-            // Replace paragraph with video if it contains a single video element
             if (node.children.length === 1 && node.children[0].type === 'mdxJsxFlowElement' && node.children[0].name === 'video') {
                 if (parent.children && index !== undefined) {
                     parent.children[index] = node.children[0]
                 }
-            }
-            // Process multiple videos within the same paragraph
-            else {
+            } else {
                 const videoElements = node.children.filter((child: any) => child.type === 'mdxJsxFlowElement' && child.name === 'video')
 
                 if (videoElements.length > 0) {
-                    // Replace paragraph content with separate video elements
                     const newChildren = node.children.flatMap((child: any) =>
-                        child.type === 'mdxJsxFlowElement' && child.name === 'video'
-                            ? [child, { type: 'text', value: '\n' }] // Adding a line break between videos
-                            : child,
+                        child.type === 'mdxJsxFlowElement' && child.name === 'video' ? [child, { type: 'text', value: '\n' }] : child,
                     )
 
                     parent.children.splice(index, 1, ...newChildren)
