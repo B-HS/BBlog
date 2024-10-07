@@ -20,7 +20,7 @@ export const TooltipIcon = ({
         <IconWrapper icon={Icon} variant={variant} linkUrl={linkUrl} />
     ) : (
         <TooltipProvider>
-            <Tooltip>
+            <Tooltip delayDuration={0}>
                 <TooltipTrigger className='leading-normal'>
                     <IconWrapper icon={Icon} variant={variant} linkUrl={linkUrl} />
                 </TooltipTrigger>

@@ -14,7 +14,7 @@ export const Github = ({
         <Icon variant={variant} />
     ) : (
         <TooltipProvider>
-            <Tooltip>
+            <Tooltip delayDuration={0}>
                 <TooltipTrigger className='leading-normal'>
                     <Icon variant={variant} />
                 </TooltipTrigger>

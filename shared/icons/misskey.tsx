@@ -6,7 +6,7 @@ import { Button } from '../ui/button'
 export const Misskey = ({ variant }: { variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' }) => {
     return (
         <TooltipProvider>
-            <Tooltip>
+            <Tooltip delayDuration={0}>
                 <TooltipTrigger>
                     <Button variant={variant || 'ghost'} size={'icon'} asChild aria-label='Misskey'>
                         <Link href={'https://mi.gumyo.net/'}>

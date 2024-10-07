@@ -6,7 +6,7 @@ import { Button } from '../ui/button'
 export const Resume = ({ variant }: { variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' }) => {
     return (
         <TooltipProvider>
-            <Tooltip>
+            <Tooltip delayDuration={0}>
                 <TooltipTrigger>
                     <Button variant={variant || 'ghost'} size={'icon'} asChild aria-label='Resume'>
                         <Link className='p-2' href={'https://resume.gumyo.net'}>
