@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm'
 import { comments } from 'drizzle/schema'
 import { NextRequest, NextResponse } from 'next/server'
 
-const iv = process.env.PASSWORD_IV || 'abcdefghijklmnopqrstuvwx12345678'
+const iv = process.env.PASSWORD_IV || 'abcdefghijklmnop'
 const secretKey = process.env.PASSWORD_SALT || '1234567890abcdefghijklmnopqrstuv'
 
 const encryptPassword = (password: string) => {
@@ -37,6 +37,7 @@ const handleError = (error: unknown, status: number = 500) => {
 }
 
 const validateBody = (body: Record<string, any>) => {
+    // eslint-disable-next-line no-unused-vars
     const missingFields = Object.entries(body).filter(([_, value]) => !value)
     if (missingFields.length > 0) {
         return missingFields.map(([key]) => `${key} is required`)
@@ -77,14 +78,18 @@ const POST = async (req: NextRequest, { params }: { params: { postId: string } }
 
         const encryptedPassword = encryptPassword(body.password)
 
-        await db.insert(comments).values({
-            postId,
-            nickname: body.username,
-            password: encryptedPassword,
-            comment: body.commentText,
-        })
+        const [commentId] = await db
+            .insert(comments)
+            .values({
+                postId,
+                nickname: body.username,
+                password: encryptedPassword,
+                comment: body.commentText,
+            })
+            .$returningId()
+            .execute()
 
-        return NextResponse.json({ message: 'Comment added successfully' }, { status: 200 })
+        return NextResponse.json({ message: 'Comment added successfully', commentId: commentId.commentId }, { status: 200 })
     } catch (error) {
         return handleError(error)
     }
@@ -113,7 +118,6 @@ const DELETE = async (req: NextRequest) => {
 const PUT = async (req: NextRequest) => {
     try {
         const body = (await req.json()) as { id: number; password: string; commentText: string }
-
         const comment = await db.select().from(comments).where(eq(comments.commentId, body.id)).limit(1)
         if (comment.length === 0) return NextResponse.json({ message: 'Comment not found' }, { status: 404 })
 

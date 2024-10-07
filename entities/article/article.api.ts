@@ -1,7 +1,7 @@
 import { auth } from '@shared/auth'
 import { db } from 'drizzle'
 import { and, eq, inArray, sql } from 'drizzle-orm'
-import { categories, posts, postTags, tags } from 'drizzle/schema'
+import { categories, comments, posts, postTags, tags } from 'drizzle/schema'
 import { NextRequest, NextResponse } from 'next/server'
 const handleError = (_: unknown, status: number = 500) => NextResponse.json({ message: 'An error occurred' }, { status })
 
@@ -113,10 +113,22 @@ export const PostGet = async (_: NextRequest, { params }: { params: { id: string
         const postViews = result[0].post.views + 1
         await db.update(posts).set({ views: postViews }).where(eq(posts.postId, postId)).execute()
 
+        const commentList = await db
+            .select({
+                comment: comments.comment,
+                postId: comments.postId,
+                nickname: comments.nickname,
+                createdAt: comments.createdAt,
+                updatedAt: comments.updatedAt,
+                commentId: comments.commentId,
+            })
+            .from(comments)
+            .where(eq(comments.postId, postId))
+
         const postWithComments = {
             post: result.at(0)?.post,
             category: result.at(0)?.categories?.category,
-            comments: [],
+            comments: commentList,
             tags: result.map((row) => row.tags).filter((tag) => tag !== null),
         }
 

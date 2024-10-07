@@ -7,7 +7,7 @@ import { Metadata } from 'next'
 import { Fragment } from 'react'
 
 export const generateMetadata = async ({ params }: { params: { post: string } }): Promise<Metadata> => {
-    const fetchedData = await fetch(`${process.env.NEXTAUTH_URL}/api/article/${params.post}`).then((res) => res.json())
+    const fetchedData = await fetch(`${process.env.SITE_URL}/api/article/${params.post}`).then((res) => res.json())
     const source = fetchedData as ArticleDetail
     const frontmatter = {
         title: source?.post?.title || '',
@@ -17,8 +17,7 @@ export const generateMetadata = async ({ params }: { params: { post: string } })
         thumbnail: '',
         viewCnt: source?.post?.views || '',
     }
-    const context =
-        (markdownToText(source?.post.description.toString().slice(0, 250)) || frontmatter.title || '')?.replace(/<\/?[^>]+(>|$)/g, '') + '...'
+    const context = (markdownToText(source?.post.description.toString().slice(0, 250)) || frontmatter.title || '')?.replace(/<\/?[^>]+(>|$)/g, '')
 
     return {
         title: frontmatter.title,
@@ -48,7 +47,7 @@ export const generateMetadata = async ({ params }: { params: { post: string } })
     }
 }
 
-const RemoteMdxPage = async ({ params }: { params: { post: string } }) => {
+const RemoteMdxPage = async ({ params }: { params: { post: number } }) => {
     const { url } = useCurrentPath()
     const fetchedData = await fetch(`${url}/api/article/${params.post}`).then((res) => res.json())
     const source = fetchedData as ArticleDetail
