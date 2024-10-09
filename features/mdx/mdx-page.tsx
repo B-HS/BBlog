@@ -12,7 +12,7 @@ interface MdxPageProps {
 export const MdxPage = async ({ frontmatter, content }: MdxPageProps) => {
     return (
         <section className='flex relative'>
-            <section className='prose prose-neutral dark:prose-invert container max-w-screen-lg py-7 rounded my-5'>
+            <section className='markdown-prose max-w-screen-lg px-3 py-5 rounded'>
                 <section className='flex justify-between items-center flex-wrap gap-2'>
                     <section className='flex items-center space-x-2 min-h-5'>
                         <Badge className='text-nowrap rounded-sm' variant={'outline'}>
@@ -29,10 +29,13 @@ export const MdxPage = async ({ frontmatter, content }: MdxPageProps) => {
                     </section>
                 </section>
                 <Separator className='my-2' />
-                <section className='flex flex-wrap gap-2 py-3 justify-start'>
-                    <Tags tags={frontmatter?.tags} />
-                </section>
                 <section suppressHydrationWarning>{content}</section>
+                <Separator className='my-2' />
+                <section className='flex flex-col gap-1'>
+                    <section className='flex flex-wrap gap-2 py-3 justify-start'>
+                        <Tags tags={frontmatter?.tags} />
+                    </section>
+                </section>
             </section>
         </section>
     )

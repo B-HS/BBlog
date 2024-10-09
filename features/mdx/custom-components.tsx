@@ -1,3 +1,4 @@
+import { LANGUAGE_LIST } from '@shared/constant'
 import { VideoComponent } from '@shared/player'
 import { LinkIcon } from 'lucide-react'
 import { MDXComponents } from 'mdx/types'
@@ -10,7 +11,7 @@ const HeaderCompoenet = (level: number) => {
         const id = props.children?.toString()?.replaceAll(' ', '-').toLowerCase()
 
         return (
-            <Link className='no-underline heading-url' id={id} href={`#${id}`}>
+            <Link id={id} href={`#${id}`}>
                 {createElement(
                     Tag,
                     { ...props },
@@ -28,8 +29,12 @@ const HeaderCompoenet = (level: number) => {
 
 const codeComponent = (props: DetailedHTMLProps<HTMLAttributes<HTMLElement> & { 'data-language'?: string }, HTMLElement>) => {
     return (
-        <code className='flex flex-col relative'>
-            <span className='absolute top-0 right-0 px-1.5 rounded border capitalize'>{props['data-language']}</span>
+        <code className='flex flex-col relative border p-3 m-1 rounded-sm bg-secondary-foreground dark:bg-secondary text-background dark:text-foreground focus:border-none'>
+            {props['data-language'] && (
+                <span className='absolute top-2 right-2 px-1.5 rounded-sm p-1 border capitalize border-foreground/50'>
+                    {LANGUAGE_LIST[(props['data-language'] as keyof typeof LANGUAGE_LIST) || props['data-language']]}
+                </span>
+            )}
             {props.children}
         </code>
     )

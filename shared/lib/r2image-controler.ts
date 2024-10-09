@@ -46,7 +46,7 @@ export const r2Upload = (toast: Function, callbackFn: Function): ChangeEventHand
 }
 
 export const getR2UploadList = async () => {
-    const rawList = await fetch('/api/image/list', { method: 'POST' })
+    const rawList = await fetch('/api/image/list', { method: 'GET' })
     const list = (await rawList.json()) as RawR3List[]
     return list?.map((obj) => ({
         name: obj.Key,

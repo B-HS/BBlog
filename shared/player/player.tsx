@@ -51,7 +51,7 @@ const PlayerComponent = ({ url, title }: { url: string; title?: string }) => {
     return (
         isInitialized && (
             <TooltipProvider>
-                <section className='relative video-player size-full group'>
+                <section className='relative video-player size-full group my-5'>
                     <section
                         className={cn(
                             'absolute top-0 left-0 backdrop-opacity-90 size-full bg-background/50 z-50 group-hover:opacity-100 opacity-0 flex flex-col justify-between items-center transition-all',
