@@ -17,7 +17,7 @@ export const SiteHeader = async () => {
         <header className='sticky top-0 z-50 w-full border-b backdrop-blur'>
             <section className='flex h-14 justify-between items-center px-3 max-w-screen-2xl mx-auto'>
                 <section className='flex items-center gap-1'>
-                    <Link href={'/'} className='text-2xl font-extrabold'>
+                    <Link href={'/'} className='text-xl font-bold'>
                         {process.env.SITE_NAME}
                     </Link>
                 </section>
