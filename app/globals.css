@@ -67,14 +67,6 @@
     body {
         @apply bg-background text-foreground;
     }
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        @apply border-b w-full;
-    }
 }
 
 .heading-url {
@@ -96,4 +88,135 @@ html {
 
 .underline-effect::after {
     @apply content-[''] absolute w-full h-0.5 left-0 -bottom-0.5 bg-foreground origin-bottom-right hover:origin-bottom-left scale-x-0 hover:scale-x-100 transition-transform duration-300;
+}
+
+.markdown-prose {
+    @apply text-primary transition-all underline-offset-2;
+}
+.markdown-prose a:link {
+    @apply text-primary underline;
+}
+.markdown-prose a:visited {
+    @apply text-primary/70 underline;
+}
+.markdown-prose a:hover {
+    @apply text-primary/70 underline;
+}
+.markdown-prose a:active {
+    @apply text-primary/50 underline;
+}
+.markdown-prose hr {
+    @apply border-0 border-t-[3.5px] border-border my-2.5;
+}
+.markdown-prose h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    @apply font-bold text-primary mb-2.5 border-b border-border;
+}
+
+.markdown-prose h1 {
+    @apply text-3xl;
+}
+.markdown-prose h2 {
+    @apply text-2xl;
+}
+.markdown-prose h3 {
+    @apply text-xl;
+}
+.markdown-prose h4 {
+    @apply text-lg;
+}
+.markdown-prose h5 {
+    @apply text-base;
+}
+.markdown-prose h6 {
+    @apply text-sm;
+}
+
+.markdown-prose a:has(> h1, h2, h3, h4, h5, h6) {
+    @apply !no-underline;
+}
+
+.markdown-prose pre {
+    @apply rounded-sm bg-background/50 p-1.5
+}
+
+.markdown-prose blockquote {
+    @apply leading-relaxed pl-5 border-l-4 border-primary/50 my-5;
+} 
+
+.markdown-prose p {
+    @apply leading-relaxed mb-2.5;
+}
+.markdown-prose ul {
+    @apply list-disc pl-5;
+}
+.markdown-prose li {
+    @apply leading-relaxed;
+}
+.markdown-prose ol {
+    @apply list-decimal pl-5;
+}
+.markdown-prose ol ol {
+    @apply list-decimal pl-5;
+}
+.markdown-prose ul ul {
+    @apply list-disc pl-5;
+}
+.markdown-prose li > p {
+    @apply leading-relaxed mb-2.5;
+}
+.markdown-prose li > p + p,
+li > a + p {
+    @apply leading-relaxed mb-2.5;
+}
+.markdown-prose table {
+    @apply w-full border-collapse table-auto overflow-hidden;
+}
+
+.markdown-prose table th {
+    @apply px-4 py-2 text-left bg-neutral-200 dark:bg-neutral-700 text-sm font-medium text-neutral-700 dark:text-neutral-300 border-b border-neutral-300 dark:border-neutral-600;
+}
+
+.markdown-prose table th p {
+    @apply m-0;
+}
+
+.markdown-prose table td {
+    @apply px-4 py-2 text-sm text-neutral-700 dark:text-neutral-300 border-b border-neutral-300 dark:border-neutral-600;
+}
+
+.markdown-prose table td p {
+    @apply m-0;
+}
+
+.markdown-prose table td p + p,
+.markdown-prose table td p + p + p {
+    @apply mt-2;
+}
+
+.markdown-prose table tr:nth-child(even) {
+    @apply bg-neutral-100 dark:bg-neutral-800;
+}
+
+.markdown-prose table tr:hover {
+    @apply bg-neutral-200 dark:bg-neutral-700;
+}
+.markdown-prose form {
+    @apply leading-relaxed mb-2.5;
+}
+.markdown-prose button {
+    @apply leading-relaxed mb-2.5;
+}
+.markdown-prose input {
+    @apply leading-relaxed mb-2.5;
+}
+.markdown-prose select {
+    @apply leading-relaxed mb-2.5;
+}
+.markdown-prose textarea {
+    @apply leading-relaxed mb-2.5;
 }
