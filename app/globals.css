@@ -106,7 +106,7 @@ html {
     @apply text-primary/50 underline;
 }
 .markdown-prose hr {
-    @apply border-0 border-t-[3.5px] border-border my-2.5;
+    @apply border-0 border-t-[3.5px] border-border my-2;
 }
 .markdown-prose h1,
 h2,
@@ -114,7 +114,7 @@ h3,
 h4,
 h5,
 h6 {
-    @apply font-bold text-primary mb-2.5 border-b border-border;
+    @apply font-bold text-primary mb-2 border-b border-border;
 }
 
 .markdown-prose h1 {
@@ -145,34 +145,30 @@ h6 {
 }
 
 .markdown-prose blockquote {
-    @apply leading-relaxed pl-5 border-l-4 border-primary/50 my-5;
+    @apply leading-relaxed ml-5 pl-2 border-l-[3.5px] border-border mb-5;
 } 
 
 .markdown-prose p {
-    @apply leading-relaxed mb-2.5;
+    @apply leading-relaxed px-3 py-2;
 }
-.markdown-prose ul {
-    @apply list-disc pl-5;
+.markdown-prose ul,
+.markdown-prose ol,
+.markdown-prose ul ul,
+.markdown-prose ol ol {
+    @apply  leading-relaxed list-outside px-10 mb-2;
 }
 .markdown-prose li {
     @apply leading-relaxed;
 }
-.markdown-prose ol {
-    @apply list-decimal pl-5;
-}
+.markdown-prose ol, 
 .markdown-prose ol ol {
-    @apply list-decimal pl-5;
+    @apply  list-decimal;
 }
+.markdown-prose ul,
 .markdown-prose ul ul {
-    @apply list-disc pl-5;
+    @apply  list-disc;
 }
-.markdown-prose li > p {
-    @apply leading-relaxed mb-2.5;
-}
-.markdown-prose li > p + p,
-li > a + p {
-    @apply leading-relaxed mb-2.5;
-}
+
 .markdown-prose table {
     @apply w-full border-collapse table-auto overflow-hidden;
 }
@@ -206,17 +202,17 @@ li > a + p {
     @apply bg-neutral-200 dark:bg-neutral-700;
 }
 .markdown-prose form {
-    @apply leading-relaxed mb-2.5;
+    @apply leading-relaxed px-3 py-2;
 }
 .markdown-prose button {
-    @apply leading-relaxed mb-2.5;
+    @apply leading-relaxed px-3 py-2;
 }
 .markdown-prose input {
-    @apply leading-relaxed mb-2.5;
+    @apply leading-relaxed px-3 py-2;
 }
 .markdown-prose select {
-    @apply leading-relaxed mb-2.5;
+    @apply leading-relaxed px-3 py-2;
 }
 .markdown-prose textarea {
-    @apply leading-relaxed mb-2.5;
+    @apply leading-relaxed px-3 py-2;
 }
