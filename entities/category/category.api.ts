@@ -31,17 +31,44 @@ export const POST = async (req: NextRequest) => {
             return NextResponse.json({ message: 'Category name is required' }, { status: 400 })
         }
 
-        await db.insert(categories).values({ category: body.name }).execute()
+        const [result] = await db.insert(categories).values({ category: body.name }).$returningId().execute()
 
-        return NextResponse.json({ message: 'Category added successfully' }, { status: 200 })
+        console.log(result)
+
+        return NextResponse.json({ message: 'Category added successfully', categoryId: result.categoryId }, { status: 200 })
     } catch (error) {
         return handleError(error)
     }
 }
 
-export const DELETE = async (req: NextRequest, { params }: { params: { id: string } }) => {
+export const PUT = async (req: NextRequest) => {
     try {
-        const categoryId = Number(params.id)
+        const body = (await req.json()) as { name: string; categoryId: number; active?: boolean }
+
+        if (!body.categoryId) {
+            return NextResponse.json({ message: 'Invalid category ID' }, { status: 400 })
+        }
+
+        if (body.active) {
+            await db.update(categories).set({ isHide: false }).where(eq(categories.categoryId, body.categoryId)).execute()
+        } else {
+            if (!body.name) {
+                return NextResponse.json({ message: 'Category name is required' }, { status: 400 })
+            }
+
+            await db.update(categories).set({ category: body.name }).where(eq(categories.categoryId, body.categoryId)).execute()
+        }
+
+        return NextResponse.json({ message: 'Category updated successfully', categoryId: body.categoryId }, { status: 200 })
+    } catch (error) {
+        return handleError(error)
+    }
+}
+
+export const DELETE = async (req: NextRequest) => {
+    const body = (await req.json()) as { categoryId: number }
+    try {
+        const categoryId = Number(body.categoryId)
         if (!categoryId) {
             return NextResponse.json({ message: 'Invalid category ID' }, { status: 400 })
         }
@@ -57,5 +84,6 @@ export const DELETE = async (req: NextRequest, { params }: { params: { id: strin
 export const CategoryApi = {
     GET,
     POST,
+    PUT,
     DELETE,
 }

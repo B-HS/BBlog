@@ -1,4 +1,5 @@
 export { EditCategory } from './edit-category'
+export { EditCategoryManageModal } from './edit-category-manage-modal'
 export { EditDescription } from './edit-description'
 export { EditImageManager } from './edit-image-manager'
 export { EditTags } from './edit-tags'

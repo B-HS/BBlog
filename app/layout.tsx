@@ -60,7 +60,7 @@ const RootLayout: FC<{ children: ReactNode }> = ({ children }) => {
                     <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
                         <QueryProvider>
                             <SiteHeader />
-                            <section className='mx-auto overflow-auto size-full flex-1'>
+                            <section className='flex-1 mx-auto overflow-auto size-full'>
                                 {children}
                                 <GoToTop />
                             </section>

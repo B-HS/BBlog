@@ -1,3 +1,3 @@
 import { CategoryApi } from '@entities/category'
 
-export const { GET, POST, DELETE } = CategoryApi
+export const { GET, POST, PUT, DELETE } = CategoryApi
