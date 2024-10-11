@@ -11,8 +11,8 @@ CREATE TABLE `comments` (
 	`nickname` varchar(255) NOT NULL,
 	`password` varchar(255) NOT NULL,
 	`comment` text NOT NULL,
-	`updated_at` date NOT NULL DEFAULT '2024-10-05',
-	`created_at` date NOT NULL DEFAULT '2024-10-05',
+	`updated_at` datetime NOT NULL DEFAULT '2024-10-11 11:29:02.992',
+	`created_at` datetime NOT NULL DEFAULT '2024-10-11 11:29:02.992',
 	`isHide` boolean NOT NULL DEFAULT false,
 	CONSTRAINT `comments_commentId` PRIMARY KEY(`commentId`)
 );
@@ -28,8 +28,8 @@ CREATE TABLE `posts` (
 	`categoryId` int NOT NULL,
 	`title` varchar(255) NOT NULL,
 	`description` text NOT NULL,
-	`updated_at` date NOT NULL DEFAULT '2024-10-05',
-	`created_at` date NOT NULL DEFAULT '2024-10-05',
+	`updated_at` datetime NOT NULL DEFAULT '2024-10-11 11:29:02.992',
+	`created_at` datetime NOT NULL DEFAULT '2024-10-11 11:29:02.992',
 	`views` int NOT NULL DEFAULT 0,
 	`isHide` boolean NOT NULL DEFAULT false,
 	`isNotice` boolean NOT NULL DEFAULT false,
@@ -47,7 +47,7 @@ CREATE TABLE `visitors` (
 	`visitorId` int AUTO_INCREMENT NOT NULL,
 	`ip` varchar(255) NOT NULL,
 	`path` varchar(255) NOT NULL,
-	`created_at` date NOT NULL DEFAULT '2024-10-05',
+	`created_at` datetime NOT NULL DEFAULT '2024-10-11 11:29:02.993',
 	CONSTRAINT `visitors_visitorId` PRIMARY KEY(`visitorId`)
 );
 --> statement-breakpoint
