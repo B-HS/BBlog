@@ -5,8 +5,9 @@ import { posts, tags } from 'drizzle/schema'
 export type Article = typeof posts.$inferSelect
 export type ArticleDetail = {
     post: Article
-    tags: string[]
+    tags: string[] | string
     category: string
+    categoryId?: number
     comments: CommentProps[]
 }
 export type Tag = typeof tags.$inferSelect

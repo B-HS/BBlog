@@ -72,7 +72,7 @@ export const PostListGET = async (req: NextRequest) => {
                         categoryId: post.categoryId,
                         updatedAt: post.updatedAt,
                         isNotice: post.isNotice,
-                        tags: tags.split(','),
+                        tags: tags?.split(','),
                     }
                 }),
                 categories: categoryList,
@@ -128,6 +128,7 @@ export const PostGet = async (_: NextRequest, { params }: { params: { id: string
         const postWithComments = {
             post: result.at(0)?.post,
             category: result.at(0)?.categories?.category,
+            categoryId: result.at(0)?.categories?.categoryId,
             comments: commentList,
             tags: result.map((row) => row.tags).filter((tag) => tag !== null),
         }
@@ -249,22 +250,25 @@ export const PostUpdate = async (req: NextRequest, { params }: { params: { id: s
                 const existTags = existTagList.map((tag) => tag.tag)
                 const newTags = updatedTagsList.filter((tag) => !existTags.includes(tag))
 
-                const tagIds = await tx
-                    .insert(tags)
-                    .values(newTags.map((tag) => ({ tag })))
-                    .$returningId()
-                const processedTagIds = [...existTagList.map((tag) => tag.tagId), ...tagIds.map((tag) => tag.tagId)]
+                if (newTags.length > 0) {
+                    const tagIds = await tx
+                        .insert(tags)
+                        .values(newTags.map((tag) => ({ tag })))
+                        .$returningId()
+                    const processedTagIds = [...existTagList.map((tag) => tag.tagId), ...tagIds.map((tag) => tag.tagId)]
 
-                const tagInserts = processedTagIds.map((tagId) => ({
-                    postId,
-                    tagId,
-                }))
-                await tx.insert(postTags).values(tagInserts).execute()
+                    const tagInserts = processedTagIds.map((tagId) => ({
+                        postId,
+                        tagId,
+                    }))
+                    await tx.insert(postTags).values(tagInserts).execute()
+                }
             }
         })
 
-        return NextResponse.json({ message: 'Post updated successfully' }, { status: 200 })
+        return NextResponse.json({ message: 'Post updated successfully', postId: params.id }, { status: 200 })
     } catch (error) {
+        console.log(error)
         return handleError(error)
     }
 }

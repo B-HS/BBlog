@@ -1,5 +1,8 @@
 'use client'
 
+// eslint-disable-next-line import/no-named-as-default
+import rehypePrettyCode from 'rehype-pretty-code'
+
 import { CustomComponents, remarkVideos } from '@features/mdx'
 import { TabsContent } from '@radix-ui/react-tabs'
 import { getR2UploadList, ImageList, r2Upload } from '@shared/lib'
@@ -7,13 +10,11 @@ import { Label } from '@shared/ui/label'
 import { Separator } from '@shared/ui/separator'
 import { StyledTextarea } from '@shared/ui/styled-textarea'
 import { Tabs, TabsList, TabsTrigger } from '@shared/ui/tabs'
-import { Textarea } from '@shared/ui/textarea'
 import { useToast } from '@shared/ui/use-toast'
 import { MDXRemote } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 import Image from 'next/image'
 import { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from 'react'
-import rehypePrettyCode from 'rehype-pretty-code'
 import remarkGfm from 'remark-gfm'
 
 type EditDescriptionProps = {
@@ -53,6 +54,7 @@ export const EditDescription: FC<EditDescriptionProps> = ({ description, setDesc
 
     useEffect(() => {
         setPreview()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [description])
 
     return (
@@ -71,10 +73,10 @@ export const EditDescription: FC<EditDescriptionProps> = ({ description, setDesc
                     </TabsTrigger>
                 </TabsList>
                 <TabsContent value='edit'>
-                    <section className='min-h-96 h-[50vh] border rounded-b-sm flex p-5'>
+                    <section className='min-h-96 h-[50vh] border rounded-b-sm flex'>
                         <StyledTextarea
                             styling={false}
-                            className='w-full ring-offset-transparent ring-0 outline-none border-none'
+                            className='w-full ring-offset-transparent ring-0 outline-none border-none p-5'
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                         />

@@ -5,7 +5,6 @@ import { categories } from 'drizzle/schema'
 import { NextRequest, NextResponse } from 'next/server'
 
 const handleError = (error: unknown, status: number = 500) => {
-    console.error(error)
     return NextResponse.json({ message: 'An error occurred' }, { status })
 }
 

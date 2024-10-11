@@ -11,11 +11,11 @@ export const generateMetadata = async ({ params }: { params: { post: string } })
     const source = fetchedData as ArticleDetail
     const frontmatter = {
         title: source?.post?.title || '',
-        tags: source?.tags || [],
-        date: source?.post?.createdAt || '',
+        tags: source?.tags.at(0)?.split(',') || [],
+        date: source?.post?.createdAt.toString() || '',
         category: source?.category || '',
         thumbnail: '',
-        viewCnt: source?.post?.views || '',
+        viewCnt: String(source?.post?.views) || '',
     }
     const context = (markdownToText(source?.post.description.toString().slice(0, 250)) || frontmatter.title || '')?.replace(/<\/?[^>]+(>|$)/g, '')
 

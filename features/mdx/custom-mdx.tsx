@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-named-as-default
 import rehypePrettyCode from 'rehype-pretty-code'
 
-import { MDXRemoteProps, compileMDX } from 'next-mdx-remote/rsc'
+import { compileMDX, MDXRemoteProps } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
 import { CustomComponents } from './custom-components'
 import { remarkVideos } from './video-remark'

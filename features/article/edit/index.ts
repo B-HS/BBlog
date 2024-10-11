@@ -1,3 +1,4 @@
+export { EditCategory } from './edit-category'
 export { EditDescription } from './edit-description'
 export { EditImageManager } from './edit-image-manager'
 export { EditTags } from './edit-tags'

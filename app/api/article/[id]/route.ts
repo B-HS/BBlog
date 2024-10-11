@@ -1,3 +1,3 @@
 import { PostApi } from '@entities/article'
 
-export const { GET, DELETE } = PostApi
+export const { GET, PUT, DELETE } = PostApi
