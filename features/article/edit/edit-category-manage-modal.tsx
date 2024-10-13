@@ -151,14 +151,12 @@ export const EditCategoryManageModal: FC<EditorCategoryManageModal> = ({ refetch
     }
 
     return (
-        <Dialog modal={false} open={isOpen} onOpenChange={setIsOpen}>
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
                 <NavigationMenuLink className={cn(buttonVariants({ size: 'icon', variant: 'outline' }), 'size-9 p-2 cursor-pointer')}>
                     <Plus />
                 </NavigationMenuLink>
             </DialogTrigger>
-
-            {isOpen && <div className='absolute top-0 left-0 h-screen w-dvw bg-background' />}
             <DialogContent>
                 <section className='flex flex-col gap-3'>
                     <Label className='text-lg'>Category List</Label>
