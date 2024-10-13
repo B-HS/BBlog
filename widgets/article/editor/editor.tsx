@@ -41,7 +41,6 @@ export const Editor: FC<EditorProps> = ({ text, post, submitFn }) => {
 
     const handleSave = async () => {
         const isValidated = [category, title, description].find((item) => !item)
-        console.log(isValidated)
         if (!!isValidated) {
             toast({
                 title: 'Not all fields are filled',
@@ -60,15 +59,6 @@ export const Editor: FC<EditorProps> = ({ text, post, submitFn }) => {
         const result = await submitFn(postData)
 
         result.postId && router.push(`/article/${result.postId}`)
-    }
-
-    const frontmatter = {
-        title: post?.post?.title || '',
-        tags: post?.tags.at(0)?.split(',') || [],
-        date: post?.post?.createdAt.toString() || '',
-        category: post?.category || '',
-        thumbnail: '',
-        viewCnt: String(post?.post?.views) || '',
     }
 
     useEffect(() => {

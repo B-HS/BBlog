@@ -33,8 +33,6 @@ export const POST = async (req: NextRequest) => {
 
         const [result] = await db.insert(categories).values({ category: body.name }).$returningId().execute()
 
-        console.log(result)
-
         return NextResponse.json({ message: 'Category added successfully', categoryId: result.categoryId }, { status: 200 })
     } catch (error) {
         return handleError(error)

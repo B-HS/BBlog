@@ -132,8 +132,6 @@ export const EditCategoryManageModal: FC<EditorCategoryManageModal> = ({ refetch
                 categoryId: !selectedCategory ? undefined : selectedCategory,
             }))
 
-        console.log(result, selectedCategory)
-
         if (selectedCategory == result.categoryId) {
             setSelectedCategory(undefined)
             setName('')
