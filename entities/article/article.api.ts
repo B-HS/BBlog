@@ -1,6 +1,6 @@
 import { auth } from '@shared/auth'
 import { db } from 'drizzle'
-import { and, eq, inArray, sql } from 'drizzle-orm'
+import { and, eq, inArray, like, sql } from 'drizzle-orm'
 import { categories, comments, posts, postTags, tags } from 'drizzle/schema'
 import { NextRequest, NextResponse } from 'next/server'
 const handleError = (_: unknown, status: number = 500) => NextResponse.json({ message: 'An error occurred' }, { status })
@@ -11,7 +11,12 @@ export const PostListGET = async (req: NextRequest) => {
     try {
         const page = Number(req.nextUrl.searchParams.get('page') || '1')
         const categoryId = Number(req.nextUrl.searchParams.get('categoryId') || 0)
+        const keywords = req.nextUrl.searchParams.get('keywords') || undefined
         const limit = 20
+
+        const conditions = []
+        !session?.user && conditions.push(eq(categories.isHide, false))
+        keywords && conditions.push(like(posts.title, `%${keywords}%`))
 
         const query = db
             .select({
@@ -27,14 +32,13 @@ export const PostListGET = async (req: NextRequest) => {
             .offset((page - 1) * limit)
 
         if (categoryId > 0) {
+            conditions.push(eq(posts.categoryId, categoryId))
             const category = await db
                 .select()
                 .from(categories)
                 .where(and(eq(categories.categoryId, categoryId), !session?.user ? eq(categories.isHide, false) : undefined))
             if (category.length === 0) return NextResponse.json({ posts: [] }, { status: 200 })
-            const postsWithCategory = await query
-                .where(!session?.user ? and(eq(posts.categoryId, categoryId), eq(categories.isHide, false)) : eq(posts.categoryId, categoryId))
-                .execute()
+            const postsWithCategory = await query.where(and(...conditions)).execute()
 
             return NextResponse.json(
                 {
@@ -46,7 +50,7 @@ export const PostListGET = async (req: NextRequest) => {
                             categoryId: post.categoryId,
                             updatedAt: post.updatedAt,
                             isNotice: post.isNotice,
-                            tags: tags.split(','),
+                            tags: tags?.split(','),
                         }
                     }),
                     categories: category,
@@ -55,7 +59,12 @@ export const PostListGET = async (req: NextRequest) => {
             )
         }
 
-        const postList = await query.where(session?.user ? undefined : eq(categories.isHide, false)).execute()
+        if (categoryId > 0) {
+            conditions.push(eq(posts.categoryId, categoryId))
+            console.log('inserted')
+        }
+        const postList = await query.where(and(...conditions)).execute()
+
         const categoryList = await db
             .select()
             .from(categories)

@@ -2,7 +2,9 @@
 
 import { ResponseArticleList } from '@entities/article'
 import { Category } from '@entities/category'
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
 import { Badge } from '@shared/ui/badge'
+import { Input } from '@shared/ui/input'
 import { Skeleton } from '@shared/ui/skeleton'
 import { cn } from '@shared/utils'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
@@ -18,6 +20,7 @@ const SkeletonLoader = ({ count, className, isFlex }: { count: number; className
 )
 
 const ArticleListPage = () => {
+    const [keywords, setKeywords] = useState('')
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
     const observerRef = useRef<HTMLDivElement | null>(null)
 
@@ -29,7 +32,8 @@ const ArticleListPage = () => {
 
     const fetchArticles = async ({ pageParam = 1 }) => {
         const query = selectedCategory ? `categoryId=${selectedCategory.categoryId}&page=${pageParam}` : `page=${pageParam}`
-        const res = await fetch(`/api/article?${query}`)
+        const withKeyword = keywords ? `&keywords=${keywords}` : ''
+        const res = await fetch(`/api/article?${query}${withKeyword}`)
         const result = (await res.json()) as ResponseArticleList
         return {
             posts: (await result).posts,
@@ -48,8 +52,9 @@ const ArticleListPage = () => {
         fetchNextPage,
         hasNextPage,
         isFetchingNextPage,
+        refetch,
     } = useInfiniteQuery({
-        queryKey: ['articles', selectedCategory],
+        queryKey: ['articles', selectedCategory, keywords],
         queryFn: fetchArticles,
         getNextPageParam: (lastPage) => (lastPage.nextPage ? lastPage.nextPage : null),
         enabled: Boolean(categories),
@@ -78,8 +83,18 @@ const ArticleListPage = () => {
 
     return (
         <section className='size-full flex flex-col gap-10 p-2'>
-            <section className='flex flex-col gap-2 p-2'>
+            <section className='flex flex-col gap-3 p-2'>
                 <p className='font-bold text-2xl'>Articles</p>
+                <section className='relative flex items-center'>
+                    <MagnifyingGlassIcon className='size-3.5 absolute top-1/2 left-2.5 -translate-y-1/2' />
+                    <Input
+                        placeholder='Enter keywords to search'
+                        className='h-8 pl-7'
+                        value={keywords}
+                        onChange={(e) => setKeywords(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && refetch()}
+                    />
+                </section>
                 <section className='flex gap-2 overflow-scroll'>
                     {isCategoryLoading ? (
                         <SkeletonLoader count={5} className='h-[22px] w-10' isFlex />
