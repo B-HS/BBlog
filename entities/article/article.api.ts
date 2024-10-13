@@ -59,10 +59,6 @@ export const PostListGET = async (req: NextRequest) => {
             )
         }
 
-        if (categoryId > 0) {
-            conditions.push(eq(posts.categoryId, categoryId))
-            console.log('inserted')
-        }
         const postList = await query.where(and(...conditions)).execute()
 
         const categoryList = await db

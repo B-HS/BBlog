@@ -1,7 +1,9 @@
 'use client'
+import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export const ScrollStatus = () => {
+    const path = usePathname()
     const [scrollPercentage, setScrollPercentage] = useState(0)
 
     const handleScroll = () => {
@@ -20,6 +22,10 @@ export const ScrollStatus = () => {
             window.removeEventListener('scroll', handleScroll)
         }
     }, [])
+
+    useEffect(() => {
+        setScrollPercentage(0)
+    }, [path])
 
     return (
         <section className='relative w-full'>
