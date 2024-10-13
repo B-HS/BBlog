@@ -2,21 +2,18 @@
 
 import { MisskeyPost } from '@entities/misskey'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@shared/ui/carousel'
-import { Dialog, DialogContent, DialogTrigger } from '@shared/ui/dialog'
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@shared/ui/dialog'
 import Image from 'next/image'
-import { Fragment, ReactNode, useCallback, useState } from 'react'
+import { Fragment, ReactNode, useState } from 'react'
 
 export const ResizableImageModal = ({ url, children }: { url: string; children: ReactNode }) => {
     const [isOpen, setIsOpen] = useState(false)
 
-    const handleRightClick = useCallback((e: React.MouseEvent) => {
-        e.preventDefault()
-    }, [])
-
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>{children}</DialogTrigger>
-            <DialogContent className='size-fit p-0 min-w-96 min-h-96'>
+            <DialogContent className='size-fit p-0 min-w-[50dvw] min-h-[50dvh]'>
+                <DialogTitle />
                 <Image src={url} alt='Resizable Image' layout='fill' objectFit='contain' className='pointer-events-none' />
             </DialogContent>
         </Dialog>
