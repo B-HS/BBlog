@@ -85,16 +85,6 @@ const ArticleListPage = () => {
         <section className='size-full flex flex-col gap-10 p-2'>
             <section className='flex flex-col gap-3 p-2'>
                 <p className='font-bold text-2xl'>Articles</p>
-                <section className='relative flex items-center'>
-                    <MagnifyingGlassIcon className='size-3.5 absolute top-1/2 left-2.5 -translate-y-1/2' />
-                    <Input
-                        placeholder='Enter keywords to search'
-                        className='h-8 pl-7'
-                        value={keywords}
-                        onChange={(e) => setKeywords(e.target.value)}
-                        onKeyDown={(e) => e.key === 'Enter' && refetch()}
-                    />
-                </section>
                 <section className='flex gap-2 overflow-scroll'>
                     {isCategoryLoading ? (
                         <SkeletonLoader count={5} className='h-[22px] w-10' isFlex />
@@ -117,6 +107,16 @@ const ArticleListPage = () => {
                             ))}
                         </Fragment>
                     )}
+                </section>
+                <section className='relative flex items-center'>
+                    <MagnifyingGlassIcon className='size-3.5 absolute top-1/2 left-2.5 -translate-y-1/2' />
+                    <Input
+                        placeholder='Enter keywords to search'
+                        className='h-8 pl-7'
+                        value={keywords}
+                        onChange={(e) => setKeywords(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && refetch()}
+                    />
                 </section>
                 {(isArticleLoading || isCategoryLoading) && <SkeletonLoader count={6} className='sm:w-90 h-[119px]' />}
                 {!isArticleLoading && <ArticleList articles={articlesData?.pages.flatMap((page) => page.posts)} category={categories} />}
