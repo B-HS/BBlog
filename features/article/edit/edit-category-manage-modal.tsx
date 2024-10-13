@@ -16,6 +16,7 @@ type EditorCategoryManageModal = {
         value: number
         isHide: boolean
     }[]
+    // eslint-disable-next-line no-unused-vars
     refetch: (options?: RefetchOptions) => Promise<
         QueryObserverResult<
             {
@@ -166,6 +167,7 @@ export const EditCategoryManageModal: FC<EditorCategoryManageModal> = ({ refetch
                             .filter((category) => !category.isHide)
                             .map((category) => (
                                 <Button
+                                    key={category.value}
                                     variant={category.value === selectedCategory ? 'secondary' : 'outline'}
                                     size={'sm'}
                                     className='rounded-sm'
@@ -179,6 +181,7 @@ export const EditCategoryManageModal: FC<EditorCategoryManageModal> = ({ refetch
                             .filter((category) => category.isHide)
                             .map((category) => (
                                 <Button
+                                    key={category.value}
                                     variant={category.value === selectedCategory ? 'secondary' : 'outline'}
                                     size={'sm'}
                                     className='rounded-sm opacity-20'

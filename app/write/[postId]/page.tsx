@@ -16,7 +16,7 @@ const EditPage = ({ params }: { params: { postId: number } }) => {
         fetch(`/api/article/${params.postId}`)
             .then((res) => res.json())
             .then((data) => setPost(data))
-    }, [])
+    }, [params.postId])
 
     return <Editor submitFn={requestAddPost} post={post} />
 }

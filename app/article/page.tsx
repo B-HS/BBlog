@@ -63,22 +63,16 @@ const ArticleListPage = () => {
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
-                if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-                    fetchNextPage()
-                }
+                entries[0].isIntersecting && hasNextPage && !isFetchingNextPage && fetchNextPage()
             },
             { threshold: 1.0 },
         )
 
-        if (observerRef.current) {
-            observer.observe(observerRef.current)
-        }
+        observerRef.current && observer.observe(observerRef.current)
 
         return () => {
-            if (observerRef.current) {
-                // eslint-disable-next-line react-hooks/exhaustive-deps
-                observer.unobserve(observerRef.current)
-            }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            observerRef.current && observer.unobserve(observerRef.current)
         }
     }, [fetchNextPage, hasNextPage, isFetchingNextPage])
 
@@ -93,14 +87,14 @@ const ArticleListPage = () => {
                         <Fragment>
                             <Badge
                                 onClick={() => handleCategorySelect(null)}
-                                className='rounded-sm'
+                                className='rounded-sm cursor-pointer'
                                 variant={!selectedCategory?.categoryId ? 'default' : 'outline'}>
                                 All
                             </Badge>
                             {categories?.map((category) => (
                                 <Badge
                                     onClick={() => handleCategorySelect(category)}
-                                    className='rounded-sm'
+                                    className={cn('rounded-sm cursor-pointer', category.isHide && 'opacity-20')}
                                     key={category.categoryId}
                                     variant={selectedCategory?.categoryId === category.categoryId ? 'default' : 'outline'}>
                                     {category.category}

@@ -1,5 +1,6 @@
 import { TooltipIcon, WriteButton } from '@features/common'
 import { DotsHorizontalIcon, GitHubLogoIcon } from '@radix-ui/react-icons'
+import { Misskey } from '@shared/icons'
 import { buttonVariants } from '@shared/ui/button'
 import { BookIcon } from 'lucide-react'
 
@@ -25,6 +26,7 @@ export const SiteHeader = async () => {
                     <WriteButton />
                     <TooltipIcon icon={GitHubLogoIcon} linkUrl='https://github.com/B-HS' tooltipContent='Go to Github' />
                     <ThemeChanger />
+                    {process.env.MISSKEY_INSTANCE_URL && process.env.MISSKEY_USER_ID && <Misskey />}
                     <TooltipIcon icon={BookIcon} linkUrl='/article' tooltipContent='Articles' />
                 </section>
             </section>

@@ -9,6 +9,10 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'img.gumyo.net',
             },
+            {
+                protocol: 'https',
+                hostname: 'mi.gumyo.net',
+            },
         ],
     },
 }

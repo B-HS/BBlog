@@ -29,7 +29,9 @@ export const ArticleCard = ({ article, category }: { article: Article & { tags?:
             </Link>
             <section className='flex items-center gap-2'>
                 {article.tags?.map((tag) => (
-                    <span key={tag} className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'rounded-sm p-0.5 px-1.5 h-fit text-sm')}>
+                    <span
+                        key={tag}
+                        className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'rounded-sm p-0.5 px-1.5 h-fit text-sm cursor-pointer')}>
                         # {tag}
                     </span>
                 ))}
