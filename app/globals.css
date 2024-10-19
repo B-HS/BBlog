@@ -114,7 +114,7 @@ h3,
 h4,
 h5,
 h6 {
-    @apply mb-2 font-bold border-b text-primary border-border;
+    @apply mb-2 font-bold border-b text-primary border-border mt-3;
 }
 
 .markdown-prose h1 {
@@ -149,7 +149,7 @@ h6 {
 }
 
 .markdown-prose p {
-    @apply px-3 py-2 leading-relaxed;
+    @apply px-3 py-2 leading-loose;
 }
 .markdown-prose ul,
 .markdown-prose ol,
@@ -215,4 +215,7 @@ h6 {
 }
 .markdown-prose textarea {
     @apply px-3 py-2 leading-relaxed;
+}
+.markdown-prose img {
+    @apply mx-auto my-5;
 }
