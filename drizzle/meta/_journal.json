@@ -1,13 +1,13 @@
 {
-    "version": "7",
-    "dialect": "mysql",
-    "entries": [
-        {
-            "idx": 0,
-            "version": "5",
-            "when": 1728646142999,
-            "tag": "0000_yellow_maginty",
-            "breakpoints": true
-        }
-    ]
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1729338082014,
+      "tag": "0000_curvy_naoko",
+      "breakpoints": true
+    }
+  ]
 }

@@ -4,11 +4,15 @@ import { Comments } from '@features/mdx/comments'
 import { useCurrentPath } from '@shared/hooks'
 import { markdownToText } from '@shared/utils'
 import { Metadata } from 'next'
+import { redirect } from 'next/navigation'
 import { Fragment } from 'react'
 
 export const generateMetadata = async ({ params }: { params: { post: string } }): Promise<Metadata> => {
     const fetchedData = await fetch(`${process.env.SITE_URL}/api/article/${params.post}`).then((res) => res.json())
     const source = fetchedData as ArticleDetail
+
+    source.post?.title || redirect('/404')
+
     const frontmatter = {
         title: source?.post?.title || '',
         tags: source?.tags.at(0)?.split(',') || [],

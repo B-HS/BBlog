@@ -15,6 +15,7 @@ export const PostListGET = async (req: NextRequest) => {
         const limit = 20
 
         const conditions = []
+        !session?.user && conditions.push(eq(posts.isHide, false))
         !session?.user && conditions.push(eq(categories.isHide, false))
         keywords && conditions.push(like(posts.title, `%${keywords}%`))
 
@@ -91,10 +92,16 @@ export const PostListGET = async (req: NextRequest) => {
 }
 
 export const PostGet = async (_: NextRequest, { params }: { params: { id: string } }) => {
+    const session = await auth()
     const postId = Number(params.id)
     if (!postId) {
         return NextResponse.json({ message: 'Invalid post ID' }, { status: 400 })
     }
+
+    const conditions = []
+    !session?.user && conditions.push(eq(posts.isHide, false))
+    !session?.user && conditions.push(eq(categories.isHide, false))
+    conditions.push(eq(posts.postId, postId))
 
     try {
         const result = await db
@@ -107,7 +114,7 @@ export const PostGet = async (_: NextRequest, { params }: { params: { id: string
             .leftJoin(postTags, eq(posts.postId, postTags.postId))
             .leftJoin(tags, eq(postTags.tagId, tags.tagId))
             .leftJoin(categories, eq(posts.categoryId, categories.categoryId))
-            .where(eq(posts.postId, postId))
+            .where(and(...conditions))
             .groupBy(posts.postId)
             .execute()
 
