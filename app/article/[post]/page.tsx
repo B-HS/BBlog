@@ -80,7 +80,7 @@ const RemoteMdxPage = async ({ params }: { params: { post: number } }) => {
     return (
         <Fragment>
             <MdxPage content={content} frontmatter={{ ...frontmatter }} />
-            <Comments comments={source.comments || []} post={params.post} />
+            {source.post.isComment && <Comments comments={source.comments || []} post={params.post} />}
         </Fragment>
     )
 }
