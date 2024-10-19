@@ -1,8 +1,9 @@
 import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query'
 import { FC, useState } from 'react'
 
+import { DialogDescription } from '@radix-ui/react-dialog'
 import { Button, buttonVariants } from '@shared/ui/button'
-import { Dialog, DialogContent, DialogFooter, DialogTrigger } from '@shared/ui/dialog'
+import { Dialog, DialogContent, DialogFooter, DialogTitle, DialogTrigger } from '@shared/ui/dialog'
 import { Input } from '@shared/ui/input'
 import { Label } from '@shared/ui/label'
 import { NavigationMenuLink } from '@shared/ui/navigation-menu'
@@ -156,6 +157,8 @@ export const EditCategoryManageModal: FC<EditorCategoryManageModal> = ({ refetch
                 </NavigationMenuLink>
             </DialogTrigger>
             <DialogContent>
+                <DialogTitle hidden />
+                <DialogDescription hidden />
                 <section className='flex flex-col gap-3'>
                     <Label className='text-lg'>Category List</Label>
                     <section className='flex flex-wrap items-center gap-2'>
@@ -214,7 +217,9 @@ export const EditCategoryManageModal: FC<EditorCategoryManageModal> = ({ refetch
                 </section>
 
                 <DialogFooter>
-                    <Button type='submit'>Close</Button>
+                    <Button onClick={() => setIsOpen(false)} type='submit'>
+                        Close
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
