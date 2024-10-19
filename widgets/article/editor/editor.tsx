@@ -26,6 +26,7 @@ export type RequestPostDataType = {
 export type EditorProps = {
     text?: string
     post?: ArticleDetail
+    // eslint-disable-next-line no-unused-vars
     submitFn: (post: RequestPostDataType) => Promise<{ postId: number }>
 }
 
@@ -41,7 +42,7 @@ export const Editor: FC<EditorProps> = ({ text, post, submitFn }) => {
 
     const handleSave = async () => {
         const isValidated = [category, title, description].find((item) => !item)
-        if (!!isValidated) {
+        if (isValidated) {
             toast({
                 title: 'Not all fields are filled',
                 description: 'Please fill in all the fields',

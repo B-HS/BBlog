@@ -17,6 +17,8 @@ export interface ImageList {
     date: string
 }
 
+const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp', 'tiff', 'ico']
+
 export const r2Upload = (toast: Function, callbackFn: Function): ChangeEventHandler<HTMLInputElement> => {
     return async (event) => {
         const isImage = (file: { type: string }) => {
@@ -45,12 +47,14 @@ export const r2Upload = (toast: Function, callbackFn: Function): ChangeEventHand
     }
 }
 
-export const getR2UploadList = async () => {
-    const rawList = await fetch('/api/image/list', { method: 'GET' })
+export const getR2UploadList = async (): Promise<ImageList[]> => {
+    const rawList = await fetch('/api/image/list', { method: 'GET', cache: 'no-cache' })
     const list = (await rawList.json()) as RawR3List[]
-    return list?.map((obj) => ({
-        name: obj.Key,
-        url: process.env.NEXT_PUBLIC_R2_URL + `/${obj.Key}`,
-        date: obj.LastModified,
-    })) as ImageList[]
+    return list
+        ?.filter((obj) => imageExtensions.some((ext) => obj.Key.toLowerCase().endsWith(ext)))
+        ?.map((obj) => ({
+            name: obj.Key,
+            url: `${process.env.NEXT_PUBLIC_R2_URL}/${obj.Key}`,
+            date: obj.LastModified,
+        })) as ImageList[]
 }
