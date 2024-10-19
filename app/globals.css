@@ -61,7 +61,7 @@
 
 @layer base {
     * {
-        @apply border-border leading-loose antialiased;
+        @apply antialiased leading-loose border-border;
     }
 
     body {
@@ -91,19 +91,19 @@ html {
 }
 
 .markdown-prose {
-    @apply text-primary transition-all underline-offset-2;
+    @apply transition-all text-primary underline-offset-2;
 }
 .markdown-prose a:link {
-    @apply text-primary underline;
+    @apply underline text-primary;
 }
 .markdown-prose a:visited {
-    @apply text-primary/70 underline;
+    @apply underline text-primary/70;
 }
 .markdown-prose a:hover {
-    @apply text-primary/70 underline;
+    @apply underline text-primary/70;
 }
 .markdown-prose a:active {
-    @apply text-primary/50 underline;
+    @apply underline text-primary/50;
 }
 .markdown-prose hr {
     @apply border-0 border-t-[3.5px] border-border my-2;
@@ -114,7 +114,7 @@ h3,
 h4,
 h5,
 h6 {
-    @apply font-bold text-primary mb-2 border-b border-border;
+    @apply mb-2 font-bold border-b text-primary border-border;
 }
 
 .markdown-prose h1 {
@@ -141,7 +141,7 @@ h6 {
 }
 
 .markdown-prose pre {
-    @apply rounded-sm bg-background/50 p-1.5;
+    @apply rounded-sm bg-background/50;
 }
 
 .markdown-prose blockquote {
@@ -149,13 +149,13 @@ h6 {
 }
 
 .markdown-prose p {
-    @apply leading-relaxed px-3 py-2;
+    @apply px-3 py-2 leading-relaxed;
 }
 .markdown-prose ul,
 .markdown-prose ol,
 .markdown-prose ul ul,
 .markdown-prose ol ol {
-    @apply leading-relaxed list-outside px-10 mb-2;
+    @apply px-10 mb-2 leading-relaxed list-outside;
 }
 .markdown-prose li {
     @apply leading-relaxed;
@@ -170,11 +170,11 @@ h6 {
 }
 
 .markdown-prose table {
-    @apply w-full border-collapse table-auto overflow-hidden;
+    @apply w-full overflow-hidden border-collapse table-auto;
 }
 
 .markdown-prose table th {
-    @apply px-4 py-2 text-left bg-neutral-200 dark:bg-neutral-700 text-sm font-medium text-neutral-700 dark:text-neutral-300 border-b border-neutral-300 dark:border-neutral-600;
+    @apply px-4 py-2 text-sm font-medium text-left border-b bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 border-neutral-300 dark:border-neutral-600;
 }
 
 .markdown-prose table th p {
@@ -182,7 +182,7 @@ h6 {
 }
 
 .markdown-prose table td {
-    @apply px-4 py-2 text-sm text-neutral-700 dark:text-neutral-300 border-b border-neutral-300 dark:border-neutral-600;
+    @apply px-4 py-2 text-sm border-b text-neutral-700 dark:text-neutral-300 border-neutral-300 dark:border-neutral-600;
 }
 
 .markdown-prose table td p {
@@ -202,17 +202,17 @@ h6 {
     @apply bg-neutral-200 dark:bg-neutral-700;
 }
 .markdown-prose form {
-    @apply leading-relaxed px-3 py-2;
+    @apply px-3 py-2 leading-relaxed;
 }
 .markdown-prose button {
-    @apply leading-relaxed px-3 py-2;
+    @apply px-3 py-2 leading-relaxed;
 }
 .markdown-prose input {
-    @apply leading-relaxed px-3 py-2;
+    @apply px-3 py-2 leading-relaxed;
 }
 .markdown-prose select {
-    @apply leading-relaxed px-3 py-2;
+    @apply px-3 py-2 leading-relaxed;
 }
 .markdown-prose textarea {
-    @apply leading-relaxed px-3 py-2;
+    @apply px-3 py-2 leading-relaxed;
 }

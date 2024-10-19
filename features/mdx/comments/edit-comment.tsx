@@ -15,7 +15,7 @@ const commentSchema = z.object({
     username: z.string().min(1, 'Nickname is required'),
     password: z.string().min(1, 'Password is required'),
     commentText: z.string().min(1, 'Comment text is required'),
-    post: z.number(),
+    post: z.number().or(z.string()),
 })
 
 type CommentFormValues = z.infer<typeof commentSchema>
@@ -47,7 +47,7 @@ export const AddCommentInput = ({ post }: { post: number }) => {
 
     return (
         <section className='flex w-full items-center justify-start gap-3'>
-            <form className='flex-1 flex gap-3 flex-col' onSubmit={handleSubmit(addComment)}>
+            <form className='flex-1 flex gap-3 flex-col' onSubmit={handleSubmit(addComment, (err) => console.log(err))}>
                 <section className='flex gap-2 items-center w-full'>
                     <section className='flex flex-col gap-1 w-full'>
                         <Label htmlFor='username'>Nickname</Label>
@@ -67,7 +67,7 @@ export const AddCommentInput = ({ post }: { post: number }) => {
                     {errors.commentText && <p className='text-red-600 my-1'>{errors.commentText.message}</p>}
                 </section>
 
-                <input type='hidden' {...register('post')} value={post} />
+                <input type='hidden' {...register('post')} defaultValue={post} />
 
                 <Button variant='secondary' type='submit'>
                     Submit

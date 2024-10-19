@@ -23,9 +23,16 @@ export const generateMetadata = async ({ params }: { params: { post: string } })
         title: frontmatter.title,
         description: context || `Article | ${process.env.SITE_NAME}`,
         keywords: frontmatter.tags?.join(', ') || `Article | ${process.env.SITE_NAME}`,
+        robots: {
+            index: true,
+            follow: true,
+            nocache: false,
+        },
+        authors: [{ name: process.env.AUTHOR || 'Author Name', url: process.env.SITE_URL || 'https://gumyo.net' }],
         openGraph: {
             title: frontmatter.title,
             description: context || `Article | ${process.env.SITE_NAME}`,
+            siteName: process.env.SITE_NAME || '',
             images: [
                 {
                     url: `${frontmatter?.thumbnail}`,
@@ -35,6 +42,7 @@ export const generateMetadata = async ({ params }: { params: { post: string } })
             ],
         },
         twitter: {
+            card: 'summary_large_image',
             images: {
                 url: `${frontmatter?.thumbnail}`,
                 alt: 'Post thumbnail',
@@ -44,6 +52,10 @@ export const generateMetadata = async ({ params }: { params: { post: string } })
             creator: process.env.AUTHOR || process.env.SITE_NAME || '',
             creatorId: params.post,
         },
+        publisher: process.env.AUTHOR || process.env.SITE_NAME || '',
+        category: frontmatter.category,
+        creator: process.env.AUTHOR || process.env.SITE_NAME || '',
+        generator: process.env.AUTHOR || process.env.SITE_NAME || '',
     }
 }
 

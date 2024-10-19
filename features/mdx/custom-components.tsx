@@ -11,7 +11,7 @@ const HeaderCompoenet = (level: number) => {
         const id = props.children?.toString()?.replaceAll(' ', '-').toLowerCase()
 
         return (
-            <Link id={id} href={`#${id}`}>
+            <Link id={id} href={`#${id}`} className='heading-url'>
                 {createElement(
                     Tag,
                     { ...props },
@@ -29,9 +29,9 @@ const HeaderCompoenet = (level: number) => {
 
 const codeComponent = (props: DetailedHTMLProps<HTMLAttributes<HTMLElement> & { 'data-language'?: string }, HTMLElement>) => {
     return (
-        <code className='flex flex-col relative border p-3 m-1 rounded-sm bg-secondary-foreground dark:bg-secondary text-background dark:text-foreground focus:border-none'>
+        <code className='relative flex flex-col p-3 border rounded-sm bg-secondary-foreground dark:bg-secondary text-background dark:text-foreground focus:border-none'>
             {props['data-language'] && (
-                <span className='absolute top-2 right-2 px-1.5 rounded-sm p-1 border capitalize border-foreground/50'>
+                <span className='absolute top-2 right-2 px-1.5 rounded-sm p-0.5 border capitalize border-foreground/50'>
                     {LANGUAGE_LIST[(props['data-language'] as keyof typeof LANGUAGE_LIST) || props['data-language']]}
                 </span>
             )}
