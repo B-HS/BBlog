@@ -180,28 +180,34 @@ export const PostWrite = async (req: NextRequest) => {
 
             if (postTagsList?.length > 0) {
                 const existTagList = await tx.select().from(tags).where(inArray(tags.tag, postTagsList))
-
                 const existTags = existTagList.map((tag) => tag.tag)
                 const newTags = postTagsList.filter((tag) => !existTags.includes(tag))
+                const processedTagIds = existTagList.map((tag) => tag.tagId)
 
-                const tagIds = await tx
-                    .insert(tags)
-                    .values(newTags.map((tag) => ({ tag })))
-                    .$returningId()
-                const processedTagIds = [...existTagList.map((tag) => tag.tagId), ...tagIds.map((tag) => tag.tagId)]
+                if (newTags.length > 0) {
+                    const tagIds = await tx
+                        .insert(tags)
+                        .values(newTags.map((tag) => ({ tag })))
+                        .$returningId()
 
-                const tagInserts = processedTagIds.map((tagId) => ({
-                    postId,
-                    tagId,
-                }))
+                    processedTagIds.push(...tagIds.map((tag) => tag.tagId))
+                }
 
-                await tx.insert(postTags).values(tagInserts).execute()
+                if (processedTagIds.length > 0) {
+                    const tagInserts = processedTagIds.map((tagId) => ({
+                        postId,
+                        tagId,
+                    }))
+
+                    await tx.insert(postTags).values(tagInserts).execute()
+                }
             }
             return postId
         })
 
         return NextResponse.json({ postId }, { status: 200 })
     } catch (error) {
+        console.log(error)
         return handleError(error)
     }
 }
@@ -263,6 +269,7 @@ export const PostUpdate = async (req: NextRequest, { params }: { params: { id: s
                 const newTags = updatedTagsList.filter((tag) => !existTags.includes(tag))
 
                 if (newTags.length > 0) {
+                    console.log(newTags)
                     const tagIds = await tx
                         .insert(tags)
                         .values(newTags.map((tag) => ({ tag })))
