@@ -1,8 +1,13 @@
+> 프로젝트 기본 템플릿
+  - https://github.com/B-HS/template
 ## BBlog
 -   Nexjts
 -   Drizzle
--   shadcn/ui
--   tailwind
+-   Shadcn/ui
+-   Tailwind
+-   Zustand
+-   Cognito
+-   MDX
 
 ## 업데이트 예정
 - 관리자 페이지
