@@ -49,8 +49,8 @@ const ImageComponent = (props: DetailedHTMLProps<HTMLAttributes<HTMLImageElement
 
     if (height) {
         return (
-            <section style={{ width, height }} className='relative mx-auto'>
-                <Image sizes='300' fill src={props.src} alt={alt} className='object-contain' />
+            <section style={{ width, height }} className='relative flex flex-col items-center justify-center'>
+                <Image sizes='15vw' fill src={props.src} alt={alt} className='object-contain size-full' priority={false} />
             </section>
         )
     }
