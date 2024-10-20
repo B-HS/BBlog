@@ -216,6 +216,3 @@ h6 {
 .markdown-prose textarea {
     @apply px-3 py-2 leading-relaxed;
 }
-.markdown-prose img {
-    @apply mx-auto my-5;
-}

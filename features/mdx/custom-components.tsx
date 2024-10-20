@@ -2,6 +2,7 @@ import { LANGUAGE_LIST } from '@shared/constant'
 import { VideoComponent } from '@shared/player'
 import { LinkIcon } from 'lucide-react'
 import { MDXComponents } from 'mdx/types'
+import Image from 'next/image'
 import Link from 'next/link'
 import { DetailedHTMLProps, HTMLAttributes, createElement } from 'react'
 
@@ -40,13 +41,32 @@ const codeComponent = (props: DetailedHTMLProps<HTMLAttributes<HTMLElement> & { 
     )
 }
 
+const ImageComponent = (props: DetailedHTMLProps<HTMLAttributes<HTMLImageElement>, HTMLImageElement> & { alt?: string; src: string }) => {
+    const properties = props.alt?.split('||') || ['image']
+    const alt = properties[0]
+    const height = Number(properties.find((prop) => prop.includes('h'))?.split('h')[1]) || '300px'
+    const width = Number(properties.find((prop) => prop.includes('w'))?.split('w')[1]) || '100%'
+
+    if (height) {
+        return (
+            <section style={{ width, height }} className='relative mx-auto'>
+                <Image sizes='300' fill src={props.src} alt={alt} className='object-contain' />
+            </section>
+        )
+    }
+
+    return <Image fill src={props.src} alt={alt} className='w-full h-full ' />
+}
+
 export const CustomComponents: MDXComponents = {
+    // @ts-ignore
+    img: ImageComponent,
+    code: codeComponent,
+    video: VideoComponent,
     h1: HeaderCompoenet(1),
     h2: HeaderCompoenet(2),
     h3: HeaderCompoenet(3),
     h4: HeaderCompoenet(4),
     h5: HeaderCompoenet(5),
     h6: HeaderCompoenet(6),
-    code: codeComponent,
-    video: VideoComponent,
 }

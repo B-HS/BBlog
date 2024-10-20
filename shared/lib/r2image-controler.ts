@@ -17,7 +17,7 @@ export interface ImageList {
     date: string
 }
 
-const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp', 'tiff', 'ico']
+export const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp', 'tiff', 'ico']
 
 export const r2Upload = (toast: Function, callbackFn: Function): ChangeEventHandler<HTMLInputElement> => {
     return async (event) => {
