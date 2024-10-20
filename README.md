@@ -8,6 +8,7 @@
 -   Zustand
 -   Cognito
 -   MDX
+-   React query
 
 ## 업데이트 예정
 - 관리자 페이지
