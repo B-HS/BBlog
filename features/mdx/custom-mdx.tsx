@@ -4,7 +4,7 @@ import rehypePrettyCode from 'rehype-pretty-code'
 import { compileMDX, MDXRemoteProps } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
 import { CustomComponents } from './custom-components'
-import { remarkVideos } from './video-remark'
+import { remarkContent } from './content-remark'
 
 export interface FrontmatterProps {
     title: string
@@ -23,7 +23,7 @@ export const CustomMdx = async (opts: MDXRemoteProps) => {
         components: CustomComponents,
         options: {
             mdxOptions: {
-                remarkPlugins: [remarkGfm, remarkVideos],
+                remarkPlugins: [remarkGfm, remarkContent],
                 rehypePlugins: [[rehypePrettyCode, { theme: 'dark-plus' }]],
             },
         },

@@ -3,7 +3,7 @@
 // eslint-disable-next-line import/no-named-as-default
 import rehypePrettyCode from 'rehype-pretty-code'
 
-import { CustomComponents, remarkVideos } from '@features/mdx'
+import { CustomComponents, remarkContent } from '@features/mdx'
 import { TabsContent } from '@radix-ui/react-tabs'
 import { getR2UploadList, ImageList, r2Upload } from '@shared/lib'
 import { Label } from '@shared/ui/label'
@@ -35,7 +35,7 @@ export const EditDescription: FC<EditDescriptionProps> = ({ description, setDesc
             parseFrontmatter: false,
             mdxOptions: {
                 development: process.env.NODE_ENV === 'development',
-                remarkPlugins: [remarkGfm, remarkVideos],
+                remarkPlugins: [remarkGfm, remarkContent],
                 rehypePlugins: [[rehypePrettyCode, { theme: 'dark-plus' }]],
                 format: 'mdx',
             },

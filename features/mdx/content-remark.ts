@@ -1,3 +1,4 @@
+import { imageExtensions } from '@shared/lib'
 import { visit } from 'unist-util-visit'
 
 const videoFormats = [
@@ -45,26 +46,34 @@ const videoFormats = [
     '.m3u8',
 ]
 
-export const remarkVideos = () => {
-    let videoIndex = 0
+export const remarkContent = () => {
+    let index = 0
 
     const visitor = (node: any) => {
-        if (videoFormats.some((format) => node.url.includes(format))) {
+        const isVideo = videoFormats.some((format) => node.url.includes(format))
+        const isImage = imageExtensions.some((format) => node.url.includes(format))
+
+        if (isVideo) {
             node.type = 'mdxJsxFlowElement'
             node.name = 'video'
             node.attributes = [
                 { type: 'mdxJsxAttribute', name: 'src', value: node.url },
                 { type: 'mdxJsxAttribute', name: 'alt', value: node.alt || '' },
                 { type: 'mdxJsxAttribute', name: 'controls', value: true },
-                { type: 'mdxJsxAttribute', name: 'key', value: `video-${videoIndex++}` },
+                { type: 'mdxJsxAttribute', name: 'key', value: `video-${index++}` },
             ]
-            node.children = []
         }
+
+        if (isImage) {
+            node.type = 'image'
+            node.alt = node.alt || ''
+        }
+
+        node.children = []
     }
 
     const transform = (tree: any) => {
         visit(tree, 'image', visitor)
-
         visit(tree, 'paragraph', (node, index, parent) => {
             if (node.children.length === 1 && node.children[0].type === 'mdxJsxFlowElement' && node.children[0].name === 'video') {
                 if (parent.children && index !== undefined) {
@@ -79,6 +88,14 @@ export const remarkVideos = () => {
                     )
 
                     parent.children.splice(index, 1, ...newChildren)
+                }
+            }
+        })
+
+        visit(tree, 'heading', (node, index, parent) => {
+            if (node.children.length === 1 && node.children[0].type === 'image') {
+                if (parent.children && index !== undefined) {
+                    parent.children[index] = node.children[0]
                 }
             }
         })
