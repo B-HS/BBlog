@@ -17,6 +17,9 @@
 -   React query
 
 ## 업데이트 예정
+- 사이트
+  - [ ] robots.txt 작성
+  - [ ] sitemap.xml 작성
 - 관리자 페이지
   - 대시보드
     - [ ] 일일 방문자 수
