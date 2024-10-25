@@ -6,7 +6,7 @@ import { BookIcon } from 'lucide-react'
 
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-
+const AdminWidget = dynamic(() => import('@widgets/admin/admin-widget').then((comp) => comp.AdminWidget), { ssr: false })
 const ScrollStatus = dynamic(() => import('@features/common').then((comp) => comp.ScrollStatus), { ssr: false })
 const ThemeChanger = dynamic(() => import('@features/common').then((comp) => comp.ThemeChanger), {
     ssr: false,
@@ -23,6 +23,7 @@ export const SiteHeader = async () => {
                     </Link>
                 </section>
                 <section className='flex items-center gap-2'>
+                    <AdminWidget />
                     <WriteButton />
                     <TooltipIcon icon={GitHubLogoIcon} linkUrl='https://github.com/B-HS' tooltipContent='Go to Github' />
                     <ThemeChanger />
