@@ -1,7 +1,8 @@
 'use client'
-import { ReactElement } from 'react'
 
-import { RouterComponents, useSidebarStore } from '@entities/admin'
+import { useSidebarStore } from '@entities/admin'
+import { ReactElement } from 'react'
+import { RouterComponents } from './admin-layout-config'
 
 export const RenderComponent = (menuPath: string[], components: any): ReactElement | null => {
     if (!menuPath.length) return null

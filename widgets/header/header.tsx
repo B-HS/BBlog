@@ -3,10 +3,10 @@ import { DotsHorizontalIcon, GitHubLogoIcon } from '@radix-ui/react-icons'
 import { Misskey } from '@shared/icons'
 import { buttonVariants } from '@shared/ui/button'
 import { BookIcon } from 'lucide-react'
-
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-const AdminWidget = dynamic(() => import('@widgets/admin/admin-widget').then((comp) => comp.AdminWidget), { ssr: false })
+
+const AdminWidget = dynamic(() => import('@widgets/admin').then((comp) => comp.AdminWidget), { ssr: false })
 const ScrollStatus = dynamic(() => import('@features/common').then((comp) => comp.ScrollStatus), { ssr: false })
 const ThemeChanger = dynamic(() => import('@features/common').then((comp) => comp.ThemeChanger), {
     ssr: false,

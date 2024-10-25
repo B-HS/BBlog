@@ -233,10 +233,10 @@ h6 {
     @apply px-3 py-2 leading-relaxed;
 }
 @layer base {
-  * {
-    @apply border-border;
+    * {
+        @apply border-border;
     }
-  body {
-    @apply bg-background text-foreground;
+    body {
+        @apply bg-background text-foreground;
     }
 }
