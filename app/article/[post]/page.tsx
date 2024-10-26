@@ -1,7 +1,7 @@
 import { ArticleDetail } from '@entities/article'
 import { CustomMdx, MdxPage } from '@features/mdx'
 import { Comments } from '@features/mdx/comments'
-import { useCurrentPath } from '@shared/hooks'
+import { currentPath } from '@shared/lib/current-path'
 import { markdownToText } from '@shared/utils'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
@@ -13,12 +13,14 @@ export const generateMetadata = async ({ params }: { params: { post: string } })
 
     source.post?.title || redirect('/404')
 
+    const imageMatch = source.post.description.match(/https:\/\/img\.gumyo\.net\/\S+\.(jpg|jpeg|png|gif|svg)/)
+    const thumbnail = imageMatch ? imageMatch[0] : `${process.env.SITE_URL}/favicon.ico`
     const frontmatter = {
         title: source?.post?.title || '',
         tags: source?.tags.at(0)?.split(',') || [],
         date: source?.post?.createdAt.toString() || '',
         category: source?.category || '',
-        thumbnail: '',
+        thumbnail,
         viewCnt: String(source?.post?.views) || '',
     }
     const context = (markdownToText(source?.post.description.toString().slice(0, 250)) || frontmatter.title || '')?.replace(/<\/?[^>]+(>|$)/g, '')
@@ -64,7 +66,7 @@ export const generateMetadata = async ({ params }: { params: { post: string } })
 }
 
 const RemoteMdxPage = async ({ params }: { params: { post: number } }) => {
-    const { url } = useCurrentPath()
+    const { url } = currentPath()
     const fetchedData = await fetch(`${url}/api/article/${params.post}`).then((res) => res.json())
     const source = fetchedData as ArticleDetail
     const frontmatter = {

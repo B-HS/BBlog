@@ -1,11 +1,11 @@
 import { ResponseArticleList } from '@entities/article'
-import { useCurrentPath } from '@shared/hooks/use-current-path'
+import { currentPath } from '@shared/lib/current-path'
 import { Github, Resume } from '@shared/icons'
 import { ArticleList } from '@widgets/article'
 import { headers } from 'next/headers'
 
 const Page = async () => {
-    const { url } = useCurrentPath()
+    const { url } = currentPath()
     const { posts, categories } = await fetch(`${url}/api/article`, {
         method: 'GET',
         headers: new Headers(headers()),

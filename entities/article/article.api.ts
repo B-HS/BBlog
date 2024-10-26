@@ -10,9 +10,11 @@ export const PostListGET = async (req: NextRequest) => {
 
     try {
         const page = Number(req.nextUrl.searchParams.get('page') || '1')
-        const categoryId = Number(req.nextUrl.searchParams.get('categoryId') || 0)
+        const categoryId = Number(req.nextUrl.searchParams.get('categoryId') || '0')
         const keywords = req.nextUrl.searchParams.get('keywords') || undefined
-        const limit = 20
+        const isDescription = req.nextUrl.searchParams.get('desc') === 'true'
+        const isAll = req.nextUrl.searchParams.get('all') === 'true'
+        const limit = Math.min(Number(req.nextUrl.searchParams.get('limit') || '20'), 100)
 
         const conditions = []
         !session?.user && conditions.push(eq(posts.isHide, false))
@@ -30,8 +32,11 @@ export const PostListGET = async (req: NextRequest) => {
             .leftJoin(categories, eq(posts.categoryId, categories.categoryId))
             .groupBy(posts.postId)
             .orderBy(desc(posts.updatedAt))
-            .limit(limit)
-            .offset((page - 1) * limit)
+
+        if (!isAll) {
+            query.limit(limit)
+            query.offset((page - 1) * limit)
+        }
 
         if (categoryId > 0) {
             conditions.push(eq(posts.categoryId, categoryId))
@@ -50,9 +55,11 @@ export const PostListGET = async (req: NextRequest) => {
                             postId: post.postId,
                             title: post.title,
                             categoryId: post.categoryId,
+                            createdAt: post.createdAt,
                             updatedAt: post.updatedAt,
                             isNotice: post.isNotice,
                             tags: tags?.split(','),
+                            ...(isDescription && { description: post.description }),
                         }
                     }),
                     categories: category,
@@ -77,9 +84,11 @@ export const PostListGET = async (req: NextRequest) => {
                         postId: post.postId,
                         title: post.title,
                         categoryId: post.categoryId,
+                        createdAt: post.createdAt,
                         updatedAt: post.updatedAt,
                         isNotice: post.isNotice,
                         tags: tags?.split(','),
+                        ...(isDescription && { description: post.description }),
                     }
                 }),
                 categories: categoryList,

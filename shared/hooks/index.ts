@@ -1,1 +1,1 @@
-export * from './use-current-path'
+export { useIsMobile } from './use-mobile'

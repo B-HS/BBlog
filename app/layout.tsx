@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     twitter: {
         images: {
             url: 'https://img.gumyo.net/hs-padding.png',
-            alt: 'Post thumbnail',
+            alt: process.env.SITE_NAME,
         },
         title: process.env.SITE_NAME,
         description: process.env.SITE_NAME,
@@ -50,6 +50,7 @@ const fontRound = M_PLUS_Rounded_1c({
     subsets: ['latin'],
     variable: '--font-mplus',
     weight: ['100', '300', '500', '700', '800', '900'],
+    display: 'swap',
 })
 
 const RootLayout: FC<{ children: ReactNode }> = ({ children }) => {
