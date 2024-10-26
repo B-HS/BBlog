@@ -5,9 +5,7 @@ import type { MetadataRoute } from 'next'
 export const dynamic = 'force-dynamic'
 
 const getArticles = async () =>
-    await fetch(`${process.env.SITE_URL}/api/article?all=true&desc=true`, { next: { revalidate: 60 * 60 } }).then(
-        (res) => res.json() as ResponseArticleList,
-    )
+    await fetch(`${process.env.SITE_URL}/api/article?all=true&desc=true`, { cache: 'no-cache' }).then((res) => res.json() as ResponseArticleList)
 
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
     const articles = await getArticles()
