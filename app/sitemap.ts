@@ -10,7 +10,7 @@ const getArticles = async () =>
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
     const articles = await getArticles()
     return articles?.posts?.map((article) => {
-        const imageMatches = [...Array.from(article.description.matchAll(/https:\/\/img\.gumyo\.net\/\S+\.(jpg|jpeg|png|gif)/g))]
+        const imageMatches = [...Array.from(article.description?.matchAll(/https:\/\/img\.gumyo\.net\/\S+\.(jpg|jpeg|png|gif)/g))]
         const images = imageMatches.map((match) => match[0]) || []
         const sitemapObj = {
             url: `${process.env.SITE_URL}/article/${article.postId}`,
