@@ -12,30 +12,33 @@ const periodMap: { [key: string]: DateType } = {
 }
 
 export const Dashboard = () => {
-    const [currentPeriod, setCurrentPeriod] = useState('weekly')
-    const [gap, setGap] = useState(0)
+    const [periodState, setPeriodState] = useState({ period: 'weekly', gap: 0 })
 
     const { data } = useQuery({
-        queryKey: ['visitor', currentPeriod, gap],
+        queryKey: ['visitor', periodState],
         queryFn: async () => {
             const searchParam = new URLSearchParams()
-            const dateAry = getFormattedDates(periodMap[currentPeriod], gap)
+            const dateAry = getFormattedDates(periodMap[periodState.period], periodState.gap)
             searchParam.append('startDate', dateAry.at(0)!)
             searchParam.append('endDate', dateAry.at(-1)!)
-            searchParam.append('type', periodMap[currentPeriod])
+            searchParam.append('type', periodMap[periodState.period])
             return await fetch('/api/admin/chart?' + searchParam.toString()).then((res) => res.json())
         },
     })
 
+    const setPeriodWithResetGap = (newPeriod: string) => setPeriodState({ period: newPeriod, gap: 0 })
+    const incrementGap = () => setPeriodState((prev) => ({ ...prev, gap: prev.gap + 1 }))
+    const decrementGap = () => setPeriodState((prev) => ({ ...prev, gap: prev.gap - 1 }))
+
     return (
         <section className='flex flex-col gap-2'>
             <ChartHeaderWithButtons
-                currentPeriod={currentPeriod}
-                next={() => setGap((prev) => prev + 1)}
-                prev={() => setGap((prev) => prev - 1)}
-                setCurrentPeriod={setCurrentPeriod}
+                currentPeriod={periodState.period}
+                next={incrementGap}
+                prev={decrementGap}
+                setCurrentPeriod={setPeriodWithResetGap}
             />
-            <ChartDataWithFormedData chartData={data || []} currentPeriod={currentPeriod} gap={gap} />
+            <ChartDataWithFormedData chartData={data || []} periodState={periodState} />
             <Separator />
         </section>
     )

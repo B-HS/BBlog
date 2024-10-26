@@ -66,9 +66,8 @@ export const getFormattedDates = (type: DateType, gap: number = 0): string[] => 
     }
 
     if (type === 'month') {
-        const currentMonth = today.month() + 1
-        const startMonth = currentMonth >= 7 ? 7 : 1
-        const endMonth = currentMonth >= 7 ? 12 : 6
+        const startMonth = 1
+        const endMonth = 12
 
         const baseDate = today.add(gap, 'year')
         const adjustedStartMonth = startMonth

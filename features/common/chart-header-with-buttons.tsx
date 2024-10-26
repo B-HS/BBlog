@@ -7,6 +7,7 @@ const periods = ['weekly', 'monthly']
 
 interface ChartHeaderWithButtonsProps {
     currentPeriod: string
+    // eslint-disable-next-line no-unused-vars
     setCurrentPeriod: (period: string) => void
     prev: () => void
     next: () => void

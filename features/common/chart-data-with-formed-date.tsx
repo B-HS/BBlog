@@ -9,24 +9,30 @@ const periodMap: { [key: string]: DateType } = {
     monthly: 'month',
 }
 
-type ChartDataWithFormedData = {
+type ChartDataWithFormedDataType = {
     visitor: number
     date: string
 }
 
-interface ChartDataWithFormedDataProps {
-    chartData?: ChartDataWithFormedData[]
-    currentPeriod: string
+type PeriodStateType = {
+    period: string
     gap: number
 }
 
-export const ChartDataWithFormedData = ({ chartData, currentPeriod, gap }: ChartDataWithFormedDataProps) => {
-    const date = getFormattedDates(periodMap[currentPeriod], gap)
+interface ChartDataWithFormedDataProps {
+    chartData?: ChartDataWithFormedDataType[]
+    periodState: PeriodStateType
+}
 
-    currentPeriod === 'weekly' &&
-        date.forEach((date) => !chartData?.find((data) => data.date === date) && chartData?.push({ date: date, visitor: 0 }))
-    currentPeriod === 'monthly' &&
-        date.forEach((date) => !chartData?.find((data) => data.date === date) && chartData?.push({ date: date, visitor: 0 }))
+export const ChartDataWithFormedData = ({ chartData = [], periodState }: ChartDataWithFormedDataProps) => {
+    const date = getFormattedDates(periodMap[periodState.period], periodState.gap)
+
+    if (Array.isArray(chartData)) {
+        periodState.period === 'weekly' &&
+            date.forEach((date) => !chartData?.find((data) => data.date === date) && chartData?.push({ date: date, visitor: 0 }))
+        periodState.period === 'monthly' &&
+            date.forEach((date) => !chartData?.find((data) => data.date === date) && chartData?.push({ date: date, visitor: 0 }))
+    }
 
     return (
         <section className='flex flex-col gap-2'>
