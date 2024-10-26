@@ -2,10 +2,13 @@ import { ResponseArticleList } from '@entities/article'
 import dayjs from 'dayjs'
 import type { MetadataRoute } from 'next'
 
-const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
-    const articles = await fetch(`${process.env.SITE_URL}/api/article?all=true&desc=true`, { cache: 'no-cache' }).then(
+const getArticles = async () =>
+    await fetch(`${process.env.SITE_URL}/api/article?all=true&desc=true`, { next: { revalidate: 60 * 60 } }).then(
         (res) => res.json() as ResponseArticleList,
     )
+
+const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
+    const articles = await getArticles()
     return articles?.posts?.map((article) => {
         const imageMatches = [...Array.from(article.description.matchAll(/https:\/\/img\.gumyo\.net\/\S+\.(jpg|jpeg|png|gif)/g))]
         const images = imageMatches.map((match) => match[0]) || []
