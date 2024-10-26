@@ -2,6 +2,8 @@ import { ResponseArticleList } from '@entities/article'
 import dayjs from 'dayjs'
 import type { MetadataRoute } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 const getArticles = async () =>
     await fetch(`${process.env.SITE_URL}/api/article?all=true&desc=true`, { next: { revalidate: 60 * 60 } }).then(
         (res) => res.json() as ResponseArticleList,
