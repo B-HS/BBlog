@@ -60,3 +60,10 @@ export const visitors = mysqlTable('visitors', {
     path: varchar('path', { length: 255 }).notNull(),
     createdAt: datetime('created_at').default(new Date()).notNull(),
 })
+
+export const images = mysqlTable('images', {
+    imageId: varchar('imageId', { length: 36 }).primaryKey().notNull(),
+    extension: varchar('extension', { length: 255 }).notNull(),
+    orgName: varchar('orgName', { length: 255 }).notNull(),
+    createdAt: datetime('created_at').default(new Date()).notNull(),
+})

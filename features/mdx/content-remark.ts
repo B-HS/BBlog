@@ -1,5 +1,6 @@
-import { imageExtensions } from '@shared/lib'
 import { visit } from 'unist-util-visit'
+
+const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp', 'tiff', 'ico', 'webp', 'heic', 'heif', 'avif']
 
 const videoFormats = [
     '.mp4',

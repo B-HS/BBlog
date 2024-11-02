@@ -3,14 +3,15 @@
 // eslint-disable-next-line import/no-named-as-default
 import rehypePrettyCode from 'rehype-pretty-code'
 
+import { ImageList } from '@entities/common'
 import { CustomComponents, remarkContent } from '@features/mdx'
 import { TabsContent } from '@radix-ui/react-tabs'
-import { getR2UploadList, ImageList, r2Upload } from '@shared/lib'
 import { Label } from '@shared/ui/label'
 import { Separator } from '@shared/ui/separator'
 import { StyledTextarea } from '@shared/ui/styled-textarea'
 import { Tabs, TabsList, TabsTrigger } from '@shared/ui/tabs'
 import { useToast } from '@shared/ui/use-toast'
+import { useMutation } from '@tanstack/react-query'
 import { MDXRemote } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 import Image from 'next/image'
@@ -24,11 +25,26 @@ type EditDescriptionProps = {
 }
 
 export const EditDescription: FC<EditDescriptionProps> = ({ description, setDescription, setImageObj }) => {
-    const [r2images, setR2Images] = useState<ImageList[]>([])
+    const loadImageListFn = async () => {
+        const response = await fetch('/api/image/list', { method: 'GET', cache: 'no-cache' }).then((res) => res.json())
+
+        if (response.length > 0) {
+            const result = response as ImageList[]
+            setImages(result)
+            fileInput.current && (fileInput.current.nodeValue = null)
+            toast({ title: 'Image list loaded successfully', description: '' })
+        }
+    }
+
+    const [images, setImages] = useState<ImageList[]>([])
     const [compiledSource, setCompiledSource] = useState<string>('')
     const [scope, setScope] = useState<Record<string, unknown>>({})
     const { toast } = useToast()
     const fileInput = useRef<HTMLImageElement>(null)
+    const { mutate: loadImageList } = useMutation({
+        mutationFn: loadImageListFn,
+        gcTime: 0,
+    })
 
     const setPreview = async () => {
         const { compiledSource, scope } = await serialize(description, {
@@ -45,10 +61,25 @@ export const EditDescription: FC<EditDescriptionProps> = ({ description, setDesc
         setScope(scope)
     }
 
-    const loadImageList = async () => {
-        setR2Images(await getR2UploadList())
-        if (fileInput.current) {
-            fileInput.current.nodeValue = null
+    const uploadFiles = async (e: any) => {
+        const files = e.target.files
+        const formData = new FormData()
+        if (files) {
+            for (let i = 0; i < files.length; i++) {
+                formData.append('file', files[i])
+            }
+        }
+
+        const response = await fetch('/api/image/upload', {
+            method: 'POST',
+            body: formData,
+        })
+
+        if (response.ok) {
+            toast({ title: 'Files uploaded successfully', description: '' })
+            loadImageList()
+        } else {
+            toast({ title: 'Failed to upload files', description: '', variant: 'destructive' })
         }
     }
 
@@ -68,7 +99,10 @@ export const EditDescription: FC<EditDescriptionProps> = ({ description, setDesc
                     <TabsTrigger className='rounded-none h-full border border-b-0 active:bg-neutral-500' value='preview'>
                         Preview
                     </TabsTrigger>
-                    <TabsTrigger className='rounded-none h-full border border-b-0 active:bg-neutral-500' value='images' onClick={loadImageList}>
+                    <TabsTrigger
+                        className='rounded-none h-full border border-b-0 active:bg-neutral-500'
+                        value='images'
+                        onClick={() => loadImageList()}>
                         images
                     </TabsTrigger>
                 </TabsList>
@@ -101,14 +135,14 @@ export const EditDescription: FC<EditDescriptionProps> = ({ description, setDesc
                     <section className='min-h-96 h-[50vh] border rounded-b-sm p-5 overflow-scroll flex flex-col'>
                         <section className='flex flex-col gap-3'>
                             <p className='text-3xl font-bold'>Upload</p>
-                            <input onChange={r2Upload(toast, loadImageList)} type='file' ref={fileInput as any} />
+                            <input onChange={uploadFiles} type='file' ref={fileInput as any} />
                         </section>
                         <Separator className='my-10' />
                         <section className='flex flex-col gap-3'>
                             <p className='text-3xl font-bold'>Image list</p>
                             <section className='grid grid-cols-3 gap-2'>
-                                {r2images.length > 0 &&
-                                    r2images.map((image) => (
+                                {images.length > 0 &&
+                                    images.map((image) => (
                                         <Image
                                             className='border hover:-translate-y-2 transition-transform cursor-pointer w-full h-full'
                                             key={image.name}
