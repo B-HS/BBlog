@@ -24,16 +24,17 @@ export const imageGet = async (req: NextRequest, { params }: { params: { file: s
 
 const GET = async () => {
     try {
-        const filelist = await db.select().from(images)
-        const refectoredFileList = filelist.map((file) => ({
+        const filelist = await db.select().from(images).execute()
+        const refactoredFileList = filelist.map((file) => ({
             name: file.orgName,
             url: `/api/image/${file.imageId}.webp`,
             date: file.createdAt,
         }))
 
-        return NextResponse.json(refectoredFileList)
+        return NextResponse.json(refactoredFileList)
     } catch (error: any) {
-        return NextResponse.json({ error: error.message })
+        console.error('qurry_error:', error)
+        return NextResponse.json({ error: error.message || 'Failed to get images' }, { status: 500 })
     }
 }
 
