@@ -4,6 +4,7 @@ import { Separator } from '@shared/ui/separator'
 import dayjs from 'dayjs'
 import { JSXElementConstructor, ReactElement } from 'react'
 import { FrontmatterProps } from './custom-mdx'
+import { FloatingMenu } from './floating-menu'
 interface MdxPageProps {
     content: ReactElement<any, string | JSXElementConstructor<any>>
     frontmatter: Pick<FrontmatterProps, 'category' | 'date' | 'tags' | 'title' | 'viewCnt'>
@@ -12,6 +13,7 @@ interface MdxPageProps {
 export const MdxPage = async ({ frontmatter, content }: MdxPageProps) => {
     return (
         <section className='relative flex'>
+            <FloatingMenu />
             <section className='w-full px-3 py-5 rounded markdown-prose'>
                 <section className='flex flex-wrap items-center justify-between gap-2'>
                     <section className='flex items-center space-x-2 min-h-5'>
