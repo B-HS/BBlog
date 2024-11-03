@@ -51,4 +51,5 @@ export const LANGUAGE_LIST = {
     objectivec: 'objectivec',
     objc: 'objectivec',
     elm: 'elm',
+    yml: 'YAML',
 }
