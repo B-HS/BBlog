@@ -19,8 +19,8 @@
 ## 업데이트 예정
 - 사이트
   - [x] robots.txt 작성
-  - [ ] sitemap.xml 작성
-    - 동적 생성 문제가 있음
+  - [x] sitemap.xml 작성
+  - [ ] 게시글 TOC 생성
   - 이미지 리스트
     - [x] 캐싱문제 해결
     - [x] 이미지서버 구현 (honojs)
