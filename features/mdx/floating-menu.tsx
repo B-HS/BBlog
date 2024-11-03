@@ -73,8 +73,8 @@ export const FloatingMenu = () => {
                     <a
                         href={`#${heading.id}`}
                         className={cn(
-                            'text-sm transition-colors duration-200',
-                            activeId === heading.id ? 'text-primary font-extrabold' : 'text-primary/50 hover:text-primary',
+                            'text-sm transition-colors',
+                            activeId === heading.id ? 'text-primary font-extrabold animate-pulse' : 'text-primary hover:text-primary',
                         )}>
                         {heading.text}
                     </a>
