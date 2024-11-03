@@ -30,7 +30,7 @@ const HeaderCompoenet = (level: number) => {
 
 const codeComponent = (props: DetailedHTMLProps<HTMLAttributes<HTMLElement> & { 'data-language'?: string }, HTMLElement>) => {
     return (
-        <code className='relative flex flex-col p-3 border rounded-sm bg-secondary-foreground dark:bg-secondary text-background dark:text-foreground focus:border-none'>
+        <code className='relative flex flex-col p-3 border rounded-sm bg-secondary-foreground dark:bg-secondary text-background dark:text-foreground focus:border-none text-2xs text-wrap sm:text-xs md:text-base'>
             {props['data-language'] && (
                 <span className='absolute top-2 right-2 px-1.5 rounded-sm p-0.5 border capitalize border-foreground/50'>
                     {LANGUAGE_LIST[(props['data-language'] as keyof typeof LANGUAGE_LIST) || props['data-language']]}
@@ -50,12 +50,19 @@ const ImageComponent = (props: DetailedHTMLProps<HTMLAttributes<HTMLImageElement
     if (height) {
         return (
             <section style={{ width, height }} className='relative flex flex-col items-center justify-center'>
-                <Image sizes='(max-width: 768px) 200px, 350px' fill src={props.src} alt={alt} className='object-contain size-full' priority={false} />
+                <Image
+                    sizes='(max-width: 768px) 200px, 350px'
+                    fill
+                    src={props.src}
+                    alt={alt || 'image'}
+                    className='object-contain size-full'
+                    priority={false}
+                />
             </section>
         )
     }
 
-    return <Image fill src={props.src} alt={alt} className='w-full h-full ' />
+    return <Image fill sizes='(max-width: 768px) 250px, 350px' src={props.src} alt={alt || 'image'} className='w-full h-full ' />
 }
 
 export const CustomComponents: MDXComponents = {

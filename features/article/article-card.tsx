@@ -25,15 +25,15 @@ export const ArticleCard = ({ article, category }: { article: Article & { tags?:
                 <p className='text-sm text-secondary-foreground/70 line-clamp-1'>{dayjs(article.updatedAt).format('YYYY-MM-DD')}</p>
             </section>
             <Link href={`/article/${article.postId}`}>
-                <p className='text-lg font-bold cursor-pointer w-fit'>{article.title}</p>
+                <p className='text-lg font-bold cursor-pointer w-fit line-clamp-1'>{article.title}</p>
             </Link>
-            <section className='flex items-center gap-2'>
+            <section className='flex items-center gap-2 overflow-scroll'>
                 {article.tags?.map((tag) => (
                     <Link
                         href={`/tag/${tag}`}
                         key={tag}
                         className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'rounded-sm p-0.5 px-1.5 h-fit text-sm cursor-pointer')}>
-                        # {tag}
+                        {tag}
                     </Link>
                 ))}
             </section>
