@@ -8,18 +8,23 @@ export const imageGet = async (req: NextRequest, { params }: { params: { file: s
     const fileName = params.file
     const thumbnail = isThumbnail ? '?thumbnail=true' : ''
 
-    const imageFileResponse = await fetch(`${process.env.IMAGE_SERVER_URL}/${fileName}${thumbnail}`)
+    try {
+        const imageFileResponse = await fetch(`${process.env.IMAGE_SERVER_URL}/${fileName}${thumbnail}`)
 
-    const contentType = imageFileResponse.headers.get('content-type') || 'application/octet-stream'
-    const imageBuffer = await imageFileResponse.arrayBuffer()
+        const contentType = imageFileResponse.headers.get('content-type') || 'application/octet-stream'
+        const imageBuffer = await imageFileResponse.arrayBuffer()
 
-    return new NextResponse(imageBuffer, {
-        status: 200,
-        headers: {
-            'Content-Type': contentType,
-            'Content-Length': imageFileResponse.headers.get('content-length') || '',
-        },
-    })
+        return new NextResponse(imageBuffer, {
+            status: 200,
+            headers: {
+                'Content-Type': contentType,
+                'Content-Length': imageFileResponse.headers.get('content-length') || '',
+            },
+        })
+    } catch (error) {
+        console.error('error:', error)
+        return NextResponse.json({ error: error || 'Failed to get image' }, { status: 500 })
+    }
 }
 
 const GET = async () => {
