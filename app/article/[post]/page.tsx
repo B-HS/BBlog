@@ -8,19 +8,21 @@ import { redirect } from 'next/navigation'
 import { Fragment } from 'react'
 
 export const generateMetadata = async ({ params }: { params: { post: string } }): Promise<Metadata> => {
+    const { url } = currentPath()
     const fetchedData = await fetch(`${process.env.SITE_URL}/api/article/${params.post}`).then((res) => res.json())
     const source = fetchedData as ArticleDetail
 
     source.post?.title || redirect('/404')
 
-    const imageMatch = source.post.description.match(/https:\/\/img\.gumyo\.net\/\S+\.(jpg|jpeg|png|gif|svg)/)
-    const thumbnail = imageMatch ? imageMatch[0] : `${process.env.SITE_URL}/favicon.ico`
+    const imageMatches = [...Array.from(source.post.description.matchAll(/!\[.*?\]\((\/api\/image\/\S+\.webp)\)/g))]
+    const thumbnails = imageMatches.length > 0 ? imageMatches.map((match) => url + match[1]) : [`${process.env.SITE_URL}/favicon.ico`]
+
     const frontmatter = {
         title: source?.post?.title || '',
         tags: source?.tags.at(0)?.split(',') || [],
         date: source?.post?.createdAt.toString() || '',
         category: source?.category || '',
-        thumbnail,
+        thumbnail: thumbnails[0],
         viewCnt: String(source?.post?.views) || '',
     }
     const context = (markdownToText(source?.post.description.toString().slice(0, 250)) || frontmatter.title || '')?.replace(/<\/?[^>]+(>|$)/g, '')
