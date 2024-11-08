@@ -11,7 +11,9 @@ const POST = async (req: NextRequest) => {
             .values({
                 ip: body.ip || 'Unknown',
                 path: body.path || 'Unknown',
+                createdAt: new Date(),
             })
+            .$returningId()
             .execute()
 
         return NextResponse.json({ message: 'OK' }, { status: 200 })
