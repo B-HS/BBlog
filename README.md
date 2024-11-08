@@ -23,7 +23,7 @@
   - [x] 게시글 TOC 생성
   - 이미지 리스트
     - [x] 캐싱문제 해결
-    - [x] 이미지서버 구현 (honojs)
+    - [x] 이미지서버 구현 (honojs) - https://github.com/B-HS/Image-Bucket
     - [x] 이미지 링크 교체
 - 관리자 페이지
   - [x] 기본 레이아웃 및 가상 라우팅
