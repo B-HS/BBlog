@@ -28,7 +28,8 @@ export const GET = async (req: NextRequest) => {
 
         const type = req.nextUrl.searchParams.get('type') as 'day' | 'month'
 
-        const dateField = type === 'month' ? sql`DATE_FORMAT(${visitors.createdAt}, '%Y-%m-01')` : sql`DATE_FORMAT(${visitors.createdAt}, '%Y-%m-%d')`
+        const dateField = type === 'month' ? sql`DATE_FORMAT(${visitors.createdAt}, '%Y-%m-01')` : sql`DATE(${visitors.createdAt})`
+
         const visitorData = await db
             .select({
                 date: dateField,

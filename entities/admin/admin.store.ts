@@ -6,6 +6,12 @@ type Menu = {
     setRouteList: (currentMenu: string[]) => void
 }
 
+type AdminPanelState = {
+    isOpen: boolean
+    // eslint-disable-next-line no-unused-vars
+    setIsOpen: (isOpen: boolean) => void
+}
+
 export const RouterList = [
     {
         name: 'Dashboard',
@@ -36,6 +42,11 @@ export const RouterList = [
 export const useSidebarStore = create<Menu>((set) => ({
     currentMenu: ['dashboard'],
     setRouteList: (currentMenu) => set({ currentMenu }),
+}))
+
+export const useAdminPanelStateStore = create<AdminPanelState>((set) => ({
+    isOpen: false,
+    setIsOpen: (isOpen) => set({ isOpen }),
 }))
 
 export const extractMenuPath = (paths: string[]) => {

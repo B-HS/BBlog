@@ -1,16 +1,16 @@
 'use client'
+import { useAdminPanelStateStore } from '@entities/admin'
 import { DialogDescription } from '@radix-ui/react-dialog'
 import { Button } from '@shared/ui/button'
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@shared/ui/dialog'
 import { User2Icon } from 'lucide-react'
 import { useSession } from 'next-auth/react'
-import { useState } from 'react'
 import { LayoutContent } from './admin-layout-component'
 import { LayoutRoutingComponent } from './admin-layout-routing-component'
 
 export const AdminWidget = () => {
     const { status } = useSession()
-    const [isOpen, setIsOpen] = useState(false)
+    const { isOpen, setIsOpen } = useAdminPanelStateStore()
 
     return (
         status === 'authenticated' && (

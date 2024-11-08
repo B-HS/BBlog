@@ -17,5 +17,5 @@ export const RenderComponent = (menuPath: string[], components: any): ReactEleme
 
 export const LayoutRoutingComponent = () => {
     const { currentMenu } = useSidebarStore()
-    return <div>{RenderComponent(currentMenu, RouterComponents) || <div>Component Not Found</div>}</div>
+    return <div className='h-full'>{RenderComponent(currentMenu, RouterComponents) || <div>Component Not Found</div>}</div>
 }
