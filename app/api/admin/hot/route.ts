@@ -31,17 +31,29 @@ export const GET = async (req: NextRequest) => {
     const startDate = new Date(startDateString)
     const endDate = new Date(endDateString)
 
+    const uniqueVisits = db
+        .select({
+            ip: visitors.ip,
+            path: visitors.path,
+            visitDate: sql`DATE(${visitors.createdAt})`.as('visitDate'),
+            rn: sql`ROW_NUMBER() OVER (PARTITION BY ${visitors.ip}, ${visitors.path}, DATE(${visitors.createdAt}))`.as('rn'),
+        })
+        .from(visitors)
+        .where(and(gte(visitors.createdAt, startDate), lte(visitors.createdAt, endDate)))
+        .as('uniqueVisits')
+
     const hotArticleInfo = await db
+        .with(uniqueVisits)
         .select({
             title: posts.title,
             createdAt: posts.createdAt,
-            path: visitors.path,
-            visitCount: sql<number>`count(distinct ${visitors.ip})`.as('visitCount'),
+            path: uniqueVisits.path,
+            visitCount: sql<number>`COUNT(${uniqueVisits.ip})`.as('visitCount'),
         })
-        .from(visitors)
-        .rightJoin(posts, eq(visitors.path, sql`CONCAT('/article/', ${posts.postId})`))
-        .where(and(like(visitors.path, '%/article/%'), gte(visitors.createdAt, startDate), lte(visitors.createdAt, endDate)))
-        .groupBy(posts.title, posts.createdAt, visitors.path)
+        .from(uniqueVisits)
+        .rightJoin(posts, eq(uniqueVisits.path, sql`CONCAT('/article/', ${posts.postId})`))
+        .where(and(like(uniqueVisits.path, '%/article/%'), eq(uniqueVisits.rn, 1)))
+        .groupBy(posts.title, posts.createdAt, uniqueVisits.path)
         .orderBy(desc(sql`visitCount`))
         .limit(10)
         .execute()
