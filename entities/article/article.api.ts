@@ -184,6 +184,8 @@ export const PostWrite = async (req: NextRequest) => {
                     title,
                     description,
                     categoryId: categoryId,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
                 })
                 .$returningId()
             const postId = post.postId
@@ -245,6 +247,7 @@ export const PostUpdate = async (req: NextRequest, { params }: { params: { id: s
             ...(title ? { title } : {}),
             ...(description ? { description } : {}),
             ...(categoryId ? { categoryId } : {}),
+            updatedAt: new Date(),
         }
 
         await db.transaction(async (tx) => {
