@@ -5,11 +5,11 @@ import { categories, posts, postTags, tags } from 'drizzle/schema'
 import { NextRequest, NextResponse } from 'next/server'
 
 const handleError = (msg: unknown, status: number = 500) => NextResponse.json({ message: msg || 'An error occurred' }, { status })
-export const GET = async (_: NextRequest, { params }: { params: { tag: string } }) => {
+export const GET = async (_: NextRequest, { params }: { params: Promise<{ tag: string }> }) => {
     const session = await auth()
 
     try {
-        const tag = params.tag
+        const { tag } = await params
         if (!tag) return handleError('No tag provided', 400)
 
         const conditions = []

@@ -101,9 +101,10 @@ export const PostListGET = async (req: NextRequest) => {
     }
 }
 
-export const PostGet = async (_: NextRequest, { params }: { params: { id: string } }) => {
+export const PostGet = async (_: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
+    const { id } = await params
     const session = await auth()
-    const postId = Number(params.id)
+    const postId = Number(id)
     if (!postId) {
         return NextResponse.json({ message: 'Invalid post ID' }, { status: 400 })
     }
@@ -224,8 +225,9 @@ export const PostWrite = async (req: NextRequest) => {
     }
 }
 
-export const PostUpdate = async (req: NextRequest, { params }: { params: { id: string } }) => {
-    const postId = Number(params.id)
+export const PostUpdate = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
+    const { id } = await params
+    const postId = Number(id)
     if (!postId) {
         return NextResponse.json({ message: 'Invalid post ID' }, { status: 400 })
     }
@@ -298,15 +300,16 @@ export const PostUpdate = async (req: NextRequest, { params }: { params: { id: s
             }
         })
 
-        return NextResponse.json({ message: 'Post updated successfully', postId: params.id }, { status: 200 })
+        return NextResponse.json({ message: 'Post updated successfully', postId: id }, { status: 200 })
     } catch (error) {
         console.log(error)
         return handleError(error)
     }
 }
 
-export const PostDelete = async (_: NextRequest, { params }: { params: { id: string } }) => {
-    const postId = Number(params.id)
+export const PostDelete = async (_: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
+    const { id } = await params
+    const postId = Number(id)
     if (!postId) {
         return NextResponse.json({ message: 'Invalid post ID' }, { status: 400 })
     }

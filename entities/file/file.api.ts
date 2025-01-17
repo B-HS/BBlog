@@ -3,9 +3,10 @@ import { db } from 'drizzle'
 import { images } from 'drizzle/schema'
 import { NextRequest, NextResponse } from 'next/server'
 
-export const imageGet = async (req: NextRequest, { params }: { params: { file: string } }) => {
+export const imageGet = async (req: NextRequest, { params }: { params: Promise<{ file: string }> }) => {
+    const { file } = await params
     const isThumbnail = Number(req.nextUrl.searchParams.get('thumbnail') || false)
-    const fileName = params.file
+    const fileName = file
     const thumbnail = isThumbnail ? '?thumbnail=true' : ''
 
     try {

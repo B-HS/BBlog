@@ -2,9 +2,10 @@
 
 import { ArticleDetail } from '@entities/article'
 import { Editor, RequestPostDataType } from '@widgets/article/editor'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, use } from 'react'
 
-const EditPage = ({ params }: { params: { postId: number } }) => {
+const EditPage = (props: { params: Promise<{ postId: number }> }) => {
+    const params = use(props.params)
     const [post, setPost] = useState<ArticleDetail>()
     const requestAddPost = async (post: RequestPostDataType) =>
         await fetch(`/api/article/${params.postId}`, {

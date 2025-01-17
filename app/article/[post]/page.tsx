@@ -7,8 +7,9 @@ import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { Fragment } from 'react'
 
-export const generateMetadata = async ({ params }: { params: { post: string } }): Promise<Metadata> => {
-    const { url } = currentPath()
+export const generateMetadata = async (props: { params: Promise<{ post: string }> }): Promise<Metadata> => {
+    const params = await props.params
+    const { url } = await currentPath()
     const fetchedData = await fetch(`${process.env.SITE_URL}/api/article/${params.post}`).then((res) => res.json())
     const source = fetchedData as ArticleDetail
 
@@ -67,8 +68,9 @@ export const generateMetadata = async ({ params }: { params: { post: string } })
     }
 }
 
-const RemoteMdxPage = async ({ params }: { params: { post: number } }) => {
-    const { url } = currentPath()
+const RemoteMdxPage = async (props: { params: Promise<{ post: number }> }) => {
+    const params = await props.params
+    const { url } = await currentPath()
     const fetchedData = await fetch(`${url}/api/article/${params.post}`).then((res) => res.json())
     const source = fetchedData as ArticleDetail
     const frontmatter = {

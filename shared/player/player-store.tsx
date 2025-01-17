@@ -24,7 +24,7 @@ export type PlayerOptions = {
 }
 
 export type ExtraOptions = {
-    player: RefObject<ReactPlayer> | null
+    player: RefObject<ReactPlayer | null> | null
     isFull: boolean
     languages: TrackOpt[]
     audios: AudioOpt[]

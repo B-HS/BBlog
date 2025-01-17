@@ -4,7 +4,7 @@ import { useSidebarStore } from '@entities/admin'
 import { ReactElement } from 'react'
 import { RouterComponents } from './admin-layout-config'
 
-export const RenderComponent = (menuPath: string[], components: any): ReactElement | null => {
+export const RenderComponent = (menuPath: string[], components: any): ReactElement<any> | null => {
     if (!menuPath.length) return null
     const [current, ...nextMenuPath] = menuPath
 

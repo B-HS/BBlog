@@ -8,7 +8,7 @@ const Page = async () => {
     const { url } = currentPath()
     const { posts, categories } = await fetch(`${url}/api/article`, {
         method: 'GET',
-        headers: new Headers(headers()),
+        headers: new Headers(await headers()),
     }).then((res) => res.json() as ResponseArticleList)
 
     return (

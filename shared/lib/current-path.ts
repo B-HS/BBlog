@@ -1,9 +1,7 @@
-import { headers } from 'next/headers'
-
 export const currentPath = () => {
-    const headersList = headers()
-    const domain = headersList.get('x-forwarded-host')
-    const origin = headersList.get('x-forwarded-proto')
+    const serverURL = process.env.SITE_URL?.split('://')
+    const domain = serverURL?.at(1)!
+    const origin = serverURL?.at(0)!
 
     return { domain, origin, url: `${origin}://${domain}` }
 }

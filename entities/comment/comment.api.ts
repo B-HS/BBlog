@@ -45,11 +45,12 @@ const validateBody = (body: Record<string, any>) => {
     return []
 }
 
-const GET = async (req: NextRequest, { params }: { params: { postId: string } }) => {
+const GET = async (req: NextRequest, { params }: { params: Promise<{ postId: string }> }) => {
     try {
+        const { postId: rawPostId } = await params
         const page = Number(req.nextUrl.searchParams.get('page') || '1')
         const limit = 20
-        const postId = Number(params.postId)
+        const postId = Number(rawPostId)
 
         if (!postId) return NextResponse.json({ message: 'Invalid post ID' }, { status: 404 })
 
@@ -66,9 +67,10 @@ const GET = async (req: NextRequest, { params }: { params: { postId: string } })
     }
 }
 
-const POST = async (req: NextRequest, { params }: { params: { postId: string } }) => {
+const POST = async (req: NextRequest, { params }: { params: Promise<{ postId: string }> }) => {
     try {
-        const postId = Number(params.postId)
+        const { postId: rawPostId } = await params
+        const postId = Number(rawPostId)
         const body = (await req.json()) as { username: string; password: string; commentText: string }
 
         const validationErrors = validateBody(body)

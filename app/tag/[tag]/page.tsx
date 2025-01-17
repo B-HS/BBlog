@@ -1,7 +1,8 @@
 import { ResponseArticleList } from '@entities/article'
 import { ArticleList } from '@widgets/article'
 
-const TagSearchPage = async ({ params }: { params: { tag: number | string } }) => {
+const TagSearchPage = async (props: { params: Promise<{ tag: number | string }> }) => {
+    const params = await props.params
     const articlesData = await fetch(`${process.env.SITE_URL}/api/tag/${params.tag}`).then((res) => res.json() as ResponseArticleList)
     return (
         <section className='size-full flex flex-col gap-10 p-2'>

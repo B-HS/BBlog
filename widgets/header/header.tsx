@@ -6,10 +6,9 @@ import { BookIcon } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 
-const AdminWidget = dynamic(() => import('@widgets/admin').then((comp) => comp.AdminWidget), { ssr: false })
-const ScrollStatus = dynamic(() => import('@features/common').then((comp) => comp.ScrollStatus), { ssr: false })
+const AdminWidget = dynamic(() => import('@widgets/admin').then((comp) => comp.AdminWidget))
+const ScrollStatus = dynamic(() => import('@features/common').then((comp) => comp.ScrollStatus))
 const ThemeChanger = dynamic(() => import('@features/common').then((comp) => comp.ThemeChanger), {
-    ssr: false,
     loading: () => <DotsHorizontalIcon className={buttonVariants({ variant: 'ghost', size: 'icon', className: 'p-2 cursor-pointer' })} />,
 })
 

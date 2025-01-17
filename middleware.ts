@@ -6,7 +6,7 @@ const middleware = async (request: NextRequest) => {
     const VisitorCheckingUrlList = ['/article', '/login', '/tag', '/']
     const authPaths = ['/write', '/api/image/upload']
     const session = await auth()
-    const headersList = headers()
+    const headersList = await headers()
     const ip = (headersList.get('x-forwarded-for') ?? 'Unknown').split(',')[0]
     const { pathname } = request.nextUrl
     const visitorInfo = {
