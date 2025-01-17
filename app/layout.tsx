@@ -2,8 +2,8 @@ import { Toaster } from '@shared/ui/toaster'
 import { cn } from '@shared/utils'
 import { SiteHeader } from '@widgets/header'
 import { QueryProvider, SessionProvider } from '@widgets/provider'
-import { DynamicThemeProvider } from '@widgets/provider/theme.provider'
 import type { Metadata } from 'next'
+import { ThemeProvider } from 'next-themes'
 import dynamic from 'next/dynamic'
 import { M_PLUS_Rounded_1c } from 'next/font/google'
 import { FC, ReactNode } from 'react'
@@ -60,7 +60,7 @@ const RootLayout: FC<{ children: ReactNode }> = ({ children }) => {
             <body className={cn('flex flex-col min-h-dvh font-mplus antialiased size-full items-center', fontRound.variable)}>
                 <section className='max-w-screen-lg w-full'>
                     <SessionProvider>
-                        <DynamicThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
+                        <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
                             <QueryProvider>
                                 <SiteHeader />
                                 <section className='flex-1 overflow-auto size-full'>
@@ -69,7 +69,7 @@ const RootLayout: FC<{ children: ReactNode }> = ({ children }) => {
                                 </section>
                                 <Toaster />
                             </QueryProvider>
-                        </DynamicThemeProvider>
+                        </ThemeProvider>
                     </SessionProvider>
                 </section>
             </body>

@@ -6,8 +6,12 @@ import { BookIcon } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 
-const AdminWidget = dynamic(() => import('@widgets/admin').then((comp) => comp.AdminWidget))
-const ScrollStatus = dynamic(() => import('@features/common').then((comp) => comp.ScrollStatus))
+const AdminWidget = dynamic(() => import('@widgets/admin').then((comp) => comp.AdminWidget), {
+    loading: () => <DotsHorizontalIcon className={buttonVariants({ variant: 'ghost', size: 'icon', className: 'p-2 cursor-pointer' })} />,
+})
+const ScrollStatus = dynamic(() => import('@features/common').then((comp) => comp.ScrollStatus), {
+    loading: () => <DotsHorizontalIcon className={buttonVariants({ variant: 'ghost', size: 'icon', className: 'p-2 cursor-pointer' })} />,
+})
 const ThemeChanger = dynamic(() => import('@features/common').then((comp) => comp.ThemeChanger), {
     loading: () => <DotsHorizontalIcon className={buttonVariants({ variant: 'ghost', size: 'icon', className: 'p-2 cursor-pointer' })} />,
 })

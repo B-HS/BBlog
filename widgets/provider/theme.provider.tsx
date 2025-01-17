@@ -8,6 +8,5 @@ export const ThemeProvider = ({ children, ...props }: ThemeProviderProps) => {
 }
 
 export const DynamicThemeProvider = dynamic(() => Promise.resolve(ThemeProvider), {
-    ssr: false,
     loading: () => <div className='aspect-video blur-md bg-foreground/10 border' />,
 })

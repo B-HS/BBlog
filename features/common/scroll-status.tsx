@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 export const ScrollStatus = () => {
     const path = usePathname()
     const [scrollPercentage, setScrollPercentage] = useState(0)
+    const [isMounted, setIsMounted] = useState(false)
 
     const handleScroll = () => {
         const windowHeight = window.innerHeight
@@ -27,12 +28,18 @@ export const ScrollStatus = () => {
         setScrollPercentage(0)
     }, [path])
 
+    useEffect(() => {
+        setIsMounted(true)
+    }, [])
+
     return (
-        <section className='relative w-full'>
-            <section
-                className='top-0 z-[52] absolute bg-neutral-700 dark:bg-neutral-300 h-0.5 transition-all duration-0 ease-out'
-                style={{ width: `${scrollPercentage}%` }}
-            />
-        </section>
+        isMounted && (
+            <section className='relative w-full'>
+                <section
+                    className='top-0 z-[52] absolute bg-neutral-700 dark:bg-neutral-300 h-0.5 transition-all duration-0 ease-out'
+                    style={{ width: `${scrollPercentage}%` }}
+                />
+            </section>
+        )
     )
 }
