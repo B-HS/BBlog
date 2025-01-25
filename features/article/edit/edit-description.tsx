@@ -6,12 +6,15 @@ import rehypePrettyCode from 'rehype-pretty-code'
 import { ImageList } from '@entities/common'
 import { CustomComponents, remarkContent } from '@features/mdx'
 import { TabsContent } from '@radix-ui/react-tabs'
+import { Button } from '@shared/ui/button'
 import { Label } from '@shared/ui/label'
 import { Separator } from '@shared/ui/separator'
 import { StyledTextarea } from '@shared/ui/styled-textarea'
 import { Tabs, TabsList, TabsTrigger } from '@shared/ui/tabs'
 import { useToast } from '@shared/ui/use-toast'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import dayjs from 'dayjs'
+import { temporalPost } from 'drizzle/schema'
 import { MDXRemote } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 import Image from 'next/image'
@@ -36,6 +39,11 @@ export const EditDescription: FC<EditDescriptionProps> = ({ description, setDesc
         }
     }
 
+    const loadSavedListFn = async (): Promise<(typeof temporalPost.$inferSelect)[]> => {
+        const response = await fetch('/api/temporal-post', { method: 'GET', cache: 'no-cache' }).then((res) => res.json())
+        return response || []
+    }
+
     const [images, setImages] = useState<ImageList[]>([])
     const [compiledSource, setCompiledSource] = useState<string>('')
     const [scope, setScope] = useState<Record<string, unknown>>({})
@@ -43,6 +51,12 @@ export const EditDescription: FC<EditDescriptionProps> = ({ description, setDesc
     const fileInput = useRef<HTMLImageElement>(null)
     const { mutate: loadImageList } = useMutation({
         mutationFn: loadImageListFn,
+        gcTime: 0,
+    })
+
+    const { data: savedList, refetch: refetchingSavedList } = useQuery({
+        queryKey: ['savedList'],
+        queryFn: loadSavedListFn,
         gcTime: 0,
     })
 
@@ -105,6 +119,12 @@ export const EditDescription: FC<EditDescriptionProps> = ({ description, setDesc
                         onClick={() => loadImageList()}>
                         images
                     </TabsTrigger>
+                    <TabsTrigger
+                        className='rounded-none h-full border border-b-0 active:bg-neutral-500'
+                        value='saved'
+                        onClick={() => refetchingSavedList()}>
+                        Saved
+                    </TabsTrigger>
                 </TabsList>
                 <TabsContent value='edit'>
                     <section className='min-h-96 h-[50vh] border rounded-b-sm flex'>
@@ -156,6 +176,11 @@ export const EditDescription: FC<EditDescriptionProps> = ({ description, setDesc
                             </section>
                         </section>
                     </section>
+                </TabsContent>
+                <TabsContent value='saved'>
+                    {(savedList?.length || 0) > 0 &&
+                        savedList?.map((item) => <Button key={dayjs(item.updatedAt).toISOString()}>{item.title}</Button>)}
+                    <Button></Button>
                 </TabsContent>
             </Tabs>
         </section>

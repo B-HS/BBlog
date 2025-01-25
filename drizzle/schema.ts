@@ -1,4 +1,4 @@
-import { boolean, datetime, int, mysqlTable, text, unique, varchar } from 'drizzle-orm/mysql-core'
+import { boolean, datetime, int, longtext, mysqlTable, text, unique, varchar } from 'drizzle-orm/mysql-core'
 
 export const posts = mysqlTable('posts', {
     postId: int('postId').autoincrement().primaryKey().notNull(),
@@ -44,14 +44,12 @@ export const postTags = mysqlTable(
     {
         postId: int('postId')
             .notNull()
-            .references(() => posts.postId),
+            .references(() => posts.postId, { onDelete: 'cascade' }),
         tagId: int('tagId')
             .notNull()
-            .references(() => tags.tagId),
+            .references(() => tags.tagId, { onDelete: 'cascade' }),
     },
-    (table) => ({
-        postTagUnique: unique().on(table.postId, table.tagId),
-    }),
+    (table) => [unique().on(table.postId, table.tagId)],
 )
 
 export const visitors = mysqlTable('visitors', {
@@ -67,3 +65,15 @@ export const images = mysqlTable('images', {
     orgName: varchar('orgName', { length: 255 }).notNull(),
     createdAt: datetime('created_at').default(new Date()).notNull(),
 })
+
+export const temporalPost = mysqlTable('temporalPost', {
+    postId: int('postId').autoincrement().primaryKey(),
+    title: longtext('title'),
+    description: longtext('description'),
+    categoryId: int('categoryId'),
+    tags: longtext('tags'),
+    createdAt: datetime('created_at').default(new Date()).notNull(),
+    updatedAt: datetime('updated_at').default(new Date()).notNull(),
+})
+
+

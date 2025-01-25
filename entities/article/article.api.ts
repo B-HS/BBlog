@@ -1,9 +1,9 @@
 import { auth } from '@shared/auth'
 import { db } from 'drizzle'
 import { and, desc, eq, inArray, like, sql } from 'drizzle-orm'
-import { categories, comments, posts, postTags, tags } from 'drizzle/schema'
+import { categories, comments, posts, postTags, tags, temporalPost } from 'drizzle/schema'
 import { NextRequest, NextResponse } from 'next/server'
-const handleError = (_: unknown, status: number = 500) => NextResponse.json({ message: 'An error occurred' }, { status })
+const handleError = (error: unknown, status: number = 500) => NextResponse.json({ message: 'An error occurred', error }, { status })
 
 export const PostListGET = async (req: NextRequest) => {
     const session = await auth()
@@ -326,5 +326,75 @@ export const PostDelete = async (_: NextRequest, { params }: { params: Promise<{
     }
 }
 
+export const TemporalPostWrite = async (req: NextRequest) => {
+    try {
+        const body: { title: string; description: string; categoryId: number; tags: string[] } = await req.json()
+        console.log({ ...body, tags: body.tags.join(',') })
+        await db
+            .insert(temporalPost)
+            .values({ ...body, tags: body.tags.join(',') })
+            .execute()
+        return NextResponse.json({ message: 'OK' }, { status: 200 })
+    } catch (error) {
+        console.log(error)
+        return handleError(error)
+    }
+}
+
+export const TemporalPostListGet = async (req: NextRequest) => {
+    try {
+        const posts = await db.select().from(temporalPost).execute()
+        return NextResponse.json(posts)
+    } catch (error) {
+        return handleError(error)
+    }
+}
+
+export const TemporalPostDelete = async (_: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
+    const { id } = await params
+    const postId = Number(id)
+    if (!postId) {
+        return NextResponse.json({ message: 'Invalid post ID' }, { status: 400 })
+    }
+
+    try {
+        await db.delete(temporalPost).where(eq(temporalPost.postId, postId)).execute()
+        return NextResponse.json({ message: 'Post deleted successfully' }, { status: 200 })
+    } catch (error) {
+        return handleError(error)
+    }
+}
+
+export const TemporalPostUpdate = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
+    const { id } = await params
+    const postId = Number(id)
+    if (!postId) {
+        return NextResponse.json({ message: 'Invalid post ID' }, { status: 400 })
+    }
+
+    try {
+        const body = await req.json()
+        const { title, description, categoryId, tags } = body as { title?: string; description?: string; categoryId?: number; tags?: string[] }
+
+        if (!title && !description && !categoryId && !tags) {
+            return NextResponse.json({ message: 'No fields provided for update' }, { status: 400 })
+        }
+
+        const updateData: Partial<typeof temporalPost.$inferSelect> = {
+            ...(title ? { title } : {}),
+            ...(description ? { description } : {}),
+            ...(categoryId ? { categoryId } : {}),
+            ...(tags ? { tags: tags.join(',') } : {}),
+        }
+
+        await db.update(temporalPost).set(updateData).where(eq(temporalPost.postId, postId)).execute()
+
+        return NextResponse.json({ message: 'Post updated successfully', postId: id }, { status: 200 })
+    } catch (error) {
+        return handleError(error)
+    }
+}
+
+export const TemporalPostApi = { GET: TemporalPostListGet, POST: TemporalPostWrite, PUT: TemporalPostUpdate, DELETE: TemporalPostDelete }
 export const PostListApi = { GET: PostListGET }
 export const PostApi = { GET: PostGet, POST: PostWrite, PUT: PostUpdate, DELETE: PostDelete }

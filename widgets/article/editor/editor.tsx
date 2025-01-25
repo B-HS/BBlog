@@ -28,13 +28,15 @@ export type EditorProps = {
     post?: ArticleDetail
     // eslint-disable-next-line no-unused-vars
     submitFn: (post: RequestPostDataType) => Promise<{ postId: number }>
+    tempSaveFn: (post: RequestPostDataType) => Promise<{
+        postId: number
+    }>
 }
 
-export const Editor: FC<EditorProps> = ({ text, post, submitFn }) => {
+export const Editor: FC<EditorProps> = ({ text, post, submitFn, tempSaveFn }) => {
     const { toast } = useToast()
     const router = useRouter()
     const [imageObj, setImageObj] = useState<Record<string, string | number>>(imageObjDefaultValue)
-
     const [category, setCategory] = useState<number>()
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState(text || '')
@@ -62,6 +64,17 @@ export const Editor: FC<EditorProps> = ({ text, post, submitFn }) => {
         result.postId && router.push(`/article/${result.postId}`)
     }
 
+    const handleTempSave = async () => {
+        const postData = {
+            categoryId: category,
+            title,
+            description,
+            tags,
+        }
+        const result = await tempSaveFn(postData)
+        console.log(result)
+    }
+
     useEffect(() => {
         if (post) {
             setCategory(post?.categoryId)
@@ -78,6 +91,9 @@ export const Editor: FC<EditorProps> = ({ text, post, submitFn }) => {
             <EditDescription description={description} setDescription={setDescription} setImageObj={setImageObj} />
             <EditImageManager imageObj={imageObj} setImageObj={setImageObj} />
             <EditTags setTags={setTags} tags={tags} />
+            <Button variant={'secondary'} onClick={handleTempSave}>
+                Save Temporarily
+            </Button>
             <Button onClick={handleSave}>Save</Button>
         </section>
     )
