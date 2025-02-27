@@ -23,6 +23,9 @@
     -   [x] robots.txt 작성
     -   [x] sitemap.xml 작성
     -   [x] 게시글 TOC 생성
+    -   [ ] 캐싱 최적화
+    -   [ ] 더 나은 모바일 환경
+    -   [ ] 게시글 수정 시에 버그 수정
     -   이미지 리스트
         -   [x] 캐싱문제 해결
         -   [x] 이미지서버 구현 (honojs) - https://github.com/B-HS/Image-Bucket
