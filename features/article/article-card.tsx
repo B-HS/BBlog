@@ -13,6 +13,7 @@ export const ArticleCard = ({ article, category }: { article: Article & { tags?:
             key={article.postId}
             className={cn(
                 article.isNotice && 'border bg-border/50',
+                !!article.isHide && 'opacity-25',
                 'p-3 rounded-sm shadow hover:shadow-md transition-all duration-150 flex flex-col gap-1.5 dark:border hover:bg-border/50',
             )}>
             <section className='flex items-center justify-between gap-2'>
@@ -25,7 +26,10 @@ export const ArticleCard = ({ article, category }: { article: Article & { tags?:
                 <p className='text-sm text-secondary-foreground/70 line-clamp-1'>{dayjs(article.updatedAt).format('YYYY-MM-DD')}</p>
             </section>
             <Link href={`/article/${article.postId}`}>
-                <p className='text-lg font-bold cursor-pointer w-fit line-clamp-1'>{article.title}</p>
+                <p className='text-lg font-bold cursor-pointer w-fit line-clamp-1'>
+                    {!!article.isHide && '[Deleted] '}
+                    {article.title}
+                </p>
             </Link>
             <section className='flex items-center gap-2 overflow-scroll'>
                 {article.tags?.map((tag) => (

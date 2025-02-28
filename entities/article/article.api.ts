@@ -60,6 +60,7 @@ export const PostListGET = async (req: NextRequest) => {
                             isNotice: post.isNotice,
                             tags: tags?.split(','),
                             ...(isDescription && { description: post.description }),
+                            ...(session?.user && { isHide: post.isHide }),
                         }
                     }),
                     categories: category,
@@ -89,6 +90,7 @@ export const PostListGET = async (req: NextRequest) => {
                         isNotice: post.isNotice,
                         tags: tags?.split(','),
                         ...(isDescription && { description: post.description }),
+                        ...(session?.user && { isHide: post.isHide }),
                     }
                 }),
                 categories: categoryList,

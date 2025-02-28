@@ -8,8 +8,8 @@ import { redirect } from 'next/navigation'
 import { Fragment } from 'react'
 
 export const generateMetadata = async (props: { params: Promise<{ post: string }> }): Promise<Metadata> => {
+    const { url } = currentPath()
     const params = await props.params
-    const { url } = await currentPath()
     const fetchedData = await fetch(`${process.env.SITE_URL}/api/article/${params.post}`).then((res) => res.json())
     const source = fetchedData as ArticleDetail
 
