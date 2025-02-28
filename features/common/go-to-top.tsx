@@ -20,7 +20,7 @@ export const GoToTop = () => {
             <Button
                 variant={'secondary'}
                 size={'icon'}
-                className={cx('fixed bottom-9 right-12 transition-all z-50 size-9', !isTop && 'opacity-100')}
+                className={cx('fixed bottom-9 right-9 transition-all z-50 size-9 border border-primary/10', !isTop && 'opacity-100')}
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
                 <ArrowUp />
             </Button>
