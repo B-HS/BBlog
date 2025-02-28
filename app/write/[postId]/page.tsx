@@ -2,7 +2,7 @@
 
 import { ArticleDetail } from '@entities/article'
 import { Editor, RequestPostDataType } from '@widgets/article/editor'
-import { useEffect, useState, use } from 'react'
+import { use, useEffect, useState } from 'react'
 
 const EditPage = (props: { params: Promise<{ postId: number }> }) => {
     const params = use(props.params)

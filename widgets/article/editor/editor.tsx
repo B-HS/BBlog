@@ -28,7 +28,7 @@ export type EditorProps = {
     post?: ArticleDetail
     // eslint-disable-next-line no-unused-vars
     submitFn: (post: RequestPostDataType) => Promise<{ postId: number }>
-    tempSaveFn: (post: RequestPostDataType) => Promise<{
+    tempSaveFn?: (post: RequestPostDataType) => Promise<{
         postId: number
     }>
 }
@@ -71,7 +71,7 @@ export const Editor: FC<EditorProps> = ({ text, post, submitFn, tempSaveFn }) =>
             description,
             tags,
         }
-        const result = await tempSaveFn(postData)
+        const result = await tempSaveFn?.(postData)
         console.log(result)
     }
 
