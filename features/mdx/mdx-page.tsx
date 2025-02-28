@@ -21,7 +21,7 @@ export const MdxPage = async ({ frontmatter, content }: MdxPageProps) => {
                             {frontmatter.category}
                         </Badge>
                         <Separator orientation='vertical' />
-                        <h1 className='text-xl font-bold p-0 !m-0 border-none'>{frontmatter?.title}</h1>
+                        <h1 className='font-bold p-0 !m-0 border-none !text-lg sm:!text-xl'>{frontmatter?.title}</h1>
                     </section>
 
                     <section className='flex items-center space-x-2 min-h-5'>
