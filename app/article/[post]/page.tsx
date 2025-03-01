@@ -3,6 +3,7 @@ import { CustomMdx, MdxPage } from '@features/mdx'
 import { Comments } from '@features/mdx/comments'
 import { currentPath } from '@shared/lib/current-path'
 import { markdownToText } from '@shared/utils'
+import { ImageFallbackSetter } from '@widgets/article/image'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { Fragment } from 'react'
@@ -70,7 +71,7 @@ export const generateMetadata = async (props: { params: Promise<{ post: string }
 
 const RemoteMdxPage = async (props: { params: Promise<{ post: number }> }) => {
     const params = await props.params
-    const { url } = await currentPath()
+    const { url } = currentPath()
     const fetchedData = await fetch(`${url}/api/article/${params.post}`).then((res) => res.json())
     const source = fetchedData as ArticleDetail
     const frontmatter = {
@@ -87,6 +88,7 @@ const RemoteMdxPage = async (props: { params: Promise<{ post: number }> }) => {
         <Fragment>
             <MdxPage content={content} frontmatter={{ ...frontmatter }} />
             {source.post.isComment && <Comments comments={source.comments || []} post={params.post} />}
+            <ImageFallbackSetter />
         </Fragment>
     )
 }
