@@ -11,7 +11,6 @@ export const ImageFallbackSetter = () => {
                 image.srcset = seyana.src
                 image.src = seyana.src
                 image.onerror = null
-                console.log('replaced')
             }
         })
     }, [])

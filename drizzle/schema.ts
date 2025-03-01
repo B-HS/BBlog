@@ -75,5 +75,3 @@ export const temporalPost = mysqlTable('temporalPost', {
     createdAt: datetime('created_at').default(new Date()).notNull(),
     updatedAt: datetime('updated_at').default(new Date()).notNull(),
 })
-
-
