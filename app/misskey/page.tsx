@@ -10,7 +10,7 @@ const MisskeyPreviewPage = async () => {
         <NoMisskeyKey />
     ) : (
         <section className='flex flex-col gap-2 w-full'>
-            <Card className='w-full mx-auto border-none shadow-none'>
+            <Card className='w-full mx-auto border-none shadow-none py-0'>
                 <CardContent className='p-0'>
                     <MisskeyInfoBanner misskeyInfo={misskeyInfo} />
                     <section className='px-6 py-3 sm:px-8 sm:py-6'>

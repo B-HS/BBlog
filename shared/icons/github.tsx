@@ -28,7 +28,7 @@ const Icon = ({ variant }: { variant?: 'default' | 'destructive' | 'outline' | '
     return (
         <Button variant={variant || 'ghost'} size={'icon'} asChild aria-label='Github'>
             <Link className='p-2' href={'https://github.com/B-HS'}>
-                <GitHubLogoIcon className='h-6 w-6' />
+                <GitHubLogoIcon className='size-5.5' />
             </Link>
         </Button>
     )

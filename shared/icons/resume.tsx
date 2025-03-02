@@ -10,7 +10,7 @@ export const Resume = ({ variant }: { variant?: 'default' | 'destructive' | 'out
                 <TooltipTrigger>
                     <Button variant={variant || 'ghost'} size={'icon'} asChild aria-label='Resume'>
                         <Link className='p-2' href={'https://resume.gumyo.net'}>
-                            <ScrollTextIcon className='h-6 w-6' />
+                            <ScrollTextIcon className='size-5.5' />
                         </Link>
                     </Button>
                 </TooltipTrigger>

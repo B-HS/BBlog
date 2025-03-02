@@ -22,7 +22,7 @@ export const ResizableImageModal = ({ url, children }: { url: string; children: 
 
 export const MisskeyPostImageCarousel = ({ images }: { images: MisskeyPost['files'] }) => {
     return (
-        <Carousel className='w-full max-w-[300px] border p-2 bg-secondary'>
+        <Carousel className='w-full max-w-[577px] border p-2 bg-secondary'>
             <CarouselContent className=''>
                 {images?.map((image) => (
                     <Fragment key={image.id}>

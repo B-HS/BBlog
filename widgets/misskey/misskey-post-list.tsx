@@ -56,7 +56,7 @@ export const MisskeyPostList = ({ userId }: { userId: string }) => {
                         const { user } = post
                         return (
                             <Fragment key={post.id}>
-                                <Card className='border-none'>
+                                <Card className='border-none py-0 shadow-none'>
                                     <CardHeader className='py-3'>
                                         <section className='flex flex-1 gap-2 items-center'>
                                             <Avatar className='size-10'>
