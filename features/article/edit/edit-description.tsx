@@ -105,24 +105,18 @@ export const EditDescription: FC<EditDescriptionProps> = ({ description, setDesc
     return (
         <section>
             <Label className='text-lg'>Description</Label>
-            <Tabs defaultValue='edit'>
+            <Tabs defaultValue='edit' className='gap-0'>
                 <TabsList className='w-fit bg-transparent p-0 flex gap-0.5'>
-                    <TabsTrigger className='rounded-none h-full border border-b-0 active:bg-neutral-500' value='edit'>
+                    <TabsTrigger className='rounded-none h-full border border-b-0 px-3' value='edit'>
                         Editing
                     </TabsTrigger>
-                    <TabsTrigger className='rounded-none h-full border border-b-0 active:bg-neutral-500' value='preview'>
+                    <TabsTrigger className='rounded-none h-full border border-b-0 px-3' value='preview'>
                         Preview
                     </TabsTrigger>
-                    <TabsTrigger
-                        className='rounded-none h-full border border-b-0 active:bg-neutral-500'
-                        value='images'
-                        onClick={() => loadImageList()}>
-                        images
+                    <TabsTrigger className='rounded-none h-full border border-b-0 px-3' value='images' onClick={() => loadImageList()}>
+                        Images
                     </TabsTrigger>
-                    <TabsTrigger
-                        className='rounded-none h-full border border-b-0 active:bg-neutral-500'
-                        value='saved'
-                        onClick={() => refetchingSavedList()}>
+                    <TabsTrigger className='rounded-none h-full border border-b-0 px-3' value='saved' onClick={() => refetchingSavedList()}>
                         Saved
                     </TabsTrigger>
                 </TabsList>

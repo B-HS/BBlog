@@ -26,7 +26,6 @@ export type RequestPostDataType = {
 export type EditorProps = {
     text?: string
     post?: ArticleDetail
-    // eslint-disable-next-line no-unused-vars
     submitFn: (post: RequestPostDataType) => Promise<{ postId: number }>
     tempSaveFn?: (post: RequestPostDataType) => Promise<{
         postId: number

@@ -24,7 +24,7 @@ export const AdminWidget = () => {
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <DialogTrigger asChild>
                     <Button variant={'ghost'} size={'icon'} asChild aria-label='Icon'>
-                        <span className='p-2'>
+                        <span className='p-2 cursor-pointer'>
                             <User2Icon className='size-5' />
                         </span>
                     </Button>

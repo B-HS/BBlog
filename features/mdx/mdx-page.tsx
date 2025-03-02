@@ -2,15 +2,15 @@ import { Tags } from '@features/common'
 import { Badge } from '@shared/ui/badge'
 import { Separator } from '@shared/ui/separator'
 import dayjs from 'dayjs'
-import { JSXElementConstructor, ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { FrontmatterProps } from './custom-mdx'
 import { FloatingMenu } from './floating-menu'
 interface MdxPageProps {
-    content: ReactElement<any, string | JSXElementConstructor<any>>
     frontmatter: Pick<FrontmatterProps, 'category' | 'date' | 'tags' | 'title' | 'viewCnt'>
+    children: ReactElement
 }
 
-export const MdxPage = async ({ frontmatter, content }: MdxPageProps) => {
+export const MdxPage = async ({ frontmatter, children }: MdxPageProps) => {
     return (
         <section className='relative flex'>
             <FloatingMenu />
@@ -31,7 +31,7 @@ export const MdxPage = async ({ frontmatter, content }: MdxPageProps) => {
                     </section>
                 </section>
                 <Separator className='my-2' />
-                <section suppressHydrationWarning>{content}</section>
+                {children}
                 <Separator className='my-2' />
                 <section className='flex flex-col gap-1'>
                     <section className='flex flex-wrap justify-start gap-2 py-3'>

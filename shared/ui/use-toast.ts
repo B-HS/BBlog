@@ -132,7 +132,9 @@ let memoryState: State = { toasts: [] }
 function dispatch(action: Action) {
     memoryState = reducer(memoryState, action)
     listeners.forEach((listener) => {
-        listener(memoryState)
+        // TODO: state 업데이트 다음으로 밀어버리기
+        // 하.. shadcn에 해줄 것 같긴한데 그냥 일단 놔두고 나중에 업데이트해보기
+        setTimeout(() => listener(memoryState))
     })
 }
 

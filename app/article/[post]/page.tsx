@@ -82,11 +82,13 @@ const RemoteMdxPage = async (props: { params: Promise<{ post: number }> }) => {
         thumbnail: '',
         viewCnt: String(source?.post?.views) || '',
     }
-    const { content } = await CustomMdx({ source: source.post?.description })
+    const MdxComponent = async () => await CustomMdx({ source: source.post?.description })
 
     return (
         <Fragment>
-            <MdxPage content={content} frontmatter={{ ...frontmatter }} />
+            <MdxPage frontmatter={{ ...frontmatter }}>
+                <MdxComponent key={'description'} />
+            </MdxPage>
             {source.post?.isComment && <Comments comments={source.comments || []} post={params.post} />}
             <ImageFallbackSetter />
         </Fragment>

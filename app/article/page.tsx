@@ -118,7 +118,7 @@ const ArticleListPage = () => {
                         onKeyDown={(e) => e.key === 'Enter' && refetch()}
                     />
                 </section>
-                {(isArticleLoading || isCategoryLoading) && <SkeletonLoader count={6} className='sm:w-90 h-[119px]' />}
+                {(isArticleLoading || isCategoryLoading) && <SkeletonLoader count={6} className=' h-[103.5px]' />}
                 {!isArticleLoading && <ArticleList articles={articlesData?.pages.flatMap((page) => page.posts)} category={categories} />}
                 <div ref={observerRef} className='w-full h-10' />
                 {isFetchingNextPage && <p className='text-secondary'>Loading ...</p>}

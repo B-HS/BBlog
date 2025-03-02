@@ -1,10 +1,5 @@
-// eslint-disable-next-line import/no-named-as-default
-import rehypePrettyCode from 'rehype-pretty-code'
-
-import { compileMDX, MDXRemoteProps } from 'next-mdx-remote/rsc'
-import remarkBreaks from 'remark-breaks'
-import remarkGfm from 'remark-gfm'
-import { remarkContent } from './content-remark'
+import { compile, run } from '@mdx-js/mdx'
+import * as runtime from 'react/jsx-runtime'
 import { CustomComponents } from './custom-components'
 
 export interface FrontmatterProps {
@@ -17,18 +12,12 @@ export interface FrontmatterProps {
     file?: string
 }
 
-export const CustomMdx = async (opts: MDXRemoteProps) => {
-    const { source } = opts
-    const { content } = await compileMDX<Partial<FrontmatterProps>>({
-        source,
-        components: CustomComponents,
-        options: {
-            mdxOptions: {
-                remarkPlugins: [remarkGfm, remarkContent, remarkBreaks],
-                rehypePlugins: [[rehypePrettyCode, { theme: 'dark-plus' }]],
-            },
-        },
+type CustomMdxProps = { source: string }
+export const CustomMdx = async ({ source }: CustomMdxProps) => {
+    const code = String(await compile(source, { outputFormat: 'function-body' }))
+    const { default: MdxComponent } = await run(code, {
+        ...runtime,
+        baseUrl: process.env.SITE_URL,
     })
-
-    return { content }
+    return <MdxComponent components={CustomComponents} />
 }

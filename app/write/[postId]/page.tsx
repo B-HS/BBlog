@@ -7,7 +7,7 @@ import { use, useEffect, useState } from 'react'
 const EditPage = (props: { params: Promise<{ postId: number }> }) => {
     const params = use(props.params)
     const [post, setPost] = useState<ArticleDetail>()
-    const requestAddPost = async (post: RequestPostDataType) =>
+    const requestEditPost = async (post: RequestPostDataType) =>
         await fetch(`/api/article/${params.postId}`, {
             method: 'PUT',
             body: JSON.stringify(post),
@@ -19,7 +19,7 @@ const EditPage = (props: { params: Promise<{ postId: number }> }) => {
             .then((data) => setPost(data))
     }, [params.postId])
 
-    return <Editor submitFn={requestAddPost} post={post} />
+    return <Editor submitFn={requestEditPost} post={post} />
 }
 
 export default EditPage

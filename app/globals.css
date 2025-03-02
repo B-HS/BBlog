@@ -5,8 +5,7 @@
 @theme {
     --text-2xs: 0.625rem;
     --text-3xs: 0.5rem;
-
-    --font-sans: var(--font-mplus), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-mplus: var(--font-mplus), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
 @utility container {
@@ -95,12 +94,15 @@
 
 @layer base {
     * {
-        @apply antialiased leading-loose border-border outline-ring/50;
+        @apply antialiased border-border outline-ring/50;
     }
 
     body {
         @apply bg-background text-foreground;
         -webkit-font-smoothing: antialiased;
+    }
+    button {
+        @apply cursor-pointer;
     }
 }
 
@@ -313,14 +315,5 @@
         to {
             height: 0;
         }
-    }
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-    }
-  body {
-    @apply bg-background text-foreground;
     }
 }

@@ -66,7 +66,6 @@ const ImageComponent = (props: DetailedHTMLProps<HTMLAttributes<HTMLImageElement
 }
 
 export const CustomComponents: MDXComponents = {
-    // @ts-ignore
     img: ImageComponent,
     code: codeComponent,
     video: VideoComponent,
