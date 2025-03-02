@@ -26,6 +26,8 @@
     -   [x] 어드민인경우 삭제 글 opacity처리
     -   [x] 더 나은 모바일 환경
     -   [x] global-error.tsx 추가
+    -   [x] nextjs v15 마이그레이션
+    -   [x] tailwind v4 마이그레이션
     -   [ ] 게시글 수정 시에 버그 수정
     -   이미지 리스트
         -   [x] 캐싱문제 해결
