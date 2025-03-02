@@ -24,7 +24,7 @@ export const VideoSlider = React.forwardRef<
         </SliderPrimitive.Track>
         <SliderPrimitive.Thumb
             className={cn(
-                'rounded-full border border-primary bg-background ring-offset-foreground transition-colors focus-visible:outline-none focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+                'rounded-full border border-primary bg-background ring-offset-foreground transition-colors focus-visible:outline-hidden focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
                 thumbClassName,
             )}
         />

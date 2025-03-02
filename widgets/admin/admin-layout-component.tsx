@@ -6,7 +6,7 @@ import { SidebarInset, SidebarProvider } from '@shared/ui/sidebar'
 
 export const LayoutContent = ({ children }: { children: ReactNode }) => {
     return (
-        <SidebarProvider className='!h-full !min-h-full'>
+        <SidebarProvider className='h-full! min-h-full!'>
             <Menubar />
             <SidebarInset noSvhAndFlex className='size-full'>
                 <section className='flex flex-col h-full '>

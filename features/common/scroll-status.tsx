@@ -36,7 +36,7 @@ export const ScrollStatus = () => {
         isMounted && (
             <section className='relative w-full'>
                 <section
-                    className='top-0 z-[52] absolute bg-neutral-700 dark:bg-neutral-300 h-0.5 transition-all duration-0 ease-out'
+                    className='top-0 z-52 absolute bg-neutral-700 dark:bg-neutral-300 h-0.5 transition-all duration-0 ease-out'
                     style={{ width: `${scrollPercentage}%` }}
                 />
             </section>

@@ -14,7 +14,7 @@ export const ArticleCard = ({ article, category }: { article: Article & { tags?:
             className={cn(
                 article.isNotice && 'border bg-border/50',
                 !!article.isHide && 'opacity-25',
-                'p-3 rounded-sm shadow hover:shadow-md transition-all duration-150 flex flex-col gap-1.5 dark:border hover:bg-border/50',
+                'p-3 rounded-sm shadow-sm hover:shadow-md transition-all duration-150 flex flex-col gap-1.5 dark:border hover:bg-border/50',
             )}>
             <section className='flex items-center justify-between gap-2'>
                 <Badge className='rounded-sm h-fit px-1.5'>

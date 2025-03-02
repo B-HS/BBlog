@@ -130,7 +130,7 @@ export const EditDescription: FC<EditDescriptionProps> = ({ description, setDesc
                     <section className='min-h-96 h-[50vh] border rounded-b-sm flex'>
                         <StyledTextarea
                             styling={false}
-                            className='w-full ring-offset-transparent ring-0 outline-none border-none p-5'
+                            className='w-full ring-offset-transparent ring-0 outline-hidden border-none p-5'
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                         />

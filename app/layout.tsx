@@ -58,7 +58,7 @@ const RootLayout: FC<{ children: ReactNode }> = ({ children }) => {
     return (
         <html lang='ko' suppressHydrationWarning>
             <body className={cn('flex flex-col min-h-dvh font-mplus antialiased size-full items-center', fontRound.variable)}>
-                <section className='max-w-screen-lg w-full'>
+                <section className='max-w-(--breakpoint-lg) w-full'>
                     <SessionProvider>
                         <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
                             <QueryProvider>

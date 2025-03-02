@@ -6,7 +6,7 @@ export const Tags = ({ tags }: { tags?: string[] }) => {
         ?.sort((prev, next) => prev.length - next.length)
         ?.map((ele, idx) => (
             <Button className='z-30 rounded-sm cursor-pointer' variant={'outline'} key={idx} size={'sm'} asChild>
-                <Link href={`/tag/${ele}`} className='flex gap-1 items-center !no-underline'>
+                <Link href={`/tag/${ele}`} className='flex gap-1 items-center no-underline!'>
                     <span>{ele}</span>
                 </Link>
             </Button>

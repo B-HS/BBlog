@@ -30,7 +30,7 @@ export const AdminWidget = () => {
                     </Button>
                 </DialogTrigger>
                 <DialogContent
-                    className='w-[95dvw] max-w-full h-[95dvh] !min-h-auto overflow-hidden p-10'
+                    className='w-[95dvw] max-w-full h-[95dvh] min-h-auto! overflow-hidden p-10'
                     onEscapeKeyDown={(e) => e.preventDefault()}
                     onPointerDownOutside={(e) => e.preventDefault()}>
                     <DialogTitle hidden />
