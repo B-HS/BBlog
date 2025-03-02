@@ -87,7 +87,7 @@ const RemoteMdxPage = async (props: { params: Promise<{ post: number }> }) => {
     return (
         <Fragment>
             <MdxPage frontmatter={{ ...frontmatter }}>
-                <MdxComponent key={'description'} />
+                <MdxComponent />
             </MdxPage>
             {source.post?.isComment && <Comments comments={source.comments || []} post={params.post} />}
             <ImageFallbackSetter />

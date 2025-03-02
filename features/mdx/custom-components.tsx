@@ -32,7 +32,7 @@ const codeComponent = (props: DetailedHTMLProps<HTMLAttributes<HTMLElement> & { 
     return (
         <code className='relative flex flex-col p-3 border rounded-sm bg-secondary-foreground dark:bg-secondary text-background dark:text-foreground focus:border-none text-2xs text-wrap sm:text-xs md:text-base'>
             {props['data-language'] && (
-                <span className='absolute top-2 right-2 px-1.5 rounded-sm p-0.5 border capitalize border-foreground/50'>
+                <span className='absolute top-2 right-2 px-1.5 rounded-sm p-0.5 border capitalize  border-secondary/70 opacity-50'>
                     {LANGUAGE_LIST[(props['data-language'] as keyof typeof LANGUAGE_LIST) || props['data-language']]}
                 </span>
             )}
