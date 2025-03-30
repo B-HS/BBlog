@@ -5,10 +5,10 @@ export interface ImageList {
 }
 
 export type Pagination = {
-    page: number;
-    limit: number;
-    total: number;
-    totalPage: number;
-    prev: boolean;
-    next: boolean;
+    page: number
+    limit: number
+    total: number
+    totalPage: number
+    prev: boolean
+    next: boolean
 }

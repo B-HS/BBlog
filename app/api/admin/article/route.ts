@@ -39,4 +39,3 @@ export const PUT = async (req: NextRequest) => {
         return NextResponse.json({ message: 'An error occurred' }, { status: 500 })
     }
 }
-export const DELETE = async (req: NextRequest) => {}
