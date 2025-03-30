@@ -1,23 +1,9 @@
-import { auth } from '@shared/auth'
 import { db } from 'drizzle'
 import { and, desc, eq, gte, like, lte, sql } from 'drizzle-orm'
 import { posts, visitors } from 'drizzle/schema'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const GET = async (req: NextRequest) => {
-    const session = await auth()
-
-    if (!session) {
-        return NextResponse.json(
-            {
-                message: 'Unauthenticated',
-            },
-            {
-                status: 401,
-            },
-        )
-    }
-
     const startDateString = req.nextUrl.searchParams.get('startDate')
     const endDateString = req.nextUrl.searchParams.get('endDate')
 

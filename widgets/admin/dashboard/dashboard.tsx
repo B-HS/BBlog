@@ -5,6 +5,7 @@ import { ChartDataWithFormedData, ChartHeaderWithButtons } from '@features/commo
 import { DateType, getFormattedDates } from '@shared/lib/date'
 import { Separator } from '@shared/ui/separator'
 import { useQuery } from '@tanstack/react-query'
+import dayjs from 'dayjs'
 import { useState } from 'react'
 
 const periodMap: { [key: string]: DateType } = {
@@ -21,7 +22,7 @@ export const Dashboard = () => {
             const searchParam = new URLSearchParams()
             const dateAry: string[] = getFormattedDates(periodMap[periodState.period], periodState.gap)
             searchParam.append('startDate', dateAry.at(0)!)
-            searchParam.append('endDate', dateAry.at(-1)!)
+            searchParam.append('endDate', dayjs(dateAry.at(-1)).add(1, 'day').format('YYYY-MM-DD')!)
             searchParam.append('type', periodMap[periodState.period])
             return await fetch('/api/admin/chart?' + searchParam.toString()).then((res) => res.json())
         },
@@ -33,7 +34,7 @@ export const Dashboard = () => {
             const searchParam = new URLSearchParams()
             const dateAry = getFormattedDates(periodMap[periodState.period], periodState.gap)
             searchParam.append('startDate', dateAry.at(0)!)
-            searchParam.append('endDate', dateAry.at(-1)!)
+            searchParam.append('endDate', dayjs(dateAry.at(-1)).add(1, 'day').format('YYYY-MM-DD')!)
             searchParam.append('type', periodMap[periodState.period])
             return await fetch('/api/admin/hot?' + searchParam.toString()).then((res) => res.json())
         },

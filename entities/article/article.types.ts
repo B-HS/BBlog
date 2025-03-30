@@ -1,5 +1,6 @@
 import { Category } from '@entities/category'
 import { CommentProps } from '@entities/comment'
+import { Pagination } from '@entities/common'
 import { posts, tags } from 'drizzle/schema'
 
 export type Article = typeof posts.$inferSelect
@@ -11,4 +12,4 @@ export type ArticleDetail = {
     comments: CommentProps[]
 }
 export type Tag = typeof tags.$inferSelect
-export type ResponseArticleList = Promise<{ posts: Article[]; categories?: Category[]; tags?: string[] }>
+export type ResponseArticleList = Promise<{ posts: Article[]; categories?: Category[]; tags?: string[]; pagination?: Pagination }>

@@ -3,3 +3,12 @@ export interface ImageList {
     url: string
     date: string
 }
+
+export type Pagination = {
+    page: number;
+    limit: number;
+    total: number;
+    totalPage: number;
+    prev: boolean;
+    next: boolean;
+}

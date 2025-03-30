@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 const middleware = async (request: NextRequest) => {
     const VisitorCheckingUrlList = ['/article', '/login', '/tag', '/']
-    const authPaths = ['/write', '/api/image/upload']
+    const authPaths = ['/write', '/api/image/upload', '/api/admin']
     const session = await auth()
     const headersList = await headers()
     const ip = (headersList.get('x-forwarded-for') ?? 'Unknown').split(',')[0]
@@ -17,7 +17,7 @@ const middleware = async (request: NextRequest) => {
     const isAdmin = session?.user
 
     if (isAuthPath && !isAdmin) {
-        return NextResponse.redirect(new URL('/login', request.url))
+        return NextResponse.json({ message: 'Unauthenticated' }, { status: 401 })
     }
 
     if (!VisitorCheckingUrlList.some((url) => pathname.includes(url) && !pathname.includes('/api'))) {

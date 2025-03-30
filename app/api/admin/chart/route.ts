@@ -1,20 +1,11 @@
-import { auth } from '@shared/auth'
 import { db } from 'drizzle'
 import { and, gte, lte, sql } from 'drizzle-orm'
 import { visitors } from 'drizzle/schema'
 import { NextRequest, NextResponse } from 'next/server'
 const handleError = (_: unknown, status: number = 500) => NextResponse.json({ message: 'An error occurred' }, { status })
 export const GET = async (req: NextRequest) => {
-    const session = await auth()
     const startDateString = req.nextUrl.searchParams.get('startDate')
     const endDateString = req.nextUrl.searchParams.get('endDate')
-
-    if (!session) {
-        return NextResponse.json({
-            status: 401,
-            json: { message: 'Unauthenticated' },
-        })
-    }
 
     if (!startDateString || !endDateString) {
         return NextResponse.json({

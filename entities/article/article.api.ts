@@ -33,9 +33,34 @@ export const PostListGET = async (req: NextRequest) => {
             .groupBy(posts.postId)
             .orderBy(desc(posts.updatedAt))
 
+        let paginationInfo = {
+            page,
+            limit,
+            total: 0,
+            totalPage: 0,
+            prev: false,
+            next: false,
+        }
+
         if (!isAll) {
             query.limit(limit)
             query.offset((page - 1) * limit)
+
+            const totalCount = await db
+                .select({ count: sql`COUNT(*)` })
+                .from(posts)
+                .where(and(...conditions))
+                .execute()
+            const total = Number(totalCount[0]?.count || 0)
+
+            paginationInfo = {
+                page,
+                limit,
+                total,
+                totalPage: Math.ceil(total / limit),
+                prev: page > 1,
+                next: total > page * limit,
+            }
         }
 
         if (categoryId > 0) {
@@ -61,9 +86,11 @@ export const PostListGET = async (req: NextRequest) => {
                             tags: tags?.split(','),
                             ...(isDescription && { description: post.description }),
                             ...(session?.user && { isHide: post.isHide }),
+                            ...(session?.user && { isComment: post.isComment }),
                         }
                     }),
                     categories: category,
+                    ...(paginationInfo && { pagination: paginationInfo }),
                 },
                 { status: 200 },
             )
@@ -91,9 +118,11 @@ export const PostListGET = async (req: NextRequest) => {
                         tags: tags?.split(','),
                         ...(isDescription && { description: post.description }),
                         ...(session?.user && { isHide: post.isHide }),
+                        ...(session?.user && { isComment: post.isComment }),
                     }
                 }),
                 categories: categoryList,
+                ...(paginationInfo && { pagination: paginationInfo }),
             },
             { status: 200 },
         )
