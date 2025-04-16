@@ -1,3 +1,6 @@
+## 공사중
+- 갈려버린 db서버 ip 확인 중 
+
 ---
 <img width="1024" alt="image" src="https://github.com/user-attachments/assets/9d95cb48-ca3d-4438-8a0e-0d65a6fd35fc">
 ---
