@@ -49,6 +49,7 @@ export const PostListGET = async (req: NextRequest) => {
             const totalCount = await db
                 .select({ count: sql`COUNT(*)` })
                 .from(posts)
+                .leftJoin(categories, eq(posts.categoryId, categories.categoryId))
                 .where(and(...conditions))
                 .execute()
             const total = Number(totalCount[0]?.count || 0)
