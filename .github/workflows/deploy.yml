@@ -42,17 +42,16 @@ jobs:
 
             - name: Install nerdctl
               run: |
-
                   export NERDCTL_TAG=v1.7.7
                   export NERDCTL_VER=${NERDCTL_TAG#v}
 
                   curl -sL \
                     https://github.com/containerd/nerdctl/releases/download/${NERDCTL_TAG}/nerdctl-full-${NERDCTL_VER}-linux-amd64.tar.gz \
-                    -o nerdctl.tar.gz
+                    -o nerdctl-full.tar.gz
 
-                  file nerdctl.tar.gz
+                  tar -tzf nerdctl-full.tar.gz
 
-                  sudo tar -C /usr/local/bin -xzf nerdctl.tar.gz
+                  sudo tar --strip-components=1 -C /usr/local/bin -xzf nerdctl-full.tar.gz
 
                   nerdctl --version
 
