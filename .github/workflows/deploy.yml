@@ -83,7 +83,7 @@ jobs:
                   source: ./docker-compose.yml
                   target: Desktop/containers/${{ env.PROJECT_NAME }}
 
-            - name: Load image & deploy via nerdctl on remote (Mac mini)
+            - name: Load image & deploy via colima nerdctl on remote
               uses: appleboy/ssh-action@v0.1.8
               with:
                   host: ${{ secrets.SERVER_ADDRESS }}
@@ -91,6 +91,7 @@ jobs:
                   password: ${{ secrets.SERVER_PASSWORD }}
                   port: ${{ secrets.SERVER_PORT }}
                   script: |
+                      export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                       cd Desktop/containers/${{ env.PROJECT_NAME }}
 
                       if [ ! -f ${{ env.PROJECT_NAME }}.tar ]; then
