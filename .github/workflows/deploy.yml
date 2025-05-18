@@ -98,7 +98,7 @@ jobs:
                   source: ./docker-compose.yml
                   target: Desktop/containers/${{ env.PROJECT_NAME }}
 
-            - name: Load image & deploy via nerdctl on remote
+            - name: Load image & deploy via nerdctl on remote (Mac mini)
               uses: appleboy/ssh-action@v0.1.8
               with:
                   host: ${{ secrets.SERVER_ADDRESS }}
@@ -113,20 +113,23 @@ jobs:
                         exit 1
                       fi
 
-
-                      old=$(nerdctl images -q ${{ env.PROJECT_NAME }}:latest)
+                      # 이전 이미지 제거
+                      old=$(colima nerdctl -- images -q ${{ env.PROJECT_NAME }}:latest)
                       if [ -n "$old" ]; then
-                        nerdctl rmi -f $old
+                        colima nerdctl -- rmi -f $old
                       fi
 
+                      # 이미지 로드
+                      colima nerdctl -- load -i ${{ env.PROJECT_NAME }}.tar
 
-                      nerdctl load -i ${{ env.PROJECT_NAME }}.tar
+                      # compose down/up
+                      PROJECT_NAME=${{ env.PROJECT_NAME }} \
+                      PROJECT_PORT=${{ env.PROJECT_PORT }} \
+                        colima nerdctl -- compose down
 
-
-                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} \
-                        nerdctl compose down
-                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} \
-                        nerdctl compose up -d
+                      PROJECT_NAME=${{ env.PROJECT_NAME }} \
+                      PROJECT_PORT=${{ env.PROJECT_PORT }} \
+                        colima nerdctl -- compose up -d
 
             - name: Cleanup local tar
               run: rm ${{ env.PROJECT_NAME }}.tar
