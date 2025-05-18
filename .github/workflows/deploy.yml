@@ -35,10 +35,10 @@ jobs:
             - name: Create .env file
               run: echo "${{ env.ENV_TEXT }}" > .env
 
-            # - name: Install dependencies and build
-            #   run: |
-            #       pnpm install
-            #       pnpm build
+            - name: Install dependencies and build
+              run: |
+                  pnpm install
+                  pnpm build
 
             - name: Install nerdctl
               run: |
