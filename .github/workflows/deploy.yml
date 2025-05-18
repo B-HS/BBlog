@@ -105,12 +105,11 @@ jobs:
                       fi
 
                       colima nerdctl -- load -i ${{ env.PROJECT_NAME }}.tar
+                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} \
+                        colima nerdctl -- compose down
 
-                      export PROJECT_NAME=${{ env.PROJECT_NAME }}
-                      export PROJECT_PORT=${{ env.PROJECT_PORT }}
-
-                      colima nerdctl -- compose down
-                      colima nerdctl -- compose up -d
+                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} \
+                        colima nerdctl -- compose up -d
 
             - name: Cleanup local tar
               run: rm ${{ env.PROJECT_NAME }}.tar

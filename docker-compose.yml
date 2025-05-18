@@ -7,3 +7,7 @@ services:
             - '${PROJECT_PORT}:3000'
         environment:
             - NODE_ENV=production
+            - DATABASE_HOST=host.docker.internal
+            - IMAGE_SERVER_URL=http://host.docker.internal:10001
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
