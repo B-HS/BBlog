@@ -42,9 +42,14 @@ jobs:
 
             - name: Install nerdctl
               run: |
-                  NERDCTL_VERSION=v1.7.6
-                  curl -LO https://github.com/containerd/nerdctl/releases/download/${NERDCTL_VERSION}/nerdctl-full-${NERDCTL_VERSION}-linux-amd64.tar.gz
-                  tar -C /usr/local/bin -xvzf nerdctl-full-${NERDCTL_VERSION}-linux-amd64.tar.gz
+                  export NERDCTL_VERSION=v1.7.7
+                  curl -sL \
+                    https://github.com/containerd/nerdctl/releases/download/${NERDCTL_VERSION}/nerdctl-full-${NERDCTL_VERSION}-linux-amd64.tar.gz \
+                    -o nerdctl.tar.gz
+
+                  file nerdctl.tar.gz
+
+                  sudo tar -C /usr/local/bin -xzf nerdctl.tar.gz
                   nerdctl --version
 
             - name: Build and save container image with nerdctl
