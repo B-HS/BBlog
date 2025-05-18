@@ -11,9 +11,7 @@ import { Fragment } from 'react'
 export const generateMetadata = async (props: { params: Promise<{ post: string }> }): Promise<Metadata> => {
     const { url } = currentPath()
     const params = await props.params
-    const fetchedData = await fetch(`${process.env.SITE_URL}/api/article/${params.post}`, {
-        cache: 'force-cache',
-    }).then((res) => res.json())
+    const fetchedData = await fetch(`${process.env.SITE_URL}/api/article/${params.post}`).then((res) => res.json())
     const source = fetchedData as ArticleDetail
 
     source.post?.title || redirect('/404')
@@ -73,9 +71,8 @@ export const generateMetadata = async (props: { params: Promise<{ post: string }
 
 const RemoteMdxPage = async (props: { params: Promise<{ post: number }> }) => {
     const params = await props.params
-    const fetchedData = await fetch(`${process.env.SITE_URL}/api/article/${params.post}`, {
-        next: { revalidate: 60 },
-    }).then((res) => res.json())
+    const { url } = currentPath()
+    const fetchedData = await fetch(`${url}/api/article/${params.post}`).then((res) => res.json())
     const source = fetchedData as ArticleDetail
     const frontmatter = {
         title: source?.post?.title || '',
@@ -85,15 +82,15 @@ const RemoteMdxPage = async (props: { params: Promise<{ post: number }> }) => {
         thumbnail: '',
         viewCnt: String(source?.post?.views) || '',
     }
-    // const MdxComponent = async () => await CustomMdx({ source: source.post?.description })
+    const MdxComponent = async () => await CustomMdx({ source: source.post?.description })
 
     return (
         <Fragment>
-            {/* <MdxPage frontmatter={{ ...frontmatter }}>
+            <MdxPage frontmatter={{ ...frontmatter }}>
                 <MdxComponent />
             </MdxPage>
             {source.post?.isComment && <Comments comments={source.comments || []} post={params.post} />}
-            <ImageFallbackSetter /> */}
+            <ImageFallbackSetter />
         </Fragment>
     )
 }
