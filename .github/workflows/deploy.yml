@@ -7,7 +7,7 @@ on:
 
 jobs:
     deploy:
-        runs-on: ubuntu-latest
+        runs-on: macos-15
 
         env:
             PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
