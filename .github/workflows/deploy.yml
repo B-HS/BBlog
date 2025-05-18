@@ -41,9 +41,11 @@ jobs:
                   pnpm build
 
             - name: Install nerdctl
+              env:
+                  NERDCTL_VERSION: v1.7.6
               run: |
-                  curl -LO https://github.com/containerd/nerdctl/releases/latest/download/nerdctl-full-linux-amd64.tar.gz
-                  tar Cxzvvf /usr/local/bin nerdctl-full-linux-amd64.tar.gz
+                  curl -LO https://github.com/containerd/nerdctl/releases/download/${NERDCTL_VERSION}/nerdctl-full-${NERDCTL_VERSION}-linux-amd64.tar.gz
+                  tar -C /usr/local/bin -xvzf nerdctl-full-${NERDCTL_VERSION}-linux-amd64.tar.gz
                   nerdctl --version
 
             - name: Build and save container image with nerdctl
