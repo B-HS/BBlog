@@ -7,7 +7,7 @@ on:
 
 jobs:
     deploy:
-        runs-on: macos-15
+        runs-on: ubuntu-latest
 
         env:
             PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
@@ -40,8 +40,15 @@ jobs:
                   pnpm install
                   pnpm build
 
-            - name: Build Docker Image
-              run: docker build -t ${{ env.PROJECT_NAME }} .
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Build Docker image for arm64 (Apple Silicon)
+              run: |
+                  docker buildx build \
+                    --platform linux/arm64 \
+                    -t ${{ env.PROJECT_NAME }} \
+                    --load .
 
             - name: Save Docker image as tar
               run: docker save ${{ env.PROJECT_NAME }} -o ${{env.PROJECT_NAME}}.tar
