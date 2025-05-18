@@ -73,7 +73,7 @@ jobs:
                   username: ${{ secrets.SERVER_USERNAME }}
                   password: ${{ secrets.SERVER_PASSWORD }}
                   port: ${{ secrets.SERVER_PORT }}
-                  source: './${{ env.PROJECT_NAME }}.tar'
+                  source: './docker-compose.yml'
                   target: 'Desktop/containers/${{ env.PROJECT_NAME }}'
 
             - name: Load Docker image, remove old image, and run container on remote server
@@ -91,6 +91,7 @@ jobs:
 
                       echo "== docker compose version =="
                       docker compose version || echo "docker compose not available"
+
                       cd Desktop/containers/${{ env.PROJECT_NAME }}
                       if [ ! -f ${{ env.PROJECT_NAME }}.tar ]; then
                       echo "Docker image file not found!"
