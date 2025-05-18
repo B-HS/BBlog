@@ -20,8 +20,8 @@ jobs:
             - name: Checkout Code
               uses: actions/checkout@v4
 
-            - uses: pnpm/action-setup@v4
-              name: Install pnpm
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
               with:
                   version: 9
                   run_install: false
@@ -35,27 +35,35 @@ jobs:
             - name: Create .env file
               run: echo "${{ env.ENV_TEXT }}" > .env
 
-            - name: Install dependencies and build
+            - name: Install dependencies & build
               run: |
                   pnpm install
                   pnpm build
 
+            - name: Install & start containerd
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install -y containerd
+                  sudo systemctl enable --now containerd
+
             - name: Install nerdctl
               run: |
+
                   export NERDCTL_TAG=v1.7.7
                   export NERDCTL_VER=${NERDCTL_TAG#v}
+
 
                   curl -sL \
                     https://github.com/containerd/nerdctl/releases/download/${NERDCTL_TAG}/nerdctl-full-${NERDCTL_VER}-linux-amd64.tar.gz \
                     -o nerdctl-full.tar.gz
 
-                  tar -tzf nerdctl-full.tar.gz
 
                   sudo tar --strip-components=1 -C /usr/local/bin -xzf nerdctl-full.tar.gz
 
+
                   nerdctl --version
 
-            - name: Build and save container image with nerdctl
+            - name: Build & save image with nerdctl
               run: |
                   nerdctl build -t ${{ env.PROJECT_NAME }} .
                   nerdctl save ${{ env.PROJECT_NAME }} -o ${{ env.PROJECT_NAME }}.tar
@@ -63,34 +71,34 @@ jobs:
             - name: Ensure remote directory exists
               uses: appleboy/ssh-action@v0.1.8
               with:
-                  host: ${{ secrets.HOST_IP }}
-                  username: ${{ secrets.HOST_USERNAME }}
-                  key: ${{ secrets.PEM_KEY }}
-                  port: 22
+                  host: ${{ secrets.SERVER_ADDRESS }}
+                  username: ${{ secrets.SERVER_USERNAME }}
+                  password: ${{ secrets.SERVER_PASSWORD }}
+                  port: ${{ secrets.SERVER_PORT }}
                   script: |
                       mkdir -p Desktop/containers/${{ env.PROJECT_NAME }}
 
-            - name: Transfer image tar to remote server
+            - name: Transfer image tar to remote
               uses: appleboy/scp-action@v0.1.3
               with:
                   host: ${{ secrets.SERVER_ADDRESS }}
                   username: ${{ secrets.SERVER_USERNAME }}
                   password: ${{ secrets.SERVER_PASSWORD }}
                   port: ${{ secrets.SERVER_PORT }}
-                  source: './${{ env.PROJECT_NAME }}.tar'
-                  target: 'Desktop/containers/${{ env.PROJECT_NAME }}'
+                  source: ./${{ env.PROJECT_NAME }}.tar
+                  target: Desktop/containers/${{ env.PROJECT_NAME }}
 
-            - name: Transfer compose file
+            - name: Transfer compose file to remote
               uses: appleboy/scp-action@v0.1.3
               with:
                   host: ${{ secrets.SERVER_ADDRESS }}
                   username: ${{ secrets.SERVER_USERNAME }}
                   password: ${{ secrets.SERVER_PASSWORD }}
                   port: ${{ secrets.SERVER_PORT }}
-                  source: './docker-compose.yml'
-                  target: 'Desktop/containers/${{ env.PROJECT_NAME }}'
+                  source: ./docker-compose.yml
+                  target: Desktop/containers/${{ env.PROJECT_NAME }}
 
-            - name: Run container via nerdctl on remote server
+            - name: Load image & deploy via nerdctl on remote
               uses: appleboy/ssh-action@v0.1.8
               with:
                   host: ${{ secrets.SERVER_ADDRESS }}
@@ -101,19 +109,24 @@ jobs:
                       cd Desktop/containers/${{ env.PROJECT_NAME }}
 
                       if [ ! -f ${{ env.PROJECT_NAME }}.tar ]; then
-                        echo "Image tar not found"
+                        echo "Image tar not found!"
                         exit 1
                       fi
 
-                      old_image=$(nerdctl images -q ${{ env.PROJECT_NAME }}:latest)
-                      if [ -n "$old_image" ]; then
-                        nerdctl rmi -f $old_image
+
+                      old=$(nerdctl images -q ${{ env.PROJECT_NAME }}:latest)
+                      if [ -n "$old" ]; then
+                        nerdctl rmi -f $old
                       fi
+
 
                       nerdctl load -i ${{ env.PROJECT_NAME }}.tar
 
-                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} nerdctl compose down
-                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} nerdctl compose up -d
+
+                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} \
+                        nerdctl compose down
+                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} \
+                        nerdctl compose up -d
 
             - name: Cleanup local tar
               run: rm ${{ env.PROJECT_NAME }}.tar
