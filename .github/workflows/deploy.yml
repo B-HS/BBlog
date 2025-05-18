@@ -54,7 +54,7 @@ jobs:
                   key: ${{ secrets.PEM_KEY }}
                   port: 22
                   script: |
-                      mkdir -p /Desktop/${{ env.PROJECT_NAME }}
+                      mkdir -p Desktop/containers/${{ env.PROJECT_NAME }}
 
             # - name: Transfer Docker image to remote server
             #   uses: appleboy/scp-action@v0.1.3
@@ -72,7 +72,7 @@ jobs:
                   password: ${{ secrets.SERVER_PASSWORD }}
                   port: ${{ secrets.SERVER_PORT }}
                   source: './${{ env.PROJECT_NAME }}.tar'
-                  target: '/Desktop/${{ env.PROJECT_NAME }}'
+                  target: 'Desktop/containers/${{ env.PROJECT_NAME }}'
 
             - name: Transfer docker-compose.yml to remote server
               uses: appleboy/scp-action@v0.1.3
@@ -81,7 +81,7 @@ jobs:
                   username: ${{ secrets.HOST_USERNAME }}
                   key: ${{ secrets.PEM_KEY }}
                   source: './docker-compose.yml'
-                  target: '/Desktop/${{ env.PROJECT_NAME }}'
+                  target: 'Desktop/containers/${{ env.PROJECT_NAME }}'
 
             - name: Load Docker image, remove old image, and run container on remote server
               uses: appleboy/ssh-action@v0.1.8
@@ -91,7 +91,7 @@ jobs:
                   key: ${{ secrets.PEM_KEY }}
                   port: 22
                   script: |
-                      cd /Desktop/${{ env.PROJECT_NAME }}
+                      cd Desktop/containers/${{ env.PROJECT_NAME }}
                       if [ ! -f ${{ env.PROJECT_NAME }}.tar ]; then
                       echo "Docker image file not found!"
                       exit 1
