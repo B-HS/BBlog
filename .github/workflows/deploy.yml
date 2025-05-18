@@ -91,15 +91,18 @@ jobs:
                   key: ${{ secrets.PEM_KEY }}
                   port: 22
                   script: |
-                      cd Desktop/containers/${{ env.PROJECT_NAME }}
+                      cd /Users/${{ secrets.HOST_USERNAME }}/Desktop/containers/${{ env.PROJECT_NAME }}
+
                       if [ ! -f ${{ env.PROJECT_NAME }}.tar ]; then
-                      echo "Docker image file not found!"
-                      exit 1
+                        echo "Docker image file not found!"
+                        exit 1
                       fi
+
                       old_image=$(docker images -q ${{ env.PROJECT_NAME }}:latest)
                       if [ -n "$old_image" ]; then
-                      docker rmi -f $old_image
+                        docker rmi -f $old_image
                       fi
+
                       docker load -i ${{ env.PROJECT_NAME }}.tar
 
                       PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} docker compose down
