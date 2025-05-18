@@ -95,8 +95,8 @@ jobs:
                       fi
                       docker load -i ${{ env.PROJECT_NAME }}.tar
 
-                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} docker compose down
-                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} docker compose up -d
+                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} docker-compose down
+                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} docker-compose up -d
 
             - name: Cleanup local Docker image tar
               run: rm ${{ env.PROJECT_NAME }}.tar
