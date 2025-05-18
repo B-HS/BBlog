@@ -35,21 +35,25 @@ jobs:
             - name: Create .env file
               run: echo "${{ env.ENV_TEXT }}" > .env
 
-            - name: Install dependencies and build
-              run: |
-                  pnpm install
-                  pnpm build
+            # - name: Install dependencies and build
+            #   run: |
+            #       pnpm install
+            #       pnpm build
 
             - name: Install nerdctl
               run: |
-                  export NERDCTL_VERSION=v1.7.7
+
+                  export NERDCTL_TAG=v1.7.7
+                  export NERDCTL_VER=${NERDCTL_TAG#v}
+
                   curl -sL \
-                    https://github.com/containerd/nerdctl/releases/download/${NERDCTL_VERSION}/nerdctl-full-${NERDCTL_VERSION}-linux-amd64.tar.gz \
+                    https://github.com/containerd/nerdctl/releases/download/${NERDCTL_TAG}/nerdctl-full-${NERDCTL_VER}-linux-amd64.tar.gz \
                     -o nerdctl.tar.gz
 
                   file nerdctl.tar.gz
 
                   sudo tar -C /usr/local/bin -xzf nerdctl.tar.gz
+
                   nerdctl --version
 
             - name: Build and save container image with nerdctl
