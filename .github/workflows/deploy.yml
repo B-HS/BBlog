@@ -84,6 +84,13 @@ jobs:
                   password: ${{ secrets.SERVER_PASSWORD }}
                   port: ${{ secrets.SERVER_PORT }}
                   script: |
+                      export PATH="/Applications/Docker.app/Contents/Resources/bin:$PATH"
+
+                      echo "== Docker Version =="
+                      docker --version
+
+                      echo "== docker compose version =="
+                      docker compose version || echo "docker compose not available"
                       cd Desktop/containers/${{ env.PROJECT_NAME }}
                       if [ ! -f ${{ env.PROJECT_NAME }}.tar ]; then
                       echo "Docker image file not found!"
@@ -95,8 +102,8 @@ jobs:
                       fi
                       docker load -i ${{ env.PROJECT_NAME }}.tar
 
-                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} docker-compose down
-                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} docker-compose up -d
+                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} docker compose down
+                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} docker compose up -d
 
             - name: Cleanup local Docker image tar
               run: rm ${{ env.PROJECT_NAME }}.tar
