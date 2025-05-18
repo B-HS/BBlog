@@ -56,14 +56,6 @@ jobs:
                   script: |
                       mkdir -p Desktop/containers/${{ env.PROJECT_NAME }}
 
-            # - name: Transfer Docker image to remote server
-            #   uses: appleboy/scp-action@v0.1.3
-            #   with:
-            #       host: ${{ secrets.HOST_IP }}
-            #       username: ${{ secrets.HOST_USERNAME }}
-            #       key: ${{ secrets.PEM_KEY }}
-            #       source: './${{ env.PROJECT_NAME }}.tar'
-            #       target: '/home/${{ env.PROJECT_NAME }}'
             - name: Transfer Docker image to remote server
               uses: appleboy/scp-action@v0.1.3
               with:
@@ -77,32 +69,30 @@ jobs:
             - name: Transfer docker-compose.yml to remote server
               uses: appleboy/scp-action@v0.1.3
               with:
-                  host: ${{ secrets.HOST_IP }}
-                  username: ${{ secrets.HOST_USERNAME }}
-                  key: ${{ secrets.PEM_KEY }}
-                  source: './docker-compose.yml'
+                  host: ${{ secrets.SERVER_ADDRESS }}
+                  username: ${{ secrets.SERVER_USERNAME }}
+                  password: ${{ secrets.SERVER_PASSWORD }}
+                  port: ${{ secrets.SERVER_PORT }}
+                  source: './${{ env.PROJECT_NAME }}.tar'
                   target: 'Desktop/containers/${{ env.PROJECT_NAME }}'
 
             - name: Load Docker image, remove old image, and run container on remote server
               uses: appleboy/ssh-action@v0.1.8
               with:
-                  host: ${{ secrets.HOST_IP }}
-                  username: ${{ secrets.HOST_USERNAME }}
-                  key: ${{ secrets.PEM_KEY }}
-                  port: 22
+                  host: ${{ secrets.SERVER_ADDRESS }}
+                  username: ${{ secrets.SERVER_USERNAME }}
+                  password: ${{ secrets.SERVER_PASSWORD }}
+                  port: ${{ secrets.SERVER_PORT }}
                   script: |
-                      cd /Users/${{ secrets.HOST_USERNAME }}/Desktop/containers/${{ env.PROJECT_NAME }}
-
+                      cd Desktop/containers/${{ env.PROJECT_NAME }}
                       if [ ! -f ${{ env.PROJECT_NAME }}.tar ]; then
-                        echo "Docker image file not found!"
-                        exit 1
+                      echo "Docker image file not found!"
+                      exit 1
                       fi
-
                       old_image=$(docker images -q ${{ env.PROJECT_NAME }}:latest)
                       if [ -n "$old_image" ]; then
-                        docker rmi -f $old_image
+                      docker rmi -f $old_image
                       fi
-
                       docker load -i ${{ env.PROJECT_NAME }}.tar
 
                       PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} docker compose down
