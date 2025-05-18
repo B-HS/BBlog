@@ -99,17 +99,22 @@ jobs:
                         exit 1
                       fi
 
+
                       old=$(colima nerdctl -- images -q ${{ env.PROJECT_NAME }}:latest)
-                      if [ -n "$old" ]; then
-                        colima nerdctl -- rmi -f $old
-                      fi
+                      [ -n "$old" ] && colima nerdctl -- rmi -f $old
+
 
                       colima nerdctl -- load -i ${{ env.PROJECT_NAME }}.tar
-                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} \
-                        colima nerdctl -- compose down
 
-                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} \
-                        colima nerdctl -- compose up -d
+
+                      cat <<EOF > .env
+                      PROJECT_NAME=${{ env.PROJECT_NAME }}
+                      PROJECT_PORT=${{ env.PROJECT_PORT }}
+                      EOF
+
+
+                      colima nerdctl -- compose --env-file .env down
+                      colima nerdctl -- compose --env-file .env up -d
 
             - name: Cleanup local tar
               run: rm ${{ env.PROJECT_NAME }}.tar
