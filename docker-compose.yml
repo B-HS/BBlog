@@ -5,9 +5,18 @@ services:
         restart: always
         ports:
             - '${PROJECT_PORT}:3000'
+        env_file:
+            - .env
         environment:
             - NODE_ENV=production
             - DATABASE_HOST=host.docker.internal
-            - IMAGE_SERVER_URL=http://host.docker.internal:10001
+            - IMAGE_SERVER_URL=http://imagebucket:3000
         extra_hosts:
             - 'host.docker.internal:host-gateway'
+        networks:
+            - bblog-net
+
+networks:
+    bblog-net:
+        external:
+            name: bblog-F
