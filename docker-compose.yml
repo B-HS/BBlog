@@ -19,4 +19,4 @@ services:
 networks:
     bblog-net:
         external:
-            name: bblog-F
+            name: bblog-net
