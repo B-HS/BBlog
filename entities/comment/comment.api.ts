@@ -49,7 +49,7 @@ const GET = async (req: NextRequest, { params }: { params: Promise<{ postId: str
     try {
         const { postId: rawPostId } = await params
         const page = Number(req.nextUrl.searchParams.get('page') || '1')
-        const limit = 20
+        const limit = 100
         const postId = Number(rawPostId)
 
         if (!postId) return NextResponse.json({ message: 'Invalid post ID' }, { status: 404 })

@@ -1,13 +1,18 @@
+'use client'
+
+import { CommentProps } from '@entities/comment'
 import { AddCommentInput, CommentsList } from '@features/mdx/comments'
 import { useQuery } from '@tanstack/react-query'
-import { db } from 'drizzle'
-import { desc, eq } from 'drizzle-orm'
-import { comments } from 'drizzle/schema'
 
 export const Comments = ({ post }: { post: number }) => {
     const { data: commentList } = useQuery({
         queryKey: ['comments', post],
-        queryFn: async () => await db.select().from(comments).where(eq(comments.postId, post)).orderBy(desc(comments.createdAt)),
+        queryFn: async () => {
+            const data = await fetch(`/api/comment/${post}`)
+            if (data.status !== 200) return []
+            const commentData = (await data.json()) as { comments: CommentProps[] }
+            return commentData.comments
+        },
         refetchOnWindowFocus: false,
         staleTime: 1000 * 60 * 5,
     })
