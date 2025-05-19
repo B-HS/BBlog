@@ -3,14 +3,10 @@ import { currentPath } from '@shared/lib/current-path'
 import { Github, Resume } from '@shared/icons'
 import { ArticleList } from '@widgets/article'
 import { headers } from 'next/headers'
+import { fetchAllArticles } from '@entities/article/article.webapi'
 
 const Page = async () => {
-    const { url } = currentPath()
-    const { posts, categories } = await fetch(`${url}/api/article`, {
-        method: 'GET',
-        headers: new Headers(await headers()),
-        next: { revalidate: 15 },
-    }).then((res) => res.json() as ResponseArticleList)
+    const { categories, posts } = await fetchAllArticles()
 
     return (
         <section className='size-full flex flex-col gap-10 p-2'>

@@ -1,4 +1,5 @@
 import { ArticleDetail } from '@entities/article'
+import { fetchPostData } from '@entities/article/article.webapi'
 import { CustomMdx, MdxPage } from '@features/mdx'
 import { Comments } from '@features/mdx/comments'
 import { currentPath } from '@shared/lib/current-path'
@@ -10,9 +11,7 @@ import { Fragment } from 'react'
 
 export const generateMetadata = async (props: { params: Promise<{ post: string }> }): Promise<Metadata> => {
     const params = await props.params
-    const fetchedData = await fetch(`${process.env.SITE_URL}/api/article/${params.post}`, {
-        next: { revalidate: 60 },
-    }).then((res) => res.json())
+    const fetchedData = await fetchPostData(params)
     const source = fetchedData as ArticleDetail
     source.post?.title || redirect('/404')
 
@@ -70,10 +69,7 @@ export const generateMetadata = async (props: { params: Promise<{ post: string }
 
 const RemoteMdxPage = async (props: { params: Promise<{ post: number }> }) => {
     const params = await props.params
-    const { url } = currentPath()
-    const fetchedData = await fetch(`${url}/api/article/${params.post}`, {
-        next: { revalidate: 60 },
-    }).then((res) => res.json())
+    const fetchedData = await fetchPostData(params)
     const source = fetchedData as ArticleDetail
     const frontmatter = {
         title: source?.post?.title || '',
