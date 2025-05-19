@@ -61,11 +61,6 @@ const LoginPage = () => {
                     <Button onClick={login} className='w-full'>
                         Sign in
                     </Button>
-                    {/* <CardDescription>
-                        <Link className={cn(buttonVariants({ variant: 'link' }), 'px-0')} href={'/register'}>
-                            Not registered yet? Sign up
-                        </Link>
-                    </CardDescription> */}
                 </CardFooter>
             </Card>
         </section>

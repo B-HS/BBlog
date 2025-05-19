@@ -25,7 +25,7 @@ export const ArticleCard = ({ article, category }: { article: Article & { tags?:
                 </Badge>
                 <p className='text-sm text-secondary-foreground/70 line-clamp-1'>{dayjs(article.updatedAt).format('YYYY-MM-DD')}</p>
             </section>
-            <Link href={`/article/${article.postId}`}>
+            <Link href={`/article/${article.postId}`} prefetch={false}>
                 <p className='text-base font-bold cursor-pointer w-fit line-clamp-1'>
                     {!!article.isHide && '[Deleted] '}
                     {article.title}

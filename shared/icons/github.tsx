@@ -27,7 +27,7 @@ export const Github = ({
 const Icon = ({ variant }: { variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' }) => {
     return (
         <Button variant={variant || 'ghost'} size={'icon'} asChild aria-label='Github'>
-            <Link className='p-2' href={'https://github.com/B-HS'}>
+            <Link className='p-2' href={'https://github.com/B-HS'} prefetch={false}>
                 <GitHubLogoIcon className='size-5.5' />
             </Link>
         </Button>

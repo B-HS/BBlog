@@ -17,7 +17,7 @@ export const Misskey = ({
             <Tooltip delayDuration={0}>
                 <TooltipTrigger className='leading-normal'>
                     <Button variant={variant || 'ghost'} size={'icon'} asChild aria-label='Icon'>
-                        <Link href={'/misskey'}>
+                        <Link href={'/misskey'} prefetch={false}>
                             <Image
                                 className='grayscale hover:grayscale-0'
                                 src={'https://img.gumyo.net/misskeyicon.png'}
@@ -37,7 +37,7 @@ export const Misskey = ({
 const Icon = ({ variant }: { variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' }) => {
     return (
         <Button variant={variant || 'ghost'} size={'icon'} asChild aria-label='Misskey' type='submit'>
-            <Link href={'/misskey'}>
+            <Link href={'/misskey'} prefetch={false}>
                 <Image
                     className='grayscale hover:grayscale-0'
                     src={'https://img.gumyo.net/misskeyicon.png'}

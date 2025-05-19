@@ -41,7 +41,7 @@ const IconWrapper = ({
 }) => {
     return (
         <Button variant={variant || 'ghost'} size={'icon'} asChild aria-label='Icon'>
-            <Link className='p-2' href={linkUrl}>
+            <Link className='p-2' href={linkUrl} prefetch={false}>
                 <Icon className='size-5' />
             </Link>
         </Button>
