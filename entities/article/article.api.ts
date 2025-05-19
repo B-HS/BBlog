@@ -165,23 +165,11 @@ export const PostGet = async (_: NextRequest, { params }: { params: Promise<{ id
             return NextResponse.json({ message: 'Post not found' }, { status: 404 })
         }
 
-        const commentList = await db
-            .select({
-                comment: comments.comment,
-                postId: comments.postId,
-                nickname: comments.nickname,
-                createdAt: comments.createdAt,
-                updatedAt: comments.updatedAt,
-                commentId: comments.commentId,
-            })
-            .from(comments)
-            .where(eq(comments.postId, postId))
 
         const postWithComments = {
             post: result.at(0)?.post,
             category: result.at(0)?.categories?.category,
             categoryId: result.at(0)?.categories?.categoryId,
-            comments: commentList,
             tags: result.map((row) => row.tags).filter((tag) => tag !== null),
         }
 

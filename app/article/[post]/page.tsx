@@ -9,17 +9,14 @@ import { redirect } from 'next/navigation'
 import { Fragment } from 'react'
 
 export const generateMetadata = async (props: { params: Promise<{ post: string }> }): Promise<Metadata> => {
-    const { url } = currentPath()
     const params = await props.params
     const fetchedData = await fetch(`${process.env.SITE_URL}/api/article/${params.post}`, {
         next: { revalidate: 60 },
     }).then((res) => res.json())
     const source = fetchedData as ArticleDetail
-
     source.post?.title || redirect('/404')
 
-    const imageMatches = [...Array.from(source.post.description.matchAll(/!\[.*?\]\((\/api\/image\/\S+\.webp)\)/g))]
-    const thumbnails = imageMatches.length > 0 ? imageMatches.map((match) => url + match[1]) : [`${process.env.SITE_URL}/favicon.ico`]
+    const thumbnails = [`${process.env.SITE_URL}/favicon.ico`]
 
     const frontmatter = {
         title: source?.post?.title || '',
@@ -93,7 +90,7 @@ const RemoteMdxPage = async (props: { params: Promise<{ post: number }> }) => {
             <MdxPage frontmatter={{ ...frontmatter }}>
                 <MdxComponent />
             </MdxPage>
-            {source.post?.isComment && <Comments comments={source.comments || []} post={params.post} />}
+            <Comments post={params.post} />
             <ImageFallbackSetter />
         </Fragment>
     )
