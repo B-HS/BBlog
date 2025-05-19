@@ -165,9 +165,6 @@ export const PostGet = async (_: NextRequest, { params }: { params: Promise<{ id
             return NextResponse.json({ message: 'Post not found' }, { status: 404 })
         }
 
-        const postViews = result[0].post.views + 1
-        await db.update(posts).set({ views: postViews }).where(eq(posts.postId, postId)).execute()
-
         const commentList = await db
             .select({
                 comment: comments.comment,

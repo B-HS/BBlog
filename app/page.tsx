@@ -9,6 +9,7 @@ const Page = async () => {
     const { posts, categories } = await fetch(`${url}/api/article`, {
         method: 'GET',
         headers: new Headers(await headers()),
+        next: { revalidate: 15 },
     }).then((res) => res.json() as ResponseArticleList)
 
     return (

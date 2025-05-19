@@ -26,8 +26,6 @@ export const MdxPage = async ({ frontmatter, children }: MdxPageProps) => {
 
                     <section className='flex items-center space-x-2 min-h-5'>
                         <span>{dayjs(frontmatter?.date).format('YYYY-MM-DD')}</span>
-                        <Separator orientation='vertical' />
-                        <span>{frontmatter.viewCnt} views</span>
                     </section>
                 </section>
                 <Separator className='my-2' />
