@@ -1,4 +1,3 @@
-import { headers } from 'next/headers'
 import { ResponseArticleList } from './article.types'
 
 export const fetchPostData = async (params: { post: string | number }) => {
@@ -21,7 +20,6 @@ export const fetchAllArticles = async () => {
     try {
         const { posts, categories } = await fetch(`${process.env.SITE_URL}/api/article`, {
             method: 'GET',
-            headers: new Headers(await headers()),
             next: { revalidate: 15 },
         }).then((res) => res.json() as ResponseArticleList)
 

@@ -2,8 +2,6 @@ import { fetchAllArticles } from '@entities/article/article.webapi'
 import { Github, Resume } from '@shared/icons'
 import { ArticleList } from '@widgets/article'
 
-export const dynamic = 'force-dynamic'
-
 const Page = async () => {
     const { categories, posts } = await fetchAllArticles()
 
