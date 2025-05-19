@@ -1,9 +1,8 @@
-import { ResponseArticleList } from '@entities/article'
-import { currentPath } from '@shared/lib/current-path'
+import { fetchAllArticles } from '@entities/article/article.webapi'
 import { Github, Resume } from '@shared/icons'
 import { ArticleList } from '@widgets/article'
-import { headers } from 'next/headers'
-import { fetchAllArticles } from '@entities/article/article.webapi'
+
+export const dynamic = 'force-dynamic'
 
 const Page = async () => {
     const { categories, posts } = await fetchAllArticles()
