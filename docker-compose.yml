@@ -10,7 +10,7 @@ services:
         environment:
             - NODE_ENV=production
             - DATABASE_HOST=host.docker.internal
-            - IMAGE_SERVER_URL=http://imagebucket:3000
+            - IMAGE_SERVER_URL=http://imagebucket:10001
         networks:
             - bblog-net
 
