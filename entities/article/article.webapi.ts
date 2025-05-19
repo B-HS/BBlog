@@ -20,7 +20,6 @@ export const fetchAllArticles = async () => {
     try {
         const { posts, categories } = await fetch(`${process.env.SITE_URL}/api/article`, {
             method: 'GET',
-            next: { revalidate: 15 },
         }).then((res) => res.json() as ResponseArticleList)
 
         return {
