@@ -56,10 +56,10 @@ jobs:
             - name: Ensure remote directory exists
               uses: appleboy/ssh-action@v0.1.8
               with:
-                  host: ${{ secrets.HOST_IP }}
-                  username: ${{ secrets.HOST_USERNAME }}
-                  key: ${{ secrets.PEM_KEY }}
-                  port: 22
+                  host: ${{ secrets.SERVER_ADDRESS }}
+                  username: ${{ secrets.SERVER_USERNAME }}
+                  password: ${{ secrets.SERVER_PASSWORD }}
+                  port: ${{ secrets.SERVER_PORT }}
                   script: |
                       mkdir -p Desktop/containers/${{ env.PROJECT_NAME }}
 
