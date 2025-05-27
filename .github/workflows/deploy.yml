@@ -90,31 +90,28 @@ jobs:
                   username: ${{ secrets.SERVER_USERNAME }}
                   password: ${{ secrets.SERVER_PASSWORD }}
                   port: ${{ secrets.SERVER_PORT }}
-                  script: |
-                      export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                  script: |                      
+                      export PATH="/Applications/Docker.app/Contents/Resources/bin:$PATH"
+
+                      echo "== Docker Version =="
+                      docker --version
+
+                      echo "== docker compose version =="
+                      docker compose version || echo "docker compose not available"
+
                       cd Desktop/containers/${{ env.PROJECT_NAME }}
-
                       if [ ! -f ${{ env.PROJECT_NAME }}.tar ]; then
-                        echo "Image tar not found!"
-                        exit 1
+                      echo "Docker image file not found!"
+                      exit 1
                       fi
+                      old_image=$(docker images -q ${{ env.PROJECT_NAME }}:latest)
+                      if [ -n "$old_image" ]; then
+                      docker rmi -f $old_image
+                      fi
+                      docker load -i ${{ env.PROJECT_NAME }}.tar
 
-
-                      old=$(colima nerdctl -- images -q ${{ env.PROJECT_NAME }}:latest)
-                      [ -n "$old" ] && colima nerdctl -- rmi -f $old
-
-
-                      colima nerdctl -- load -i ${{ env.PROJECT_NAME }}.tar
-
-
-                      cat <<EOF > .env
-                      PROJECT_NAME=${{ env.PROJECT_NAME }}
-                      PROJECT_PORT=${{ env.PROJECT_PORT }}
-                      EOF
-
-
-                      colima nerdctl -- compose --env-file .env down
-                      colima nerdctl -- compose --env-file .env up -d
+                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} docker compose down
+                      PROJECT_NAME=${{ env.PROJECT_NAME }} PROJECT_PORT=${{ env.PROJECT_PORT }} docker compose up -d
 
             - name: Cleanup local tar
               run: rm ${{ env.PROJECT_NAME }}.tar
