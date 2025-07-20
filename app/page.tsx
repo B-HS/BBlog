@@ -2,6 +2,8 @@ import { fetchAllArticles } from '@entities/article/article.webapi'
 import { Github, Resume } from '@shared/icons'
 import { ArticleList } from '@widgets/article'
 
+export const revalidate = 60
+
 const Page = async () => {
     const { categories, posts } = await fetchAllArticles()
 
