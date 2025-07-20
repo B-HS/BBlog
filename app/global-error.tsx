@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 const GlobalError = () => {
     const router = useRouter()
     return (
-        <section className='w-full text-center space-y-2 p-5 font-mono'>
+        <section className='w-full text-center space-y-2 p-5'>
             <BirdIcon className='animate-bounce mx-auto size-16' />
             <p className='text-5xl font-bold'>Error</p>
             <p>Something went wrong ...</p>

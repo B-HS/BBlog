@@ -1,11 +1,9 @@
 import { Toaster } from '@shared/ui/toaster'
-import { cn } from '@shared/utils'
 import { SiteHeader } from '@widgets/header'
 import { QueryProvider, SessionProvider } from '@widgets/provider'
 import type { Metadata } from 'next'
 import { ThemeProvider } from 'next-themes'
 import dynamic from 'next/dynamic'
-import { M_PLUS_Rounded_1c } from 'next/font/google'
 import { FC, ReactNode } from 'react'
 import './globals.css'
 
@@ -47,17 +45,10 @@ export const metadata: Metadata = {
     },
 }
 
-const fontRound = M_PLUS_Rounded_1c({
-    subsets: ['latin'],
-    variable: '--font-mplus',
-    weight: ['100', '300', '500', '700', '800', '900'],
-    display: 'swap',
-})
-
 const RootLayout: FC<{ children: ReactNode }> = ({ children }) => {
     return (
         <html lang='ko' suppressHydrationWarning>
-            <body className={cn('flex flex-col min-h-dvh font-mplus antialiased size-full items-center', fontRound.variable)}>
+            <body className='flex flex-col min-h-dvh antialiased size-full items-center'>
                 <section className='max-w-(--breakpoint-lg) w-full'>
                     <SessionProvider>
                         <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
