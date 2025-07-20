@@ -32,6 +32,15 @@ jobs:
                   node-version: '20'
                   cache: 'pnpm'
 
+            - name: Cache Next.js build
+              uses: actions/cache@v4
+              with:
+                  path: .next/cache
+                  key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+                  restore-keys: |
+                      ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
+                      ${{ runner.os }}-nextjs-
+
             - name: Create .env file
               run: echo "${{ env.ENV_TEXT }}" > .env
 
@@ -90,7 +99,7 @@ jobs:
                   username: ${{ secrets.SERVER_USERNAME }}
                   password: ${{ secrets.SERVER_PASSWORD }}
                   port: ${{ secrets.SERVER_PORT }}
-                  script: |                      
+                  script: |
                       export PATH="/Applications/Docker.app/Contents/Resources/bin:$PATH"
 
                       echo "== Docker Version =="
