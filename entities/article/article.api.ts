@@ -31,7 +31,7 @@ export const PostListGET = async (req: NextRequest) => {
             .leftJoin(tags, eq(postTags.tagId, tags.tagId))
             .leftJoin(categories, eq(posts.categoryId, categories.categoryId))
             .groupBy(posts.postId)
-            .orderBy(desc(posts.updatedAt))
+            .orderBy(desc(posts.createdAt))
 
         let paginationInfo = {
             page,
