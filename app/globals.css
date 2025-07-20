@@ -78,7 +78,6 @@
 @theme {
     --text-2xs: 0.625rem;
     --text-3xs: 0.5rem;
-    --font-mplus: var(--font-mplus), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
 @utility container {

@@ -53,7 +53,7 @@ const LoginPage = () => {
                     </div>
                     <div className='grid gap-2'>
                         <Label htmlFor='password'>Password</Label>
-                        <Input onChange={onChange} name='password' id='password' type='password' required />
+                        <Input onChange={onChange} name='password' id='password' type='password' autoComplete='current-password' required />
                     </div>
                 </CardContent>
 

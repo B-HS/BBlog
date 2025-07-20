@@ -56,7 +56,7 @@ export const AddCommentInput = ({ post }: { post: number }) => {
                     </section>
                     <section className='flex flex-col gap-1 w-full'>
                         <Label htmlFor='password'>Password</Label>
-                        <Input {...register('password')} type='password' placeholder='Enter the password' />
+                        <Input {...register('password')} type='password' autoComplete='current-password' placeholder='Enter the password' />
                         {errors.password && <p className='text-red-600 my-1'>{errors.password.message}</p>}
                     </section>
                 </section>
@@ -145,7 +145,7 @@ export const EditComment = ({ comment }: { comment: DisplayingCommentType }) => 
 
                             <section className='flex flex-col w-full gap-2'>
                                 <Label htmlFor='password'>Password</Label>
-                                <Input {...register('password')} type='password' className='border' />
+                                <Input {...register('password')} type='password' autoComplete='current-password' className='border' />
                                 {errors.password && <p className='text-red-600 my-1'>{errors.password.message}</p>}
                             </section>
 
