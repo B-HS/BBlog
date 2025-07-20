@@ -1,7 +1,9 @@
 import { auth } from '@shared/auth'
+import { API_TAGS } from '@shared/constant/api-tags'
 import { db } from 'drizzle'
 import { and, desc, eq, inArray, like, sql } from 'drizzle-orm'
-import { categories, comments, posts, postTags, tags, temporalPost } from 'drizzle/schema'
+import { categories, posts, postTags, tags, temporalPost } from 'drizzle/schema'
+import { revalidateTag } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 const handleError = (error: unknown, status: number = 500) => NextResponse.json({ message: 'An error occurred', error }, { status })
 
@@ -165,7 +167,6 @@ export const PostGet = async (_: NextRequest, { params }: { params: Promise<{ id
             return NextResponse.json({ message: 'Post not found' }, { status: 404 })
         }
 
-
         const postWithComments = {
             post: result.at(0)?.post,
             category: result.at(0)?.categories?.category,
@@ -234,6 +235,9 @@ export const PostWrite = async (req: NextRequest) => {
             }
             return postId
         })
+
+        revalidateTag(API_TAGS.ARTICLE(postId))
+        revalidateTag(API_TAGS.ARTICLE_LIST)
 
         return NextResponse.json({ postId }, { status: 200 })
     } catch (error) {
@@ -317,6 +321,9 @@ export const PostUpdate = async (req: NextRequest, { params }: { params: Promise
             }
         })
 
+        revalidateTag(API_TAGS.ARTICLE(id))
+        revalidateTag(API_TAGS.ARTICLE_LIST)
+
         return NextResponse.json({ message: 'Post updated successfully', postId: id }, { status: 200 })
     } catch (error) {
         console.log(error)
@@ -336,6 +343,9 @@ export const PostDelete = async (_: NextRequest, { params }: { params: Promise<{
             await tx.delete(postTags).where(eq(postTags.postId, postId)).execute()
             await tx.delete(posts).where(eq(posts.postId, postId)).execute()
         })
+
+        revalidateTag(API_TAGS.ARTICLE(id))
+        revalidateTag(API_TAGS.ARTICLE_LIST)
 
         return NextResponse.json({ message: 'Post deleted successfully' }, { status: 200 })
     } catch (error) {

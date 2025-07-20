@@ -4,7 +4,7 @@ export const fetchPostData = async (params: { post: string | number }) => {
     try {
         const { post } = params
         const response = await fetch(`${process.env.SITE_URL}/api/article/${post}`, {
-            next: { revalidate: 60 },
+            next: { revalidate: false, tags: ['article', String(post)] },
         })
         if (!String(response.status).startsWith('2')) {
             throw new Error('Failed to fetch data')
@@ -20,6 +20,7 @@ export const fetchAllArticles = async () => {
     try {
         const { posts, categories } = await fetch(`${process.env.SITE_URL}/api/article`, {
             method: 'GET',
+            next: { revalidate: false, tags: ['articlelist'] },
         }).then((res) => res.json() as ResponseArticleList)
 
         return {
