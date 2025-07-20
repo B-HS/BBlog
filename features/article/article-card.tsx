@@ -1,15 +1,23 @@
 import { Article } from '@entities/article'
 import { Category } from '@entities/category'
 import { Badge } from '@shared/ui/badge'
-import { buttonVariants } from '@shared/ui/button'
 import { cn } from '@shared/utils'
 import dayjs from 'dayjs'
 import { LightbulbIcon } from 'lucide-react'
 import Link from 'next/link'
+import { FC } from 'react'
+import { ArticleTagList } from './article-tag-list'
 
-export const ArticleCard = ({ article, category }: { article: Article & { tags?: string[] }; category?: Category[] }) => {
+interface ArticleCardProps {
+    article: Article & { tags?: string[] }
+    category?: Category[]
+}
+
+export const ArticleCard: FC<ArticleCardProps> = ({ article, category }) => {
     return (
-        <section
+        <Link
+            href={`/article/${article.postId}`}
+            prefetch={false}
             key={article.postId}
             className={cn(
                 article.isNotice && 'border bg-border/50',
@@ -25,25 +33,12 @@ export const ArticleCard = ({ article, category }: { article: Article & { tags?:
                 </Badge>
                 <p className='text-sm text-secondary-foreground/70 line-clamp-1'>{dayjs(article.updatedAt).format('YYYY-MM-DD')}</p>
             </section>
-            <Link href={`/article/${article.postId}`} prefetch={false}>
-                <p className='text-base font-bold cursor-pointer w-fit line-clamp-1'>
-                    {!!article.isHide && '[Deleted] '}
-                    {article.title}
-                </p>
-            </Link>
-            <section className='flex items-center gap-2 overflow-scroll'>
-                {article.tags?.map((tag) => (
-                    <Link
-                        href={`/tag/${tag}`}
-                        key={tag}
-                        className={cn(
-                            buttonVariants({ variant: 'outline', size: 'sm' }),
-                            'rounded-sm p-0.5 px-1.5 h-fit text-sm cursor-pointer font-normal leading-tight',
-                        )}>
-                        {tag}
-                    </Link>
-                ))}
-            </section>
-        </section>
+
+            <p className='text-base font-bold cursor-pointer w-fit line-clamp-1'>
+                {!!article.isHide && '[Deleted] '}
+                {article.title}
+            </p>
+            <ArticleTagList article={article} />
+        </Link>
     )
 }
