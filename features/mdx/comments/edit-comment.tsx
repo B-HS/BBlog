@@ -51,7 +51,7 @@ export const AddCommentInput = ({ post }: { post: number }) => {
                 <section className='flex gap-2 items-center w-full'>
                     <section className='flex flex-col gap-1 w-full'>
                         <Label htmlFor='username'>Nickname</Label>
-                        <Input {...register('username')} placeholder='Enter the nickname' />
+                        <Input {...register('username')} autoComplete='name' placeholder='Enter the nickname' />
                         {errors.username && <p className='text-red-600 my-1'>{errors.username.message}</p>}
                     </section>
                     <section className='flex flex-col gap-1 w-full'>
@@ -63,7 +63,7 @@ export const AddCommentInput = ({ post }: { post: number }) => {
 
                 <section className='flex gap-2 flex-col'>
                     <Label htmlFor='commentText'>Comment Description</Label>
-                    <Input {...register('commentText')} placeholder='Enter the comment description' />
+                    <Input {...register('commentText')} autoComplete='off' placeholder='Enter the comment description' />
                     {errors.commentText && <p className='text-red-600 my-1'>{errors.commentText.message}</p>}
                 </section>
 
