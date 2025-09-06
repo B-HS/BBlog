@@ -18,7 +18,7 @@
 -   React query
 
 ## 업데이트 예정
-
+- kataru.dev로 옮길 준비
 -   사이트
     -   [x] robots.txt 작성
     -   [x] sitemap.xml 작성
