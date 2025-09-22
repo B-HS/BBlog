@@ -1,0 +1,1 @@
+export const CATEGORY_DATA_SOURCE_ID = process.env.CATEGORY_DATA_SOURCE_ID

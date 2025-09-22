@@ -1,0 +1,1 @@
+export const POST_DATA_SOURCE_ID = process.env.POST_DATA_SOURCE_ID
