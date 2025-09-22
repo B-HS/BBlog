@@ -94,7 +94,7 @@
 
 @layer base {
     * {
-        @apply antialiased border-border outline-ring/50;
+        @apply antialiased border-border outline-ring/50 focus:border-none focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:outline-none;
     }
 
     body {
