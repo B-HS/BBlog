@@ -31,6 +31,7 @@
     -   [x] fetch caching opt 추가
     -   [x] 게시글 수정 시에 버그 수정
         -   그냥 order by이슈였음
+    -   [ ] Revalidate 추가
     -   이미지 리스트
         -   [x] 캐싱문제 해결
         -   [x] 이미지서버 구현 (honojs) - https://github.com/B-HS/Image-Bucket
