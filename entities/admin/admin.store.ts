@@ -2,13 +2,11 @@ import { create } from 'zustand'
 
 type Menu = {
     currentMenu: string[]
-    // eslint-disable-next-line no-unused-vars
     setRouteList: (currentMenu: string[]) => void
 }
 
 type AdminPanelState = {
     isOpen: boolean
-    // eslint-disable-next-line no-unused-vars
     setIsOpen: (isOpen: boolean) => void
 }
 

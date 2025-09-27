@@ -1,3 +1,12 @@
 export { VideoComponent } from './video-custom-component'
-export * from './player'
-export * from './player-store'
+export { Player } from './player'
+export {
+    PlayerProvider,
+    ExtraProvider,
+    usePlayerStore,
+    useExtraOptionsStore,
+    resolutionMapper,
+    defaultPlayerOptions,
+    defaultExtraOptions,
+} from './player-store'
+export type { TrackOpt, AudioOpt, QualityOpt, PlayerOptions, ExtraOptions } from './player-store'

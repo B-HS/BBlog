@@ -3,5 +3,6 @@ import { DetailedHTMLProps, VideoHTMLAttributes } from 'react'
 import { Player } from './player'
 
 export const VideoComponent = (props: DetailedHTMLProps<VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement> & { alt?: string }) => {
-    return <Player key={props.src} url={props.src || ''} title={props.alt} />
+    const src = typeof props.src === 'string' ? props.src : ''
+    return <Player key={src} url={src} title={props.alt} />
 }

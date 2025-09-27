@@ -17,12 +17,11 @@ type EditorCategoryManageModal = {
         value: number
         isHide: boolean
     }[]
-    // eslint-disable-next-line no-unused-vars
     refetch: (options?: RefetchOptions) => Promise<
         QueryObserverResult<
             {
-                label: string
-                value: number
+                categoryId: number
+                category: string
                 isHide: boolean
             }[],
             Error

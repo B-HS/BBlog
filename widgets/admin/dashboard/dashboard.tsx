@@ -1,5 +1,6 @@
 'use client'
 
+import { adminQueries } from '@entities/admin'
 import { ArticleRanking } from '@features/admin/article-ranking'
 import { ChartDataWithFormedData, ChartHeaderWithButtons } from '@features/common'
 import { DateType, getFormattedDates } from '@shared/lib/date'
@@ -16,29 +17,15 @@ const periodMap: { [key: string]: DateType } = {
 export const Dashboard = () => {
     const [periodState, setPeriodState] = useState({ period: 'weekly', gap: 0 })
 
-    const { data: visitorInfo } = useQuery({
-        queryKey: ['visitor', periodState],
-        queryFn: async () => {
-            const searchParam = new URLSearchParams()
-            const dateAry: string[] = getFormattedDates(periodMap[periodState.period], periodState.gap)
-            searchParam.append('startDate', dateAry.at(0)!)
-            searchParam.append('endDate', dayjs(dateAry.at(-1)).add(1, 'day').format('YYYY-MM-DD')!)
-            searchParam.append('type', periodMap[periodState.period])
-            return await fetch('/api/admin/chart?' + searchParam.toString()).then((res) => res.json())
-        },
-    })
+    const dateAry = getFormattedDates(periodMap[periodState.period], periodState.gap)
+    const dateParams = {
+        startDate: dateAry.at(0)!,
+        endDate: dayjs(dateAry.at(-1)).add(1, 'day').format('YYYY-MM-DD'),
+        type: periodMap[periodState.period],
+    }
 
-    const { data: hotarticleInfo } = useQuery({
-        queryKey: ['hotarticle', periodState],
-        queryFn: async () => {
-            const searchParam = new URLSearchParams()
-            const dateAry = getFormattedDates(periodMap[periodState.period], periodState.gap)
-            searchParam.append('startDate', dateAry.at(0)!)
-            searchParam.append('endDate', dayjs(dateAry.at(-1)).add(1, 'day').format('YYYY-MM-DD')!)
-            searchParam.append('type', periodMap[periodState.period])
-            return await fetch('/api/admin/hot?' + searchParam.toString()).then((res) => res.json())
-        },
-    })
+    const { data: visitorInfo } = useQuery(adminQueries.visitor(periodState, dateParams))
+    const { data: hotarticleInfo } = useQuery(adminQueries.hotArticle(periodState, dateParams))
 
     const setPeriodWithResetGap = (newPeriod: string) => setPeriodState({ period: newPeriod, gap: 0 })
     const incrementGap = () => setPeriodState((prev) => ({ ...prev, gap: prev.gap + 1 }))

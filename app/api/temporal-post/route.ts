@@ -1,3 +1,3 @@
-import { TemporalPostApi } from '@entities/article'
+import { TemporalPostApi } from '@entities/article/article.api'
 
-export const { GET, POST, DELETE, PUT } = TemporalPostApi
+export const { GET, POST } = TemporalPostApi

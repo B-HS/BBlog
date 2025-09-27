@@ -37,7 +37,6 @@ const handleError = (error: unknown, status: number = 500) => {
 }
 
 const validateBody = (body: Record<string, any>) => {
-    // eslint-disable-next-line no-unused-vars
     const missingFields = Object.entries(body).filter(([_, value]) => !value)
     if (missingFields.length > 0) {
         return missingFields.map(([key]) => `${key} is required`)

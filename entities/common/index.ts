@@ -1,1 +1,1 @@
-export * from './common.types'
+export type { ImageList, Pagination } from './common.types'

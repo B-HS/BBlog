@@ -1,2 +1,2 @@
 export * from './comment.types'
-export * from './comment.api'
+export * from './comment.queries'

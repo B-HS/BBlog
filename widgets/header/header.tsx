@@ -25,14 +25,14 @@ export const SiteHeader = async () => {
                         {process.env.SITE_NAME}
                     </Link>
                 </section>
-                <section className='flex items-center gap-2'>
+                <nav className='flex items-center gap-2' aria-label='Main navigation'>
                     <AdminWidget />
                     <WriteButton />
                     <TooltipIcon icon={GitHubLogoIcon} linkUrl='https://github.com/B-HS' tooltipContent='Go to Github' />
                     <ThemeChanger />
                     {process.env.MISSKEY_INSTANCE_URL && process.env.MISSKEY_USER_ID && <Misskey />}
                     <TooltipIcon icon={BookIcon} linkUrl='/article' tooltipContent='Articles' />
-                </section>
+                </nav>
             </section>
             <ScrollStatus />
         </header>

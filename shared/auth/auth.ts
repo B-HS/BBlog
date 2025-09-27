@@ -8,7 +8,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             return { ...token, ...user }
         },
         async session({ session, token }) {
-            // @ts-ignore
+            // @ts-expect-error
             session.user = token
             return session
         },

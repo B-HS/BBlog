@@ -3,7 +3,6 @@ import { fetchPostData } from '@entities/article/article.webapi'
 import { CustomMdx, MdxPage } from '@features/mdx'
 import { Comments } from '@features/mdx/comments'
 import { markdownToText } from '@shared/utils'
-import { ImageFallbackSetter } from '@widgets/article/image'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { Fragment } from 'react'
@@ -86,7 +85,6 @@ const RemoteMdxPage = async (props: { params: Promise<{ post: number }> }) => {
                 <MdxComponent />
             </MdxPage>
             <Comments post={params.post} />
-            <ImageFallbackSetter />
         </Fragment>
     )
 }

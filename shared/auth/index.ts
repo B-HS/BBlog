@@ -1,4 +1,3 @@
-export * from './auth'
-export * from './cognito'
-// eslint-disable-next-line import/export
-export * from './cognito-userpool'
+export { auth, handlers, signIn, signOut } from './auth'
+export { CognitoAuthentication } from './cognito'
+export { default as userPool } from './cognito-userpool'

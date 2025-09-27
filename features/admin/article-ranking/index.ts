@@ -1,1 +1,1 @@
-export * from './article-ranking'
+export { ArticleRanking } from './article-ranking'
