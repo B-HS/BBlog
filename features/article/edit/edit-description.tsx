@@ -1,9 +1,7 @@
 'use client'
 
-// eslint-disable-next-line import/no-named-as-default
-import rehypePrettyCode from 'rehype-pretty-code'
-
 import { ImageList } from '@entities/common'
+import { temporalPostQueries } from '@entities/temporal-post'
 import { CustomComponents, remarkContent } from '@features/mdx'
 import { TabsContent } from '@radix-ui/react-tabs'
 import { Button } from '@shared/ui/button'
@@ -14,11 +12,11 @@ import { Tabs, TabsList, TabsTrigger } from '@shared/ui/tabs'
 import { useToast } from '@shared/ui/use-toast'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
-import { temporalPost } from 'drizzle/schema'
 import { MDXRemote } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 import Image from 'next/image'
 import { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from 'react'
+import rehypePrettyCode from 'rehype-pretty-code'
 import remarkGfm from 'remark-gfm'
 
 type EditDescriptionProps = {
@@ -39,11 +37,6 @@ export const EditDescription: FC<EditDescriptionProps> = ({ description, setDesc
         }
     }
 
-    const loadSavedListFn = async (): Promise<(typeof temporalPost.$inferSelect)[]> => {
-        const response = await fetch('/api/temporal-post', { method: 'GET', cache: 'no-cache' }).then((res) => res.json())
-        return response || []
-    }
-
     const [images, setImages] = useState<ImageList[]>([])
     const [compiledSource, setCompiledSource] = useState<string>('')
     const [scope, setScope] = useState<Record<string, unknown>>({})
@@ -54,11 +47,7 @@ export const EditDescription: FC<EditDescriptionProps> = ({ description, setDesc
         gcTime: 0,
     })
 
-    const { data: savedList, refetch: refetchingSavedList } = useQuery({
-        queryKey: ['savedList'],
-        queryFn: loadSavedListFn,
-        gcTime: 0,
-    })
+    const { data: savedList, refetch: refetchingSavedList } = useQuery(temporalPostQueries.all())
 
     const setPreview = async () => {
         const { compiledSource, scope } = await serialize(description, {
@@ -99,7 +88,6 @@ export const EditDescription: FC<EditDescriptionProps> = ({ description, setDesc
 
     useEffect(() => {
         setPreview()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [description])
 
     return (

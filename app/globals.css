@@ -138,11 +138,11 @@
         @apply border-0 border-t-[3.5px] border-border my-2;
     }
     .markdown-prose h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
+    .markdown-prose h2,
+    .markdown-prose h3,
+    .markdown-prose h4,
+    .markdown-prose h5,
+    .markdown-prose h6 {
         @apply mb-2 font-bold border-b text-primary border-border mt-3 leading-loose;
     }
 

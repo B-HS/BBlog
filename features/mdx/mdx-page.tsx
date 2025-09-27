@@ -12,31 +12,33 @@ interface MdxPageProps {
 
 export const MdxPage = async ({ frontmatter, children }: MdxPageProps) => {
     return (
-        <section className='relative flex'>
-            <FloatingMenu />
-            <section className='w-full px-3 py-5 rounded markdown-prose'>
-                <section className='flex flex-wrap items-center justify-between gap-2'>
-                    <section className='flex items-center space-x-2 min-h-5'>
+        <div className='relative flex'>
+            <aside aria-label='Table of contents'>
+                <FloatingMenu />
+            </aside>
+            <article className='w-full px-3 py-5 rounded markdown-prose'>
+                <header className='flex flex-wrap items-center justify-between gap-2'>
+                    <div className='flex items-center space-x-2 min-h-5'>
                         <Badge className='rounded-sm text-nowrap' variant={'outline'}>
                             {frontmatter.category}
                         </Badge>
                         <Separator orientation='vertical' />
                         <h1 className='font-bold p-0 m-0! border-none text-lg! sm:text-xl!'>{frontmatter?.title}</h1>
-                    </section>
+                    </div>
 
-                    <section className='flex items-center space-x-2 min-h-5'>
-                        <span>{dayjs(frontmatter?.date).format('YYYY-MM-DD')}</span>
-                    </section>
-                </section>
+                    <div className='flex items-center space-x-2 min-h-5'>
+                        <time dateTime={frontmatter?.date}>{dayjs(frontmatter?.date).format('YYYY-MM-DD')}</time>
+                    </div>
+                </header>
                 <Separator className='my-2' />
-                {children}
+                <section>{children}</section>
                 <Separator className='my-2' />
-                <section className='flex flex-col gap-1'>
-                    <section className='flex flex-wrap justify-start gap-2 py-3'>
+                <footer className='flex flex-col gap-1'>
+                    <div className='flex flex-wrap justify-start gap-2 py-3'>
                         <Tags tags={frontmatter?.tags} />
-                    </section>
-                </section>
-            </section>
-        </section>
+                    </div>
+                </footer>
+            </article>
+        </div>
     )
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { MisskeyPost } from '@entities/misskey'
+import { misskeyQueries } from '@entities/misskey'
 import { MisskeyPostImageCarousel } from '@features/misskey'
 import { Avatar, AvatarFallback, AvatarImage } from '@shared/ui/avatar'
 import { Card, CardContent, CardHeader } from '@shared/ui/card'
@@ -10,33 +10,7 @@ import { Fragment, useEffect, useRef } from 'react'
 
 export const MisskeyPostList = ({ userId }: { userId: string }) => {
     const observerRef = useRef<HTMLDivElement>(null)
-    const fetchPosts = async ({ pageParam }: { pageParam?: string }) => {
-        const params = {
-            userId,
-            ...(pageParam && { untilId: pageParam }),
-            fileType: ['image/jpeg', 'image/webp', 'image/avif', 'image/png', 'image/gif', 'image/apng', 'image/vnd.mozilla.apng'],
-            limit: 10,
-        }
-        const data = await fetch('https://mi.gumyo.net/api/users/notes', {
-            method: 'POST',
-            body: JSON.stringify(params),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }).then(async (res) => await res.json())
-
-        return data as MisskeyPost[]
-    }
-
-    const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-        queryKey: ['posts'],
-        queryFn: fetchPosts,
-        getNextPageParam: (lastPage) => {
-            const lastPost = lastPage?.[lastPage.length - 1]
-            return lastPost?.id
-        },
-        initialPageParam: undefined,
-    })
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery(misskeyQueries.userNotes(userId))
 
     useEffect(() => {
         if (observerRef.current) {
@@ -45,7 +19,6 @@ export const MisskeyPostList = ({ userId }: { userId: string }) => {
             })
             observer.observe(observerRef.current)
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (

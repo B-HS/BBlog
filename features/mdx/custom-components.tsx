@@ -2,9 +2,9 @@ import { LANGUAGE_LIST } from '@shared/constant'
 import { VideoComponent } from '@shared/player'
 import { LinkIcon } from 'lucide-react'
 import { MDXComponents } from 'mdx/types'
-import Image from 'next/image'
 import Link from 'next/link'
 import { DetailedHTMLProps, HTMLAttributes, createElement } from 'react'
+import { FallbackImage } from './image/fallback-image'
 
 const HeaderCompoenet = (level: number) => {
     const HeaderComponent = (props: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) => {
@@ -50,7 +50,7 @@ const ImageComponent = (props: DetailedHTMLProps<HTMLAttributes<HTMLImageElement
     if (height) {
         return (
             <span style={{ width, height }} className='relative flex flex-col items-center justify-center'>
-                <Image
+                <FallbackImage
                     sizes='(max-width: 768px) 200px, 350px'
                     fill
                     src={props.src}
@@ -62,7 +62,9 @@ const ImageComponent = (props: DetailedHTMLProps<HTMLAttributes<HTMLImageElement
         )
     }
 
-    return <Image fill sizes='(max-width: 768px) 250px, 350px' src={props.src} alt={alt || 'image'} className='w-full h-full ' />
+    return (
+        <FallbackImage fill sizes='(max-width: 768px) 250px, 350px' src={props.src} alt={alt || 'image'} className='w-full h-full' priority={false} />
+    )
 }
 
 export const CustomComponents: MDXComponents = {

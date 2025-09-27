@@ -1,2 +1,2 @@
 export * from './misskey.types'
-export * from './misskey.api'
+export * from './misskey.queries'

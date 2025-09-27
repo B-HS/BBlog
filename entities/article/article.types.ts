@@ -12,4 +12,4 @@ export type ArticleDetail = {
     comments: CommentProps[]
 }
 export type Tag = typeof tags.$inferSelect
-export type ResponseArticleList = Promise<{ posts: Article[]; categories?: Category[]; tags?: string[]; pagination?: Pagination }>
+export type ResponseArticleList = { posts: Article[]; categories?: Category[]; tags?: string[]; pagination?: Pagination }

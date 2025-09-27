@@ -1,5 +1,5 @@
-import { Article, ResponseArticleList } from '@entities/article'
-import { Category } from '@entities/category'
+import { Article } from '@entities/article'
+import { adminQueries } from '@entities/admin'
 import { Pagination } from '@features/common'
 import { Button } from '@shared/ui/button'
 import { Checkbox } from '@shared/ui/checkbox'
@@ -15,25 +15,10 @@ export const ArticleListManagement = () => {
     const [page, setPage] = useState(1)
     const [selectedArticles, setSelectedArticles] = useState<Article[]>([])
 
-    const fetchCategories = async () => {
-        const res = await fetch('/api/category')
-        const { categories } = (await res.json()) as { categories: Category[] }
-        return categories
-    }
-
-    const fetchArticles = async () => {
-        const res = await fetch(`/api/article?all=false&limit=${LIMIT_PER_PAGE}&page=${page}`)
-        const result = (await res.json()) as ResponseArticleList
-        return result
-    }
-    const { data: categories } = useQuery({
-        queryKey: ['categories'],
-        queryFn: fetchCategories,
-    })
+    const { data: categories } = useQuery(adminQueries.categories())
 
     const { data: articlesData, refetch } = useQuery({
-        queryKey: ['articles', page],
-        queryFn: fetchArticles,
+        ...adminQueries.articles(page, LIMIT_PER_PAGE),
         enabled: Boolean(categories),
     })
 

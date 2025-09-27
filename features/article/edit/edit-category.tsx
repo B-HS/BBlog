@@ -1,6 +1,6 @@
 'use client'
 
-import { Category } from '@entities/category'
+import { Category, categoryQueries } from '@entities/category'
 import { buttonVariants } from '@shared/ui/button'
 import { Label } from '@shared/ui/label'
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from '@shared/ui/navigation-menu'
@@ -11,26 +11,14 @@ import { EditCategoryManageModal } from './edit-category-manage-modal'
 
 type EditCategoryType = { currentCategory?: number; setCurrentCategory: Dispatch<SetStateAction<number | undefined>> }
 
-const requestCategory = async () => {
-    const { categories } = await fetch('/api/category', {
-        method: 'get',
-    }).then(async (res) => (await res.json()) as { categories: Category[] })
-    return categories.map((category) => ({
+export const EditCategory: FC<EditCategoryType> = ({ setCurrentCategory, currentCategory }) => {
+    const { data: categoryData, isLoading, refetch } = useQuery(categoryQueries.all())
+
+    const categoryList = categoryData?.map((category) => ({
         label: category.category,
         value: category.categoryId,
         isHide: category.isHide,
     }))
-}
-
-export const EditCategory: FC<EditCategoryType> = ({ setCurrentCategory, currentCategory }) => {
-    const {
-        data: categoryList,
-        isLoading,
-        refetch,
-    } = useQuery({
-        queryKey: ['categories'],
-        queryFn: requestCategory,
-    })
 
     return (
         <section className='w-full'>

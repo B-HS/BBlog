@@ -422,6 +422,7 @@ export const TemporalPostUpdate = async (req: NextRequest, { params }: { params:
     }
 }
 
-export const TemporalPostApi = { GET: TemporalPostListGet, POST: TemporalPostWrite, PUT: TemporalPostUpdate, DELETE: TemporalPostDelete }
+export const TemporalPostApi = { GET: TemporalPostListGet, POST: TemporalPostWrite }
+export const TemporalPostIdApi = { PUT: TemporalPostUpdate, DELETE: TemporalPostDelete }
 export const PostListApi = { GET: PostListGET }
 export const PostApi = { GET: PostGet, POST: PostWrite, PUT: PostUpdate, DELETE: PostDelete }

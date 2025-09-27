@@ -21,7 +21,7 @@ export const fetchAllArticles = async () => {
         const { posts, categories } = await fetch(`${process.env.SITE_URL}/api/article`, {
             method: 'GET',
             next: { revalidate: false, tags: ['articlelist'] },
-        }).then((res) => res.json() as ResponseArticleList)
+        }).then((res) => res.json())
 
         return {
             posts,
@@ -29,6 +29,24 @@ export const fetchAllArticles = async () => {
         }
     } catch (error) {
         console.error('Error fetching all articles:', error)
+        return {
+            posts: [],
+            categories: [],
+        }
+    }
+}
+
+export const fetchArticlesByTag = async (tag: string): Promise<ResponseArticleList> => {
+    try {
+        const response = await fetch(`${process.env.SITE_URL}/api/tag/${tag}`, {
+            next: { revalidate: false, tags: ['articlelist', `tag-${tag}`] },
+        })
+        if (!response.ok) {
+            throw new Error('Failed to fetch articles by tag')
+        }
+        return await response.json()
+    } catch (error) {
+        console.error('Error fetching articles by tag:', error)
         return {
             posts: [],
             categories: [],

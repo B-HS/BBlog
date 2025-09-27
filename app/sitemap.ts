@@ -5,7 +5,9 @@ import type { MetadataRoute } from 'next'
 export const dynamic = 'force-dynamic'
 
 const getArticles = async () =>
-    await fetch(`${process.env.SITE_URL}/api/article?all=true&desc=true`, { cache: 'no-cache' }).then((res) => res.json() as ResponseArticleList)
+    await fetch(`${process.env.SITE_URL}/api/article?all=true&desc=true`, { cache: 'no-cache' }).then(
+        (res) => res.json() as Promise<ResponseArticleList>,
+    )
 
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
     const articles = await getArticles()
@@ -16,9 +18,6 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
             url: `${process.env.SITE_URL}/article/${article.postId}`,
             lastModified: dayjs(article.createdAt).format('YYYY-MM-DD'),
             priority: 1,
-            // TODO : Check image sitemap when upgraded to nextjs 15
-            // Perhaps ... nextjs 14 not support image sitemap
-            // condiering update to nextjs 15
             images,
         }
         return sitemapObj

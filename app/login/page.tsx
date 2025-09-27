@@ -41,7 +41,7 @@ const LoginPage = () => {
         })
 
     return (
-        <section className='flex flex-col items-center justify-center my-auto'>
+        <div className='flex flex-col items-center justify-center my-auto'>
             <Card className='w-full max-w-sm border-none shadow-none'>
                 <CardHeader>
                     <CardTitle className='text-2xl'>Login</CardTitle>
@@ -63,7 +63,7 @@ const LoginPage = () => {
                     </Button>
                 </CardFooter>
             </Card>
-        </section>
+        </div>
     )
 }
 
