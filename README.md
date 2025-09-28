@@ -19,9 +19,14 @@
 
 ## 업데이트 예정
 -   사이트
+    -   [x] 리팩토링
+        - 시맨틱태그
+        - 배럴링
+        - iOS26에 맞춰 horizontal-scrollbar 삭제
     -   [x] robots.txt 작성
     -   [x] sitemap.xml 작성
     -   [x] 게시글 TOC 생성
+        - [Scrollbar TOC 라이브러리 ↗ ](https://github.com/B-HS/scrollbar-toc) 작성 및 교체
     -   [x] 어드민인경우 삭제 글 opacity처리
     -   [x] 더 나은 모바일 환경
     -   [x] global-error.tsx 추가
@@ -33,7 +38,7 @@
     -   [x] Revalidate 추가
     -   이미지 리스트
         -   [x] 캐싱문제 해결
-        -   [x] 이미지서버 구현 (honojs) - https://github.com/B-HS/Image-Bucket
+        -   [x] [이미지서버 구현 (honojs) ↗ ](https://github.com/B-HS/Image-Bucket)
         -   [x] 이미지 링크 교체
         -   [x] 게시글 이미지 전역 Fallback 핸들러 추가
 -   관리자 페이지
