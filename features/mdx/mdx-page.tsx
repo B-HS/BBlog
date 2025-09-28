@@ -13,9 +13,7 @@ interface MdxPageProps {
 export const MdxPage = async ({ frontmatter, children }: MdxPageProps) => {
     return (
         <div className='relative flex'>
-            <aside aria-label='Table of contents'>
-                <FloatingMenu />
-            </aside>
+            <FloatingMenu />
             <article className='w-full px-3 py-5 rounded markdown-prose'>
                 <header className='flex flex-wrap items-center justify-between gap-2'>
                     <div className='flex items-center space-x-2 min-h-5'>
