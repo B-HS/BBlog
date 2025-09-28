@@ -7,7 +7,6 @@ import { User2Icon } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { LayoutContent } from './admin-layout-component'
 import { LayoutRoutingComponent } from './admin-layout-routing-component'
-import { useEffect, useState } from 'react'
 
 export const AdminWidget = () => {
     const { status } = useSession()

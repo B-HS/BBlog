@@ -41,9 +41,9 @@ export const VirtualScroll = () => {
 
     return (
         scrollData.isScrollable && (
-            <section className='fixed right-0 top-0 h-full w-0.5'>
+            <section className='fixed right-0 top-0 h-full w-1.5'>
                 <section
-                    className='absolute right-0 z-52 w-0.5 rounded-xs bg-foreground/30 will-change-transform'
+                    className='absolute right-0 z-52 w-1.5 rounded-xs bg-foreground/30 will-change-transform'
                     style={{
                         height: `${scrollData.thumbHeight}%`,
                         top: `${scrollData.thumbTop}%`,
