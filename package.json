@@ -74,6 +74,7 @@
         "remark-breaks": "^4.0.0",
         "remark-gfm": "^4.0.0",
         "screenfull": "^6.0.2",
+        "scrollbar-toc": "^1.0.2",
         "sharp": "^0.33.5",
         "shiki": "^1.3.0",
         "sonner": "^1.7.2",

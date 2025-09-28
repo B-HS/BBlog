@@ -247,6 +247,50 @@
     }
 }
 
+[data-bscroll-toc='true'] {
+    @apply text-primary max-w-0 overflow-hidden whitespace-nowrap z-20 min-w-[20px] hidden lg:block;
+    transition: max-width 300ms ease-in-out;
+}
+
+[data-bscroll-toc='true'] button {
+    @apply relative min-w-[20px] text-left overflow-hidden whitespace-nowrap text-transparent ml-auto w-fit max-w-full hidden lg:block;
+    transition: color 200ms ease-in-out;
+    text-overflow: ellipsis;
+}
+
+[data-bscroll-toc='true'] button::before {
+    content: '·';
+    position: absolute;
+    inset-inline-end: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    color: var(--primary);
+    opacity: 1;
+    transition: opacity 200ms ease-in-out;
+}
+
+:is(body:has(.peer:hover), body:has([data-bscroll-toc='true']:hover)) [data-bscroll-toc='true'] {
+    @apply max-w-[15dvh];
+    will-change: max-width;
+}
+
+:is(body:has(.peer:hover), body:has([data-bscroll-toc='true']:hover)) [data-bscroll-toc='true'] button {
+    @apply text-inherit;
+}
+
+:is(body:has(.peer:hover), body:has([data-bscroll-toc='true']:hover)) [data-bscroll-toc='true'] button::before {
+    opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-bscroll-toc='true'],
+    [data-bscroll-toc='true'] button,
+    [data-bscroll-toc='true'] button::before {
+        transition: none;
+    }
+}
+
 @theme inline {
     --color-border: var(--border);
     --color-input: var(--input);

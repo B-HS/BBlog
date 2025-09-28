@@ -12,15 +12,9 @@ import { useEffect, useState } from 'react'
 export const AdminWidget = () => {
     const { status } = useSession()
     const { isOpen, setIsOpen } = useAdminPanelStateStore()
-    const [isMounted, setIsMounted] = useState(false)
-
-    useEffect(() => {
-        setIsMounted(true)
-    }, [])
 
     return (
-        status === 'authenticated' &&
-        isMounted && (
+        status === 'authenticated' && (
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <DialogTrigger asChild>
                     <Button variant={'ghost'} size={'icon'} asChild aria-label='Icon'>

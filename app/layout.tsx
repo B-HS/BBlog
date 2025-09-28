@@ -8,6 +8,7 @@ import { FC, ReactNode } from 'react'
 import './globals.css'
 
 const GoToTop = dynamic(() => import('@features/common').then((comp) => comp.GoToTop))
+const VirtualScroll = dynamic(() => import('@features/common').then((comp) => comp.VirtualScroll))
 
 export const metadata: Metadata = {
     metadataBase: new URL('https://blog.guymyo.net'),
@@ -59,6 +60,7 @@ const RootLayout: FC<{ children: ReactNode }> = ({ children }) => {
                                     <GoToTop />
                                 </main>
                                 <Toaster />
+                                <VirtualScroll />
                             </QueryProvider>
                         </ThemeProvider>
                     </SessionProvider>

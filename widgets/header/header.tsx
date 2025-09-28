@@ -9,9 +9,6 @@ import Link from 'next/link'
 const AdminWidget = dynamic(() => import('@widgets/admin').then((comp) => comp.AdminWidget), {
     loading: () => <DotsHorizontalIcon className={buttonVariants({ variant: 'ghost', size: 'icon', className: 'p-2 cursor-pointer' })} />,
 })
-const ScrollStatus = dynamic(() => import('@features/common').then((comp) => comp.ScrollStatus), {
-    loading: () => <DotsHorizontalIcon className={buttonVariants({ variant: 'ghost', size: 'icon', className: 'p-2 cursor-pointer' })} />,
-})
 const ThemeChanger = dynamic(() => import('@features/common').then((comp) => comp.ThemeChanger), {
     loading: () => <DotsHorizontalIcon className={buttonVariants({ variant: 'ghost', size: 'icon', className: 'p-2 cursor-pointer' })} />,
 })
@@ -34,7 +31,6 @@ export const SiteHeader = async () => {
                     <TooltipIcon icon={BookIcon} linkUrl='/article' tooltipContent='Articles' />
                 </nav>
             </section>
-            <ScrollStatus />
         </header>
     )
 }
