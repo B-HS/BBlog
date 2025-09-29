@@ -41,6 +41,9 @@
         -   [x] [이미지서버 구현 (honojs) ↗ ](https://github.com/B-HS/Image-Bucket)
         -   [x] 이미지 링크 교체
         -   [x] 게시글 이미지 전역 Fallback 핸들러 추가
+    -   댓글
+        -   [ ] 관리자 댓글 구현
+        -   [ ] 댓글 create 시점 문제 해결
 -   관리자 페이지
     -   [x] 기본 레이아웃 및 가상 라우팅
     -   대시보드
