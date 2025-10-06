@@ -1,10 +1,4 @@
----
 <img width="1024" alt="image" src="https://github.com/user-attachments/assets/9d95cb48-ca3d-4438-8a0e-0d65a6fd35fc">
----
-
-> 프로젝트 기본 템플릿
-
--   https://github.com/B-HS/template
 
 ## BBlog
 
