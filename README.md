@@ -12,15 +12,16 @@
 -   React query
 
 ## 업데이트 예정
+
 -   사이트
     -   [x] 리팩토링
-        - 시맨틱태그
-        - 배럴링
-        - iOS26에 맞춰 horizontal-scrollbar 삭제
+        -   시맨틱태그
+        -   배럴링
+        -   iOS26에 맞춰 horizontal-scrollbar 삭제
     -   [x] robots.txt 작성
     -   [x] sitemap.xml 작성
     -   [x] 게시글 TOC 생성
-        - [Scrollbar TOC 라이브러리 ↗ ](https://github.com/B-HS/scrollbar-toc) 작성 및 교체
+        -   [Scrollbar TOC 라이브러리 ↗ ](https://github.com/B-HS/scrollbar-toc) 작성 및 교체
     -   [x] 어드민인경우 삭제 글 opacity처리
     -   [x] 더 나은 모바일 환경
     -   [x] global-error.tsx 추가

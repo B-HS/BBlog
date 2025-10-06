@@ -45,9 +45,9 @@ const validateBody = (body: Record<string, any>) => {
     return []
 }
 
-const GET = async(req: NextRequest, { params }: { params: Promise<{ postId: string }> }) => {
+const GET = async (req: NextRequest, { params }: { params: Promise<{ postId: string }> }) => {
     const session = await auth()
-    
+
     try {
         const { postId: rawPostId } = await params
         const page = Number(req.nextUrl.searchParams.get('page') || '1')
@@ -64,10 +64,10 @@ const GET = async(req: NextRequest, { params }: { params: Promise<{ postId: stri
             .offset((page - 1) * limit)
 
         if (!session?.user) {
-            commentList = commentList.map(comment => ({
-                ...comment, 
+            commentList = commentList.map((comment) => ({
+                ...comment,
                 comment: comment.isHide ? 'This comment is hidden' : comment.comment,
-                nickname: comment.isHide ? 'Anonymous' : comment.nickname
+                nickname: comment.isHide ? 'Anonymous' : comment.nickname,
             }))
         }
 
@@ -153,15 +153,18 @@ export const adminGET = async (req: NextRequest) => {
     const limit = 10
     const offset = (page - 1) * limit
     const commentList = await db.select().from(comments).limit(limit).offset(offset)
-    const total = await db.select({ count: sql`COUNT(*)` }).from(comments).execute()
+    const total = await db
+        .select({ count: sql`COUNT(*)` })
+        .from(comments)
+        .execute()
     const totalPage = Math.ceil(Number(total[0]?.count || 0) / limit)
-    return NextResponse.json({ 
+    return NextResponse.json({
         comments: commentList,
-        page,   
+        page,
         limit,
         total: Number(total[0]?.count || 0),
         totalPage,
-     })
+    })
 }
 
 export const adminPUT = async (req: NextRequest) => {

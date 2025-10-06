@@ -9,7 +9,7 @@ export const commentQueries = {
             queryFn: async () => {
                 const baseUrl = process.env.SITE_URL || ''
                 const data = await fetch(`${baseUrl}/api/comment?page=${page}`, {
-                    next: { tags: ['comments'] }
+                    next: { tags: ['comments'] },
                 })
                 if (data.status !== 200) return { comments: [], page: 1, limit: 10, total: 0, totalPage: 1 }
                 const commentData = (await data.json()) as { comments: CommentProps[]; page: number; limit: number; total: number; totalPage: number }
@@ -22,7 +22,7 @@ export const commentQueries = {
             queryFn: async () => {
                 const baseUrl = process.env.SITE_URL || ''
                 const data = await fetch(`${baseUrl}/api/comment/${post}`, {
-                    next: { tags: ['comments'] }
+                    next: { tags: ['comments'] },
                 })
                 if (data.status !== 200) return []
                 const commentData = (await data.json()) as { comments: CommentProps[] }
