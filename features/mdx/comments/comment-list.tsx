@@ -16,7 +16,7 @@ export const CommentsList = ({ comments }: CommentListProps) => {
                         <section className='flex justify-between items-center'>
                             <span className='text-sm font-semibold'>{comment.nickname}</span>
                             <section className='flex items-center text-xs text-muted-foreground text-nowrap gap-0.5'>
-                                <Clock className='size-3 pb-[1px]' />
+                                <Clock className='size-3 pt-px' />
                                 {dayjs(comment.createdAt).format('YYYY-MM-DD')}
                             </section>
                         </section>

@@ -1,6 +1,7 @@
+import { auth } from '@shared/auth'
 import crypto from 'crypto'
 import { db } from 'drizzle'
-import { eq } from 'drizzle-orm'
+import { eq, sql } from 'drizzle-orm'
 import { comments } from 'drizzle/schema'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -44,7 +45,9 @@ const validateBody = (body: Record<string, any>) => {
     return []
 }
 
-const GET = async (req: NextRequest, { params }: { params: Promise<{ postId: string }> }) => {
+const GET = async(req: NextRequest, { params }: { params: Promise<{ postId: string }> }) => {
+    const session = await auth()
+    
     try {
         const { postId: rawPostId } = await params
         const page = Number(req.nextUrl.searchParams.get('page') || '1')
@@ -53,12 +56,20 @@ const GET = async (req: NextRequest, { params }: { params: Promise<{ postId: str
 
         if (!postId) return NextResponse.json({ message: 'Invalid post ID' }, { status: 404 })
 
-        const commentList = await db
+        let commentList = await db
             .select()
             .from(comments)
             .where(eq(comments.postId, postId))
             .limit(limit)
             .offset((page - 1) * limit)
+
+        if (!session?.user) {
+            commentList = commentList.map(comment => ({
+                ...comment, 
+                comment: comment.isHide ? 'This comment is hidden' : comment.comment,
+                nickname: comment.isHide ? 'Anonymous' : comment.nickname
+            }))
+        }
 
         return NextResponse.json({ comments: commentList })
     } catch (error) {
@@ -86,6 +97,8 @@ const POST = async (req: NextRequest, { params }: { params: Promise<{ postId: st
                 nickname: body.username,
                 password: encryptedPassword,
                 comment: body.commentText,
+                createdAt: new Date(),
+                updatedAt: new Date(),
             })
             .$returningId()
             .execute()
@@ -127,7 +140,7 @@ const PUT = async (req: NextRequest) => {
             return NextResponse.json({ message: 'Invalid password' }, { status: 403 })
         }
 
-        await db.update(comments).set({ comment: body.commentText }).where(eq(comments.commentId, body.id))
+        await db.update(comments).set({ comment: body.commentText, updatedAt: new Date() }).where(eq(comments.commentId, body.id))
 
         return NextResponse.json({ message: 'Comment updated successfully' }, { status: 200 })
     } catch (error) {
@@ -135,4 +148,27 @@ const PUT = async (req: NextRequest) => {
     }
 }
 
+export const adminGET = async (req: NextRequest) => {
+    const page = Number(req.nextUrl.searchParams.get('page') || '1')
+    const limit = 10
+    const offset = (page - 1) * limit
+    const commentList = await db.select().from(comments).limit(limit).offset(offset)
+    const total = await db.select({ count: sql`COUNT(*)` }).from(comments).execute()
+    const totalPage = Math.ceil(Number(total[0]?.count || 0) / limit)
+    return NextResponse.json({ 
+        comments: commentList,
+        page,   
+        limit,
+        total: Number(total[0]?.count || 0),
+        totalPage,
+     })
+}
+
+export const adminPUT = async (req: NextRequest) => {
+    const { isHide, commentId } = await req.json()
+    const comment = await db.update(comments).set({ isHide }).where(eq(comments.commentId, commentId))
+    return NextResponse.json({ comment })
+}
+
 export const commentApi = { DELETE, GET, POST, PUT }
+export const adminCommentApi = { GET: adminGET, PUT: adminPUT }

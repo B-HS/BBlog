@@ -16,7 +16,11 @@ const EditPage = (props: { params: Promise<{ postId: number }> }) => {
             body: JSON.stringify(post),
         }).then(async (res) => (await res.json()) as { postId: number })
 
-        await Promise.all([fetch('/api/revalidate/articles', { method: 'POST' }), fetch('/api/revalidate/article', { method: 'POST' })])
+        await Promise.all([
+            fetch('/api/revalidate/articles', { method: 'POST' }),
+            fetch('/api/revalidate/article', { method: 'POST' }),
+            fetch('/api/revalidate/articlelist', { method: 'POST' }),
+        ])
 
         return result
     }

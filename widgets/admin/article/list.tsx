@@ -3,7 +3,6 @@ import { adminQueries } from '@entities/admin'
 import { Pagination } from '@features/common'
 import { Button } from '@shared/ui/button'
 import { Checkbox } from '@shared/ui/checkbox'
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@shared/ui/table'
 import { useToast } from '@shared/ui/use-toast'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -37,7 +36,13 @@ export const ArticleListManagement = () => {
             }
 
             setSelectedArticles([])
-            refetch()
+
+            await Promise.all([
+                refetch(),
+                fetch('/api/revalidate/articles', { method: 'POST' }),
+                fetch('/api/revalidate/article', { method: 'POST' }),
+                fetch('/api/revalidate/articlelist', { method: 'POST' }),
+            ])
             return
         },
     })
@@ -61,7 +66,7 @@ export const ArticleListManagement = () => {
     }
 
     return (
-        <section className='flex flex-col size-full gap-2'>
+        <div className='flex flex-col size-full gap-2'>
             <h1 className='text-2xl'>Article List</h1>
 
             <section className='flex justify-end gap-2'>
@@ -76,7 +81,7 @@ export const ArticleListManagement = () => {
                 </Button>
             </section>
 
-            <section className='border rounded-sm'>
+            <div className='border rounded-sm'>
                 <Table>
                     <TableHeader>
                         <TableRow>
@@ -114,7 +119,7 @@ export const ArticleListManagement = () => {
                         ))}
                     </TableBody>
                 </Table>
-            </section>
+            </div>
             <Pagination
                 callbackFn={setPage}
                 page={page}
@@ -122,6 +127,6 @@ export const ArticleListManagement = () => {
                 prev={articlesData?.pagination?.prev || false}
                 totalPage={articlesData?.pagination?.totalPage || 0}
             />
-        </section>
+        </div>
     )
 }
