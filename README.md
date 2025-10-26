@@ -1,7 +1,11 @@
 <img width="1024" alt="image" src="https://github.com/user-attachments/assets/9d95cb48-ca3d-4438-8a0e-0d65a6fd35fc">
 
+## 마이그레이션중
+-   Next16 + B-Log로 misskey 인스턴스를 제거, Cache component와 PPR을 적용하여 클라우드로 이주 예정
+    -   https://github.com/B-HS/BBlog/tree/dev (AWS Lightsail)
+    -   https://github.com/B-HS/B-log (Cloudflare)
+ 
 ## BBlog
-
 -   Nexjts
 -   Drizzle
 -   Shadcn/ui
@@ -12,7 +16,6 @@
 -   React query
 
 ## 업데이트 예정
-
 -   사이트
     -   [x] 리팩토링
         -   시맨틱태그
