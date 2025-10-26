@@ -1,0 +1,27 @@
+{
+    "version": "7",
+    "dialect": "mysql",
+    "entries": [
+        {
+            "idx": 0,
+            "version": "5",
+            "when": 1761281664439,
+            "tag": "0000_last_silk_fever",
+            "breakpoints": true
+        },
+        {
+            "idx": 1,
+            "version": "5",
+            "when": 1761282595050,
+            "tag": "0001_perpetual_the_anarchist",
+            "breakpoints": true
+        },
+        {
+            "idx": 2,
+            "version": "5",
+            "when": 1761295710832,
+            "tag": "0002_common_puck",
+            "breakpoints": true
+        }
+    ]
+}
