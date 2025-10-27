@@ -42,7 +42,7 @@ export const PUT = async (request: NextRequest, { params }: { params: Promise<{ 
             isPublished,
         })
 
-        revalidateTag(QUERY_KEY.POST.GET(id).join('-'), 'max')
+        revalidateTag(String(id), 'max')
         revalidateTag('postList', 'max')
 
         return NextResponse.json({ success: true, postId: Number(id) })

@@ -53,7 +53,7 @@ export const useUpdatePost = (id: string) => {
         },
         onSuccess: () => {
             toast.success('포스트가 수정되었습니다')
-            router.push('/article')
+            router.push(`/article/${id}`)
         },
         onError: () => {
             toast.error('포스트 수정에 실패했습니다')

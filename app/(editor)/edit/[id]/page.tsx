@@ -16,22 +16,8 @@ const EditPage = ({ params }: { params: Promise<{ id: string }> }) => {
     const [isInitialized, setIsInitialized] = useState(false)
     const debouncedContent = useDebounce(content, 100)
 
-    useEffect(() => {
-        params.then(({ id }) => setId(id))
-    }, [params])
-
     const { data: post, isLoading } = useGetPost(id)
     const { mutate: updatePost } = useUpdatePost(id)
-
-    useEffect(() => {
-        if (post && !isInitialized) {
-            setTitle(post.title)
-            setContent(post.description)
-            setCategoryId(post.categoryId)
-            setTagIds(post.tags?.map((tag) => tag.tagId) ?? [])
-            setIsInitialized(true)
-        }
-    }, [post, isInitialized])
 
     const handleSave = (isPublished: boolean) => {
         if (!categoryId) return
@@ -51,6 +37,20 @@ const EditPage = ({ params }: { params: Promise<{ id: string }> }) => {
             setPreviewContent(content)
         })
     }, [debouncedContent])
+
+    useEffect(() => {
+        if (post && !isInitialized) {
+            setTitle(post.title)
+            setContent(post.description)
+            setCategoryId(post.categoryId)
+            setTagIds(post.tags?.map((tag) => tag.tagId) ?? [])
+            setIsInitialized(true)
+        }
+    }, [post, isInitialized])
+
+    useEffect(() => {
+        params.then(({ id }) => setId(id))
+    }, [params])
 
     if (!id || isLoading) {
         return (
