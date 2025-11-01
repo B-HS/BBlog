@@ -2,6 +2,7 @@ import 'server-only'
 import { drizzle } from 'drizzle-orm/mysql2'
 import * as mysql from 'mysql2/promise'
 import * as schema from './schema'
+import * as relations from './relations'
 
 declare global {
     var _db: ReturnType<typeof drizzle> | undefined
@@ -15,7 +16,7 @@ const poolConnection = mysql.createPool({
     password: process.env.DATABASE_PASSWORD,
 })
 
-const db = globalThis._db || drizzle(poolConnection, { schema, mode: 'default' })
+const db = globalThis._db || drizzle(poolConnection, { schema: { ...schema, ...relations }, mode: 'default' })
 
 if (process.env.NODE_ENV !== 'production') globalThis._db = db as typeof globalThis._db
 

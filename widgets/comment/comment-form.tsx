@@ -1,13 +1,13 @@
 'use client'
 
 import { useCreateComment } from '@entities/comment.client'
+import { useSession } from '@entities/auth.client'
 import { authClient } from '@lib/auth/auth-client'
 import { Button } from '@ui/button'
 import { Textarea } from '@ui/textarea'
 import { Checkbox } from '@ui/checkbox'
 import { Github } from '@ui/icons/github'
-import { User } from 'better-auth'
-import { FC, useState, useEffect } from 'react'
+import { FC, useState } from 'react'
 
 interface CommentFormProps {
     postId: number
@@ -16,14 +16,10 @@ interface CommentFormProps {
 export const CommentForm: FC<CommentFormProps> = ({ postId }) => {
     const [comment, setComment] = useState('')
     const [isHide, setIsHide] = useState(false)
-    const [user, setUser] = useState<User>()
+    const { data: session } = useSession()
     const { mutate: createComment, isPending } = useCreateComment()
 
-    useEffect(() => {
-        authClient.getSession().then((session) => {
-            setUser(session.data?.user)
-        })
-    }, [])
+    const user = session?.user
 
     const handleSubmit = () => {
         if (!comment.trim()) return

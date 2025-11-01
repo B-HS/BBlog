@@ -1,6 +1,9 @@
 import ProfileImage from '@lib/images/profile.jpeg'
 
 export const QUERY_KEY = {
+    AUTH: {
+        SESSION: ['session'],
+    },
     IMAGE: {
         LIST: 'imageList',
     },
@@ -47,4 +50,4 @@ export const CUSTOM_LINKS = [
 ]
 
 export const BLOG_DESCRIPTION = '잡식성 개발자'
-export const LOG_USER_ID = 'cGlz8UoIpMIIGqKwzNOgW9nSm9j6ZAiA'
+export const LOG_USER_ID = 'wbRMlIqXHbqzHUAI0OM5MFRyNiIVCdpP'

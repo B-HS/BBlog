@@ -1,6 +1,6 @@
 import { QUERY_KEY } from '@lib/constants'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { GetLogMessagesByUserIdParams, GetLogMessagesByUserIdResponse } from './log'
+import { GetLogMessagesByUserIdResponse } from './log'
 
 export const useInfiniteGetLogMessagesByUserId = (userId: string, size: number = 10) => {
     return useInfiniteQuery({

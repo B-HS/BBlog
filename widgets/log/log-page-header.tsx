@@ -1,13 +1,18 @@
-import { getUserProfile } from '@entities/message'
+'use client'
+
+import { useSession } from '@entities/auth.client'
 import { LogInfoList } from '@features/log/log-info-list'
-import { LOG_USER_ID } from '@lib/constants'
 import BannerImage from '@lib/images/banner.jpeg'
+import UserProfileImage from '@lib/images/seyanaprofile.png'
 import { Avatar, AvatarFallback, AvatarImage } from '@ui/avatar'
 import { Image } from '@ui/image'
-import { FC } from 'react'
+import { User } from 'better-auth'
+import { LogMessageForm } from './log-message-form'
 
-export const LogPageInfo: FC = async () => {
-    const logInfo = await getUserProfile(LOG_USER_ID)
+export const LogPageHeader = () => {
+    const { data: session } = useSession()
+    const user = session?.user as (User & { role?: string }) | undefined
+
     return (
         <div>
             <section className='relative h-64 hover:h-72 transition-all'>
@@ -17,18 +22,20 @@ export const LogPageInfo: FC = async () => {
 
             <section className='px-6 py-3 sm:px-8 sm:py-6'>
                 <section className='flex flex-col sm:flex-row items-center sm:items-end -mt-20 mb-3.5 gap-5'>
-                    <Avatar className='size-32 border border-border bg-card'>
-                        <AvatarImage src={logInfo?.image || ''} alt='Profile picture' />
-                        <AvatarFallback>{logInfo?.name}</AvatarFallback>
+                    <Avatar className='size-32 border border-border bg-card/50'>
+                        <AvatarImage className='translate-y-2' src={UserProfileImage.src} alt='Profile picture' />
+                        <AvatarFallback>{user?.name}</AvatarFallback>
                     </Avatar>
                     <section className='flex-1 text-center sm:text-left'>
-                        <h1 className='text-2xl font-bold'>{logInfo?.name}</h1>
-                        <p className='text-muted-foreground'>{logInfo?.email}</p>
+                        <h1 className='text-2xl font-bold'>{user?.name}</h1>
+                        <p className='text-muted-foreground'>{user?.email}</p>
                     </section>
                 </section>
                 <p className='py-2 text-center sm:text-start'>テッテレー</p>
-                <LogInfoList logInfo={{ createdAt: logInfo?.createdAt || new Date('2023-04-01'), location: 'South Korea @ Seoul' }} />
+                <LogInfoList logInfo={{ createdAt: user?.createdAt || new Date('2023-04-01'), location: 'South Korea @ Seoul' }} />
             </section>
+
+            {user?.role === 'admin' && <LogMessageForm userImage={user?.image} userName={user?.name} />}
         </div>
     )
 }

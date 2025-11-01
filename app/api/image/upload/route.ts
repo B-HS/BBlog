@@ -1,5 +1,7 @@
 import { createImage, deleteImageByFileName, uploadImage } from '@entities/image'
 import { auth } from '@lib/auth/auth'
+import { db } from '@db/db'
+import { imageAssets } from '@db/schema'
 
 import { NextRequest, NextResponse } from 'next/server'
 import sharp from 'sharp'
@@ -38,7 +40,22 @@ export const POST = async (request: NextRequest) => {
             height: metadata.height || 0,
         })
 
-        return NextResponse.json({ url: uploadResult.url })
+        const imageAssetId = crypto.randomUUID()
+        await db.insert(imageAssets).values({
+            id: imageAssetId,
+            r2Key: fileName,
+            bucket: 'default',
+            mimeType: 'image/webp',
+            sizeBytes: convertedBuffer.byteLength,
+            width: metadata.width || null,
+            height: metadata.height || null,
+            checksum: null,
+            uploadedBy: session.user.id,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        })
+
+        return NextResponse.json({ url: uploadResult.url, imageId: imageAssetId })
     } catch (error) {
         await deleteImageByFileName(fileName)
         return NextResponse.json({ error: 'Failed to save image' }, { status: 500 })

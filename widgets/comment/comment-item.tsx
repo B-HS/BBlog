@@ -2,18 +2,17 @@
 
 import { CommentWithUser } from '@entities/comment'
 import { useDeleteComment, useUpdateComment } from '@entities/comment.client'
-import { authClient } from '@lib/auth/auth-client'
+import { useSession } from '@entities/auth.client'
 import { cn } from '@lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '@ui/avatar'
 import { Button } from '@ui/button'
 import { Checkbox } from '@ui/checkbox'
 import { Textarea } from '@ui/textarea'
-import { User } from 'better-auth'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ko'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { Check, Pencil, Trash2, X } from 'lucide-react'
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 
 dayjs.extend(relativeTime)
 dayjs.locale('ko')
@@ -33,20 +32,14 @@ const getInitials = (name: string) => {
 }
 
 export const CommentItem: FC<CommentItemProps> = ({ comment, postId }) => {
-    const [user, setUser] = useState<User>()
+    const { data: session } = useSession()
     const [isEditing, setIsEditing] = useState(false)
     const [editedComment, setEditedComment] = useState(comment.comment)
     const [editedIsHide, setEditedIsHide] = useState(comment.isHide ?? false)
     const { mutate: updateComment, isPending: isUpdating } = useUpdateComment()
     const { mutate: deleteComment, isPending: isDeleting } = useDeleteComment()
 
-    useEffect(() => {
-        authClient.getSession().then((session) => {
-            setUser(session.data?.user)
-        })
-    }, [])
-
-    const isOwner = user?.id === comment.userId
+    const isOwner = session?.user?.id === comment.userId
 
     const handleUpdate = () => {
         if (!editedComment.trim()) return
