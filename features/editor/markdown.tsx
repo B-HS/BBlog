@@ -1,5 +1,5 @@
+import { cn } from '@lib/utils'
 import { Image } from '@ui/image'
-import { CodeBlock } from '../common/code-block'
 import type { Element, Root } from 'hast'
 import { defaultSchema, type Schema } from 'hast-util-sanitize'
 import { toString } from 'hast-util-to-string'
@@ -17,9 +17,17 @@ import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import { unified } from 'unified'
 import { visit } from 'unist-util-visit'
-import { cn } from '@lib/utils'
+import { CodeBlock } from '../common/code-block'
 
 type TocItem = { depth: number; id: string; text: string }
+
+export const toPlainText = async (markdown: string) => {
+    const processor = unified().use(remarkParse).use(remarkGfm).use(remarkRehype, { allowDangerousHtml: false })
+    const tree = processor.parse(markdown)
+    const transformed = await processor.run(tree)
+
+    return toString(transformed).replace(/\s+/g, ' ').trim()
+}
 
 export const toHTMLWithTOC = async (markdown: string) => {
     const toc: TocItem[] = []

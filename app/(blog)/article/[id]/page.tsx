@@ -3,7 +3,8 @@ import { Post } from './_contents/post-content'
 import { Fragment, Suspense } from 'react'
 import { Metadata } from 'next'
 import { getPost } from '@entities/post'
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
+import { toPlainText } from '@features/editor/markdown'
 
 export const generateMetadata = async (props: { params: Promise<{ id: string }> }): Promise<Metadata> => {
     const params = await props.params
@@ -13,7 +14,7 @@ export const generateMetadata = async (props: { params: Promise<{ id: string }> 
 
     const thumbnails = [`${process.env.SITE_URL}/thumbnail/${params.id}`]
     const tags = post.tags.map((t) => t.tag)
-    const context = post.description.slice(0, 250).replace(/<\/?[^>]+(>|$)/g, '').trim()
+    const context = await toPlainText(post.description)
     const defaultDescription = `${post.title} - ${process.env.SITE_NAME || 'Blog'} 아티클`
 
     return {
