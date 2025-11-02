@@ -11,6 +11,11 @@ export const getTagList = async () => {
     'use cache'
     cacheTag(QUERY_KEY.TAG.LIST)
     cacheLife('max')
+
+    if (process.env.SKIP_BUILD) {
+        return []
+    }
+
     return await db.select().from(tags)
 }
 
