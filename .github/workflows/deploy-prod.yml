@@ -1,0 +1,73 @@
+name: Deploy to Production
+
+on:
+    push:
+        branches:
+            - prod
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: latest
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '24'
+                  cache: 'pnpm'
+
+            - name: Cache Next.js build
+              uses: actions/cache@v4
+              with:
+                  path: .next/cache
+                  key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+                  restore-keys: |
+                      ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
+                      ${{ runner.os }}-nextjs-
+
+            - name: Create .env file
+              run: echo "${{ secrets.BBLOG_ENV_TEXT }}" > .env
+
+            - name: Install dependencies
+              run: pnpm install
+
+            - name: Build application
+              run: pnpm build
+
+            - name: Build Docker image
+              run: docker build -t bblog:latest .
+
+            - name: Save Docker image to tar
+              run: docker save bblog:latest -o bblog.tar
+
+            - name: Transfer files to server
+              uses: appleboy/scp-action@v0.1.7
+              with:
+                  host: ${{ secrets.AWS_KR_ADDRESS }}
+                  username: ${{ secrets.AWS_KR_USERNAME }}
+                  key: ${{ secrets.AWS_KR_PEM }}
+                  source: 'bblog.tar,compose.yml'
+                  target: '~/bblog-deploy'
+
+            - name: Deploy on server
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                  host: ${{ secrets.AWS_KR_ADDRESS }}
+                  username: ${{ secrets.AWS_KR_USERNAME }}
+                  key: ${{ secrets.AWS_KR_PEM }}
+                  script: |
+                      mkdir -p ~/bblog-deploy
+                      cd ~/bblog-deploy
+                      docker load -i bblog.tar
+                      docker compose down
+                      docker compose up -d
+                      docker ps | grep bblog
+                      echo "Deployment completed successfully"

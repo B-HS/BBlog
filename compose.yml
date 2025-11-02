@@ -4,7 +4,13 @@ services:
             context: .
             dockerfile: Dockerfile
         ports:
-            - '3000:3000'
+            - '7777:3000'
         environment:
             - NODE_ENV=production
         restart: unless-stopped
+        networks:
+            - gumyo
+
+networks:
+    gumyo:
+        external: true
