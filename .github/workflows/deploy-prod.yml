@@ -46,7 +46,9 @@ jobs:
               run: docker build -t bblog:latest .
 
             - name: Save Docker image to tar
-              run: docker save bblog:latest -o bblog.tar
+              run: |
+                  docker save bblog:latest -o bblog.tar
+                  chmod 644 bblog.tar
 
             - name: Transfer files to server
               uses: appleboy/scp-action@v0.1.7
