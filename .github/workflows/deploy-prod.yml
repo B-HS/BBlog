@@ -72,4 +72,9 @@ jobs:
                       sudo docker compose down
                       sudo docker compose up -d
                       sudo docker ps | grep bblog
+                      echo "Waiting for container to be ready..."
+                      sleep 5
+                      curl -X POST http://localhost:7777/api/revalidate \
+                        -H "Content-Type: application/json" \
+                        -d '{"tags":["categoryList","tagList","postList","post"]}'
                       echo "Deployment completed successfully"
