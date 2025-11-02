@@ -8,7 +8,7 @@ import { toPlainText } from '@features/editor/markdown'
 
 export const generateMetadata = async (props: { params: Promise<{ id: string }> }): Promise<Metadata> => {
     const params = await props.params
-    const response = await fetch(`/api/post/${params.id}`)
+    const response = await fetch(`${process.env.SITE_URL}/api/post/${params.id}`)
     const post = await response.json() as PostDetail
 
     if (!post) notFound()
