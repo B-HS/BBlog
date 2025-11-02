@@ -139,6 +139,10 @@ export const getPostList = async ({
 }
 
 export const getPost = async (id: string | number): Promise<PostDetail[]> => {
+    'use cache'
+    cacheTag(...QUERY_KEY.POST.GET(String(id)))
+    cacheLife('max')
+
     const tagsSubquery = db
         .select({
             postId: postTags.postId,

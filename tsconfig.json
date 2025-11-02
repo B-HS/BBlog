@@ -29,6 +29,6 @@
             "@widgets/*": ["./widgets/*"]
         }
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next/dev/types/**/*.ts", "**/*.mts"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next/dev/types/**/*.ts", "**/*.mts", "app/api/thumbnail/route.tsㅌ"],
     "exclude": ["node_modules"]
 }

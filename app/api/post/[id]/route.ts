@@ -1,6 +1,5 @@
 import { getPost, updatePost } from '@entities/post'
 import { auth } from '@lib/auth/auth'
-import { QUERY_KEY } from '@lib/constants'
 import { revalidateTag } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 

@@ -25,7 +25,7 @@ export const POST = async (request: NextRequest) => {
             retweetOfId,
         })
 
-        revalidateTag('logMessages')
+        revalidateTag('logMessages', 'max')
 
         return NextResponse.json(message)
     } catch (error) {

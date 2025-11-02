@@ -121,7 +121,6 @@ export const getUserProfile = async (userId: string) => {
     return result as UserProfile
 }
 
-
 export const getMessagesByUserId = async ({ page = 1, size = 10, userId }: GetMessagesByUserIdParams): Promise<GetMessagesByUserIdResponse> => {
     'use cache'
     cacheTag(...QUERY_KEY.LOG.MESSAGES(userId), `page-${page}`, `size-${size}`)
