@@ -3,7 +3,7 @@ import { db } from '@db/db'
 import { categories, posts, postTags, tags } from '@db/schema'
 import { QUERY_KEY } from '@lib/constants'
 import { and, desc, eq, like, sql, InferSelectModel } from 'drizzle-orm'
-import { cacheLife, cacheTag } from 'next/cache'
+import { cacheLife, cacheTag, revalidateTag } from 'next/cache'
 
 export type Post = InferSelectModel<typeof posts>
 
@@ -183,6 +183,25 @@ export const getPost = async (id: string | number): Promise<PostDetail[]> => {
         .limit(1)
 }
 
+export const getAllPosts = async () => {
+    'use cache'
+    cacheTag(...QUERY_KEY.POST.ALL)
+    cacheLife('max')
+
+    if (process.env.SKIP_BUILD) {
+        return []
+    }
+
+    return await db
+        .select({
+            postId: posts.postId,
+            updatedAt: posts.updatedAt,
+        })
+        .from(posts)
+        .where(and(eq(posts.isPublished, true), eq(posts.isHide, false)))
+        .orderBy(desc(posts.createdAt))
+}
+
 export const insertPost = async (data: { title: string; description: string; categoryId: number; tagIds: number[]; isPublished: boolean }) => {
     const [post] = await db
         .insert(posts)
@@ -197,6 +216,8 @@ export const insertPost = async (data: { title: string; description: string; cat
     if (data.tagIds.length > 0) {
         await db.insert(postTags).values(data.tagIds.map((tagId) => ({ postId: post.postId, tagId })))
     }
+
+    revalidateTag(QUERY_KEY.POST.ALL[0], 'max')
 
     return post
 }
@@ -222,21 +243,7 @@ export const updatePost = async (
         await db.insert(postTags).values(data.tagIds.map((tagId) => ({ postId, tagId })))
     }
 
+    revalidateTag(QUERY_KEY.POST.ALL[0], 'max')
+
     return { postId }
-}
-
-export const createPost = async (data: { title: string; description: string; categoryId: number; tagIds: number[]; isPublished: boolean }) => {
-    const response = await fetch('/api/post', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-
-    if (!response.ok) {
-        throw new Error('Failed to create post')
-    }
-
-    return await response.json()
 }

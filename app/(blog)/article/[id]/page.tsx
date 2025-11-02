@@ -12,9 +12,10 @@ export const generateMetadata = async (props: { params: Promise<{ id: string }> 
 
     if (!post) notFound()
 
-    const thumbnails = [`${process.env.SITE_URL}/thumbnail/${params.id}`]
+    const thumbnail = `${process.env.SITE_URL}/api/thumbnail/${params.id}`
     const tags = post.tags.map((t) => t.tag)
-    const context = await toPlainText(post.description)
+    const rawContext = await toPlainText(post.description)
+    const context = rawContext.slice(0, 160).trim()
     const defaultDescription = `${post.title} - ${process.env.SITE_NAME || 'Blog'} 아티클`
 
     return {
@@ -33,7 +34,7 @@ export const generateMetadata = async (props: { params: Promise<{ id: string }> 
             siteName: process.env.SITE_NAME || '',
             images: [
                 {
-                    url: thumbnails[0],
+                    url: thumbnail,
                     width: 1200,
                     height: 630,
                 },
@@ -42,7 +43,7 @@ export const generateMetadata = async (props: { params: Promise<{ id: string }> 
         twitter: {
             card: 'summary_large_image',
             images: {
-                url: thumbnails[0],
+                url: thumbnail,
                 alt: 'Post thumbnail',
             },
             title: post.title,
