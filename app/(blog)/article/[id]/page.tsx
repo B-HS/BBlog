@@ -13,11 +13,12 @@ export const generateMetadata = async (props: { params: Promise<{ id: string }> 
 
     const thumbnails = [`${process.env.SITE_URL}/thumbnail/${params.id}`]
     const tags = post.tags.map((t) => t.tag)
-    const context = post.description.slice(0, 250).replace(/<\/?[^>]+(>|$)/g, '')
+    const context = post.description.slice(0, 250).replace(/<\/?[^>]+(>|$)/g, '').trim()
+    const defaultDescription = `${post.title} - ${process.env.SITE_NAME || 'Blog'} 아티클`
 
     return {
         title: post.title,
-        description: context || `Article | ${process.env.SITE_NAME}`,
+        description: context || defaultDescription,
         keywords: tags.join(', ') || `Article | ${process.env.SITE_NAME}`,
         robots: {
             index: true,
@@ -27,7 +28,7 @@ export const generateMetadata = async (props: { params: Promise<{ id: string }> 
         authors: [{ name: process.env.AUTHOR || 'Author Name', url: process.env.SITE_URL || 'https://gumyo.net' }],
         openGraph: {
             title: post.title,
-            description: context || `Article | ${process.env.SITE_NAME}`,
+            description: context || defaultDescription,
             siteName: process.env.SITE_NAME || '',
             images: [
                 {
@@ -44,7 +45,7 @@ export const generateMetadata = async (props: { params: Promise<{ id: string }> 
                 alt: 'Post thumbnail',
             },
             title: post.title,
-            description: context || `Article | ${process.env.SITE_NAME}`,
+            description: context || defaultDescription,
             creator: process.env.AUTHOR || process.env.SITE_NAME || '',
             creatorId: params.id,
         },
