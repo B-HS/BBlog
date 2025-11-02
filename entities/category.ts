@@ -11,6 +11,11 @@ export const getCategoryList = async () => {
     'use cache'
     cacheTag(QUERY_KEY.CATEGORY.LIST)
     cacheLife('max')
+
+    if (process.env.SKIP_BUILD) {
+        return []
+    }
+
     return await db.select().from(categories).where(eq(categories.isHide, false))
 }
 

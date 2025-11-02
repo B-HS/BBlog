@@ -65,6 +65,10 @@ export const getPostList = async ({
     )
     cacheLife('max')
 
+    if (process.env.SKIP_BUILD) {
+        return { data: [], total: 0 }
+    }
+
     const tagsSubquery = db
         .select({
             postId: postTags.postId,
@@ -142,6 +146,10 @@ export const getPost = async (id: string | number): Promise<PostDetail[]> => {
     'use cache'
     cacheTag(...QUERY_KEY.POST.GET(String(id)))
     cacheLife('max')
+
+    if (process.env.SKIP_BUILD) {
+        return []
+    }
 
     const tagsSubquery = db
         .select({
