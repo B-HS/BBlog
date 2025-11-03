@@ -2,14 +2,13 @@ import { ScrollbarToc } from '@widgets/layout/scrollbar-toc'
 import { Post } from './_contents/post-content'
 import { Fragment, Suspense } from 'react'
 import { Metadata } from 'next'
-import { getPost, PostDetail } from '@entities/post'
+import { getPost } from '@entities/post'
 import { notFound } from 'next/navigation'
 import { toPlainText } from '@features/editor/markdown'
 
 export const generateMetadata = async (props: { params: Promise<{ id: string }> }): Promise<Metadata> => {
     const params = await props.params
-    const response = await fetch(`${process.env.SITE_URL}/api/post/${params.id}`)
-    const post = await response.json() as PostDetail
+    const [post] = await getPost(params.id)
 
     if (!post) notFound()
 
