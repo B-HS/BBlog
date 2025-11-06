@@ -4,6 +4,7 @@ import { db } from '@db/db'
 import { admin } from 'better-auth/plugins'
 
 export const auth = betterAuth({
+    baseURL: process.env.SITE_URL,
     database: drizzleAdapter(db, {
         provider: 'mysql',
     }),
