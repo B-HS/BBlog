@@ -4,7 +4,7 @@ import { db } from '@db/db'
 import { admin } from 'better-auth/plugins'
 
 export const auth = betterAuth({
-    baseURL: process.env.SITE_URL,
+    baseURL: process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL,
     database: drizzleAdapter(db, {
         provider: 'mysql',
     }),
@@ -15,6 +15,7 @@ export const auth = betterAuth({
         github: {
             clientId: process.env.GITHUB_CLIENT_ID!,
             clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+            redirectURI: `${process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback/github`,
         },
     },
     plugins: [
@@ -23,5 +24,5 @@ export const auth = betterAuth({
             adminRoles: ['admin'],
         }),
     ],
-    trustedOrigins: ['https://blog.gumyo.net'],
+    trustedOrigins: ['blog.gumyo.net'],
 })
