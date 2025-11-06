@@ -22,4 +22,5 @@ export const auth = betterAuth({
             adminRoles: ['admin'],
         }),
     ],
+    trustedOrigins: ['https://blog.gumyo.net'],
 })
