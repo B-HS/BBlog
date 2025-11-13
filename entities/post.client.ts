@@ -24,7 +24,11 @@ export const useCreatePost = () => {
             const response = await fetch('/api/post', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
+                body: JSON.stringify({
+                    ...data, 
+                    createdAt: new Date(),
+                    updatedAt: new Date()
+                }),
             })
             if (!response.ok) throw new Error('Failed to create post')
             return response.json()
@@ -51,7 +55,10 @@ export const useUpdatePost = (id: string) => {
             const response = await fetch(`/api/post/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
+                body: JSON.stringify({
+                    ...data, 
+                    updatedAt: new Date()
+                }),
             })
             if (!response.ok) throw new Error('Failed to update post')
             return response.json()
