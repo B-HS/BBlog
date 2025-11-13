@@ -65,8 +65,8 @@ jobs:
                   script: |
                       mkdir -p ~/bblog-deploy
                       cd ~/bblog-deploy
-                      docker load -i bblog.tar
-                      docker compose down
-                      docker compose up -d
-                      docker ps | grep bblog
+                      sudo docker load -i bblog.tar
+                      sudo docker compose down
+                      sudo docker compose up -d
+                      sudo docker ps | grep bblog
                       echo "Deployment completed successfully"
