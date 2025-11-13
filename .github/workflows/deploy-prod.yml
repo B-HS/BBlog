@@ -9,20 +9,6 @@ jobs:
     deploy:
         runs-on: ubuntu-latest
 
-        services:
-            mysql:
-                image: mysql:8.0
-                env:
-                    MYSQL_ROOT_PASSWORD: root
-                    MYSQL_DATABASE: bblog_ci
-                ports:
-                    - 3306:3306
-                options: >-
-                    --health-cmd="mysqladmin ping"
-                    --health-interval=10s
-                    --health-timeout=5s
-                    --health-retries=3
-
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
@@ -38,35 +24,16 @@ jobs:
                   node-version: '24'
                   cache: 'pnpm'
 
-            - name: Create .env file for CI
-              run: |
-                  cat > .env << 'EOF'
-                  DATABASE_HOST=127.0.0.1
-                  DATABASE_PORT=3306
-                  DATABASE_USERNAME=root
-                  DATABASE_PASSWORD=root
-                  DATABASE_NAME=bblog_ci
-                  EOF
-
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
-            - name: Push database schema
-              env:
-                  DATABASE_HOST: 127.0.0.1
-                  DATABASE_PORT: 3306
-                  DATABASE_USERNAME: root
-                  DATABASE_PASSWORD: root
-                  DATABASE_NAME: bblog_ci
-              run: pnpm exec drizzle-kit push --force
-
             - name: Build application
               env:
-                  DATABASE_HOST: 127.0.0.1
-                  DATABASE_PORT: 3306
-                  DATABASE_USERNAME: root
-                  DATABASE_PASSWORD: root
-                  DATABASE_NAME: bblog_ci
+                  REMOTE_DATABASE_HOST: ${{ secrets.REMOTE_DATABASE_HOST }}
+                  REMOTE_DATABASE_PORT: ${{ secrets.REMOTE_DATABASE_PORT }}
+                  REMOTE_DATABASE_USERNAME: ${{ secrets.REMOTE_DATABASE_USERNAME }}
+                  REMOTE_DATABASE_PASSWORD: ${{ secrets.REMOTE_DATABASE_PASSWORD }}
+                  REMOTE_DATABASE_NAME: ${{ secrets.REMOTE_DATABASE_NAME }}
               run: pnpm build
 
             - name: Create production .env file
@@ -103,20 +70,3 @@ jobs:
                       docker compose up -d
                       docker ps | grep bblog
                       echo "Deployment completed successfully"
-
-                      echo "Waiting for application to be ready..."
-                      sleep 10
-
-                      echo "Revalidating cache tags..."
-                      curl -X POST http://localhost:7777/api/revalidate \
-                        -H "Content-Type: application/json" \
-                        -d '{"tags": ["tagList", "categoryList", "mainPostLists"]}' \
-                        || echo "Tag revalidation failed (non-critical)"
-
-                      echo "Revalidating main page..."
-                      curl -X POST http://localhost:7777/api/revalidate/path \
-                        -H "Content-Type: application/json" \
-                        -d '{"path": "/"}' \
-                        || echo "Path revalidation failed (non-critical)"
-
-                      echo "Cache revalidation completed"

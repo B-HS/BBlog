@@ -9,11 +9,11 @@ declare global {
 }
 
 const poolConnection = mysql.createPool({
-    host: process.env.DATABASE_HOST,
-    port: parseInt(process.env.DATABASE_PORT!),
-    user: process.env.DATABASE_USERNAME,
-    database: process.env.DATABASE_NAME,
-    password: process.env.DATABASE_PASSWORD,
+    host: process.env.REMOTE_DATABASE_HOST || process.env.DATABASE_HOST,
+    port: parseInt(process.env.REMOTE_DATABASE_PORT || process.env.DATABASE_PORT!),
+    user: process.env.REMOTE_DATABASE_USERNAME || process.env.DATABASE_USERNAME,
+    database: process.env.REMOTE_DATABASE_NAME || process.env.DATABASE_NAME,
+    password: process.env.REMOTE_DATABASE_PASSWORD || process.env.DATABASE_PASSWORD,
 })
 
 const db = globalThis._db || drizzle(poolConnection, { schema: { ...schema, ...relations }, mode: 'default' })
