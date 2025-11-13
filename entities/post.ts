@@ -205,19 +205,3 @@ export const updatePost = async (
 
     return { postId }
 }
-
-export const createPost = async (data: { title: string; description: string; categoryId: number; tagIds: number[]; isPublished: boolean }) => {
-    const response = await fetch('/api/post', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-
-    if (!response.ok) {
-        throw new Error('Failed to create post')
-    }
-
-    return await response.json()
-}
