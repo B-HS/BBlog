@@ -28,7 +28,7 @@ const Home: FC = async () => {
                     <Link
                         href='https://github.com/B-HS'
                         className={buttonVariants({ variant: 'outline', size: 'icon-lg', className: '[&>svg]:size-5.5!' })}>
-                        <Github />
+                        <Github className='dark:invert' />
                     </Link>
                     <Link href='/log' className={buttonVariants({ variant: 'outline', size: 'icon-lg', className: '[&>svg]:size-5.5!' })}>
                         <ScrollTextIcon />
