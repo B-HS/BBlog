@@ -5,6 +5,7 @@ import { ArticleFilter } from '@widgets/post/article-filter'
 import { ArticlePaginator } from '@widgets/post/article-paginator'
 import { PostList } from '@widgets/post/post-list'
 import { XIcon } from 'lucide-react'
+import { Metadata } from 'next'
 import Link from 'next/link'
 import { FC } from 'react'
 
@@ -13,6 +14,18 @@ interface ArticleListPageProps {
 }
 
 const DEFAULT_LIMIT = 12
+
+export const generateMetadata = async ({ searchParams }: ArticleListPageProps): Promise<Metadata> => {
+    const params = await searchParams
+    const [categoryList, tagList] = await Promise.all([getCategoryList(), getTagList()])
+    const titleStack = []
+    if (params.categoryId) titleStack.push(categoryList.find((category) => category.categoryId == params.categoryId)?.category ?? 'All')
+    if (params.tagId) titleStack.push(tagList.find((tag) => tag.tagId == params.tagId)?.tag ?? 'All')
+    if (params.keyword) titleStack.push(params.keyword)
+    return {
+        title: `Articles - ${titleStack.length > 0 ? titleStack.filter(Boolean).join(' & ') : 'All'}`,
+    }
+}
 
 export const ArticleListPage: FC<ArticleListPageProps> = async ({ searchParams }) => {
     const [categoryList, tagList, params] = await Promise.all([getCategoryList(), getTagList(), await searchParams])
