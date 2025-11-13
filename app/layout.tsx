@@ -1,7 +1,7 @@
 import { VirtualScroll } from '@features/theme/virtual-scroll'
 import { TanstackQueryProvider } from '@lib/providers/tanstack-query-provider'
 import { ThemeProvider } from '@lib/providers/theme-provider'
-import { GoogleAnalytics } from '@next/third-parties/google'
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 import { Toaster } from '@ui/sonner'
 import { GoToTop } from '@widgets/layout/go-to-top'
 import { Metadata } from 'next'
@@ -29,7 +29,8 @@ export const metadata: Metadata = {
 const Layout: FC<PropsWithChildren> = ({ children }) => {
     return (
         <html lang='ko' data-scroll-behavior='smooth' suppressHydrationWarning>
-            <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS_ID || ''} />
+            <GoogleAnalytics gaId='G-ZPL25Q1YDG' />
+            <GoogleTagManager gtmId='GTM-TNCMGPK8' />
             <body className='antialiased relative'>
                 <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
                     <TanstackQueryProvider>{children}</TanstackQueryProvider>
