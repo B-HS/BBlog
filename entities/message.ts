@@ -1,9 +1,7 @@
-import 'server-only'
 import { db } from '@db/db'
-import { messageImages, messages, follows, user, imageAssets } from '@db/schema'
-import { QUERY_KEY } from '@lib/constants'
-import { eq, sql, and, isNull, InferSelectModel } from 'drizzle-orm'
-import { cacheLife, cacheTag } from 'next/cache'
+import { follows, imageAssets, messageImages, messages, user } from '@db/schema'
+import { and, eq, isNull, sql } from 'drizzle-orm'
+import 'server-only'
 
 export type UserProfile = {
     id: string
@@ -98,10 +96,6 @@ export type GetMessagesByUserIdResponse = {
 }
 
 export const getUserProfile = async (userId: string) => {
-    'use cache'
-    cacheTag(...QUERY_KEY.LOG.USER_INFO(userId))
-    cacheLife('max')
-
     const [result] = await db
         .select({
             id: user.id,
@@ -122,32 +116,7 @@ export const getUserProfile = async (userId: string) => {
 }
 
 export const getMessagesByUserId = async ({ page = 1, size = 10, userId }: GetMessagesByUserIdParams): Promise<GetMessagesByUserIdResponse> => {
-    'use cache'
-    cacheTag(...QUERY_KEY.LOG.MESSAGES(userId), `page-${page}`, `size-${size}`)
-    cacheLife('max')
-
     const offset = (page - 1) * size
-
-    const messageImagesSubquery = db
-        .select({
-            messageId: messageImages.messageId,
-            imageId: messageImages.imageId,
-            order: messageImages.order,
-            createdAt: messageImages.createdAt,
-            r2Key: imageAssets.r2Key,
-            bucket: imageAssets.bucket,
-            mimeType: imageAssets.mimeType,
-            sizeBytes: imageAssets.sizeBytes,
-            width: imageAssets.width,
-            height: imageAssets.height,
-            checksum: imageAssets.checksum,
-            uploadedBy: imageAssets.uploadedBy,
-            assetCreatedAt: imageAssets.createdAt,
-            assetUpdatedAt: imageAssets.updatedAt,
-        })
-        .from(messageImages)
-        .leftJoin(imageAssets, eq(messageImages.imageId, imageAssets.id))
-        .as('message_images_with_assets')
 
     const data = await db
         .select({

@@ -1,6 +1,3 @@
-import { QUERY_KEY } from '@lib/constants'
-import { cacheLife, cacheTag } from 'next/cache'
-
 export type UserProfile = {
     id: string
     name: string
@@ -94,10 +91,6 @@ export type GetLogMessagesByUserIdResponse = {
 }
 
 export const getLogUserInfoByUserId = async (userId: string) => {
-    'use cache'
-    cacheTag(...QUERY_KEY.LOG.USER_INFO(userId))
-    cacheLife('max')
-
     const response = await fetch(`https://log.gumyo.net/api/user/${userId}`, {
         headers: {
             'Content-Type': 'application/json',

@@ -20,9 +20,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = ({ className }) => {
                 <h1 className='font-extrabold text-xl'>Hyunseok</h1>
             </Link>
             <nav className='flex items-center gap-1'>
-                <Suspense>
-                    <AuthenticatedNavs />
-                </Suspense>
+                <AuthenticatedNavs />
                 <ThemeChanger />
                 <Link
                     href='https://github.com/B-HS'

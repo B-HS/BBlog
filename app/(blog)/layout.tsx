@@ -41,8 +41,8 @@ export const metadata: Metadata = {
 const Layout: FC<PropsWithChildren> = ({ children }) => {
     return (
         <Fragment>
-            <LayoutHeader className='max-w-screen-lg mx-auto' />
-            <main className='antialiased relative max-w-screen-lg mx-auto pb-10'>{children}</main>
+            <LayoutHeader className='max-w-5xl mx-auto' />
+            <main className='antialiased relative max-w-5xl mx-auto pb-10'>{children}</main>
         </Fragment>
     )
 }

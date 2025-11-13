@@ -49,14 +49,14 @@ export const UserCard: FC<Partial<BlogUserCardProps>> = ({ className }) => {
     return (
         <div className={className}>
             <div className='flex items-start sm:items-center size-full flex-col sm:flex-row border-b border-border'>
-                <div className='flex items-center gap-3 flex-shrink-0 p-1.5 px-3 sm:p-3 border-b sm:border-r sm:border-b-0 border-border sm:w-auto w-full'>
+                <div className='flex items-center gap-3 shrink-0 p-1.5 px-3 sm:p-3 border-b sm:border-r sm:border-b-0 border-border sm:w-auto w-full'>
                     <Avatar className='size-10 sm:size-20'>
                         <AvatarImage src={USER_INFO.image} alt={USER_INFO.name} />
                         <AvatarFallback className='text-md sm:text-xl font-semibold'>{getInitials(USER_INFO.name || '')}</AvatarFallback>
                     </Avatar>
                     <div className='flex flex-col gap-1'>
                         <div className='flex items-center gap-1 sm:gap-2'>
-                            <h3 className='text-sm sm:text-lg font-bold text-balance'>{USER_INFO.name}</h3>
+                            <p className='text-sm sm:text-lg font-bold text-balance'>{USER_INFO.name}</p>
                             {USER_INFO.emailVerified ? (
                                 <CheckCircle className='size-3 sm:size-3.5 text-green-500' />
                             ) : (

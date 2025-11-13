@@ -1,9 +1,7 @@
-import 'server-only'
 import { db } from '@db/db'
 import { categories, posts, postTags, tags } from '@db/schema'
-import { QUERY_KEY } from '@lib/constants'
-import { and, desc, eq, like, sql, InferSelectModel } from 'drizzle-orm'
-import { cacheLife, cacheTag } from 'next/cache'
+import { and, desc, eq, InferSelectModel, like, sql } from 'drizzle-orm'
+import 'server-only'
 
 export type Post = InferSelectModel<typeof posts>
 
@@ -44,26 +42,10 @@ export const getPostList = async ({
     isHide = false,
     isNotice = false,
 }: GetPostListParams) => {
-    'use cache'
-
     const parsedOffset = Number(offset)
     const parsedLimit = Number(limit)
     const parsedCategoryId = categoryId ? Number(categoryId) : undefined
     const parsedTagId = tagId ? Number(tagId) : undefined
-
-    cacheTag(
-        ...QUERY_KEY.POST.LIST({
-            offset: parsedOffset,
-            limit: parsedLimit,
-            keyword,
-            categoryId: parsedCategoryId,
-            tagId: parsedTagId,
-            isPublished,
-            isHide,
-            isNotice,
-        }),
-    )
-    cacheLife('max')
 
     const tagsSubquery = db
         .select({
@@ -139,10 +121,6 @@ export const getPostList = async ({
 }
 
 export const getPost = async (id: string | number): Promise<PostDetail[]> => {
-    'use cache'
-    cacheTag(...QUERY_KEY.POST.GET(String(id)))
-    cacheLife('max')
-
     const tagsSubquery = db
         .select({
             postId: postTags.postId,

@@ -18,5 +18,5 @@ export const ScrollbarToc: FC = () => {
         return cleanup
     }, [])
 
-    return <aside className='peer fixed right-0 top-0 h-[100dvh] w-[5dvw] z-10 hidden lg:block' role='complementary' aria-label='목차' />
+    return <aside className='peer fixed right-0 top-0 h-dvh w-[5dvw] z-10 hidden lg:block' role='complementary' aria-label='목차' />
 }

@@ -1,9 +1,15 @@
-import { ScrollbarToc } from '@widgets/layout/scrollbar-toc'
-import { Post } from './_contents/post-content'
-import { Fragment, Suspense } from 'react'
-import { Metadata } from 'next'
 import { getPost } from '@entities/post'
-import { notFound, redirect } from 'next/navigation'
+import { UserCard } from '@features/common/user-card'
+import { toHTMLWithTOC } from '@features/editor/markdown'
+import { CommentSection } from '@widgets/comment/comment-section'
+import { ScrollbarToc } from '@widgets/layout/scrollbar-toc'
+import { PostHeader } from '@widgets/post/post-header'
+import { PostTagList } from '@widgets/post/post-tag-list'
+import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import { Fragment } from 'react'
+
+export const revalidate = 60 * 60 * 24 * 30
 
 export const generateMetadata = async (props: { params: Promise<{ id: string }> }): Promise<Metadata> => {
     const params = await props.params
@@ -56,11 +62,24 @@ export const generateMetadata = async (props: { params: Promise<{ id: string }> 
 }
 
 const ArticleDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
+    const { id } = await params
+    const [post] = await getPost(id)
+
+    if (!post) notFound()
+
+    const { content } = await toHTMLWithTOC(post.description)
     return (
         <Fragment>
-            <Suspense>
-                <Post params={params} />
-            </Suspense>
+            <article>
+                <PostHeader title={post.title} category={post.categoryName ?? 'etc.'} createdAt={post.createdAt} />
+                <div className='prose p-3.5 text-primary'>{content}</div>
+                <section className='p-3.5'>
+                    <PostTagList tags={post.tags ?? []} />
+                </section>
+                <hr className='border-border' />
+                <UserCard />
+                <CommentSection postId={post.postId} />
+            </article>
             <ScrollbarToc />
         </Fragment>
     )

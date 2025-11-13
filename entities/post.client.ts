@@ -30,6 +30,11 @@ export const useCreatePost = () => {
             return response.json()
         },
         onSuccess: () => {
+            fetch('/api/revalidate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tags: [QUERY_KEY.POST.MAIN] }),
+            })
             toast.success('포스트가 생성되었습니다')
             router.push('/article')
         },
@@ -52,8 +57,21 @@ export const useUpdatePost = (id: string) => {
             return response.json()
         },
         onSuccess: () => {
-            toast.success('포스트가 수정되었습니다')
-            router.push(`/article/${id}`)
+            Promise.all([
+                fetch('/api/revalidate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tags: [QUERY_KEY.POST.MAIN] }),
+                }),
+                fetch('/api/revalidate/path', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ path: `/article/${id}` }),
+                }),
+            ]).then(() => {
+                toast.success('포스트가 수정되었습니다')
+                router.push(`/article/${id}`)
+            })
         },
         onError: () => {
             toast.error('포스트 수정에 실패했습니다')

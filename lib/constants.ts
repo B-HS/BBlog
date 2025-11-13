@@ -25,6 +25,7 @@ export const QUERY_KEY = {
                 .map(([key, value]) => `${key}-${value}`)
                 .join('-'),
         ],
+        MAIN: 'mainPostLists'
     },
     COMMENT: {
         LIST: (postId: string) => ['commentList', postId],

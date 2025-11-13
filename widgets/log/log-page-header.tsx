@@ -32,7 +32,7 @@ export const LogPageHeader = () => {
                     </section>
                 </section>
                 <p className='py-2 text-center sm:text-start'>テッテレー</p>
-                <LogInfoList logInfo={{ createdAt: user?.createdAt || new Date('2023-04-01'), location: 'South Korea @ Seoul' }} />
+                <LogInfoList logInfo={{ createdAt: new Date('2023-04-01'), location: 'South Korea @ Seoul' }} />
             </section>
 
             {user?.role === 'admin' && <LogMessageForm userImage={user?.image} userName={user?.name} />}
