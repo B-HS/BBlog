@@ -30,7 +30,9 @@ const Home: FC = async () => {
                         className={buttonVariants({ variant: 'outline', size: 'icon-lg', className: '[&>svg]:size-5.5!' })}>
                         <Github className='dark:invert' />
                     </Link>
-                    <Link href='/log' className={buttonVariants({ variant: 'outline', size: 'icon-lg', className: '[&>svg]:size-5.5!' })}>
+                    <Link
+                        href='https://resume.gumyo.net'
+                        className={buttonVariants({ variant: 'outline', size: 'icon-lg', className: '[&>svg]:size-5.5!' })}>
                         <ScrollTextIcon />
                     </Link>
                 </div>

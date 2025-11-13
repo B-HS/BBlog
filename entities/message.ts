@@ -229,6 +229,8 @@ export const insertMessage = async (data: { userId: string; body: string; imageI
         body: data.body,
         replyToId: data.replyToId || null,
         retweetOfId: data.retweetOfId || null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
     })
 
     if (data.imageIds && data.imageIds.length > 0) {
