@@ -32,6 +32,17 @@ export type GetPostListParams = {
     isNotice?: boolean
 }
 
+export const getAllPosts = async () => {
+    return await db
+        .select({
+            postId: posts.postId,
+            updatedAt: posts.updatedAt,
+        })
+        .from(posts)
+        .where(and(eq(posts.isPublished, true), eq(posts.isHide, false)))
+        .orderBy(desc(posts.createdAt))
+}
+
 export const getPostList = async ({
     offset = 0,
     limit = 12,

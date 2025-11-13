@@ -9,7 +9,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Fragment } from 'react'
 
-export const revalidate = 60 * 60 * 24 * 30
+export const revalidate = 2592000
 
 export const generateMetadata = async (props: { params: Promise<{ id: string }> }): Promise<Metadata> => {
     const params = await props.params
@@ -17,7 +17,7 @@ export const generateMetadata = async (props: { params: Promise<{ id: string }> 
 
     if (!post) notFound()
 
-    const thumbnails = [`${process.env.SITE_URL}/thumbnail/${params.id}`]
+    const thumbnails = `${process.env.SITE_URL}/api/thumbnail/${params.id}`
     const tags = post.tags.map((t) => t.tag)
     const context = post.description.slice(0, 250).replace(/<\/?[^>]+(>|$)/g, '')
 
@@ -37,7 +37,7 @@ export const generateMetadata = async (props: { params: Promise<{ id: string }> 
             siteName: process.env.SITE_NAME || '',
             images: [
                 {
-                    url: thumbnails[0],
+                    url: thumbnails,
                     width: 1200,
                     height: 630,
                 },
@@ -46,7 +46,7 @@ export const generateMetadata = async (props: { params: Promise<{ id: string }> 
         twitter: {
             card: 'summary_large_image',
             images: {
-                url: thumbnails[0],
+                url: thumbnails,
                 alt: 'Post thumbnail',
             },
             title: post.title,
