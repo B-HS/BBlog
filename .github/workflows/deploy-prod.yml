@@ -55,9 +55,21 @@ jobs:
               run: pnpm add -D tsx
 
             - name: Run database migrations
+              env:
+                  DATABASE_HOST: 127.0.0.1
+                  DATABASE_PORT: 3306
+                  DATABASE_USERNAME: root
+                  DATABASE_PASSWORD: root
+                  DATABASE_NAME: bblog_ci
               run: pnpm exec tsx scripts/db-migrate.ts
 
             - name: Build application
+              env:
+                  DATABASE_HOST: 127.0.0.1
+                  DATABASE_PORT: 3306
+                  DATABASE_USERNAME: root
+                  DATABASE_PASSWORD: root
+                  DATABASE_NAME: bblog_ci
               run: pnpm build
 
             - name: Create production .env file
