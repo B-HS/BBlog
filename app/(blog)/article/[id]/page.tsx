@@ -72,7 +72,7 @@ const ArticleDetailPage = async ({ params }: { params: Promise<{ id: string }> }
         <Fragment>
             <article>
                 <PostHeader title={post.title} category={post.categoryName ?? 'etc.'} createdAt={post.createdAt} />
-                <div className='prose p-3.5 text-primary'>{content}</div>
+                <div className='prose p-3.5 text-primary flex-shrink-0'>{content}</div>
                 <section className='p-3.5'>
                     <PostTagList tags={post.tags ?? []} />
                 </section>

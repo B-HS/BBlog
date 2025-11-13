@@ -1,11 +1,12 @@
 import { MetadataRoute } from 'next'
 
 export default () => {
+    const siteUrl = process.env.SITE_URL || 'https://blog.gumyo.net'
     return {
         rules: {
             userAgent: '*',
             allow: '/',
         },
-        sitemap: `${process.env.SITE_URL}/sitemap.xml`,
+        sitemap: `${siteUrl}/sitemap.xml`,
     } satisfies MetadataRoute.Robots
 }
