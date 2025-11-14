@@ -30,6 +30,11 @@ export const QUERY_KEY = {
     COMMENT: {
         LIST: (postId: string) => ['commentList', postId],
     },
+    ADMIN: {
+        USERS: ['adminUsers'],
+        POSTS: ['adminPosts'],
+        COMMENTS: ['adminComments'],
+    },
 }
 
 export const USER_INFO = {
