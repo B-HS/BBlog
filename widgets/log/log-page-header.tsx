@@ -35,7 +35,7 @@ export const LogPageHeader = () => {
                 <LogInfoList logInfo={{ createdAt: new Date('2023-04-01'), location: 'South Korea @ Seoul' }} />
             </section>
 
-            {user?.role === 'admin' && <LogMessageForm userImage={user?.image} userName={user?.name} />}
+            {user?.role === 'admin' && <LogMessageForm userImage={UserProfileImage.src} userName={user?.name} />}
         </div>
     )
 }
