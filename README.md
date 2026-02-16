@@ -4,7 +4,6 @@ https://blog.gumyo.net
 
 ## BBlog
 -   Nexjts 16
--   Drizzle + MySQL
 -   Shadcn/ui
 -   Tailwind
 -   Tanstack query
