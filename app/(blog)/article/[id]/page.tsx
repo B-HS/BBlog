@@ -17,7 +17,7 @@ export const generateMetadata = async (props: { params: Promise<{ id: string }> 
 
     if (!post) notFound()
 
-    const thumbnails = `${process.env.SITE_URL}/api/thumbnail/${params.id}`
+    const thumbnails = `${process.env.NEXT_PUBLIC_API_URL}/api/blog/posts/${params.id}/thumbnail`
     const tags = post.tags.map((t) => t.tag)
     const context = post.description.slice(0, 250).replace(/<\/?[^>]+(>|$)/g, '')
 

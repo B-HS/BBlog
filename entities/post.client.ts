@@ -4,15 +4,15 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { QUERY_KEY } from '@lib/constants'
+import { clientFetch } from '@lib/api/client-fetch'
 import type { PostDetail } from './post'
 
 export const useGetPost = (id: string) => {
     return useQuery<PostDetail>({
         queryKey: QUERY_KEY.POST.GET(id),
         queryFn: async () => {
-            const response = await fetch(`/api/post/${id}`)
-            if (!response.ok) throw new Error('Failed to fetch post')
-            return response.json()
+            const data = await clientFetch<{ post: PostDetail }>(`/api/blog/posts/${id}`)
+            return data.post
         },
     })
 }
@@ -21,17 +21,11 @@ export const useCreatePost = () => {
     const router = useRouter()
     return useMutation({
         mutationFn: async (data: { title: string; description: string; categoryId: number; tagIds: number[]; isPublished: boolean }) => {
-            const response = await fetch('/api/post', {
+            return clientFetch('/api/blog/posts', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    ...data, 
-                    createdAt: new Date(),
-                    updatedAt: new Date()
-                }),
+                body: JSON.stringify(data),
             })
-            if (!response.ok) throw new Error('Failed to create post')
-            return response.json()
         },
         onSuccess: () => {
             fetch('/api/revalidate', {
@@ -52,16 +46,11 @@ export const useUpdatePost = (id: string) => {
     const router = useRouter()
     return useMutation({
         mutationFn: async (data: { title: string; description: string; categoryId: number; tagIds: number[]; isPublished: boolean }) => {
-            const response = await fetch(`/api/post/${id}`, {
+            return clientFetch(`/api/blog/posts/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    ...data, 
-                    updatedAt: new Date()
-                }),
+                body: JSON.stringify(data),
             })
-            if (!response.ok) throw new Error('Failed to update post')
-            return response.json()
         },
         onSuccess: () => {
             Promise.all([

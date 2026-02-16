@@ -26,17 +26,6 @@ type ImageAsset = {
     uploadedBy: string | null
 }
 
-type Message = {
-    id: string
-    createdAt: Date
-    updatedAt: Date
-    userId: string
-    body: string
-    replyToId: string | null
-    retweetOfId: string | null
-    deletedAt: Date | null
-}
-
 type MessageUser = {
     id: string
     name: string
@@ -69,7 +58,15 @@ type MessageMetadata = {
     isRetweeted?: boolean
 }
 
-type MessageWithImages = Message & {
+type MessageWithImages = {
+    id: string
+    createdAt: Date
+    updatedAt: Date
+    userId: string
+    body: string
+    replyToId: string | null
+    retweetOfId: string | null
+    deletedAt: Date | null
     images: ImageAssetWithUrl[]
     user: MessageUser
     replyTo?: MessageReplyTo
@@ -88,14 +85,4 @@ export type GetLogMessagesByUserIdResponse = {
     totalElements: number
     totalPages: number
     content: MessageWithImages[]
-}
-
-export const getLogUserInfoByUserId = async (userId: string) => {
-    const response = await fetch(`https://log.gumyo.net/api/user/${userId}`, {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-    const data = await response.json()
-    return data as UserProfile
 }

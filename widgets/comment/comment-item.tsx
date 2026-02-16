@@ -34,7 +34,7 @@ const getInitials = (name: string) => {
 export const CommentItem: FC<CommentItemProps> = ({ comment, postId }) => {
     const { data: session } = useSession()
     const [isEditing, setIsEditing] = useState(false)
-    const [editedComment, setEditedComment] = useState(comment.comment)
+    const [editedComment, setEditedComment] = useState(comment.comment ?? '')
     const [editedIsHide, setEditedIsHide] = useState(comment.isHide ?? false)
     const { mutate: updateComment, isPending: isUpdating } = useUpdateComment()
     const { mutate: deleteComment, isPending: isDeleting } = useDeleteComment()
@@ -57,7 +57,7 @@ export const CommentItem: FC<CommentItemProps> = ({ comment, postId }) => {
     }
 
     const handleCancelEdit = () => {
-        setEditedComment(comment.comment)
+        setEditedComment(comment.comment ?? '')
         setEditedIsHide(comment.isHide ?? false)
         setIsEditing(false)
     }

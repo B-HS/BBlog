@@ -56,4 +56,4 @@ export const CUSTOM_LINKS = [
 ]
 
 export const BLOG_DESCRIPTION = '잡식성 개발자'
-export const LOG_USER_ID = 'wbRMlIqXHbqzHUAI0OM5MFRyNiIVCdpP'
+export const LOG_USER_ID = 'qvYQiIyr480ya9GMqUhuxENjnfLBrvxS'

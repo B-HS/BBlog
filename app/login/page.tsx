@@ -12,7 +12,7 @@ const LoginPage = () => {
     return (
         <main className='flex flex-col items-center justify-center h-screen gap-5'>
             <h1 className='text-2xl font-bold'>Login</h1>
-            <Button className='min-w-50 cursor-pointer' variant='outline' size='lg' onClick={() => signIn.social({ provider: 'github' })}>
+            <Button className='min-w-50 cursor-pointer' variant='outline' size='lg' onClick={() => signIn.social({ provider: 'github', callbackURL: window.location.origin })}>
                 <Github className='dark:invert' />
                 <span>Login with GitHub</span>
             </Button>

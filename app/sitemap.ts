@@ -10,7 +10,7 @@ export default async () => {
         lastModified: post.updatedAt,
         changeFrequency: 'weekly',
         priority: 0.8,
-        images: [`${siteUrl}/api/thumbnail/${post.postId}`],
+        images: [`${process.env.NEXT_PUBLIC_API_URL}/api/blog/posts/${post.postId}/thumbnail`],
     }))
 
     return [
