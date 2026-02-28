@@ -29,7 +29,7 @@ export type GetPostListParams = {
 }
 
 export const getAllPosts = async () => {
-    const { data } = await serverFetchPaginated<PostDetail>('/api/blog/posts?limit=9999&isPublished=true&isHide=false', {
+    const { data } = await serverFetchPaginated<PostDetail>('/api/blog/posts?limit=100&isPublished=true&isHide=false', {
         revalidate: 60 * 60 * 24,
     })
     return data.map((p) => ({ postId: p.postId, updatedAt: p.updatedAt }))
