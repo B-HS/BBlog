@@ -1,6 +1,6 @@
 import { Github } from '@ui/icons/github'
 import ProfileImage from '@lib/images/profile.jpeg'
-import { CalendarIcon, CloverIcon, FileTextIcon, FlameIcon, ImageIcon, MailIcon, ScrollTextIcon } from 'lucide-react'
+import { BoxIcon, CalendarIcon, CloverIcon, FileTextIcon, FlameIcon, ImageIcon, MailIcon, ScrollTextIcon } from 'lucide-react'
 import type { ComponentType, SVGProps } from 'react'
 
 export type LinkItem = {
@@ -70,6 +70,12 @@ export const INFORMATION_LINKS: LinkItem[] = [
 
 export const TOOL_LINKS: LinkItem[] = [
     {
+        url: 'https://storage.gumyo.net',
+        label: '스토리지',
+        icon: BoxIcon,
+    },
+
+    {
         url: 'https://mail.gumyo.net',
         label: '개인 메일함',
         icon: MailIcon,
@@ -96,7 +102,7 @@ export const TOOL_LINKS: LinkItem[] = [
     },
     {
         url: 'https://rirekisyo.gumyo.net',
-        label: '일본어 이력/경력기술서 생성기',
+        label: '일본어 이력서/경력기술서 생성기',
         icon: FileTextIcon,
     },
 ]
