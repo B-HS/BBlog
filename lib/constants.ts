@@ -1,4 +1,14 @@
+import { Github } from '@ui/icons/github'
 import ProfileImage from '@lib/images/profile.jpeg'
+import { CalendarIcon, CloverIcon, FileTextIcon, FlameIcon, ImageIcon, MailIcon, ScrollTextIcon } from 'lucide-react'
+import type { ComponentType, SVGProps } from 'react'
+
+export type LinkItem = {
+    url: string
+    label: string
+    icon: ComponentType<SVGProps<SVGSVGElement> & { className?: string }>
+    iconClassName?: string
+}
 
 export const QUERY_KEY = {
     AUTH: {
@@ -44,14 +54,50 @@ export const USER_INFO = {
     emailVerified: true,
 }
 
-export const CUSTOM_LINKS = [
+export const INFORMATION_LINKS: LinkItem[] = [
     {
         url: 'https://github.com/B-HS',
-        label: 'GitHub',
+        label: '깃허브',
+        icon: Github,
+        iconClassName: 'dark:invert',
     },
     {
         url: 'https://resume.gumyo.net',
-        label: 'Resume',
+        label: '이력서',
+        icon: ScrollTextIcon,
+    },
+]
+
+export const TOOL_LINKS: LinkItem[] = [
+    {
+        url: 'https://mail.gumyo.net',
+        label: '개인 메일함',
+        icon: MailIcon,
+    },
+    {
+        url: 'https://deal.gumyo.net',
+        label: '핫딜 모음',
+        icon: FlameIcon,
+    },
+    {
+        url: 'https://calendar.gumyo.net',
+        label: 'CalDAV 캘린더',
+        icon: CalendarIcon,
+    },
+    {
+        url: 'https://luck.gumyo.net',
+        label: '로또 번호 확인기',
+        icon: CloverIcon,
+    },
+    {
+        url: 'https://badge.hyns.dev',
+        label: '뱃지 생성기',
+        icon: ImageIcon,
+    },
+    {
+        url: 'https://rirekisyo.gumyo.net',
+        label: '일본어 이력/경력기술서 생성기',
+        icon: FileTextIcon,
     },
 ]
 

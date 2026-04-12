@@ -1,6 +1,6 @@
 'use client'
 
-import { BLOG_DESCRIPTION, CUSTOM_LINKS, USER_INFO } from '@lib/constants'
+import { BLOG_DESCRIPTION, INFORMATION_LINKS, USER_INFO } from '@lib/constants'
 import { cn } from '@lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '@ui/avatar'
 import { User } from 'better-auth'
@@ -26,7 +26,7 @@ const getInitials = (name: string) => {
         .slice(0, 2)
 }
 
-const UserCardContent: FC<UserCardContentProps> = ({ user, className }) => {
+const UserCardContent: FC<UserCardContentProps> = ({ className }) => {
     return (
         <div
             className={cn(
@@ -34,8 +34,8 @@ const UserCardContent: FC<UserCardContentProps> = ({ user, className }) => {
                 className,
             )}>
             <div className='flex flex-wrap gap-2'>
-                {CUSTOM_LINKS.map((link, idx) => (
-                    <a key={idx} className='flex items-center gap-1 sm:gap-2 text-blue-900 dark:text-blue-200' href={link.url} target='_blank'>
+                {INFORMATION_LINKS.map((link) => (
+                    <a key={link.url} className='flex items-center gap-1 sm:gap-2 text-blue-900 dark:text-blue-200' href={link.url} target='_blank'>
                         <ExternalLink className='size-3 sm:size-3.5' />
                         <span>{link.label}</span>
                     </a>
