@@ -29,7 +29,8 @@ export const useUploadImage = () => {
                 credentials: 'include',
             })
             if (!res.ok) throw new Error('Failed to upload image')
-            return res
+            const json = (await res.json()) as { success: true; data: { id: string; url: string } }
+            return json.data
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.IMAGE.LIST] })

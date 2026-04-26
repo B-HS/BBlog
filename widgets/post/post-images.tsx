@@ -41,11 +41,11 @@ export const PostImages: FC = () => {
                     </label>
                 </Button>
             </div>
-            <div className='grid grid-cols-7 gap-2 max-h-50 overflow-y-auto'>
+            <div className='grid grid-cols-7 gap-2 max-h-50 overflow-y-auto h-20'>
                 {data?.map((image) => (
                     <div
                         key={image.imageId}
-                        className='relative aspect-square cursor-pointer rounded-sm overflow-hidden border border-border'
+                        className='relative aspect-square cursor-pointer rounded-sm overflow-hidden border border-border min-h-fit'
                         onClick={() => copyImageMarkdown(image.url, image.originalName || '')}>
                         <Image src={image.url} alt={image.originalName || ''} fill className='object-cover' sizes='150px' />
                     </div>

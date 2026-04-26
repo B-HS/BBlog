@@ -39,18 +39,10 @@ export const LogMessageForm = ({ userImage, userName }: { userImage?: string | n
 
         try {
             const uploadPromises = imageFiles.map((file) => uploadImage(file))
-            const responses = await Promise.all(uploadPromises)
-            const results = await Promise.all(responses.map((res) => res.json()))
+            const results = await Promise.all(uploadPromises)
 
-            const newImageIds: string[] = []
-            const newPreviewUrls: string[] = []
-
-            results.forEach((result) => {
-                if (result.imageId && result.url) {
-                    newImageIds.push(result.imageId)
-                    newPreviewUrls.push(result.url)
-                }
-            })
+            const newImageIds = results.map((r) => r.id)
+            const newPreviewUrls = results.map((r) => r.url)
 
             if (newImageIds.length > 0) {
                 setAttachedImageIds([...attachedImageIds, ...newImageIds])
