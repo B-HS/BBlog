@@ -78,8 +78,7 @@ export const useImageUpload = ({ editorRef, onImageInsert }: UseImageUploadProps
 
         setIsUploading(true)
         try {
-            const response = await uploadImage(file)
-            const result = await response.json()
+            const result = await uploadImage(file)
 
             if (!result.url) {
                 throw new Error('Upload failed')
