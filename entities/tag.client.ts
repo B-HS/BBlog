@@ -27,6 +27,11 @@ export const useCreateTag = () => {
             })
         },
         onSuccess: () => {
+            fetch('/api/revalidate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tags: [QUERY_KEY.TAG.LIST] }),
+            })
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.TAG.LIST] })
         },
     })

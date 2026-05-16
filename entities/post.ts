@@ -1,4 +1,5 @@
 import { serverFetchData, serverFetchPaginated } from '@lib/api/client'
+import { QUERY_KEY } from '@lib/constants'
 import 'server-only'
 
 export type PostDetail = {
@@ -31,6 +32,7 @@ export type GetPostListParams = {
 export const getAllPosts = async () => {
     const { data } = await serverFetchPaginated<PostDetail>('/api/blog/posts?limit=100&isPublished=true&isHide=false', {
         revalidate: 60 * 60 * 24,
+        tags: [QUERY_KEY.POST.MAIN],
     })
     return data.map((p) => ({ postId: p.postId, updatedAt: p.updatedAt }))
 }
@@ -58,6 +60,7 @@ export const getPostList = async ({
 
     const { data, pagination } = await serverFetchPaginated<PostDetail>(`/api/blog/posts?${params.toString()}`, {
         revalidate: 60,
+        tags: [QUERY_KEY.POST.MAIN],
     })
 
     return { data, total: pagination.total }
@@ -66,6 +69,7 @@ export const getPostList = async ({
 export const getPost = async (id: string | number) => {
     const data = await serverFetchData<{ post: PostDetail }>(`/api/blog/posts/${id}`, {
         revalidate: 2592000,
+        tags: [QUERY_KEY.POST.MAIN],
     })
     return data.post ? [data.post] : []
 }

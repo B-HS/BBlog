@@ -16,6 +16,13 @@ export const useGetCommentList = (postId: number, enabled = false) => {
     })
 }
 
+const revalidateArticlePath = (postId: number) =>
+    fetch('/api/revalidate/path', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path: `/article/${postId}` }),
+    })
+
 export const useCreateComment = () => {
     const queryClient = useQueryClient()
     return useMutation({
@@ -27,6 +34,7 @@ export const useCreateComment = () => {
             })
         },
         onSuccess: (_, variables) => {
+            revalidateArticlePath(variables.postId)
             toast.success('댓글이 작성되었습니다')
             queryClient.invalidateQueries({ queryKey: QUERY_KEY.COMMENT.LIST(String(variables.postId)) })
         },
@@ -47,6 +55,7 @@ export const useUpdateComment = () => {
             })
         },
         onSuccess: (_, variables) => {
+            revalidateArticlePath(variables.postId)
             toast.success('댓글이 수정되었습니다')
             queryClient.invalidateQueries({ queryKey: QUERY_KEY.COMMENT.LIST(String(variables.postId)) })
         },
@@ -65,6 +74,7 @@ export const useDeleteComment = () => {
             })
         },
         onSuccess: (_, variables) => {
+            revalidateArticlePath(variables.postId)
             toast.success('댓글이 삭제되었습니다')
             queryClient.invalidateQueries({ queryKey: QUERY_KEY.COMMENT.LIST(String(variables.postId)) })
         },

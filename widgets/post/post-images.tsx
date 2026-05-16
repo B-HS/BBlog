@@ -51,7 +51,7 @@ export const PostImages: FC = () => {
                     </label>
                 </Button>
             </div>
-            <div className='flex gap-2 overflow-x-auto pb-2'>
+            <div className='flex flex-wrap gap-2 max-h-60 overflow-y-auto pb-2'>
                 {data?.map((image) => (
                     <div
                         key={image.id}

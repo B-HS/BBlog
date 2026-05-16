@@ -89,7 +89,7 @@ export const CommentsTable: FC = () => {
                                         variant='ghost'
                                         size='icon'
                                         className='size-7'
-                                        onClick={() => updateCommentHide({ commentId: comment.commentId, isHide: !comment.isHide })}>
+                                        onClick={() => updateCommentHide({ commentId: comment.commentId, postId: comment.postId, isHide: !comment.isHide })}>
                                         {comment.isHide ? <Eye className='size-3.5' /> : <EyeOff className='size-3.5' />}
                                     </Button>
                                     <AlertDialog>
@@ -107,7 +107,7 @@ export const CommentsTable: FC = () => {
                                             </AlertDialogHeader>
                                             <AlertDialogFooter>
                                                 <AlertDialogCancel>취소</AlertDialogCancel>
-                                                <AlertDialogAction onClick={() => deleteComment(comment.commentId)}>삭제</AlertDialogAction>
+                                                <AlertDialogAction onClick={() => deleteComment({ commentId: comment.commentId, postId: comment.postId })}>삭제</AlertDialogAction>
                                             </AlertDialogFooter>
                                         </AlertDialogContent>
                                     </AlertDialog>

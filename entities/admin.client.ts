@@ -45,6 +45,11 @@ export const useDeleteUser = () => {
             })
         },
         onSuccess: () => {
+            fetch('/api/revalidate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tags: [QUERY_KEY.POST.MAIN] }),
+            })
             toast.success('사용자가 삭제되었습니다')
             queryClient.invalidateQueries({ queryKey: QUERY_KEY.ADMIN.USERS })
         },
@@ -62,7 +67,19 @@ export const useDeletePost = () => {
                 method: 'DELETE',
             })
         },
-        onSuccess: () => {
+        onSuccess: (_, postId) => {
+            Promise.all([
+                fetch('/api/revalidate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tags: [QUERY_KEY.POST.MAIN] }),
+                }),
+                fetch('/api/revalidate/path', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ path: `/article/${postId}` }),
+                }),
+            ])
             toast.success('게시글이 삭제되었습니다')
             queryClient.invalidateQueries({ queryKey: QUERY_KEY.ADMIN.POSTS })
         },
@@ -83,6 +100,18 @@ export const useUpdatePostHide = () => {
             })
         },
         onSuccess: (_, variables) => {
+            Promise.all([
+                fetch('/api/revalidate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tags: [QUERY_KEY.POST.MAIN] }),
+                }),
+                fetch('/api/revalidate/path', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ path: `/article/${variables.postId}` }),
+                }),
+            ])
             toast.success(variables.isHide ? '게시글을 숨겼습니다' : '게시글을 공개했습니다')
             queryClient.invalidateQueries({ queryKey: QUERY_KEY.ADMIN.POSTS })
         },
@@ -95,12 +124,17 @@ export const useUpdatePostHide = () => {
 export const useDeleteComment = () => {
     const queryClient = useQueryClient()
     return useMutation({
-        mutationFn: async (commentId: number) => {
+        mutationFn: async ({ commentId }: { commentId: number; postId: number }) => {
             return clientFetch(`/api/blog/admin/comments/${commentId}`, {
                 method: 'DELETE',
             })
         },
-        onSuccess: () => {
+        onSuccess: (_, variables) => {
+            fetch('/api/revalidate/path', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ path: `/article/${variables.postId}` }),
+            })
             toast.success('댓글이 삭제되었습니다')
             queryClient.invalidateQueries({ queryKey: QUERY_KEY.ADMIN.COMMENTS })
         },
@@ -113,7 +147,7 @@ export const useDeleteComment = () => {
 export const useUpdateCommentHide = () => {
     const queryClient = useQueryClient()
     return useMutation({
-        mutationFn: async ({ commentId, isHide }: { commentId: number; isHide: boolean }) => {
+        mutationFn: async ({ commentId, isHide }: { commentId: number; postId: number; isHide: boolean }) => {
             return clientFetch(`/api/blog/admin/comments/${commentId}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
@@ -121,6 +155,11 @@ export const useUpdateCommentHide = () => {
             })
         },
         onSuccess: (_, variables) => {
+            fetch('/api/revalidate/path', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ path: `/article/${variables.postId}` }),
+            })
             toast.success(variables.isHide ? '댓글을 숨겼습니다' : '댓글을 공개했습니다')
             queryClient.invalidateQueries({ queryKey: QUERY_KEY.ADMIN.COMMENTS })
         },
