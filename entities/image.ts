@@ -2,16 +2,14 @@ import { serverFetchData } from '@lib/api/client'
 import 'server-only'
 
 export type Image = {
-    imageId: number
-    userId: string
-    fileName: string
-    originalName: string
+    id: string
+    r2Key: string
     url: string
     mimeType: string
-    fileSize: number
-    width: number
-    height: number
-    createdAt: Date
+    sizeBytes: number
+    width: number | null
+    height: number | null
+    createdAt: string
 }
 
 export const getImageList = async () => {

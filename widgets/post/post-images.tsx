@@ -1,14 +1,16 @@
 'use client'
 
-import { useGetImageList, useUploadImage } from '@entities/image.client'
+import { useDeleteImage, useGetImageList, useUploadImage } from '@entities/image.client'
 import { Image } from '@ui/image'
 import { Button } from '@ui/button'
-import { ChangeEvent, FC } from 'react'
+import { ChangeEvent, FC, MouseEvent } from 'react'
 import { toast } from 'sonner'
+import { X } from 'lucide-react'
 
 export const PostImages: FC = () => {
     const { data } = useGetImageList()
     const { mutate: uploadImage } = useUploadImage()
+    const { mutate: deleteImage } = useDeleteImage()
 
     const handleUploadImage = (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files
@@ -22,6 +24,14 @@ export const PostImages: FC = () => {
             })
             e.target.value = ''
         }
+    }
+
+    const handleDeleteImage = (e: MouseEvent<HTMLButtonElement>, id: string) => {
+        e.stopPropagation()
+        deleteImage(id, {
+            onSuccess: () => toast.success('이미지를 삭제했습니다'),
+            onError: () => toast.error('이미지 삭제에 실패했습니다'),
+        })
     }
 
     const copyImageMarkdown = (url: string, alt: string) => {
@@ -41,13 +51,20 @@ export const PostImages: FC = () => {
                     </label>
                 </Button>
             </div>
-            <div className='grid grid-cols-7 gap-2 max-h-50 overflow-y-auto h-20'>
+            <div className='flex gap-2 overflow-x-auto pb-2'>
                 {data?.map((image) => (
                     <div
-                        key={image.imageId}
-                        className='relative aspect-square cursor-pointer rounded-sm overflow-hidden border border-border min-h-fit'
-                        onClick={() => copyImageMarkdown(image.url, image.originalName || '')}>
-                        <Image src={image.url} alt={image.originalName || ''} fill className='object-cover' sizes='150px' />
+                        key={image.id}
+                        className='group relative size-24 shrink-0 cursor-pointer rounded-sm overflow-hidden border border-border'
+                        onClick={() => copyImageMarkdown(image.url, '')}>
+                        <Image src={image.url} alt='' fill className='object-cover' sizes='96px' />
+                        <button
+                            type='button'
+                            aria-label='이미지 삭제'
+                            onClick={(e) => handleDeleteImage(e, image.id)}
+                            className='absolute right-1 top-1 flex size-5 items-center justify-center rounded-full bg-black/60 text-white opacity-0 transition-opacity group-hover:opacity-100 hover:bg-black/80'>
+                            <X className='size-3' />
+                        </button>
                     </div>
                 ))}
             </div>
