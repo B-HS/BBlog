@@ -1,6 +1,6 @@
 import { Github } from '@ui/icons/github'
 import ProfileImage from '@lib/images/profile.jpeg'
-import { BoxIcon, CalendarIcon, CloverIcon, FileTextIcon, FlameIcon, ImageIcon, MailIcon, ScrollTextIcon } from 'lucide-react'
+import { BoxIcon, CalendarIcon, CloverIcon, FileTextIcon, FlameIcon, ImageIcon, MailIcon, PaperclipIcon, ScrollTextIcon } from 'lucide-react'
 import type { ComponentType, SVGProps } from 'react'
 
 export type LinkItem = {
@@ -66,6 +66,11 @@ export const INFORMATION_LINKS: LinkItem[] = [
         label: '이력서',
         icon: ScrollTextIcon,
     },
+    {
+        url: 'https://pf.hyns.dev',
+        label: '포트폴리오',
+        icon: PaperclipIcon,
+    }
 ]
 
 export const TOOL_LINKS: LinkItem[] = [
@@ -74,7 +79,6 @@ export const TOOL_LINKS: LinkItem[] = [
         label: '스토리지',
         icon: BoxIcon,
     },
-
     {
         url: 'https://mail.gumyo.net',
         label: '개인 메일함',
