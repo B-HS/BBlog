@@ -47,6 +47,7 @@ export const useDeleteUser = () => {
         onSuccess: () => {
             fetch('/api/revalidate', {
                 method: 'POST',
+                credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ tags: [QUERY_KEY.POST.MAIN] }),
             })
@@ -71,11 +72,13 @@ export const useDeletePost = () => {
             Promise.all([
                 fetch('/api/revalidate', {
                     method: 'POST',
+                    credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ tags: [QUERY_KEY.POST.MAIN] }),
                 }),
                 fetch('/api/revalidate/path', {
                     method: 'POST',
+                    credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ path: `/article/${postId}` }),
                 }),
@@ -103,11 +106,13 @@ export const useUpdatePostHide = () => {
             Promise.all([
                 fetch('/api/revalidate', {
                     method: 'POST',
+                    credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ tags: [QUERY_KEY.POST.MAIN] }),
                 }),
                 fetch('/api/revalidate/path', {
                     method: 'POST',
+                    credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ path: `/article/${variables.postId}` }),
                 }),
@@ -132,6 +137,7 @@ export const useDeleteComment = () => {
         onSuccess: (_, variables) => {
             fetch('/api/revalidate/path', {
                 method: 'POST',
+                credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ path: `/article/${variables.postId}` }),
             })
@@ -157,6 +163,7 @@ export const useUpdateCommentHide = () => {
         onSuccess: (_, variables) => {
             fetch('/api/revalidate/path', {
                 method: 'POST',
+                credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ path: `/article/${variables.postId}` }),
             })

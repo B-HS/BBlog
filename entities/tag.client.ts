@@ -29,6 +29,7 @@ export const useCreateTag = () => {
         onSuccess: () => {
             fetch('/api/revalidate', {
                 method: 'POST',
+                credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ tags: [QUERY_KEY.TAG.LIST] }),
             })

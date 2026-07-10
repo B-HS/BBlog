@@ -30,6 +30,7 @@ export const useCreatePost = () => {
         onSuccess: () => {
             fetch('/api/revalidate', {
                 method: 'POST',
+                credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ tags: [QUERY_KEY.POST.MAIN] }),
             })
@@ -56,11 +57,13 @@ export const useUpdatePost = (id: string) => {
             Promise.all([
                 fetch('/api/revalidate', {
                     method: 'POST',
+                    credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ tags: [QUERY_KEY.POST.MAIN] }),
                 }),
                 fetch('/api/revalidate/path', {
                     method: 'POST',
+                    credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ path: `/article/${id}` }),
                 }),

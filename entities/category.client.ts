@@ -29,6 +29,7 @@ export const useCreateCategory = () => {
         onSuccess: () => {
             fetch('/api/revalidate', {
                 method: 'POST',
+                credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ tags: [QUERY_KEY.CATEGORY.LIST] }),
             })

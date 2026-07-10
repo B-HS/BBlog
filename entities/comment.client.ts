@@ -9,7 +9,19 @@ export const useGetCommentList = (postId: number, enabled = false) => {
     return useQuery({
         queryKey: QUERY_KEY.COMMENT.LIST(String(postId)),
         queryFn: async () => {
-            const data = await clientFetch<{ comments: { commentId: number; postId: number; userId: string; comment: string | undefined; updatedAt: Date; createdAt: Date; isHide: boolean; userName: string; userImage: string | null }[] }>(`/api/blog/comments?postId=${postId}`)
+            const data = await clientFetch<{
+                comments: {
+                    commentId: number
+                    postId: number
+                    userId: string
+                    comment: string | undefined
+                    updatedAt: Date
+                    createdAt: Date
+                    isHide: boolean
+                    userName: string
+                    userImage: string | null
+                }[]
+            }>(`/api/blog/comments?postId=${postId}`)
             return data.comments
         },
         enabled,
@@ -19,6 +31,7 @@ export const useGetCommentList = (postId: number, enabled = false) => {
 const revalidateArticlePath = (postId: number) =>
     fetch('/api/revalidate/path', {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ path: `/article/${postId}` }),
     })

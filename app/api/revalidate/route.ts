@@ -1,8 +1,15 @@
+import { getServerSession } from '@lib/auth/session'
 import { QUERY_KEY } from '@lib/constants'
 import { revalidateTag } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const POST = async (request: NextRequest) => {
+    const session = await getServerSession()
+
+    if (!session?.user) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
     try {
         const body = await request.json()
         const { tags } = body
