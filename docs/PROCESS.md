@@ -28,14 +28,14 @@
 
 ## 작업 4 — 컨벤션 리팩토링 (Phase 4, 합의 11번)
 
-- [ ] a. useCallback 제거 4파일 (features/editor/hooks/use-content-editable · use-shortcuts · use-history · use-keyboard-handler) — React Compiler 위임
-- [ ] b. barrel 제거 (features/editor/hooks/index.ts · utils/index.ts) — 직접 경로 import 로 전환
-- [ ] c. QUERY_KEY 전부 배열화 + POST.LIST 파라미터 정렬 직렬화
-- [ ] d. queryOptions 팩토리 도입 (entities/*.client.ts) + useQuery 수동 제네릭 제거
-- [ ] e. interface → type 전환 (HTML 속성 확장 제외)
-- [ ] f. TanstackQueryProvider staleTime 60_000 명시
-- [ ] g. dead code 제거: entities/log.* · entities/admin.ts 미사용 서버함수 · 빈 shared/ · components/ 잔재 · 주석 1건(app/api/revalidate/route.ts)
-- [ ] h. 검증 후 커밋
+- [x] a. useCallback 제거 4파일 (features/editor/hooks/use-content-editable · use-shortcuts · use-history · use-keyboard-handler) — React Compiler 위임
+- [x] b. barrel 제거 (features/editor/hooks/index.ts · utils/index.ts) — 직접 경로 import 로 전환
+- [x] c. QUERY_KEY 전부 배열화 + POST.LIST 파라미터 정렬 직렬화
+- [x] d. queryOptions 팩토리 도입 (entities/*.client.ts) + useQuery 수동 제네릭 제거
+- [x] e. interface → type 전환 (HTML 속성 확장 제외)
+- [x] f. TanstackQueryProvider staleTime 60_000 명시
+- [x] g. dead code 제거: entities/log.* · entities/admin.ts 미사용 서버함수 · 빈 shared/ · components/ 잔재 · 주석 1건(app/api/revalidate/route.ts)
+- [x] h. 검증 후 커밋
 
 ## 진행 로그
 
@@ -43,3 +43,4 @@
 - 2026-07-10: 작업 1 완료 — 의존성 최신화(lucide 1.24 무변경 판정 · hast className 타입 대응) · tsc/build 통과 · 커밋 c196c60.
 - 2026-07-10: 보안 감사 완료(BBLOG-1/2 medium 확정). revalidate 라우트 세션 검증 + credentials·경로 화이트리스트 근본수정. 커밋 68db494. 리포트: docs/security-audit-2026-07-10.md
 - 2026-07-10: 작업 3(admin 제거) 완료 — 11개 파일 삭제 + QUERY_KEY.ADMIN 제거, tsc/build 통과. 커밋 0e346de. followUp: use-mobile.ts·ui/sheet.tsx 전이 고아(범용 프리미티브, 정리는 선택).
+- 2026-07-10: 작업 4(컨벤션 리팩토링) 완료 — useCallback/barrel 제거, QUERY_KEY 배열화+CACHE_TAG 분리, queryOptions 팩토리, interface→type, dead code. tsc/build 통과. 커밋 82dd88c.
