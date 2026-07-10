@@ -35,15 +35,10 @@ export const QUERY_KEY = {
                 .map(([key, value]) => `${key}-${value}`)
                 .join('-'),
         ],
-        MAIN: 'mainPostLists'
+        MAIN: 'mainPostLists',
     },
     COMMENT: {
         LIST: (postId: string) => ['commentList', postId],
-    },
-    ADMIN: {
-        USERS: ['adminUsers'],
-        POSTS: ['adminPosts'],
-        COMMENTS: ['adminComments'],
     },
 }
 
@@ -70,7 +65,7 @@ export const INFORMATION_LINKS: LinkItem[] = [
         url: 'https://pf.hyns.dev',
         label: '포트폴리오',
         icon: PaperclipIcon,
-    }
+    },
 ]
 
 export const TOOL_LINKS: LinkItem[] = [
