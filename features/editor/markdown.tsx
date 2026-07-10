@@ -122,7 +122,7 @@ export const toHTMLWithTOC = async (markdown: string) => {
                     alt: alt || '',
                     width: customWidth,
                     height: customHeight,
-                    className: customClass,
+                    className: customClass ? [customClass] : undefined,
                 }
             }
         })
