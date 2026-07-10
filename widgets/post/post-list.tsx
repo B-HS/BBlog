@@ -2,7 +2,7 @@ import { getPostList } from '@entities/post'
 import { PostCard } from './post-card'
 import { FC, ReactNode } from 'react'
 
-interface PostListProps {
+type PostListProps = {
     posts: Awaited<ReturnType<typeof getPostList>>['data']
     children?: ReactNode
 }

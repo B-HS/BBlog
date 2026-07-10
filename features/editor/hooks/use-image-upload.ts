@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { useUploadImage } from '@entities/image.client'
 
-interface UseImageUploadProps {
+type UseImageUploadProps = {
     editorRef: React.RefObject<HTMLDivElement>
     onImageInsert: (markdown: string) => void
 }

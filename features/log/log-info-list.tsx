@@ -15,7 +15,7 @@ const InfoListItem = ({ Icon, text, link }: { Icon: ElementType; text: string; l
     </section>
 )
 
-interface LogInfoListProps {
+type LogInfoListProps = {
     logInfo: {
         createdAt: Date
         location: string

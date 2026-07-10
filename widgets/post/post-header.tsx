@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import { Calendar } from 'lucide-react'
 import { type FC } from 'react'
 
-interface PostHeaderProps {
+type PostHeaderProps = {
     title: string
     createdAt: Date
     category: string

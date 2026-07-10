@@ -9,7 +9,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { FC } from 'react'
 
-interface ArticleListPageProps {
+type ArticleListPageProps = {
     searchParams: Promise<GetPostListParams>
 }
 

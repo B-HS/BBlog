@@ -3,7 +3,7 @@
 import type { FC } from 'react'
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@ui/pagination'
 
-interface PaginatorProps {
+type PaginatorProps = {
     currentPage: number
     totalPages: number
     onPageChange: (page: number) => void

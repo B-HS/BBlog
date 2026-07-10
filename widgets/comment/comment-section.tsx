@@ -6,7 +6,7 @@ import { CommentList } from './comment-list'
 import { FC, useEffect, useRef, useState } from 'react'
 import { MessageSquare } from 'lucide-react'
 
-interface CommentSectionProps {
+type CommentSectionProps = {
     postId: number
 }
 

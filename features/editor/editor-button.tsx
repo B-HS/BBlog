@@ -3,7 +3,7 @@ import { type LucideIcon, type LucideProps } from 'lucide-react'
 import { createElement, type FC } from 'react'
 import { Button } from '@ui/button'
 
-interface EditorButtonProps {
+type EditorButtonProps = {
     icon: LucideIcon
     iconProps?: LucideProps
     onClick: () => void

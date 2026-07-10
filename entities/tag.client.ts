@@ -1,19 +1,20 @@
 'use client'
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { Tag } from './tag'
-import { QUERY_KEY } from '@lib/constants'
+import { CACHE_TAG, QUERY_KEY } from '@lib/constants'
 import { clientFetch } from '@lib/api/client-fetch'
 
-export const useGetTagList = () => {
-    return useQuery<Tag[]>({
-        queryKey: [QUERY_KEY.TAG.LIST],
+export const tagListQueryOptions = () =>
+    queryOptions({
+        queryKey: QUERY_KEY.TAG.LIST,
         queryFn: async () => {
             const data = await clientFetch<{ tags: Tag[] }>('/api/blog/tags')
             return data.tags
         },
     })
-}
+
+export const useGetTagList = () => useQuery(tagListQueryOptions())
 
 export const useCreateTag = () => {
     const queryClient = useQueryClient()
@@ -31,9 +32,9 @@ export const useCreateTag = () => {
                 method: 'POST',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ tags: [QUERY_KEY.TAG.LIST] }),
+                body: JSON.stringify({ tags: [CACHE_TAG.TAG_LIST] }),
             })
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.TAG.LIST] })
+            queryClient.invalidateQueries({ queryKey: QUERY_KEY.TAG.LIST })
         },
     })
 }

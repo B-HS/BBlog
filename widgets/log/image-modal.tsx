@@ -7,7 +7,7 @@ import { Image } from '@ui/image'
 import { XIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
-interface ImageModalProps {
+type ImageModalProps = {
     images: { id: string; url: string }[]
     initialIndex: number
     open: boolean

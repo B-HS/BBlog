@@ -10,18 +10,24 @@ export type LinkItem = {
     iconClassName?: string
 }
 
+export const CACHE_TAG = {
+    CATEGORY_LIST: 'categoryList',
+    TAG_LIST: 'tagList',
+    POST_MAIN: 'mainPostLists',
+} as const
+
 export const QUERY_KEY = {
     AUTH: {
         SESSION: ['session'],
     },
     IMAGE: {
-        LIST: 'imageList',
+        LIST: ['imageList'],
     },
     CATEGORY: {
-        LIST: 'categoryList',
+        LIST: [CACHE_TAG.CATEGORY_LIST],
     },
     TAG: {
-        LIST: 'tagList',
+        LIST: [CACHE_TAG.TAG_LIST],
     },
     LOG: {
         USER_INFO: (userId: string) => ['logUserInfo', userId],
@@ -32,10 +38,10 @@ export const QUERY_KEY = {
         LIST: (params: Record<string, unknown>) => [
             'postList',
             Object.entries(params)
+                .sort(([a], [b]) => a.localeCompare(b))
                 .map(([key, value]) => `${key}-${value}`)
                 .join('-'),
         ],
-        MAIN: 'mainPostLists',
     },
     COMMENT: {
         LIST: (postId: string) => ['commentList', postId],

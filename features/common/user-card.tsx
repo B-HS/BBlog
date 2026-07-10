@@ -7,12 +7,12 @@ import { User } from 'better-auth'
 import { AtSign, CheckCircle, ExternalLink, Mail, XCircle } from 'lucide-react'
 import { type FC } from 'react'
 
-interface BlogUserCardProps {
+type BlogUserCardProps = {
     blogDescription: string
     className?: string
 }
 
-interface UserCardContentProps {
+type UserCardContentProps = {
     className?: string
     user?: Omit<User, 'id' | 'createdAt' | 'updatedAt'>
 }

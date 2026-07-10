@@ -9,7 +9,7 @@ import Link from 'next/link'
 import { FC, Suspense } from 'react'
 import { AuthenticatedNavs } from './auth-nav'
 
-interface LayoutHeaderProps {
+type LayoutHeaderProps = {
     className?: string
 }
 

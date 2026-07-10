@@ -4,7 +4,7 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import { useRouter, useSearchParams } from 'next/navigation'
 import { FC } from 'react'
 
-interface ArticlePaginatorProps {
+type ArticlePaginatorProps = {
     currentPage: number
     totalPages: number
 }

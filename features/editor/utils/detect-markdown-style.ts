@@ -1,4 +1,4 @@
-export interface MarkdownStyles {
+export type MarkdownStyles = {
     isBold: boolean
     isItalic: boolean
     isUnderline: boolean

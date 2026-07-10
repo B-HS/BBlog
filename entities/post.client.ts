@@ -1,21 +1,22 @@
 'use client'
 
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { queryOptions, useMutation, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { QUERY_KEY } from '@lib/constants'
+import { CACHE_TAG, QUERY_KEY } from '@lib/constants'
 import { clientFetch } from '@lib/api/client-fetch'
 import type { PostDetail } from './post'
 
-export const useGetPost = (id: string) => {
-    return useQuery<PostDetail>({
+export const postQueryOptions = (id: string) =>
+    queryOptions({
         queryKey: QUERY_KEY.POST.GET(id),
         queryFn: async () => {
             const data = await clientFetch<{ post: PostDetail }>(`/api/blog/posts/${id}`)
             return data.post
         },
     })
-}
+
+export const useGetPost = (id: string) => useQuery(postQueryOptions(id))
 
 export const useCreatePost = () => {
     const router = useRouter()
@@ -32,7 +33,7 @@ export const useCreatePost = () => {
                 method: 'POST',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ tags: [QUERY_KEY.POST.MAIN] }),
+                body: JSON.stringify({ tags: [CACHE_TAG.POST_MAIN] }),
             })
             toast.success('포스트가 생성되었습니다')
             router.push('/article')
@@ -59,7 +60,7 @@ export const useUpdatePost = (id: string) => {
                     method: 'POST',
                     credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tags: [QUERY_KEY.POST.MAIN] }),
+                    body: JSON.stringify({ tags: [CACHE_TAG.POST_MAIN] }),
                 }),
                 fetch('/api/revalidate/path', {
                     method: 'POST',

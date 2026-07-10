@@ -6,7 +6,7 @@ import { buttonVariants } from '@ui/button'
 import { useRouter } from 'next/navigation'
 import { FC } from 'react'
 
-interface PostTagListProps {
+type PostTagListProps = {
     tags?: Tag[]
 }
 

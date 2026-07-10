@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { FC } from 'react'
 import { PostTagList } from './post-tag-list'
 
-interface PostCardProps {
+type PostCardProps = {
     post: Awaited<ReturnType<typeof getPostList>>['data'][number]
 }
 

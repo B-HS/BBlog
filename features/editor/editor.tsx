@@ -15,7 +15,7 @@ import { useWrapSelection } from './hooks/use-wrap-selection'
 import { detectMarkdownStyle, type MarkdownStyles } from './utils/detect-markdown-style'
 import { getCursorPosition } from './utils/get-cursor-position'
 
-interface EditorProps {
+type EditorProps = {
     content: string
     setContent: (content: string) => void
     postId?: string

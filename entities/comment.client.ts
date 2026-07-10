@@ -1,12 +1,12 @@
 'use client'
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { QUERY_KEY } from '@lib/constants'
 import { clientFetch } from '@lib/api/client-fetch'
 import { toast } from 'sonner'
 
-export const useGetCommentList = (postId: number, enabled = false) => {
-    return useQuery({
+export const commentListQueryOptions = (postId: number) =>
+    queryOptions({
         queryKey: QUERY_KEY.COMMENT.LIST(String(postId)),
         queryFn: async () => {
             const data = await clientFetch<{
@@ -24,9 +24,9 @@ export const useGetCommentList = (postId: number, enabled = false) => {
             }>(`/api/blog/comments?postId=${postId}`)
             return data.comments
         },
-        enabled,
     })
-}
+
+export const useGetCommentList = (postId: number, enabled = false) => useQuery({ ...commentListQueryOptions(postId), enabled })
 
 const revalidateArticlePath = (postId: number) =>
     fetch('/api/revalidate/path', {

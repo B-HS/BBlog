@@ -1,4 +1,5 @@
 import { serverFetchData } from '@lib/api/client'
+import { CACHE_TAG } from '@lib/constants'
 import 'server-only'
 
 export type Tag = {
@@ -9,7 +10,7 @@ export type Tag = {
 export const getTagList = async () => {
     const data = await serverFetchData<{ tags: Tag[] }>('/api/blog/tags', {
         revalidate: 60 * 60 * 24 * 30,
-        tags: ['tagList'],
+        tags: [CACHE_TAG.TAG_LIST],
     })
     return data.tags
 }

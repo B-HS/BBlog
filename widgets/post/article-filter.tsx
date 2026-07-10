@@ -7,7 +7,7 @@ import { SearchIcon, XIcon } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { FC, useState, KeyboardEvent, Fragment } from 'react'
 
-interface ArticleFilterProps {
+type ArticleFilterProps = {
     categoryList: { categoryId: number; category: string }[]
 }
 

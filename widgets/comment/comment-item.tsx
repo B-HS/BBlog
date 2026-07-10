@@ -17,7 +17,7 @@ import { FC, useState } from 'react'
 dayjs.extend(relativeTime)
 dayjs.locale('ko')
 
-interface CommentItemProps {
+type CommentItemProps = {
     comment: CommentWithUser
     postId: number
 }

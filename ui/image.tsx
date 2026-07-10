@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { ComponentProps, FC, useState } from 'react'
 
-interface FallbackImageProps extends ComponentProps<typeof Image> {
+type FallbackImageProps = ComponentProps<typeof Image> & {
     src: string
     subSrc?: string
 }

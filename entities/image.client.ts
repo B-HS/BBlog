@@ -1,6 +1,6 @@
 'use client'
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { Image } from './image'
 import { QUERY_KEY } from '@lib/constants'
 import { clientFetch } from '@lib/api/client-fetch'
@@ -23,15 +23,16 @@ type UploadServerResponse = {
     url: string
 }
 
-export const useGetImageList = () => {
-    return useQuery<Image[]>({
-        queryKey: [QUERY_KEY.IMAGE.LIST],
+export const imageListQueryOptions = () =>
+    queryOptions({
+        queryKey: QUERY_KEY.IMAGE.LIST,
         queryFn: async () => {
             const data = await clientFetch<{ images: Image[] }>('/api/blog/images')
             return data.images
         },
     })
-}
+
+export const useGetImageList = () => useQuery(imageListQueryOptions())
 
 export const useUploadImage = () => {
     const queryClient = useQueryClient()
@@ -60,7 +61,7 @@ export const useUploadImage = () => {
             return { id: prep.data.assetId, url: json.url }
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.IMAGE.LIST] })
+            queryClient.invalidateQueries({ queryKey: QUERY_KEY.IMAGE.LIST })
         },
     })
 }
@@ -77,7 +78,7 @@ export const useDeleteImage = () => {
             return id
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.IMAGE.LIST] })
+            queryClient.invalidateQueries({ queryKey: QUERY_KEY.IMAGE.LIST })
         },
     })
 }

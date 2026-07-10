@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { flushSync } from 'react-dom'
 
-interface UseContentEditableProps {
+type UseContentEditableProps = {
     content: string
     onContentChange: (content: string) => void
     onHistoryAdd: (content: string, immediate?: boolean) => void
@@ -12,7 +12,7 @@ export const useContentEditable = (props: UseContentEditableProps) => {
     const { content, onContentChange, onHistoryAdd, onCursorUpdate } = props
     const editorRef = useRef<HTMLDivElement>(null)
 
-    const handleInput = useCallback(() => {
+    const handleInput = () => {
         if (editorRef.current) {
             const text = editorRef.current.innerText
             onContentChange(text)
@@ -20,58 +20,55 @@ export const useContentEditable = (props: UseContentEditableProps) => {
 
             onHistoryAdd(text, false)
         }
-    }, [onContentChange, onCursorUpdate, onHistoryAdd])
+    }
 
-    const handleBlur = useCallback(() => {
+    const handleBlur = () => {
         if (editorRef.current) {
             const text = editorRef.current.innerText
             onContentChange(text)
             onHistoryAdd(text, true)
         }
-    }, [onContentChange, onHistoryAdd])
+    }
 
-    const handlePaste = useCallback(
-        (e: React.ClipboardEvent) => {
-            e.preventDefault()
+    const handlePaste = (e: React.ClipboardEvent) => {
+        e.preventDefault()
 
-            const text = e.clipboardData.getData('text/plain')
-            if (!text) return
+        const text = e.clipboardData.getData('text/plain')
+        if (!text) return
 
-            const selection = window.getSelection()
-            if (!selection || selection.rangeCount === 0) return
+        const selection = window.getSelection()
+        if (!selection || selection.rangeCount === 0) return
 
-            const range = selection.getRangeAt(0)
-            range.deleteContents()
+        const range = selection.getRangeAt(0)
+        range.deleteContents()
 
-            const lines = text.split('\n')
-            const fragment = document.createDocumentFragment()
+        const lines = text.split('\n')
+        const fragment = document.createDocumentFragment()
 
-            lines.forEach((line, index) => {
-                if (index > 0) {
-                    fragment.appendChild(document.createElement('br'))
-                }
-                if (line) {
-                    fragment.appendChild(document.createTextNode(line))
-                }
-            })
-
-            range.insertNode(fragment)
-
-            range.collapse(false)
-            selection.removeAllRanges()
-            selection.addRange(range)
-
-            if (editorRef.current) {
-                const newText = editorRef.current.innerText
-                flushSync(() => {
-                    onContentChange(newText)
-                    onHistoryAdd(newText, true)
-                })
-                onCursorUpdate()
+        lines.forEach((line, index) => {
+            if (index > 0) {
+                fragment.appendChild(document.createElement('br'))
             }
-        },
-        [onContentChange, onHistoryAdd, onCursorUpdate],
-    )
+            if (line) {
+                fragment.appendChild(document.createTextNode(line))
+            }
+        })
+
+        range.insertNode(fragment)
+
+        range.collapse(false)
+        selection.removeAllRanges()
+        selection.addRange(range)
+
+        if (editorRef.current) {
+            const newText = editorRef.current.innerText
+            flushSync(() => {
+                onContentChange(newText)
+                onHistoryAdd(newText, true)
+            })
+            onCursorUpdate()
+        }
+    }
 
     useEffect(() => {
         if (editorRef.current && document.activeElement !== editorRef.current) {

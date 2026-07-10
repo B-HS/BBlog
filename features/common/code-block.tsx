@@ -6,7 +6,7 @@ import { FC, ReactNode } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { toast } from 'sonner'
 
-interface CodeBlockProps {
+type CodeBlockProps = {
     language: string
     code: ReactNode
 }

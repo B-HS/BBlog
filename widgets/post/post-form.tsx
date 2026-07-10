@@ -14,7 +14,7 @@ import { PostHeader } from './post-header'
 import { PostTagList } from './post-tag-list'
 import dayjs from 'dayjs'
 
-interface PostFormProps {
+type PostFormProps = {
     title: string
     categoryId?: number
     tagIds: number[]

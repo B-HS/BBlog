@@ -4,7 +4,7 @@ import { CommentWithUser } from '@entities/comment'
 import { CommentItem } from './comment-item'
 import { FC } from 'react'
 
-interface CommentListProps {
+type CommentListProps = {
     comments: CommentWithUser[]
     postId: number
 }

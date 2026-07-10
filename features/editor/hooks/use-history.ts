@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef } from 'react'
 
 export const useHistory = (initialContent: string) => {
     const [history, setHistory] = useState<string[]>([initialContent])
@@ -7,43 +7,40 @@ export const useHistory = (initialContent: string) => {
     const lastSavedContent = useRef(initialContent)
     const saveTimer = useRef<NodeJS.Timeout | null>(null)
 
-    const addToHistory = useCallback(
-        (text: string, immediate = false) => {
-            if (isUndoRedo.current) {
-                isUndoRedo.current = false
-                return
-            }
+    const addToHistory = (text: string, immediate = false) => {
+        if (isUndoRedo.current) {
+            isUndoRedo.current = false
+            return
+        }
 
-            if (text === lastSavedContent.current) {
-                return
-            }
+        if (text === lastSavedContent.current) {
+            return
+        }
 
-            if (saveTimer.current) {
-                clearTimeout(saveTimer.current)
-            }
+        if (saveTimer.current) {
+            clearTimeout(saveTimer.current)
+        }
 
-            const saveToHistory = () => {
-                setHistory((prev) => {
-                    const newHistory = [...prev.slice(0, historyIndex + 1), text]
+        const saveToHistory = () => {
+            setHistory((prev) => {
+                const newHistory = [...prev.slice(0, historyIndex + 1), text]
 
-                    if (newHistory.length > 500) {
-                        newHistory.shift()
-                        return newHistory
-                    }
+                if (newHistory.length > 500) {
+                    newHistory.shift()
                     return newHistory
-                })
-                setHistoryIndex((prev) => prev + 1)
-                lastSavedContent.current = text
-            }
+                }
+                return newHistory
+            })
+            setHistoryIndex((prev) => prev + 1)
+            lastSavedContent.current = text
+        }
 
-            if (immediate) {
-                saveToHistory()
-            } else {
-                saveTimer.current = setTimeout(saveToHistory, 100)
-            }
-        },
-        [historyIndex],
-    )
+        if (immediate) {
+            saveToHistory()
+        } else {
+            saveTimer.current = setTimeout(saveToHistory, 100)
+        }
+    }
 
     const handleUndo = () => {
         if (historyIndex > 0) {

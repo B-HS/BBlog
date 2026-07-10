@@ -1,19 +1,20 @@
 'use client'
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { Category } from './category'
-import { QUERY_KEY } from '@lib/constants'
+import { CACHE_TAG, QUERY_KEY } from '@lib/constants'
 import { clientFetch } from '@lib/api/client-fetch'
 
-export const useGetCategoryList = () => {
-    return useQuery<Category[]>({
-        queryKey: [QUERY_KEY.CATEGORY.LIST],
+export const categoryListQueryOptions = () =>
+    queryOptions({
+        queryKey: QUERY_KEY.CATEGORY.LIST,
         queryFn: async () => {
             const data = await clientFetch<{ categories: Category[] }>('/api/blog/categories')
             return data.categories
         },
     })
-}
+
+export const useGetCategoryList = () => useQuery(categoryListQueryOptions())
 
 export const useCreateCategory = () => {
     const queryClient = useQueryClient()
@@ -31,9 +32,9 @@ export const useCreateCategory = () => {
                 method: 'POST',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ tags: [QUERY_KEY.CATEGORY.LIST] }),
+                body: JSON.stringify({ tags: [CACHE_TAG.CATEGORY_LIST] }),
             })
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CATEGORY.LIST] })
+            queryClient.invalidateQueries({ queryKey: QUERY_KEY.CATEGORY.LIST })
         },
     })
 }

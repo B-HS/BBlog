@@ -9,7 +9,7 @@ import { Checkbox } from '@ui/checkbox'
 import { Github } from '@ui/icons/github'
 import { FC, useState } from 'react'
 
-interface CommentFormProps {
+type CommentFormProps = {
     postId: number
 }
 
