@@ -19,12 +19,12 @@
 
 ## 작업 3 — admin 페이지 제거 (Phase 4)
 
-- [ ] a. `app/admin/` (page + role 게이트 layout) 제거
-- [ ] b. `widgets/admin/` 5개 컴포넌트 제거 (admin-panel · admin-sidebar · comments-table · posts-table · users-table)
-- [ ] c. `entities/admin.client.ts`(훅 8개) + `entities/admin.ts` 제거
-- [ ] d. `lib/constants.ts` 의 QUERY_KEY.ADMIN 제거
-- [ ] e. 고아가 되는 `ui/sidebar.tsx` · `ui/table.tsx` 제거
-- [ ] f. 검증(tsc + build) 후 커밋
+- [x] a. `app/admin/` (page + role 게이트 layout) 제거
+- [x] b. `widgets/admin/` 5개 컴포넌트 제거 (admin-panel · admin-sidebar · comments-table · posts-table · users-table)
+- [x] c. `entities/admin.client.ts`(훅 8개) + `entities/admin.ts` 제거
+- [x] d. `lib/constants.ts` 의 QUERY_KEY.ADMIN 제거
+- [x] e. 고아가 되는 `ui/sidebar.tsx` · `ui/table.tsx` 제거
+- [x] f. 검증(tsc + build) 후 커밋
 
 ## 작업 4 — 컨벤션 리팩토링 (Phase 4, 합의 11번)
 
@@ -42,3 +42,4 @@
 - 2026-07-10: 정찰 완료(기준선 tsc PASS · 테스트 없음), 합의 문서 기록, 체크리스트 작성.
 - 2026-07-10: 작업 1 완료 — 의존성 최신화(lucide 1.24 무변경 판정 · hast className 타입 대응) · tsc/build 통과 · 커밋 c196c60.
 - 2026-07-10: 보안 감사 완료(BBLOG-1/2 medium 확정). revalidate 라우트 세션 검증 + credentials·경로 화이트리스트 근본수정. 커밋 68db494. 리포트: docs/security-audit-2026-07-10.md
+- 2026-07-10: 작업 3(admin 제거) 완료 — 11개 파일 삭제 + QUERY_KEY.ADMIN 제거, tsc/build 통과. 커밋 0e346de. followUp: use-mobile.ts·ui/sheet.tsx 전이 고아(범용 프리미티브, 정리는 선택).
