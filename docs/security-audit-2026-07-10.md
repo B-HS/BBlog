@@ -63,3 +63,12 @@ pnpm audit 실행 결과 총 3건 (high 1, moderate 2):
 2) [MODERATE] mdast-util-to-hast <13.2.1 — class 속성 미살균(CVE-2025-66400, GHSA-4fh9-h7wg-q85m). 경로 .>rehype-stringify>hast-util-to-html>mdast-util-to-hast(13.2.0). 단 동일 취약 transform이 remark-rehype 경유로 실제 렌더 파이프라인에도 포함. 완화: rehype-sanitize가 code className을 /^language-/로 제한 + 콘텐츠 admin 전용이라 주입 클래스 제거됨. 패치 >=13.2.1.
 3) [MODERATE] postcss <8.5.10 — </style> 미이스케이프 XSS(CVE-2026-41305, GHSA-qx2v-qp2m-jg93). 경로 .>next>postcss(8.4.31). 빌드타임 CSS 처리로 런타임 사용자 노출 아님. 패치 >=8.5.10.
 조치: pnpm update 또는 pnpm.overrides로 defu>=6.1.5 / mdast-util-to-hast>=13.2.1 / postcss>=8.5.10 강제 후 재감사. (프로젝트가 pnpm-lock.yaml 사용 → pnpm audit로 실행, bun audit 아님)
+
+## 이후 변경 (docs 정합 · 스냅샷 대비 현행 코드)
+
+> 이 리포트는 감사 시점(admin 제거·컨벤션 리팩토링 이전) 스냅샷이다. 이후 커밋으로 아래가 달라졌으나 BBLOG-1/2 수정의 유효성은 그대로 유지된다.
+
+- admin 페이지 제거(커밋 0e346de)로 `app/admin/layout.tsx` 와 `entities/admin.client.ts` 가 삭제됐다. 위 BBLOG-1/2 수정 내역이 언급한 credentials:'include' 트리거 사이트 중 admin.client.ts 는 사라졌고, 현행 revalidate 트리거는 `post·comment·category·tag` 의 client 4파일에 남아 모두 credentials:'include' 를 유지한다(실측 확인).
+- 컨벤션 리팩토링(커밋 82dd88c)으로 캐시 태그 상수가 QUERY_KEY 에서 분리돼 `CACHE_TAG` 로 옮겨졌다. BBLOG-2 가 지목한 `QUERY_KEY.POST.MAIN='mainPostLists'` 는 현재 `CACHE_TAG.POST_MAIN='mainPostLists'` 로, 문자열 값·태깅 동작·영향 범위는 동일하다. `/api/revalidate` 의 화이트리스트도 `Object.values(CACHE_TAG)` 기준으로 갱신됐다.
+- 근본원인 문단에서 인가 재사용 근거로 든 서버 레이아웃 중 `app/admin/layout.tsx` 는 제거됐고, 현재는 `app/(editor)/layout.tsx` 의 동일 getServerSession 경로가 남아 세션 게이트 근거로 유효하다.
+- BBLOG-3 는 admin UI 관련 클릭재킹을 예시로 들었으나 admin 제거 후에도 콘텐츠 작성은 editor 라우트(작성자 전용)로 유지되므로 CSP 부재 하드닝 판단은 그대로 유효하다.

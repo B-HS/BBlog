@@ -44,3 +44,13 @@
 - 2026-07-10: 보안 감사 완료(BBLOG-1/2 medium 확정). revalidate 라우트 세션 검증 + credentials·경로 화이트리스트 근본수정. 커밋 68db494. 리포트: docs/security-audit-2026-07-10.md
 - 2026-07-10: 작업 3(admin 제거) 완료 — 11개 파일 삭제 + QUERY_KEY.ADMIN 제거, tsc/build 통과. 커밋 0e346de. followUp: use-mobile.ts·ui/sheet.tsx 전이 고아(범용 프리미티브, 정리는 선택).
 - 2026-07-10: 작업 4(컨벤션 리팩토링) 완료 — useCallback/barrel 제거, QUERY_KEY 배열화+CACHE_TAG 분리, queryOptions 팩토리, interface→type, dead code. tsc/build 통과. 커밋 82dd88c.
+- 2026-07-10: docs 검수 — 4개 작업 전부 완료(체크박스 정합). 코드 실측으로 확인: admin 트리 부재(app/admin·widgets/admin·entities/admin.* 없음), revalidate 두 라우트에 getServerSession 게이트 유지, 트리거 4파일(post·comment·category·tag client)에 credentials:'include' 유지, CACHE_TAG 분리, staleTime 60_000 명시, queryOptions 팩토리 6곳. 잔존 useCallback 4건은 vendored ui/carousel.tsx(shadcn)로 리팩토링 범위 밖. 보안 리포트의 admin 참조는 감사 시점(admin 제거 이전) 스냅샷 — 리포트 말미에 정합 주석 보강.
+
+## 미결·후속 (이번 범위 밖, 선택)
+
+> 합의 6번(운영 지장 이슈만 즉시 수정)에 따라 아래 low/info 는 의도적으로 이번 세션에서 제외했다. 상세는 [docs/security-audit-2026-07-10.md](./security-audit-2026-07-10.md).
+
+- [ ] BBLOG-3 [low] 보안 헤더/CSP 부재 (next.config.ts headers() 없음, 현재도 미적용) — 하드닝.
+- [ ] BBLOG-4 [low] 전이 의존성 취약점 3건(defu·mdast-util-to-hast·postcss) — package.json 에 overrides 미추가(현행 유지). 정기 갱신 대상.
+- [ ] BBLOG-6 [info] user-card 외부 링크 rel='noopener' 누락(현재도 target='_blank'만) — 신뢰 정적 URL이라 실위험 없음.
+- [ ] revalidate 인가를 admin/author role 로 좁히는 강화(현재 로그인 사용자 전원 허용) — 흐름 변경이라 별도 단계.
