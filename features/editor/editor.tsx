@@ -117,8 +117,6 @@ export const Editor: FC<EditorProps> = ({ content, setContent, postId }) => {
         onItalic: () => wrapSelection('*', '*', styles.isItalic),
         onUnderline: () => wrapSelection('<u>', '</u>', styles.isUnderline),
         onStrikethrough: () => wrapSelection('~~', '~~', styles.isStrikethrough),
-        onUndo: handleUndoClick,
-        onRedo: handleRedoClick,
         isComposing,
     })
 

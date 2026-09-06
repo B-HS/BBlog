@@ -1,65 +1,63 @@
-import { useState, useRef } from 'react'
+import { useRef } from 'react'
+
+const HISTORY_LIMIT = 500
+const HISTORY_SAVE_DEBOUNCE_MS = 100
 
 export const useHistory = (initialContent: string) => {
-    const [history, setHistory] = useState<string[]>([initialContent])
-    const [historyIndex, setHistoryIndex] = useState(0)
-    const isUndoRedo = useRef(false)
-    const lastSavedContent = useRef(initialContent)
-    const saveTimer = useRef<NodeJS.Timeout | null>(null)
+    const historyRef = useRef({ entries: [initialContent], index: 0 })
+    const pendingSaveRef = useRef<{ text: string; timer: ReturnType<typeof setTimeout> } | null>(null)
+
+    const commitToHistory = (text: string) => {
+        const { entries, index } = historyRef.current
+        if (text === entries[index]) return
+
+        const nextEntries = [...entries.slice(0, index + 1), text].slice(-HISTORY_LIMIT)
+        historyRef.current = { entries: nextEntries, index: nextEntries.length - 1 }
+    }
+
+    const flushPendingSave = () => {
+        if (!pendingSaveRef.current) return
+
+        const { text, timer } = pendingSaveRef.current
+        clearTimeout(timer)
+        pendingSaveRef.current = null
+        commitToHistory(text)
+    }
 
     const addToHistory = (text: string, immediate = false) => {
-        if (isUndoRedo.current) {
-            isUndoRedo.current = false
-            return
-        }
-
-        if (text === lastSavedContent.current) {
-            return
-        }
-
-        if (saveTimer.current) {
-            clearTimeout(saveTimer.current)
-        }
-
-        const saveToHistory = () => {
-            setHistory((prev) => {
-                const newHistory = [...prev.slice(0, historyIndex + 1), text]
-
-                if (newHistory.length > 500) {
-                    newHistory.shift()
-                    return newHistory
-                }
-                return newHistory
-            })
-            setHistoryIndex((prev) => prev + 1)
-            lastSavedContent.current = text
-        }
-
         if (immediate) {
-            saveToHistory()
-        } else {
-            saveTimer.current = setTimeout(saveToHistory, 100)
+            flushPendingSave()
+            commitToHistory(text)
+            return
         }
+
+        if (pendingSaveRef.current) clearTimeout(pendingSaveRef.current.timer)
+
+        const timer = setTimeout(() => {
+            pendingSaveRef.current = null
+            commitToHistory(text)
+        }, HISTORY_SAVE_DEBOUNCE_MS)
+        pendingSaveRef.current = { text, timer }
     }
 
     const handleUndo = () => {
-        if (historyIndex > 0) {
-            isUndoRedo.current = true
-            const newIndex = historyIndex - 1
-            setHistoryIndex(newIndex)
-            return history[newIndex]
-        }
-        return null
+        flushPendingSave()
+
+        const { entries, index } = historyRef.current
+        if (index === 0) return null
+
+        historyRef.current = { entries, index: index - 1 }
+        return entries[index - 1]
     }
 
     const handleRedo = () => {
-        if (historyIndex < history.length - 1) {
-            isUndoRedo.current = true
-            const newIndex = historyIndex + 1
-            setHistoryIndex(newIndex)
-            return history[newIndex]
-        }
-        return null
+        flushPendingSave()
+
+        const { entries, index } = historyRef.current
+        if (index >= entries.length - 1) return null
+
+        historyRef.current = { entries, index: index + 1 }
+        return entries[index + 1]
     }
 
     const handleKeyboardShortcuts = (e: KeyboardEvent) => {

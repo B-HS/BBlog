@@ -3,13 +3,11 @@ type UseShortcutsProps = {
     onItalic: () => void
     onUnderline: () => void
     onStrikethrough: () => void
-    onUndo: () => void
-    onRedo: () => void
     isComposing?: boolean
 }
 
 export const useShortcuts = (props: UseShortcutsProps) => {
-    const { onBold, onItalic, onUnderline, onStrikethrough, onUndo, onRedo, isComposing = false } = props
+    const { onBold, onItalic, onUnderline, onStrikethrough, isComposing = false } = props
 
     const handleKeyDown = (e: KeyboardEvent) => {
         if (isComposing) return
@@ -34,14 +32,6 @@ export const useShortcuts = (props: UseShortcutsProps) => {
                 case 'd':
                     e.preventDefault()
                     onStrikethrough()
-                    break
-                case 'z':
-                    e.preventDefault()
-                    if (e.shiftKey) {
-                        onRedo()
-                    } else {
-                        onUndo()
-                    }
                     break
                 default:
                     break

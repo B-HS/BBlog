@@ -52,7 +52,7 @@ const EditPage = ({ params }: { params: Promise<{ id: string }> }) => {
         params.then(({ id }) => setId(id))
     }, [params])
 
-    if (!id || isLoading) {
+    if (!id || isLoading || !isInitialized) {
         return (
             <main className='flex h-dvh items-center justify-center'>
                 <div>로딩 중...</div>
