@@ -3,6 +3,7 @@ import { TanstackQueryProvider } from '@lib/providers/tanstack-query-provider'
 import { ThemeProvider } from '@lib/providers/theme-provider'
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 import { Toaster } from '@ui/sonner'
+import { Analytics } from '@vercel/analytics/next'
 import { GoToTop } from '@widgets/layout/go-to-top'
 import { Metadata } from 'next'
 import { FC, PropsWithChildren } from 'react'
@@ -38,6 +39,7 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
                 <VirtualScroll />
                 <Toaster />
                 <GoToTop />
+                <Analytics />
             </body>
         </html>
     )
