@@ -1,7 +1,7 @@
 # PROCESS — bblog (b-hub 연동 업데이트 · 보안 · admin 제거 · 리팩토링)
 
 > 베이스 룰: `~/.claude/convention/*`. 합의: [docs/acknowledge/2026-07-10-hub-sync-decisions.md](./acknowledge/2026-07-10-hub-sync-decisions.md)
-> 패키지매니저: **pnpm** (bun 아님 — 환경 일관성 원칙). 커밋: 영어 명령형 평문, 브랜치 vercel.
+> 패키지매니저: **bun** (2026-09-06 pnpm 에서 전환 — [docs/acknowledge/2026-09-06-bun-migration.md](./acknowledge/2026-09-06-bun-migration.md)). 커밋: 영어 명령형 평문, 브랜치 vercel.
 
 ## 작업 1 — 의존성 최신화 · 기준선 검증 (Phase 1)
 
@@ -45,6 +45,15 @@
 - [x] d. 검증 — 하네스 3개 시나리오 수정 후 정상, tsc · prettier · next build 통과
 - [x] e. 커밋·푸시·머지 — fix 4599bc8 + docs 커밋을 fix/editor-undo-history 브랜치에서 PR 로 vercel 에 머지
 
+## 작업 6 — Vercel Web Analytics 도입 · 패키지매니저 bun 전환 (2026-09-06)
+
+- [x] a. `app/layout.tsx` body 끝에 `@vercel/analytics/next` 의 `<Analytics />` 추가 (공식 quickstart 기준)
+- [x] b. 사용자 확인 후 bun 으로 완전 전환 — `bun install` 이 pnpm-lock 을 마이그레이션해 `bun.lock` 생성, `pnpm-lock.yaml` · package.json `pnpm` 필드 제거
+- [x] c. `bun add @vercel/analytics` (2.0.1)
+- [x] d. 검증 — tsc 0 오류, prettier 통과, `bun run build` 통과, 차단된 postinstall 없음(`bun pm untrusted`)
+- [x] e. 커밋·푸시 — d43c1b6(build: bun 전환) · 83dee78(feat: Analytics) · docs 커밋을 vercel 에 직접 커밋 후 푸시
+- [ ] f. 배포 후 Vercel 대시보드에서 Analytics 페이지뷰 수집 확인 (사용자)
+
 ## 진행 로그
 
 - 2026-07-10: 정찰 완료(기준선 tsc PASS · 테스트 없음), 합의 문서 기록, 체크리스트 작성.
@@ -54,6 +63,7 @@
 - 2026-07-10: 작업 4(컨벤션 리팩토링) 완료 — useCallback/barrel 제거, QUERY_KEY 배열화+CACHE_TAG 분리, queryOptions 팩토리, interface→type, dead code. tsc/build 통과. 커밋 82dd88c.
 - 2026-07-10: docs 검수 — 4개 작업 전부 완료(체크박스 정합). 코드 실측으로 확인: admin 트리 부재(app/admin·widgets/admin·entities/admin.* 없음), revalidate 두 라우트에 getServerSession 게이트 유지, 트리거 4파일(post·comment·category·tag client)에 credentials:'include' 유지, CACHE_TAG 분리, staleTime 60_000 명시, queryOptions 팩토리 6곳. 잔존 useCallback 4건은 vendored ui/carousel.tsx(shadcn)로 리팩토링 범위 밖. 보안 리포트의 admin 참조는 감사 시점(admin 제거 이전) 스냅샷 — 리포트 말미에 정합 주석 보강.
 - 2026-09-06: 작업 5(에디터 undo undefined 버그) 완료 — use-history ref 재작성 + 단축키 중복 제거 + edit 페이지 초기화 게이트. 하네스 재현·검증, tsc/prettier/build 통과. 커밋 4599bc8(fix) + docs 커밋, PR 로 vercel 에 머지.
+- 2026-09-06: 작업 6 완료 — Analytics 컴포넌트 추가, bun 전환(lockfile 마이그레이션), @vercel/analytics 2.0.1. tsc/prettier/bun run build 통과. 커밋 d43c1b6 + 83dee78 + docs, vercel 직접 푸시.
 
 ## 미결·후속 (이번 범위 밖, 선택)
 
