@@ -37,6 +37,14 @@
 - [x] g. dead code 제거: entities/log.* · entities/admin.ts 미사용 서버함수 · 빈 shared/ · components/ 잔재 · 주석 1건(app/api/revalidate/route.ts)
 - [x] h. 검증 후 커밋
 
+## 작업 5 — 에디터 undo 시 "undefined" 버그 수정 (2026-09-06)
+
+- [x] a. 원인 분석 — use-history 의 배열/인덱스 분리 상태가 500개 상한에서 어긋나 `history[index-1]` 이 undefined (상세: [docs/bug/2026-09-06-editor-undo-undefined.md](./bug/2026-09-06-editor-undo-undefined.md))
+- [x] b. 재현 — 수정 전 훅을 브라우저 하네스로 520타 후 undo → undefined 확인 ([docs/utils/editor-history-repro-harness.md](./utils/editor-history-repro-harness.md))
+- [x] c. 수정 — useHistory 를 단일 ref `{ entries, index }` 로 재작성(대기 저장 flush · isUndoRedo 제거), useShortcuts 의 undo/redo 중복 경로 제거, edit 페이지는 로드 완료 후 Editor 마운트
+- [x] d. 검증 — 하네스 3개 시나리오 수정 후 정상, tsc · prettier · next build 통과
+- [x] e. 커밋·푸시·머지 — fix 4599bc8 + docs 커밋을 fix/editor-undo-history 브랜치에서 PR 로 vercel 에 머지
+
 ## 진행 로그
 
 - 2026-07-10: 정찰 완료(기준선 tsc PASS · 테스트 없음), 합의 문서 기록, 체크리스트 작성.
@@ -45,6 +53,7 @@
 - 2026-07-10: 작업 3(admin 제거) 완료 — 11개 파일 삭제 + QUERY_KEY.ADMIN 제거, tsc/build 통과. 커밋 0e346de. followUp: use-mobile.ts·ui/sheet.tsx 전이 고아(범용 프리미티브, 정리는 선택).
 - 2026-07-10: 작업 4(컨벤션 리팩토링) 완료 — useCallback/barrel 제거, QUERY_KEY 배열화+CACHE_TAG 분리, queryOptions 팩토리, interface→type, dead code. tsc/build 통과. 커밋 82dd88c.
 - 2026-07-10: docs 검수 — 4개 작업 전부 완료(체크박스 정합). 코드 실측으로 확인: admin 트리 부재(app/admin·widgets/admin·entities/admin.* 없음), revalidate 두 라우트에 getServerSession 게이트 유지, 트리거 4파일(post·comment·category·tag client)에 credentials:'include' 유지, CACHE_TAG 분리, staleTime 60_000 명시, queryOptions 팩토리 6곳. 잔존 useCallback 4건은 vendored ui/carousel.tsx(shadcn)로 리팩토링 범위 밖. 보안 리포트의 admin 참조는 감사 시점(admin 제거 이전) 스냅샷 — 리포트 말미에 정합 주석 보강.
+- 2026-09-06: 작업 5(에디터 undo undefined 버그) 완료 — use-history ref 재작성 + 단축키 중복 제거 + edit 페이지 초기화 게이트. 하네스 재현·검증, tsc/prettier/build 통과. 커밋 4599bc8(fix) + docs 커밋, PR 로 vercel 에 머지.
 
 ## 미결·후속 (이번 범위 밖, 선택)
 
