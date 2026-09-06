@@ -52,7 +52,8 @@
 - [x] c. `bun add @vercel/analytics` (2.0.1)
 - [x] d. 검증 — tsc 0 오류, prettier 통과, `bun run build` 통과, 차단된 postinstall 없음(`bun pm untrusted`)
 - [x] e. 커밋·푸시 — d43c1b6(build: bun 전환) · 83dee78(feat: Analytics) · docs 커밋을 vercel 에 직접 커밋 후 푸시
-- [ ] f. 배포 후 Vercel 대시보드에서 Analytics 페이지뷰 수집 확인 (사용자)
+- [x] f. 배포 실패 대응 — Vercel bun 1.3.14 가 lockfileVersion 2 를 못 읽어 락파일 무시·next 16.3.4 로 상승·빌드 실패. v1 형식으로 재생성해 커밋 4fb4dfa (상세: [docs/bug/2026-09-06-vercel-bun-lockfile-version.md](./bug/2026-09-06-vercel-bun-lockfile-version.md))
+- [ ] g. 배포 후 Vercel 대시보드에서 Analytics 페이지뷰 수집 확인 (사용자)
 
 ## 진행 로그
 
@@ -64,6 +65,7 @@
 - 2026-07-10: docs 검수 — 4개 작업 전부 완료(체크박스 정합). 코드 실측으로 확인: admin 트리 부재(app/admin·widgets/admin·entities/admin.* 없음), revalidate 두 라우트에 getServerSession 게이트 유지, 트리거 4파일(post·comment·category·tag client)에 credentials:'include' 유지, CACHE_TAG 분리, staleTime 60_000 명시, queryOptions 팩토리 6곳. 잔존 useCallback 4건은 vendored ui/carousel.tsx(shadcn)로 리팩토링 범위 밖. 보안 리포트의 admin 참조는 감사 시점(admin 제거 이전) 스냅샷 — 리포트 말미에 정합 주석 보강.
 - 2026-09-06: 작업 5(에디터 undo undefined 버그) 완료 — use-history ref 재작성 + 단축키 중복 제거 + edit 페이지 초기화 게이트. 하네스 재현·검증, tsc/prettier/build 통과. 커밋 4599bc8(fix) + docs 커밋, PR 로 vercel 에 머지.
 - 2026-09-06: 작업 6 완료 — Analytics 컴포넌트 추가, bun 전환(lockfile 마이그레이션), @vercel/analytics 2.0.1. tsc/prettier/bun run build 통과. 커밋 d43c1b6 + 83dee78 + docs, vercel 직접 푸시.
+- 2026-09-06: bun 전환 후 Vercel 배포 실패(lockfileVersion 2 미지원) → bun.lock 을 v1 로 재생성, 커밋 4fb4dfa. 운영 규칙: bun.lock 은 lockfileVersion 1 유지.
 
 ## 미결·후속 (이번 범위 밖, 선택)
 
